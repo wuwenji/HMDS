@@ -1,0 +1,507 @@
+<template>
+  <div class="container">
+    <div class="position">
+      所在的位置：接单管理 -> <span>订单打印</span>
+    </div>
+    <div class="form">
+      <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
+        <el-form-item class="form-item" label="接单号" prop="soNo">
+          <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="订购商" prop="contName">
+          <el-input v-model="formData.contName" placeholder="订购商名称"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="发件人" prop="entryUserName">
+          <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="接单时间">
+          <el-col>
+            <el-form-item prop="soDateStr">
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+                v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="交期">
+          <el-col>
+            <el-form-item prop="contDueDateStr">
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+                v-model="formData.contDueDateStr"
+                style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="btns">
+          <!--<el-button type="primary" plain>更新</el-button>-->
+          <el-button type="success" plain @click="searchList(10, 1)">查询</el-button>
+          <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="john-tab">
+      <ul>
+        <li @click="tabClick(1)" :class="{active: johnTab == 1}">整条</li>
+        <li @click="tabClick(2)" :class="{active: johnTab == 2}">切断</li>
+        <li @click="tabClick(3)" :class="{active: johnTab == 3}">切断&加工</li>
+        <li @click="tabClick(5)" :class="{active: johnTab == 5}">热处理</li>
+        <li @click="tabClick(6)" :class="{active: johnTab == 6}">切断&加工&热处理</li>
+      </ul>
+    </div>
+    <div class="data-list">
+      <el-table
+        v-show="johnTab == 1"
+        :data="listData"
+        border
+        height="calc(100% - 75px)"
+        style="width: 100%;">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="printingOne(scope.$index, scope.row, '整条')">打印整条作业指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="johnTab == 2"
+        :data="listData"
+        border
+        height="calc(100% - 75px)"
+        style="width: 100%;">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="johnTab == 3"
+        :data="listData"
+        border
+        height="calc(100% - 75px)"
+        style="width: 100%;">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="tempMachineSpecCd"
+          label="加工类型">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="260">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="johnTab == 5"
+        :data="listData"
+        border
+        height="calc(100% - 75px)"
+        style="width: 100%;">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="johnTab == 6"
+        :data="listData"
+        border
+        height="calc(100% - 75px)"
+        style="width: 100%;">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="加工类型"
+          width="271px">
+          <template slot-scope="scope">
+            <div style="position: relative;" v-if="selOptions.indexOf(scope.row.heatMillingRemarks) === -1">
+              <el-select
+                style="margin-right: 30px;display: inline-block;"
+                v-model="scope.row.johnValue"
+                placeholder="请选择">
+                <el-option
+                  v-for="item in selOptions"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
+              <el-button
+                style="position: absolute;top: 0;right: 0px;z-index: 99"
+                @click="prese(scope.row.soNo, scope.row.johnValue)"
+                type="text">
+                保存
+              </el-button>
+            </div>
+            <p v-else>{{scope.row.heatMillingRemarks}}</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="370">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNum"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
+    </div>
+    <el-dialog
+      :visible.sync="dialogOne"
+      width="1290px"
+      top="5vh"
+      center>
+      <printPage v-if="title == '打印切断作业指示书'" :orderInfo="info" :title="title"/>
+      <hotHandle v-if="title == '生成热处理指示书'" :orderInfo="info" :title="title"/>
+      <machining v-if="title == '打印加工作业指示书'" :orderInfo="info" :title="title"/>
+      <wholePage v-if="title == '整条'" :orderInfo="info" :title="title"/>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import printPage from './printing'
+import hotHandle from './hotHandle'
+import machining from './machining'
+import wholePage from './whole'
+export default {
+  name: 'index',
+  data () {
+    return {
+      pageNum: 1,
+      pageSize: 10,
+      total: 0,
+      selectValue: '',
+      title: '',
+      info: {},
+      selOptions: ['2F→热处理', '6F→热处理', '素材→热处理→6F2G', '素材→热处理→6F2G→钻孔', '素材→6F→送回客户钻孔→热处理→2G', '素材→热处理'],
+      dialogOne: false,
+      johnTab: 1,
+      formData: {
+        soNo: '',
+        soDateStr: '',
+        contName: '',
+        contDueDateStr: '',
+        entryUserName: ''
+      },
+      listData: []
+    }
+  },
+  created () {
+    this.getLists(1, 10, 1)
+  },
+  computed: {
+  },
+  methods: {
+    getLists (num, size, type) {
+      this.http('/tSalesOrder/list', {
+        pageNum: num,
+        pageSize: size,
+        isHistory: 0,
+        workInstCd: type
+      }).then(resp => {
+        if (resp.success) {
+          console.log(resp)
+          this.total = resp.data.total
+          this.listData = resp.data.list.filter(item => {
+            item.johnValue = ''
+            return item
+          })
+        }
+      })
+    },
+    onSubmit () {
+      console.log(this.formData)
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    handleSizeChange (val) {
+      this.pageSize = parseInt(`${val}`)
+      this.searchList(this.pageSize, this.pageNum)
+    },
+    handleCurrentChange (val) {
+      this.pageNum = parseInt(`${val}`)
+      this.searchList(this.pageSize, this.pageNum)
+    },
+    printingOne (index, row, title) {
+      this.title = title
+      this.dialogOne = true
+      this.info = row
+    },
+    cutFun (index, row, title) {
+      this.title = title
+      this.dialogOne = true
+      this.info = row
+      // console.log(index, row)
+    },
+    searchList (pageSize, pageNum) {
+      this.formData.workInstCd = this.johnTab
+      this.formData.isHistory = 0
+      this.formData.pageSize = pageSize
+      this.formData.pageNum = pageNum
+      this.http('/tSalesOrder/list', this.formData).then(resp => {
+        if (resp.success) {
+          this.pageSize = pageSize
+          this.pageNum = pageNum
+          this.total = resp.data.total
+          this.listData = resp.data.list
+        }
+      })
+    },
+    tabClick (index) {
+      this.johnTab = index
+      this.pageSize = 10
+      this.pageNum = 1
+      this.getLists(1, 10, index)
+    },
+    prese (soNo, val) {
+      this.http('/tSalesOrder/saveMachineSpecCd', {
+        soNo,
+        heatMillingRemarks: val
+      }).then(resp => {
+        if (resp.success) {
+          this.listData.map(item => {
+            if (item.soNo === soNo) {
+              item.heatMillingRemarks = val
+            }
+          })
+        }
+      })
+    }
+  },
+  components: {
+    printPage,
+    hotHandle,
+    machining,
+    wholePage
+  }
+}
+</script>
+
+<style scoped>
+  .position {
+    line-height: 35px;
+    border-bottom: 1px solid #ccc;
+    padding-left: 10px;
+  }
+  .position span {
+    color: #409EFF;
+  }
+  .form {
+    border:1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+  }
+  .data-list {
+    margin: 10px;
+  }
+  .form-item {
+    width:220px;
+  }
+  .btns {
+    float: right;
+  }
+  .block {
+    text-align: right;
+    padding: 20px 10px;
+    background: #efefef;
+    border: 1px solid #ddd;
+    border-top: none;
+  }
+  .data-list {
+    height: calc(100% - 170px);
+  }
+</style>

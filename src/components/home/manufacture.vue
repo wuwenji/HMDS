@@ -1,0 +1,241 @@
+<template>
+  <div>
+    <table class="mid-table" border="1" borderColor="#0070c0">
+      <tr>
+        <td>日期：</td>
+        <td>2017/08/05</td>
+        <td>时间：</td>
+        <td>20： 30</td>
+      </tr>
+      <tr>
+        <td>接单总数：</td>
+        <td>30</td>
+        <td>加工中：</td>
+        <td>20</td>
+      </tr>
+    </table>
+    <div class="title">加工部未完成明细</div>
+    <template>
+      <el-table
+        :data="lists"
+        height="250"
+        border
+        style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="接单时间">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="客户名">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="订单号">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="行号">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="材质">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="规格">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="数量">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="作业名称">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="完成件数">
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="要求交期">
+        </el-table-column>
+        <el-table-column
+          label="生产进度"
+          width="250">
+          <template slot-scope="scope">
+            <ul class="prog">
+              <li>
+                切断<br/>
+                <span :class="getClass(1)"></span>
+              </li>
+              <li>
+                加工
+                <span :class="getClass(2)"></span>
+              </li>
+              <li>
+                研磨
+                <span :class="getClass(3)"></span>
+              </li>
+              <li>
+                热处理
+                <span :class="getClass(4)"></span>
+              </li>
+              <li>
+                出货
+                <span :class="getClass(5)"></span>
+              </li>
+            </ul>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="备注">
+          <template slot-scope="scope">
+            <img @click="scope.row.remark = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
+            <img @click="scope.row.remark = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
+          </template>
+        </el-table-column>
+      </el-table>
+    </template>
+    <div class="page">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="pageNum"
+        layout="prev, pager, next"
+        :total="100">
+      </el-pagination>
+    </div>
+    <div class="total">
+      <span>加工完成总件数：20</span>
+    </div>
+    <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCapacity" :twoData="macEchart.macCompletedCount"/>
+  </div>
+</template>
+
+<script>
+import drawEchart from './lineEchart'
+export default {
+  name: 'doBusiness',
+  data () {
+    return {
+      lists: [
+        {
+          name: 1,
+          address: 1,
+          date: 1,
+          remark: 1
+        },
+        {
+          name: 1,
+          address: 1,
+          date: 1,
+          remark: 2
+        }
+      ],
+      pageNum: 1,
+      title: '切断部机器负荷表',
+      macEchart: {
+        macCode: [],
+        macCapacity: [],
+        macCompletedCount: []
+      }
+    }
+  },
+  mounted () {
+    this.getMacData()
+  },
+  methods: {
+    handleCurrentChange (val) {
+      console.log(parseInt(`$(val)`))
+    },
+    getClass (a) {
+      if (a === 1) return 'red'
+      if (a === 2) return 'blue'
+    },
+    // 加工图表数据
+    getMacData () {
+      this.http('/show/getMachiningList', {}).then(resp => {
+        if (resp.success) {
+          this.macEchart.macCode = []
+          this.macEchart.macCapacity = []
+          this.macEchart.macCompletedCount = []
+          resp.data.map(item => {
+            this.macEchart.macCapacity.push(item.capacity)
+            this.macEchart.macCode.push(item.code)
+            this.macEchart.macCompletedCount.push(item.completedCount)
+          })
+        }
+      })
+    }
+  },
+  components: {
+    drawEchart
+  }
+}
+</script>
+
+<style scoped>
+.table {
+  text-align: center;
+  width: 100%;
+}
+.title {
+  text-align: center;
+  line-height: 20px;
+  font-size: 24px;
+  padding-left: 285px;
+  padding-top: 30px;
+}
+.table td,.table th {
+  padding: 6px 10px;
+}
+.page {
+  text-align: right;
+  margin-top: 5px;
+}
+.line {
+  height: 300px;
+}
+.prog li {
+  float: left;
+  margin: 0 5px;
+  list-style: none;
+}
+.prog li span {
+  width: 30px;
+  height: 10px;
+  border: 1px solid #0070c0;
+  border-radius: 2px;
+  display: block;
+  background: #efefef
+}
+.prog li span.red {
+  background: #ff0000;
+}
+.prog li span.blue {
+  background: #0070c0;
+}
+.gaotie,.feiji {
+  width: 115px;
+  cursor: pointer;
+}
+.mid-table {
+  float: right;
+}
+.mid-table td{
+  padding: 5px;
+  color: #0070c0;
+}
+  .total {
+    text-align: right;
+    margin-top: 50px;
+  }
+  .total span {
+    padding: 4px 20px;
+    background: #0070c0;
+    color: #fff;
+    display: inline-block;
+    border-radius: 4px;
+  }
+</style>
