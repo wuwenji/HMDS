@@ -10,8 +10,8 @@ const myStore = new Vuex.Store({
     time: '',
     nowTime: '',
     week: '',
-    // httpUrl: 'http://119.23.160.82:8793/dgrl-api',
-    httpUrl: 'http://10.109.6.189:8793/dgrl-api',
+    httpUrl: 'http://119.23.160.82:8793/dgrl-api',
+    // httpUrl: 'http://10.109.6.189:8793/dgrl-api',
     // httpUrl: 'http://192.168.1.188:8793/dgrl-api',
     qrUrl: '',
     users: {}
