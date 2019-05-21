@@ -48,13 +48,9 @@ const myStore = new Vuex.Store({
         sweek = '星期六'
       }
       let hour = date.getHours()
+      hour = hour > 9 ? hour : '0' + hour
       let min = date.getMinutes()
-      setInterval(() => {
-        state.nowTime = year + '年' + month + '月' + day + '日' + ' ' + hour + ':' + min
-        state.date = year + '年' + month + '月' + day + '日'
-        state.time = year + '/' + month + '/' + day + '/ ' + hour + ':' + min
-        state.sweek = sweek
-      }, 60000)
+      min = min > 9 ? min : '0' + min
       state.nowTime = year + '年' + month + '月' + day + '日' + ' ' + hour + ':' + min
       state.date = year + '年' + month + '月' + day + '日'
       state.time = year + '/' + month + '/' + day + '/ ' + hour + ':' + min
@@ -63,13 +59,6 @@ const myStore = new Vuex.Store({
   },
   getters: {
     getDate: (state, getters) => (string, type = 1) => {
-      // let d = new Date(string)
-      // let y = d.getFullYear()
-      // let m = d.getMonth() + 1
-      // m = m > 9 ? m : '0' + m
-      // let r = d.getDate()
-      // r = r > 9 ? r : '0' + r
-      // return y + '-' + m + '-' + r
       if (string != null) {
         let d = new Date(string)
         let y = d.getFullYear()

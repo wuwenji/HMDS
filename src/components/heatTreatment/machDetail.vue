@@ -124,27 +124,43 @@
         top="5vh"
         custom-class="dialogCss"
         :visible.sync="dialog">
-        <table border="1" class="tableTwo">
+        <table border="1" class="table-list">
+          <thead>
+          <tr>
+            <th>类型</th>
+            <th>工作人员</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>结果</th>
+          </tr>
+          </thead>
           <tbody v-for="(item, keys) in lists" :key="keys">
           <tr>
-            <td colspan="2">作业行号：{{cutCode + '-' + (keys + 1)}} ({{item.counts}})</td>
-            <td>类型：QT</td>
-            <td>机器：机器</td>
+            <td>{{item.type}}</td>
+            <td>{{item.workName}}</td>
+            <td>{{$store.getters.getTime(item.startTime)}}</td>
+            <td>{{$store.getters.getTime(item.endTime)}}</td>
+            <td>{{item.status &lt; 2? '合格': '不合格'}}</td>
           </tr>
-          <template v-for="val in item.heaterList">
-            <tr>
-              <td>{{val.type}}</td>
-              <td>{{val.workName}}</td>
-              <td>{{$store.getters.getTime(val.startTime)}}</td>
-              <td>{{$store.getters.getTime(val.endTime)}}</td>
-            </tr>
-            <tr>
-              <td>中间检查</td>
-              <td>{{val.auditorName}}</td>
-              <td>{{$store.getters.getTime(val.endTime)}}</td>
-              <td>{{val.status < 2? '合格': '不合格'}}</td>
-            </tr>
-          </template>
+          <!--<tr>-->
+            <!--<td colspan="2">作业行号：{{cutCode + '-' + (keys + 1)}} ({{item.counts}})</td>-->
+            <!--<td>类型：QT</td>-->
+            <!--<td>机器：机器</td>-->
+          <!--</tr>-->
+          <!--<template v-for="val in item.heaterList">-->
+            <!--<tr>-->
+              <!--<td>{{val.type}}</td>-->
+              <!--<td>{{val.workName}}</td>-->
+              <!--<td>{{$store.getters.getTime(val.startTime)}}</td>-->
+              <!--<td>{{$store.getters.getTime(val.endTime)}}</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>中间检查</td>-->
+              <!--<td>{{val.auditorName}}</td>-->
+              <!--<td>{{$store.getters.getTime(val.endTime)}}</td>-->
+              <!--<td>{{val.status < 2? '合格': '不合格'}}</td>-->
+            <!--</tr>-->
+          <!--</template>-->
           </tbody>
         </table>
       </el-dialog>
@@ -189,7 +205,7 @@ export default {
       this.http('/heat/detail', id).then(resp => {
         console.log(resp)
         if (resp.success) {
-          this.lists = resp.data.entryList
+          this.lists = resp.data
         }
       })
       this.dialog = true

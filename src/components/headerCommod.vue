@@ -30,6 +30,9 @@ export default {
   },
   created () {
     this.$store.commit('getNew')
+    setInterval(() => {
+      this.$store.commit('getNew')
+    }, 60000)
   }
 }
 </script>
