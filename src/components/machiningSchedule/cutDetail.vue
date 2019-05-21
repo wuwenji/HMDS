@@ -46,7 +46,7 @@
       </thead>
       <tr v-for="(item, key) in cutDetail.cutMiddleList" :key="key">
         <td>{{key + 1}}</td>
-        <td>{{cutDetail.material}}</td>
+        <td>{{item.material}}</td>
         <td>{{item.cutCode}}</td>
         <td>
           客户要求尺寸<br/>
@@ -119,39 +119,21 @@
             <th>开始时间</th>
             <th>结束时间</th>
             <th>完成尺寸</th>
-            <th>重量</th>
+            <th>理论重量</th>
           </tr>
         </thead>
         <tbody v-for="(item, key) in lists" :key="'a' + key">
-          <tr>
-            <td>{{cutCode + '-' + (key + 1)}}</td>
-            <td>{{item.userName1}}</td>
-            <td>{{item.cutters.length}}</td>
-            <td>{{$store.getters.getDate(item.startTime1)}}</td>
-            <td>{{$store.getters.getDate(item.endTime1)}}</td>
+          <tr v-for="(val, index) in item.cutters" :key="'C' + index">
+            <td v-if="index == 0" :rowspan="item.cutters.length">
+              <p>{{cutCode + '-' + (key + 1)}}</p>
+            </td>
+            <td>{{val.userName}}</td>
+            <td>{{val.cutterMiddleList.length}}</td>
+            <td>{{$store.getters.getDate(val.startTime)}}</td>
+            <td>{{$store.getters.getDate(val.endTime)}}</td>
             <!--<td>{{returnPrsent(item.completion1, item.completion2, item.completion3, item.status)}}%</td>-->
-            <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
+            <td>{{item.size1}}X<template v-if="item.size2 > 0">{{item.size2}}X</template>{{item.size3}}</td>
             <td>{{item.actualWeight}}</td>
-          </tr>
-          <tr v-if="item.userName2 != null">
-            <td></td>
-            <td>{{item.userName2}}</td>
-            <td>{{item.cutters.length}}</td>
-            <td>{{$store.getters.getDate(item.startTime2)}}</td>
-            <td>{{$store.getters.getDate(item.endTime2)}}</td>
-            <!--<td>{{item.completion2}}%</td>-->
-            <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
-            <td>{{item.actualWeight}}</td>
-          </tr>
-          <tr v-if="item.userName3 != null">
-            <td></td>
-            <td>{{item.userName3}}</td>
-            <td>{{item.cutters.length}}</td>
-            <td>{{$store.getters.getDate(item.startTime3)}}</td>
-            <td>{{$store.getters.getDate(item.endTime3)}}</td>
-            <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
-            <td>{{item.actualWeight}}</td>
-            <!--<td>{{item.completion3}}%</td>-->
           </tr>
         </tbody>
         <!--<tr v-for="(item, key) in lists" :key="'a' + key">-->
@@ -197,7 +179,7 @@ export default {
     },
     alertDetail (id, cutCo) {
       this.cutCode = cutCo
-      console.log(id)
+      // console.log(id)
       this.http('/cut/findEntry', id).then(resp => {
         console.log(resp)
         if (resp.success) {

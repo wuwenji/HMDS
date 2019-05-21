@@ -91,9 +91,11 @@
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p class="spans">
                   <span>{{item.order.machineShapeCd}}</span>
-                  <span>{{list.size1}}X</span>
-                  <span v-if="list.size2 > 0">{{list.size2}}X</span>
-                  <span>{{list.size3}}</span>
+                  <span>{{list.size1}} X </span>
+                  <span>
+                    {{list.size2 > 0? list.size2 : ''}}
+                  </span> X <span>
+                  {{list.size3}}</span>
                   <!--<span>{{list.instSize1}}X</span>-->
                   <!--<span>{{list.instSize2}}X</span>-->
                   <!--<span>{{list.instSize3}}</span>-->

@@ -35,6 +35,40 @@
             </div>
           </td>
         </tr>
+        <tr>
+          <td>前处理</td>
+          <td>
+            <el-radio-group v-model="formData.pretreatmentResult">
+              <el-radio label="Model">省模</el-radio>
+              <el-radio label="Protection">保护</el-radio>
+            </el-radio-group>
+            <!--<el-checkbox-group v-model="formData.checkList">-->
+              <!--<el-checkbox label="伤痕"></el-checkbox>-->
+              <!--<el-checkbox label="薄壁"></el-checkbox>-->
+              <!--<el-checkbox label="R 角"></el-checkbox>-->
+              <!--<el-checkbox label="形状"></el-checkbox>-->
+              <!--<el-checkbox label="黑皮"></el-checkbox>-->
+              <!--<el-checkbox label="颜色"></el-checkbox>-->
+              <!--<el-checkbox label="毛刺"></el-checkbox>-->
+              <!--<el-checkbox label="焊接"></el-checkbox>-->
+              <!--<el-checkbox label="刀痕"></el-checkbox>-->
+              <!--<el-checkbox label="异物"></el-checkbox>-->
+              <!--<el-checkbox label="要求"></el-checkbox>-->
+            <!--</el-checkbox-group>-->
+          </td>
+          <td>收货人：</td>
+          <td>
+            <input v-model="formData.checkReceipt" type="text">
+          </td>
+          <td>(前)作业者：</td>
+          <td>
+            <input v-model="formData.pretreatmentOperator" type="text">
+          </td>
+          <td>(前)确认者：</td>
+          <td>
+            <input v-model="formData.pretreatmentConfirm" type="text">
+          </td>
+        </tr>
         <!--<tr>-->
           <!--<td>入货时间</td>-->
           <!--<td>-->
@@ -605,7 +639,7 @@
 </template>
 
 <script>
-import { getExcel } from "../../http";
+import { getExcel } from '../../http'
 
 export default {
   name: 'inputCommod',
@@ -618,6 +652,10 @@ export default {
       srcImg: '',
       // heatTreatment: '',
       formData: {
+        pretreatmentResult: '',
+        pretreatmentConfirm: '',
+        pretreatmentOperator: '',
+        checkReceipt: '',
         checkResult: '',
         checkResultUserName: '',
         qFurnaceNo: '',

@@ -47,7 +47,7 @@
       <tbody v-for="(item, key) in cutDetail.cutMiddleList" :key="key">
         <tr>
           <td rowspan="5">{{key + 1}}</td>
-          <td rowspan="5">{{cutDetail.material}}</td>
+          <td rowspan="5">{{item.material}}</td>
           <td rowspan="5">{{item.cutCode}}</td>
           <td>
             客户要求尺寸<br/>
@@ -101,15 +101,15 @@
           <td>
             {{item.instSizeNote}}
           </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>{{item.size1}}<template>X{{item.size2}}</template>X{{item.size3}}</td>
+          <td>{{item.mRightAngle}}</td>
+          <td>{{item.mParallel}}</td>
+          <td>{{item.chamferSpec}}</td>
           <td colspan="2">
             {{item.machineSpecCd}}
           </td>
           <td colspan="2">
-
+            {{item.millingRemarks1}}
           </td>
         </tr>
         <tr>
@@ -169,35 +169,17 @@
         </tr>
         </thead>
         <tbody v-for="(item, key) in listOne" :key="'a' + key">
-        <tr>
-          <td>{{cutCode + '-' + (key + 1)}}</td>
-          <td>{{item.userName1}}</td>
-          <td>{{item.cutters.length}}</td>
-          <td>{{$store.getters.getDate(item.startTime1)}}</td>
-          <td>{{$store.getters.getDate(item.endTime1)}}</td>
+        <tr v-for="(val, index) in item.cutters" :key="'C' + index">
+          <td v-if="index == 0" :rowspan="item.cutters.length">
+            <p>{{cutCode + '-' + (key + 1)}}</p>
+          </td>
+          <td>{{val.userName}}</td>
+          <td>{{val.cutterMiddleList.length}}</td>
+          <td>{{$store.getters.getDate(val.startTime)}}</td>
+          <td>{{$store.getters.getDate(val.endTime)}}</td>
           <!--<td>{{returnPrsent(item.completion1, item.completion2, item.completion3, item.status)}}%</td>-->
-          <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
+          <td>{{item.size1}}X<template v-if="item.size2 > 0">{{item.size2}}X</template>{{item.size3}}</td>
           <td>{{item.actualWeight}}</td>
-        </tr>
-        <tr v-if="item.userName2 != null">
-          <td></td>
-          <td>{{item.userName2}}</td>
-          <td>{{item.cutters.length}}</td>
-          <td>{{$store.getters.getDate(item.startTime2)}}</td>
-          <td>{{$store.getters.getDate(item.endTime2)}}</td>
-          <!--<td>{{item.completion2}}%</td>-->
-          <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
-          <td>{{item.actualWeight}}</td>
-        </tr>
-        <tr v-if="item.userName3 != null">
-          <td></td>
-          <td>{{item.userName3}}</td>
-          <td>{{item.cutters.length}}</td>
-          <td>{{$store.getters.getDate(item.startTime3)}}</td>
-          <td>{{$store.getters.getDate(item.endTime3)}}</td>
-          <td>{{item.size1}}X{{item.size2}}X{{item.size3}}</td>
-          <td>{{item.actualWeight}}</td>
-          <!--<td>{{item.completion3}}%</td>-->
         </tr>
         </tbody>
         <!--<tr v-for="(item, key) in lists" :key="'a' + key">-->
@@ -211,37 +193,50 @@
       <div style="margin-top: 20px;font-weight: bold;">加工：
         <span style="float: right;">总数：{{total}}</span>
       </div>
-      <table border="1" class="tableTwo table" width="100%">
+      <table border="1" class="table" width="100%">
         <thead>
         <tr>
           <th>数量</th>
-          <th>作业员</th>
           <th>类型</th>
-          <th>目前工序</th>
+          <th>人员</th>
           <th>开始时间</th>
           <th>结束时间</th>
         </tr>
         </thead>
         <tbody v-for="(item, numb) in lists" :key="numb">
-        <tr>
-          <td>{{item.counts}}{{returnTotal(item.totalCount)}}</td>
-          <td>{{item.auditorName}}</td>
-          <td>
-            <!--{{item.materialList[0].type}}-->
-            <!--{{item.materialList.type}}-->
-            <!--{{item.materialList}}-->
-            <div v-if="item.materialList != undefined">
-              <p v-if="item.materialList.length > 0">
-                {{item.materialList[0].type == 1? '铣厚度' : ''}}
-                {{item.materialList[0].type == 2? '铣长宽' : ''}}
-                {{item.materialList[0].type == 3? '研磨' : ''}}
-              </p>
-            </div>
-          </td>
-          <td>{{item.machineSpecCd}}</td>
-          <td>{{$store.getters.getTime(item.startTime)}}</td>
-          <td>{{$store.getters.getTime(item.endTime)}}</td>
-        </tr>
+          <template v-for="(val, valIndex) in item.materialList">
+          <tr v-for="(valItem, miKey) in val.machinerList" :key="valIndex + '' + miKey">
+            <td v-if="valIndex == 0" :rowspan="item.materialList.length">{{item.totalCount}}{{returnTotal(item.totalCount)}}</td>
+            <td v-if="miKey == 0" :rowspan="val.machinerList.length">
+              {{val.type == 1? '铣厚度' : ''}}
+              {{val.type == 2? '铣长宽' : ''}}
+              {{val.type == 3? '研磨' : ''}}
+            </td>
+            <td>{{valItem.userName}}</td>
+            <td>{{$store.getters.getDate(valItem.startTime)}}</td>
+            <td>{{$store.getters.getDate(valItem.endTime)}}</td>
+          </tr>
+          </template>
+        <!--<tr v-for="(val, num) in lists" :key="num">-->
+          <!--<td>{{item.counts}}{{returnTotal(item.totalCount)}}</td>-->
+          <!--<td>{{val.userName}}</td>-->
+          <!--<td>-->
+            <!--&lt;!&ndash;{{item.materialList[0].type}}&ndash;&gt;-->
+            <!--&lt;!&ndash;{{item.materialList.type}}&ndash;&gt;-->
+            <!--&lt;!&ndash;{{item.materialList}}&ndash;&gt;-->
+            <!--&lt;!&ndash;<div v-if="item.materialList != undefined">&ndash;&gt;-->
+              <!--&lt;!&ndash;<p v-if="item.materialList.length > 0">&ndash;&gt;-->
+                <!--{{item.type == 1? '铣厚度' : ''}}-->
+                <!--{{item.type == 2? '铣长宽' : ''}}-->
+                <!--{{item.type == 3? '研磨' : ''}}-->
+              <!--&lt;!&ndash;</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--</td>-->
+          <!--<td width="120">-->
+            <!--{{$store.getters.getDate(val.startTime)}}-->
+          <!--</td>-->
+          <!--<td>{{$store.getters.getDate(val.endTime)}}</td>-->
+        <!--</tr>-->
         </tbody>
         <!--<tbody v-for="(item, numb) in lists" :key="numb">-->
           <!--<tr>-->
@@ -323,10 +318,10 @@ export default {
       }
     },
     getType (a) {
-      if (a===1) return '铣厚度'
-      if (a===2) return '铣长宽'
-      if (a===3) return '铣研磨'
-      if (a===4) return '倒角'
+      if (a === 1) return '铣厚度'
+      if (a === 2) return '铣长宽'
+      if (a === 3) return '铣研磨'
+      if (a === 4) return '倒角'
     }
   }
 }

@@ -9,18 +9,17 @@ axios.interceptors.request.use(
       config.headers.token = JSON.parse(localStorage.getItem('hmdsUsers')).token
     }
     // config.headers.imooc = `5429026`;
-    return config;
+    return config
   },
   err => {
-    return Promise.reject(err);
-  });
-
+    return Promise.reject(err)
+  })
 
 // http response 拦截器
 axios.interceptors.response.use(
   undefined,
   error => {
-    let res = error.response;
+    let res = error.response
     switch (res.status) {
       case 401:
         // 返回 401 清除token信息并跳转到登录页面
@@ -29,9 +28,9 @@ axios.interceptors.response.use(
         //  path: '/login',
         //  query: {redirect: router.currentRoute.fullPath}
         // })
-        console.log('未登录 或者token过期');
+        console.log('未登录 或者token过期')
       case 403:
-        console.log('您没有该操作权限');
+        console.log('您没有该操作权限')
       // alert('您没有该操作权限');
       case 500:
         MessageBox('登录过期，请重新登录！', '提示', {
@@ -47,8 +46,7 @@ axios.interceptors.response.use(
         })
     }
     return Promise.reject(error.response.data) // 返回接口返回的错误信息
-  });
-
+  })
 
 const http = (url, params) => {
   let Url = store.state.httpUrl + url
@@ -68,7 +66,6 @@ const http = (url, params) => {
 export const getExcel = (url, params) => {
   let Url = store.state.httpUrl + url
   return new Promise((resolve, reject) => {
-
     axios.post(Url, params, {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'

@@ -79,6 +79,9 @@
           prop="heatCount"
           label="已处理数量"
           width="100">
+          <template slot-scope="scope">
+            {{scope.row.heatCount + scope.row.scrapCount}}
+          </template>
         </el-table-column>
         <el-table-column
           label="状态"
@@ -91,7 +94,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.heatCount, scope.row.totalCount)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.heatCount, scope.row.totalCount, scope.row.scrapCount)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -121,7 +124,7 @@
       width="1400px"
       title="详情"
       :visible.sync="dialog">
-      <machDetail :orderInfo="sendDate"/>
+      <machDetail v-if="dialog" :orderInfo="sendDate"/>
     </el-dialog>
   </div>
 </template>
@@ -175,8 +178,8 @@ export default {
         }
       })
     },
-    progress (a, b) {
-      return parseInt(a / b * 100)
+    progress (a, b, c) {
+      return parseInt(a / (b - c) * 100)
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

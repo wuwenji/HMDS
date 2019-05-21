@@ -63,13 +63,28 @@ const myStore = new Vuex.Store({
   },
   getters: {
     getDate: (state, getters) => (string) => {
+      // let d = new Date(string)
+      // let y = d.getFullYear()
+      // let m = d.getMonth() + 1
+      // m = m > 9 ? m : '0' + m
+      // let r = d.getDate()
+      // r = r > 9 ? r : '0' + r
+      // return y + '-' + m + '-' + r
+      if (string != null) {
         let d = new Date(string)
         let y = d.getFullYear()
         let m = d.getMonth() + 1
         m = m > 9 ? m : '0' + m
         let r = d.getDate()
         r = r > 9 ? r : '0' + r
-        return y + '-' + m + '-' + r
+        let h = d.getHours()
+        h = h > 9 ? h : '0' + h
+        let f = d.getMinutes()
+        f = f > 9 ? f : '0' + f
+        return y + '/' + m + '/' + r + ' ' + h + ':' + f
+      } else {
+        return ''
+      }
     },
     getTime: (state, getters) => (string) => {
       if (string != null) {
