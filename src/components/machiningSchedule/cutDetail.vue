@@ -9,7 +9,7 @@
         <td><b>加工类型：</b></td>
         <td>切断</td>
         <td><b>接单时间：</b></td>
-        <td>{{$store.getters.getDate(cutDetail.acceptTime)}}</td>
+        <td>{{$store.getters.getDate(cutDetail.acceptTime, 2)}}</td>
       </tr>
       <tr>
         <td><b>接单号：</b></td>
@@ -19,7 +19,7 @@
         <td><b>发件人：</b></td>
         <td>{{cutDetail.sender}}</td>
         <td><b>交期时间：</b></td>
-        <td>{{$store.getters.getDate(cutDetail.deliveryTime)}}</td>
+        <td>{{$store.getters.getDate(cutDetail.deliveryTime, 2)}}</td>
       </tr>
     </table>
     <table border="1" class="table-list">
@@ -61,7 +61,7 @@
           </p>
           <!--<p style="width: 170px;">{{item.instRemarks1}}</p>-->
           <p>
-            <span style="font-size: 10px">{{$store.getters.getDate(cutDetail.deliveryTime)}}</span>
+            <span style="font-size: 10px">{{$store.getters.getDate(cutDetail.deliveryTime, 2)}}</span>
             <span>{{item.unitWtCd == 1? 'KG': '个'}}</span>
             <span>{{item.soQty}}</span>
             <span>{{item.soWt}}</span>

@@ -46,7 +46,7 @@
                 <td class="l" colspan="5">{{machiningData.order.contKname}}</td>
                 <td class="r t b"><strong>交期</strong></td>
                 <td class="l b">
-                  {{$store.getters.getDate(machiningData.order.contDueDate)}}
+                  {{$store.getters.getDate(machiningData.order.contDueDate, 2)}}
                 </td>
                 <td class="b" style="width: 54px;"><strong>指示数量</strong></td>
               </tr>
@@ -343,7 +343,7 @@
                 <td class="l" colspan="5">{{machiningData.order.contKname}}</td>
                 <td class="r t b"><strong>交期</strong></td>
                 <td class="l b">
-                  {{$store.getters.getDate(machiningData.order.contDueDate)}}
+                  {{$store.getters.getDate(machiningData.order.contDueDate, 2)}}
                 </td>
                 <td class="b" style="width: 54px;"><strong>指示数量</strong></td>
               </tr>

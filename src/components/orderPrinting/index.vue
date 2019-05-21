@@ -80,13 +80,13 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -126,13 +126,13 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -172,13 +172,13 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -226,13 +226,13 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -272,13 +272,13 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column

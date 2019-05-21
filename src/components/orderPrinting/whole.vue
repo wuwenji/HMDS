@@ -101,7 +101,7 @@
                   <span style="font-size: 14px;">{{item.soWkInstList.instRemarks1}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">
-                  <span style="font-size:14px;">{{$store.getters.getDate(item.soWkInstList.contDueDate).replace('-', '/').replace('-', '/')}}</span>
+                  <span style="font-size:14px;">{{$store.getters.getDate(item.soWkInstList.contDueDate, 2).replace('-', '/').replace('-', '/')}}</span>
                   <span>
                     <!--{{item.soWkInstList.unitWtCd == 1? 'KG': '個'}}-->
                     {{item.soWkInstList.unitPriceCd == 2? 'KG': ''}}

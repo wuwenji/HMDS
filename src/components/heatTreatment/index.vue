@@ -53,14 +53,14 @@
           label="接单时间"
           width="130">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.acceptTime)}}
+            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="交期"
           width="130">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.deliveryTime)}}
+            {{$store.getters.getDate(scope.row.deliveryTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column

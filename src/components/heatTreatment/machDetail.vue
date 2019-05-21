@@ -37,7 +37,7 @@
           <td><b>作业名：</b></td>
           <td>{{newData.heat.taskName}}</td>
           <td><b>接单时间：</b></td>
-          <td>{{$store.getters.getDate(newData.heat.acceptTime)}}</td>
+          <td>{{$store.getters.getDate(newData.heat.acceptTime, 2)}}</td>
         </tr>
         <tr>
           <td><b>接单号：</b></td>
@@ -47,7 +47,7 @@
           <td><b></b></td>
           <td></td>
           <td><b>交期时间：</b></td>
-          <td>{{$store.getters.getDate(newData.heat.deliveryTime)}}</td>
+          <td>{{$store.getters.getDate(newData.heat.deliveryTime, 2)}}</td>
         </tr>
       </table>
       <table border="1" class="table-list">

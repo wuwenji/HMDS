@@ -79,7 +79,7 @@
         <el-table-column
           label="外发日期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.outDate)}}
+            {{$store.getters.getDate(scope.row.outDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -92,7 +92,7 @@
         <el-table-column
           label="预定纳期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.deliveryDate)}}
+            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -142,7 +142,7 @@
         <el-table-column
           label="外发日期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.outDate)}}
+            {{$store.getters.getDate(scope.row.outDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -155,7 +155,7 @@
         <el-table-column
           label="预定纳期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.deliveryDate)}}
+            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column

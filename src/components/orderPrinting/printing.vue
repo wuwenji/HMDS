@@ -105,7 +105,7 @@
                   <span style="font-size: 14px;">{{item.order.instRemarks1}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">
-                  <span style="font-size:14px;">{{$store.getters.getDate(item.order.contDueDate).replace('-', '/').replace('-', '/')}}</span>
+                  <span style="font-size:14px;">{{$store.getters.getDate(item.order.contDueDate, 2).replace('-', '/').replace('-', '/')}}</span>
                   <span>
                     {{list.unitPriceCd == 2? 'KG': ''}}
                     {{list.unitPriceCd == 7? '個': ''}}

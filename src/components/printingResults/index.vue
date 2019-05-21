@@ -65,14 +65,14 @@
         <el-table-column
           label="接单时间">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.acceptTime)}}
+            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="contDueDate"
           label="交货预期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
