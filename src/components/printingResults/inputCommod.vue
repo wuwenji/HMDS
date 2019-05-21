@@ -153,8 +153,8 @@
           <td>淬火结果</td>
           <td>
             <el-radio-group v-model="formData.qResult">
-              <el-radio label="1">OK</el-radio>
-              <el-radio label="0">NG</el-radio>
+              <el-radio label="OK">OK</el-radio>
+              <el-radio label="NG">NG</el-radio>
             </el-radio-group>
           </td>
         </tr>

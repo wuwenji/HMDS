@@ -216,6 +216,14 @@ export default {
         {
           value: '10',
           label: '爱信'
+        },
+        {
+          value: '11',
+          label: '华钧永伸'
+        },
+        {
+          value: '12',
+          label: '格力'
         }
       ],
       downOption: '1'
