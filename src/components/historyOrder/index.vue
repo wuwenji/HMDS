@@ -93,7 +93,7 @@
           label="指示书打印次数">
           <template slot-scope="scope">
             <el-button
-              @click.native.prevent="getHistory(scope.row.soNo, '切断作业指示书打印历史', 1)"
+              @click.native.prevent="getHistory(scope.row.soNo, '整条作业指示书打印历史', 1)"
               type="text"
               size="small">
               {{scope.row.cutHistoryCount}}
@@ -107,6 +107,7 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="printingOne(scope.$index, scope.row, '整条')">打印整条作业指示书</el-button>
           </template>
         </el-table-column>
@@ -164,6 +165,7 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
           </template>
         </el-table-column>
@@ -236,10 +238,12 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
           </template>
         </el-table-column>
@@ -297,6 +301,7 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
           </template>
         </el-table-column>
@@ -376,14 +381,17 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
           </template>
         </el-table-column>

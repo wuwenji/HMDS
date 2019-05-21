@@ -238,3 +238,9 @@ table {
   position: absolute;
   left: -100%;
 }
+.gray {
+  color: gray;
+}
+.aPrint {
+  font-weight: bold;
+}
