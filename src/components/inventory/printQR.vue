@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="printAll">
-      <ul>
+    <div id="printAll" :style="{width:(type==1? '540px': '320px')}">
+      <ul :class="type == 1 ? 'ul1': 'ul2'" style="margin-left: 25px;">
         <li v-for="(item, key) in qrUrls" :key="key">
           <img :src="item" alt="">
         </li>
@@ -9,6 +9,10 @@
     </div>
     <div class="cl"></div>
     <p style="text-align: center;margin: 20px 0;">
+      <el-select v-model="type">
+        <el-option label="150mm" :value="0"></el-option>
+        <el-option label="300mm" :value="1"></el-option>
+      </el-select>
       <el-button v-print="'#printAll'" type="primary">打印</el-button>
     </p>
   </div>
@@ -20,7 +24,8 @@ export default {
   props: ['qrCodes'],
   data () {
     return {
-      qrUrls: []
+      qrUrls: [],
+      type: 1
     }
   },
   created () {
@@ -45,16 +50,32 @@ export default {
 </script>
 
 <style scoped>
-  #printAll ul {
+  #printAll {
   }
-  #printAll ul li {
+  #printAll .ul1 li {
     float: left;
-    width: 400px;
+    width: 154px;
     list-style: none;
-    padding: 5px;
-    margin: 2px 0;
+    margin-left: 15px;
+    margin-top: 10px;
   }
-  #printAll ul li img {
+  #printAll .ul1 li img {
+    width: 100%;
+  }
+  .ul2 {
+    padding: 0px 10px 0px 10px;
+    margin-left: 20px;
+    margin-top: 2px;
+  }
+  .ul2 li {
+    float: left;
+    width: 70px;
+    margin: 10px 9px 0 9px;
+    /*margin-bottom: 10px;*/
+    list-style: none;
+    padding: 0;
+  }
+  .ul2 li img {
     width: 100%;
   }
 </style>

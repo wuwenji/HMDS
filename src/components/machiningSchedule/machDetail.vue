@@ -206,11 +206,17 @@
         <tbody v-for="(item, numb) in lists" :key="numb">
           <template v-for="(val, valIndex) in item.materialList">
           <tr v-for="(valItem, miKey) in val.machinerList" :key="valIndex + '' + miKey">
-            <td v-if="valIndex == 0" :rowspan="item.materialList.length">{{item.totalCount}}{{returnTotal(item.totalCount)}}</td>
+            <td v-if="valIndex == 0 && miKey == 0" :rowspan="returnRow(item)">
+              {{item.totalCount}}{{returnTotal(item.totalCount)}}
+            </td>
             <td v-if="miKey == 0" :rowspan="val.machinerList.length">
               {{val.type == 1? '铣厚度' : ''}}
               {{val.type == 2? '铣长宽' : ''}}
               {{val.type == 3? '研磨' : ''}}
+              {{val.type == 4? '倒角' : ''}}
+              {{val.type == 5? '钻孔' : ''}}
+              {{val.type == 6? '打钢印' : ''}}
+              {{val.type == 7? '包装' : ''}}
             </td>
             <td>{{valItem.userName}}</td>
             <td>{{$store.getters.getDate(valItem.startTime)}}</td>
@@ -322,6 +328,13 @@ export default {
       if (a === 2) return '铣长宽'
       if (a === 3) return '铣研磨'
       if (a === 4) return '倒角'
+    },
+    returnRow (item) {
+      let a = 0
+      item.materialList.map(val => {
+        a += val.machinerList.length
+      })
+      return a
     }
   }
 }

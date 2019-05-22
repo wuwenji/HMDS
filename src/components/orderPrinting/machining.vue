@@ -1,5 +1,9 @@
 <template>
     <div>
+      <p class="btn">
+        <el-button @click="keeyHistory" type="primary" style="color: #fff;">打印</el-button>
+        <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
+      </p>
       <div id="printContent">
         <div class="main cl printPage" v-for="(item, key) in machiningData.workList" :key="'1' + key">
           <div class="pri-left" style="border-right: 1px dashed #000;border-bottom: 1px dashed #000;">
@@ -597,10 +601,7 @@
           </div>
         </div>
       </div>
-      <p class="btn">
-        <el-button @click="keeyHistory" type="primary" style="color: #fff;">打印</el-button>
-        <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
-      </p>
+
     </div>
 </template>
 

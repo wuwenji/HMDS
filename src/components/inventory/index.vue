@@ -209,7 +209,7 @@
       </el-table-column>
     </el-table>
     <el-dialog
-      width="1270px"
+      width="610px"
       :visible.sync="elDialog">
       <printQR :qrCodes="qrCodes"/>
     </el-dialog>

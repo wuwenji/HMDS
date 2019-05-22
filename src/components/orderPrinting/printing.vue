@@ -1,5 +1,9 @@
 <template>
     <div>
+      <p class="btn">
+        <el-button @click="keeyHistory" type="primary">打印</el-button>
+        <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
+      </p>
       <div id="printContent">
         <div class="printPage" v-for="(item, index) in pinkData" :key="index" style="height: 830px;">
           <div class="table1">
@@ -177,10 +181,7 @@
           </table>
         </div>
       </div>
-      <p class="btn">
-        <el-button @click="keeyHistory" type="primary">打印</el-button>
-        <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
-      </p>
+
     </div>
 </template>
 
