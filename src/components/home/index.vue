@@ -15,7 +15,7 @@
               </div>
               <div class="john-item john-col-m3 john-col-x6">
                 <div class="john-content">
-                  <p>今日新接<br/>切断&加工订单</p>
+                  <p>今日新接切断<br/>&加工订单</p>
                   <p><span>{{todayData[1]}}</span></p>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     // 获取今日处理数量
-    getToday() {
+    getToday () {
       this.http('/show/getNowTitleShowData', {}).then(resp => {
         if (resp.success) {
           this.todayData = resp.data
@@ -133,8 +133,11 @@ export default {
 </script>
 
 <style scoped>
+  * {
+    font-size: 30px;
+  }
 .title {
-  font-size: 24px;
+  font-size: 35px;
   margin-top: 10px;
   color: #666;
 }
@@ -163,7 +166,7 @@ export default {
 }
 .john-content {
   border: 1px solid #aaa;
-  height: 150px;
+  height: 200px;
   background: #efefef;
   font-size: 18px;
   display: flex;
@@ -178,12 +181,12 @@ export default {
   font-size: 45px;
 }
 .tab {
-  height: 30px;
+  height: 60px;
   margin-top: 30px;
   margin-bottom: 30px;
 }
 .tab ul {
-  width: 550px;
+  width: 720px;
   margin: 0 auto;
 }
 .tab ul li {
@@ -192,16 +195,18 @@ export default {
   color: #fff;
   cursor: pointer;
   padding: 10px 45px;
-  background: -webkit-linear-gradient(#2f94dc, #0070c0);      /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(#2f94dc, #0070c0);              /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(#2f94dc, #0070c0);         /* Firefox 3.6 - 15 */
-  background: linear-gradient(#2f94dc, #0070c0);
+  background: #7ebce8;
+  /*background: -webkit-linear-gradient(#2f94dc, #0070c0);      !* Safari 5.1 - 6.0 *!*/
+  /*background: -o-linear-gradient(#2f94dc, #0070c0);              !* Opera 11.1 - 12.0 *!*/
+  /*background: -moz-linear-gradient(#2f94dc, #0070c0);         !* Firefox 3.6 - 15 *!*/
+  /*background: linear-gradient(#2f94dc, #0070c0);*/
 }
 .tab ul li.active {
-  background: -webkit-linear-gradient(#0070c0 , #2f94dc);      /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(#0070c0 , #2f94dc);              /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(#0070c0 , #2f94dc);         /* Firefox 3.6 - 15 */
-  background: linear-gradient(#0070c0 , #2f94dc);
+  background: #1869a2;
+  /*background: -webkit-linear-gradient(#0070c0 , #2f94dc);      !* Safari 5.1 - 6.0 *!*/
+  /*background: -o-linear-gradient(#0070c0 , #2f94dc);              !* Opera 11.1 - 12.0 *!*/
+  /*background: -moz-linear-gradient(#0070c0 , #2f94dc);         !* Firefox 3.6 - 15 *!*/
+  /*background: linear-gradient(#0070c0 , #2f94dc);*/
 }
 .tab ul li:first-child {
   border-radius: 4px 0 0 4px;

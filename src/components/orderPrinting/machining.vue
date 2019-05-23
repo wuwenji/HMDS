@@ -656,10 +656,10 @@ export default {
           let lists = []
           // this.machiningData = resp.data
           // console.log(this.machiningData)
-          resp.data.workList.map(item => {
+          resp.data.soList.map(item => {
             let obj = {
-              ...item,
-              ...item.soWkInstList
+              ...item.workData,
+              ...item
             }
             lists.push(obj)
           })

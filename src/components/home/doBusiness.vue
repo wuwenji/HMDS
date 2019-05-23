@@ -23,11 +23,11 @@
       </tr>
       <tr>
         <td>切断</td>
-        <td v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{item}}</td>
+        <td align="right" v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
       </tr>
       <tr>
         <td>加工</td>
-        <td v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{item}}</td>
+        <td align="right" v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
       </tr>
       <tr class="tr-box">
         <td colspan="10"></td>
@@ -37,14 +37,17 @@
           热处理部门<br/>(KG)
         </td>
         <td>QT</td>
-        <td v-for="(item, index) in tableData.qtList" :key="'qt' + index">{{item}}</td>
+        <td align="right" v-for="(item, index) in tableData.qtList" :key="'qt' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
       </tr>
       <tr>
         <td>NVG</td>
-        <td v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{item}}</td>
+        <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
       </tr>
     </table>
     <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
+    <br/>
+    <br/>
+    <br/>
     <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCapacity" :twoData="macEchart.macCompletedCount"/>
   </div>
 </template>
@@ -128,6 +131,9 @@ export default {
 </script>
 
 <style scoped>
+  * {
+    font-size: 30px;
+  }
 .table {
   text-align: center;
   width: 100%;

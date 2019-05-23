@@ -21,22 +21,42 @@ export default {
           text: this.title,
           x: 'center',
           y: 'top',
+          textStyle: {
+            fontSize: 35
+          }
         },
-        tooltip: {},
+        tooltip: {
+        },
         grid: {
-          left: 40,
+          left: 90,
           right: 20,
-          top: 70,
+          top: 100,
           bottom: 40
         },
         legend: {
-          y: '30px',
-          data: [this.type, '标准']
+          y: '50px',
+          data: [this.type, '标准'],
+          textStyle: {
+            fontSize: 25
+          }
         },
         xAxis: {
-          data: this.xAxis
+          data: this.xAxis,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontSize: 25
+            }
+          }
         },
-        yAxis: {},
+        yAxis: {
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontSize: 25
+            }
+          }
+        },
         series: [
           {
             name: this.type,
