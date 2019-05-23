@@ -6,7 +6,7 @@
           <div class="top-left">
             <div class="top-left-left">
               <b>{{$store.state.date}}</b>
-              <table class="table table2" borderColor="#000" border="1px">
+              <table class="table table2 table3" borderColor="#000" border="1px">
                 <tr>
                   <td>交货期</td>
                   <td>送货方式</td>
@@ -27,7 +27,7 @@
             <img class="qr-img" :src="$store.state.qrUrl + orderInfo.qrCode + '&w=150&h=150'" alt="">
           </div>
           <div class="top-content">
-            <table class="table table2" style="margin-top: 40px;" borderColor="#000" border="1px">
+            <table class="table table2 table3" style="margin-top: 40px;" borderColor="#000" border="1px">
               <tr>
                 <td>客户名称</td>
                 <td><input v-model="hotData.heatTreatment.customerName" type="text"></td>
@@ -48,11 +48,13 @@
               <table class="table table2" borderColor="#000" border="1px">
                 <tr>
                   <td>管理编号</td>
-                  <td><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>
+                  <td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>
                 </tr>
                 <tr>
                   <td>确认人</td>
                   <td><input v-model="hotData.heatTreatment.confirmStr" type="text"></td>
+                  <td>发件人</td>
+                  <td><input v-model="hotData.heatTreatment.senderUserName" type="text"></td>
                 </tr>
               </table>
             </div>
@@ -155,7 +157,8 @@ export default {
           managementNumber: '',
           confirmStr: '',
           customerName: '',
-          deliveryAddress: ''
+          deliveryAddress: '',
+          senderUserName: ''
         },
         treatmentEntrys: [
           {
@@ -234,6 +237,7 @@ export default {
         orderCode: this.orderInfo.soNo
       }).then(resp => {
         if (resp.success) {
+          console.log(resp)
           let obj = resp.data
           if (obj.heatTreatment === null) {
             this.hotData.heatTreatment = {
@@ -242,7 +246,8 @@ export default {
               managementNumber: '',
               confirmStr: '',
               customerName: '',
-              deliveryAddress: ''
+              deliveryAddress: '',
+              senderUserName: ''
             }
             this.getDate()
           } else {
@@ -427,7 +432,7 @@ export default {
     border: none;
     width: 100%;
   }
-  .table2 td:nth-child(1) {
+  .table3 td:nth-child(1) {
     width: 30px;
   }
 </style>
