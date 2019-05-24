@@ -111,7 +111,7 @@ export default {
   .ul2 {
     padding: 0px 10px 0px 10px;
     margin-left: 20px;
-    margin-top: 2px;
+    /*margin-top: 2px;*/
   }
   .ul2 li {
     float: left;

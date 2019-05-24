@@ -133,6 +133,13 @@ body {
   font-size: 25px;
   line-height: 35px;
 }
+.el-table__body tr:hover>td{
+  background-color: #eeffab!important;
+}
+
+.el-table__body tr.current-row>td{
+  background-color: #eeffab!important;
+}
 /**图标**/
 @font-face {
   font-family: 'iconfont';  /* project id 1063616 */

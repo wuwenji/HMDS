@@ -109,7 +109,8 @@
         </el-table-column>
         <el-table-column
           prop="gradeCdKey"
-          label="钢种">
+          label="钢种"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="changeNo"
@@ -131,7 +132,7 @@
         <el-table-column
           prop="orgSizeNote"
           label="母材尺寸"
-          width="150px">
+          width="170px">
         </el-table-column>
         <el-table-column
           prop="storageName"
