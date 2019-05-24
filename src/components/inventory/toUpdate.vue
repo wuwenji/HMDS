@@ -19,38 +19,31 @@
           </el-table-column>
           <el-table-column
             prop="whseCd"
-            label="smart编号"
-            width="90px">
+            label="smart编号">
+          </el-table-column>
+          <el-table-column
+            prop="stockNo"
+            label="库存号码">
+          </el-table-column>
+          <el-table-column
+            prop="matCntlNo"
+            label="现品管理号">
           </el-table-column>
           <el-table-column
             prop="caseNo"
             label="包装箱号">
           </el-table-column>
           <el-table-column
-            prop="materialType"
-            label="钢种材质">
+            prop="gradeCdKey"
+            label="钢种">
           </el-table-column>
           <el-table-column
-            prop="chargeNo"
+            prop="changeNo"
             label="溶解编号">
           </el-table-column>
           <el-table-column
-            label="形状">
-            <template slot-scope="scope">
-              {{scope.row.size2 == 0? 'R': 'F'}}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="size1"
-            label="厚">
-          </el-table-column>
-          <el-table-column
-            prop="size2"
-            label="宽">
-          </el-table-column>
-          <el-table-column
-            prop="size3"
-            label="长">
+            prop="stockSizeNote"
+            label="尺寸">
           </el-table-column>
           <el-table-column
             prop="stockQty"
@@ -66,9 +59,24 @@
             width="180px">
           </el-table-column>
           <el-table-column
+            prop="storageName"
+            label="放置位置">
+          </el-table-column>
+          <el-table-column
             prop="stockRemarks"
-            label="备注"
-            width="200px">
+            label="备注">
+          </el-table-column>
+          <el-table-column
+            prop="latestIoDate"
+            label="入出库日期">
+          </el-table-column>
+          <el-table-column
+            prop="soNO"
+            label="接单号码">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="入库时间">
           </el-table-column>
         </el-table>
         <div class="pages">

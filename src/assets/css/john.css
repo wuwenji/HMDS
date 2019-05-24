@@ -129,7 +129,10 @@ body {
   line-height: 200px;
   margin: 0;
 }
-
+.table_changeTd .cell{
+  font-size: 25px;
+  line-height: 35px;
+}
 /**图标**/
 @font-face {
   font-family: 'iconfont';  /* project id 1063616 */

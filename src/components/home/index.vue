@@ -166,7 +166,7 @@ export default {
 }
 .john-content {
   border: 1px solid #aaa;
-  height: 200px;
+  height: 140px;
   background: #efefef;
   font-size: 18px;
   display: flex;

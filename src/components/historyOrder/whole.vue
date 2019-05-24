@@ -107,7 +107,10 @@
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
-                {{item.soWkInstList.stockType}}<br/>{{item.soWkInstList.matCntlNo}}
+                <!--{{item.soWkInstList.stockType}}-->
+                {{item.soWkInstList.stockType == 1? '母材' : ''}}
+                {{item.soWkInstList.stockType == 2? '余材' : ''}}
+                <br/>{{item.soWkInstList.matCntlNo}}
               </p></td>
               <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 {{item.soWkInstList.stockRemarks}}<br/>{{item.soWkInstList.chargeNo}}

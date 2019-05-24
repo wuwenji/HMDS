@@ -5,7 +5,7 @@
         <thead>
         <tr>
           <th></th>
-          <th colspan="2">当天(日期/星期)</th>
+          <th colspan="2">当天<br>(日期/星期)</th>
           <th colspan="3">明天(日期/星期)</th>
           <th colspan="3">后天(日期/星期)</th>
           <th colspan="3">第三天(日期/星期)</th>
@@ -60,12 +60,12 @@
     <div class="right-table">
         <table class="table" border="1">
           <tr>
-            <th colspan="3">当天(日期/星期)</th>
+            <th colspan="3">当天<br/>(日期/星期)</th>
           </tr>
           <tr>
             <th>种类</th>
-            <th>未处理单数</th>
-            <th>未处理重量</th>
+            <th>未处理<br/>单数</th>
+            <th>未处理<br/>重量</th>
           </tr>
           <tr>
             <td>QT</td>
@@ -399,7 +399,7 @@ export default {
   border-radius: 4px;
 }
 .nowPicTable td{
-  height: 25px;
+  height: 40px;
   padding: 5px 0;
   /*width: calc(100%/26);*/
   /*width: 20px;*/

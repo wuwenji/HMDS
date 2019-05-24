@@ -97,7 +97,7 @@
           label="库存号码">
         </el-table-column>
         <el-table-column
-          prop="matChtlNo"
+          prop="matCntlNo"
           label="现品管理号">
         </el-table-column>
         <el-table-column
@@ -130,8 +130,12 @@
           width="180px">
         </el-table-column>
         <el-table-column
-          prop="stockRemarks"
+          prop="storageName"
           label="放置位置">
+        </el-table-column>
+        <el-table-column
+          prop="stockRemarks"
+          label="备注">
         </el-table-column>
         <el-table-column
           prop="latestIoDate"
@@ -175,7 +179,7 @@
         label="库存号码">
       </el-table-column>
       <el-table-column
-        prop="matChtlNo"
+        prop="matCntlNo"
         label="现品管理号">
       </el-table-column>
       <el-table-column
@@ -208,8 +212,12 @@
         width="180px">
       </el-table-column>
       <el-table-column
-        prop="stockRemarks"
+        prop="storageName"
         label="放置位置">
+      </el-table-column>
+      <el-table-column
+        prop="stockRemarks"
+        label="备注">
       </el-table-column>
       <el-table-column
         prop="latestIoDate"

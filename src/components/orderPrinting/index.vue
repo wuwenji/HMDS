@@ -49,7 +49,7 @@
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">整条</li>
         <li @click="tabClick(2)" :class="{active: johnTab == 2}">切断</li>
         <li @click="tabClick(3)" :class="{active: johnTab == 3}">切断&加工</li>
-        <li @click="tabClick(5)" :class="{active: johnTab == 5}">热处理</li>
+        <!--<li @click="tabClick(5)" :class="{active: johnTab == 5}">热处理</li>-->
         <li @click="tabClick(6)" :class="{active: johnTab == 6}">切断&加工&热处理</li>
       </ul>
     </div>

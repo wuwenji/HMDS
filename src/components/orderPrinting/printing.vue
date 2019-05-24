@@ -119,7 +119,9 @@
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
-                {{list.stockType}}<br/>{{list.matCntlNo}}
+                {{list.stockType == 1? '母材' : ''}}
+                {{list.stockType == 2? '余材' : ''}}
+                <br/>{{list.matCntlNo}}
               </p></td>
               <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 {{list.stockRemarks}}<br/>{{list.chargeNo}}
@@ -217,17 +219,18 @@ export default {
           this.pinkData = []
           resp.data.map(item => {
             let workList = item.orderList.map(val => {
-                  let obj = {
-                    ...val,
-                    ...val.soWkInstList
-                  }
-                  return obj
-                })
+              let obj = {
+                ...val.soWkInstList,
+                ...val
+              }
+              return obj
+            })
             let obj = {
               order: workList[0],
               workList
             }
             this.pinkData.push(obj)
+            console.log(this.pinkData)
           })
           // this.pinkData = []
           // // this.pinkData = resp.data

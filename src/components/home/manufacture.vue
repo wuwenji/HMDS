@@ -3,22 +3,21 @@
     <table class="mid-table" border="1" borderColor="#0070c0">
       <tr>
         <td>日期：</td>
-        <td>2017/08/05</td>
-        <td>时间：</td>
-        <td>20： 30</td>
+        <td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
         <td>30</td>
-        <td>加工中：</td>
-        <td>20</td>
+        <td>切断中：</td>
+        <td>10</td>
       </tr>
     </table>
     <div class="title">加工部未完成明细</div>
     <template>
-      <el-table
+      <div class="table_changeTd">
+        <el-table
         :data="lists"
-        height="250"
+        height="350"
         border
         style="width: 100%">
         <el-table-column
@@ -97,6 +96,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </template>
     <div class="page">
       <el-pagination
@@ -183,8 +183,8 @@ export default {
 .title {
   text-align: center;
   line-height: 20px;
-  font-size: 24px;
-  padding-left: 285px;
+  font-size: 40px;
+  padding-left: 375px;
   padding-top: 30px;
 }
 .table td,.table th {

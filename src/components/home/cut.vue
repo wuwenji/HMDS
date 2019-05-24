@@ -3,9 +3,7 @@
     <table class="mid-table" border="1" borderColor="#0070c0">
       <tr>
         <td>日期：</td>
-        <td>2017/08/05</td>
-        <td>时间：</td>
-        <td>20： 30</td>
+        <td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
@@ -16,24 +14,29 @@
     </table>
     <div class="title">切断部未完成明细</div>
     <template>
-      <el-table
+      <div class="table_changeTd">
+        <el-table
         :data="lists"
-        height="250"
+        height="350"
         border
         style="width: 100%">
         <el-table-column
           prop="soNo"
-          label="订单号">
+          label="订单号"
+          fixed
+          width="160">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="160">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate)}}
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="contKname"
-          label="客户名">
+          label="客户名"
+          width="200">
         </el-table-column>
         <el-table-column
           prop="soLnNo"
@@ -45,6 +48,7 @@
         </el-table-column>
         <el-table-column
           prop="specExternalNote"
+          width="150"
           label="规格">
         </el-table-column>
         <el-table-column
@@ -62,12 +66,12 @@
         <el-table-column
           label="要求交期">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate)}}
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="生产进度"
-          width="250">
+          width="350">
           <template slot-scope="scope">
             <ul class="prog">
               <li v-if="scope.row.cutStatus != null">
@@ -94,13 +98,15 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="备注">
+          label="备注"
+          width="150">
           <template slot-scope="scope">
             <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
             <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </template>
     <div class="page">
       <el-pagination
@@ -193,8 +199,8 @@ export default {
 .title {
   text-align: center;
   line-height: 20px;
-  font-size: 24px;
-  padding-left: 285px;
+  font-size: 40px;
+  padding-left: 375px;
   padding-top: 30px;
 }
 .table td,.table th {
