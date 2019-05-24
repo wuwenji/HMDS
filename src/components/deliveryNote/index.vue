@@ -191,10 +191,15 @@
           width="130">
         </el-table-column>
         <el-table-column
-          label="打印次数"
-          width="100">
+          label="是否关联母材"
+          width="120">
           <template slot-scope="scope">
-            <el-button type="text" size="small">{{scope.row.onePrinting}}</el-button>
+            <el-switch
+              v-model="scope.row.relationMoth"
+              @change="switchChange(scope.row.id, scope.row.relationMoth)"
+              active-text="是"
+              inactive-text="否">
+            </el-switch>
           </template>
         </el-table-column>
         <el-table-column

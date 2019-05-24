@@ -94,10 +94,17 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-checkbox v-model="scope.row.relationMoth">是</el-checkbox>
+          </template>
+        </el-table-column>
+        <el-table-column
           label="显示金额"
           width="100">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.showMoney">是</el-checkbox>
+            <el-checkbox v-model="scope.row.isShowAmount">是</el-checkbox>
           </template>
         </el-table-column>
         <el-table-column
@@ -168,8 +175,8 @@ export default {
         if (resp.success) {
           console.log(resp)
           this.listData = resp.data.list.filter(item => {
-            item.showMoney = false
-            item.showWeight = false
+            item.isShowAmount = true
+            item.relationMoth = false
             return item
           })
           this.total = resp.data.total
