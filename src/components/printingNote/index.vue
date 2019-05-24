@@ -48,49 +48,54 @@
         height="calc(100% - 75px)">
         <el-table-column
           prop="orderCode"
-          label="接单号">
+          label="接单号"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="deliveryAddress"
           label="客户地址">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.acceptTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="contDueDate"
-          label="交期">
+          label="交期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="customerName"
-          label="作业名">
+          label="作业名"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="totalCount"
           label="数量"
-          width="150">
+          width="50">
         </el-table-column>
         <el-table-column
           prop="totalWeight"
-          label="重量(kg)"
-          width="150">
+          label="重量"
+          width="50">
         </el-table-column>
         <el-table-column
           prop="source"
-          label="类型">
+          label="类型"
+          width="80">
           <template slot-scope="scope">
             {{scope.row.source == 1? '营业下单': '客户来料'}}
           </template>
         </el-table-column>
         <el-table-column
           label="显示金额"
-          width="150">
+          width="100">
           <template slot-scope="scope">
             <el-checkbox v-model="scope.row.showMoney">是</el-checkbox>
           </template>

@@ -19,15 +19,18 @@
           </el-table-column>
           <el-table-column
             prop="whseCd"
-            label="smart编号">
+            label="smart编号"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="stockNo"
-            label="库存号码">
+            label="库存号码"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="matCntlNo"
-            label="现品管理号">
+            label="现品管理号"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="caseNo"
@@ -64,19 +67,23 @@
           </el-table-column>
           <el-table-column
             prop="stockRemarks"
-            label="备注">
+            label="备注"
+            width="200">
           </el-table-column>
           <el-table-column
             prop="latestIoDate"
-            label="入出库日期">
+            label="入出库日期"
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="soNO"
-            label="接单号码">
+            prop="soNo"
+            label="接单号码"
+            width="120">
           </el-table-column>
           <el-table-column
             prop=""
-            label="入库时间">
+            label="入库时间"
+            width="120">
           </el-table-column>
         </el-table>
         <div class="pages">
@@ -109,11 +116,13 @@
           </el-table-column>
           <el-table-column
             prop="caseNo"
-            label="包装箱号">
+            label="包装箱号"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="materialType"
-            label="钢种材质">
+            label="钢种材质"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="changeNo"

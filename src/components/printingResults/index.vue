@@ -48,7 +48,8 @@
         height="calc(100% - 75px)">
         <el-table-column
           prop="orderCode"
-          label="成绩书编号">
+          label="成绩书编号"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="customerName"
@@ -56,21 +57,24 @@
         </el-table-column>
         <el-table-column
           prop="userName"
-          label="收货人">
+          label="收货人"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="deliveryAddress"
           label="送货地址">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.acceptTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="contDueDate"
-          label="交货预期">
+          label="交货预期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
@@ -78,21 +82,22 @@
         <el-table-column
           prop="material"
           label="钢种"
-          width="150">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="totalCount"
           label="数量"
-          width="150">
+          width="50">
         </el-table-column>
         <el-table-column
           prop="totalWeight"
           label="重量"
-          width="150">
+          width="50">
         </el-table-column>
         <el-table-column
           prop="source"
-          label="类型">
+          label="类型"
+          width="80">
           <template slot-scope="scope">
             {{scope.row.source == 1? '营业下单': '客户来料'}}
           </template>

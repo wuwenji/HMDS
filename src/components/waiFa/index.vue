@@ -51,14 +51,16 @@
         height="calc(100% - 75px)">
         <el-table-column
           prop="outCode"
-          label="外发单号">
+          label="外发单号"
+          width="160">
         </el-table-column>
         <el-table-column
           prop="customerAddress"
           label="外发厂商地址">
         </el-table-column>
         <el-table-column
-          label="外发部门">
+          label="外发部门"
+          width="100">
           <template slot-scope="scope">
             {{scope.row.type == 1? '加工': '热处理'}}
           </template>
@@ -66,7 +68,8 @@
         </el-table-column>
         <el-table-column
           prop="userName"
-          label="外发人员">
+          label="外发人员"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="outFirm"
@@ -74,23 +77,27 @@
         </el-table-column>
         <el-table-column
           prop="counts"
-          label="数量">
+          label="数量"
+          width="50">
         </el-table-column>
         <el-table-column
-          label="外发日期">
+          label="外发日期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.outDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="已入库">
+          label="已入库"
+          width="70">
           <template slot-scope="scope">
             {{scope.row.status == 1? '是': '否'}}
           </template>
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          label="预定纳期">
+          label="预定纳期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>
@@ -114,14 +121,16 @@
         height="calc(100% - 75px)">
         <el-table-column
           prop="outCode"
-          label="外发单号">
+          label="外发单号"
+          width="160">
         </el-table-column>
         <el-table-column
           prop="customerAddress"
           label="外发厂商地址">
         </el-table-column>
         <el-table-column
-          label="外发部门">
+          label="外发部门"
+          width="80">
           <template slot-scope="scope">
             {{scope.row.type == 1? '加工': '热处理'}}
           </template>
@@ -129,7 +138,8 @@
         </el-table-column>
         <el-table-column
           prop="userName"
-          label="外发人员">
+          label="外发人员"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="outFirm"
@@ -137,23 +147,27 @@
         </el-table-column>
         <el-table-column
           prop="counts"
-          label="数量">
+          label="数量"
+          width="50">
         </el-table-column>
         <el-table-column
-          label="外发日期">
+          label="外发日期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.outDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="已入库">
+          label="已入库"
+          width="70">
           <template slot-scope="scope">
             {{scope.row.status == 1? '是': '否'}}
           </template>
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          label="预定纳期">
+          label="预定纳期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>

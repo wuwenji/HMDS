@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="showContent == 1">
+    <div v-show="showContent == 1">
       <table class="info-table">
         <tr>
           <td>客户：{{orderInfo.contName}}</td>
@@ -17,45 +17,45 @@
       </table>
       <el-table
         border
+        ref="table"
         @selection-change="selectChange"
        :data="lists">
         <el-table-column
           type="selection"
-          width="55"></el-table-column>
-        <el-table-column
-          prop="soNo"
-          label="接单行号">
+          width="55">
         </el-table-column>
         <el-table-column
-          prop="soNo"
+          label="接单行号">
+          <template slot-scope="scope">
+            {{scope.row.soNo + '-' + scope.row.soLnNo}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="soQty"
           label="指示数量">
         </el-table-column>
         <el-table-column
-          prop="soNo"
-          label="钢种">
+          prop="soWt"
+          label="重量">
         </el-table-column>
         <el-table-column
-          prop="soNo"
-          label="切断完成尺寸">
-        </el-table-column>
-        <el-table-column
-          prop="soNo"
-          label="切断完成重量">
-        </el-table-column>
-        <el-table-column
-          prop="soNo"
           label="是否完成">
+          <template slot-scope="scope">
+            {{scope.row.status == 1? '已完成': '未完成'}}
+          </template>
         </el-table-column>
       </el-table>
       <p class="btn">
-        <el-button @click="showContent = 2" type="primary">预览</el-button>
+        <el-button @click="looking" type="primary">预览</el-button>
       </p>
     </div>
-    <div v-else>
+    <div class="table-line-height" v-show="showContent == 2">
       <div v-if="orderDetail.length > 0" id="printContent">
         <table class="table">
           <tr>
-            <td rowspan="3" align="right" style="font-size: 20px;">日立金属（东莞）特殊钢有限公司 本部</td>
+            <td rowspan="3" valign="top" align="right" style="position: relative; font-size: 23px;">
+              <img class="logo" src="../../../static/images/logo.jpg" alt="">
+              日立金属（东莞）特殊钢有限公司 本部</td>
             <td>
               <span>邮编：</span>523380
               <span style="width: 150px;">HMDS-QR-49-2/A0</span>
@@ -65,7 +65,7 @@
           <tr>
             <td>
               <span>电话：</span>86-769-8640-6726
-              <span>传真：</span>86-769-8640-6716
+              <span style="width: 60px;">传真：</span>86-769-8640-6716
             </td>
           </tr>
           <tr>
@@ -75,7 +75,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <span>致：</span>{{orderDetail[0].contKname}}
+              <span style="width: 90px;">致：</span>{{orderDetail[0].contKname}}
             </td>
           </tr>
           <tr>
@@ -85,10 +85,10 @@
           </tr>
           <tr>
             <td>
-              <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress2}}
+              <span><p>&nbsp;</p></span>{{orderDetail[0].shiptonameadd}}
             </td>
             <td>
-              <span>账号：</span>三菱东京日联银行（中国）有限公司深圳分行
+              <span>账号：</span>{{orderDetail[0].sBarnchUserDef1}}
             </td>
           </tr>
           <tr>
@@ -96,7 +96,7 @@
               <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress1}}
             </td>
             <td>
-              <span><p>&nbsp;</p></span>302651
+              <span><p>&nbsp;</p></span>{{orderDetail[0].sBarnchUserDef2}}
             </td>
           </tr>
           <tr>
@@ -128,10 +128,10 @@
             <th>订单号</th>
             <th>接单号</th>
             <th>单位</th>
-            <th>数量(件)</th>
-            <th>重量(KG)</th>
-            <th>接单单价(RMB)</th>
-            <th>金额(RMB)</th>
+            <th style="text-align: right;">数量(件)</th>
+            <th style="text-align: right;">重量(KG)</th>
+            <th style="text-align: right;">接单单价(RMB)</th>
+            <th style="text-align: right;">金额(RMB)</th>
           </tr>
           <tr>
             <th></th>
@@ -149,11 +149,11 @@
             <td>{{item.contPoNo}}</td>
             <td>{{item.soNo + '-' + item.soLnNo}}</td>
             <td>{{getPeice(item.unitPriceCd)}}</td>
-            <td>{{item.soQty}}</td>
-            <td>{{item.soWt}}</td>
-            <td>{{orderInfo.isShowAmount? item.soUnitPrice.toFixed(2) : '*'}}</td>
-            <td>
-              {{orderInfo.isShowAmount? getTotal(item).toFixed(2): '*'}}
+            <td  style="text-align: right;">{{item.soQty}}</td>
+            <td  style="text-align: right;">{{$store.getters.toThousand(item.soWt, 2)}}</td>
+            <td  style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(item.soUnitPrice, 2) : '*'}}</td>
+            <td  style="text-align: right;">
+              {{orderInfo.isShowAmount? $store.getters.toThousand(getTotal(item), 2): '*'}}
             </td>
           </tr>
           <tr>
@@ -170,20 +170,24 @@
             <td></td>
             <td>合计</td>
             <td></td>
-            <td>{{numTotal}}</td>
-            <td>{{wetTotal}}</td>
+            <td style="text-align: right;">{{numTotal}}</td>
+            <td style="text-align: right;">
+              {{$store.getters.toThousand(wetTotal, 2)}}
+            </td>
             <td></td>
-            <td>{{orderInfo.isShowAmount? mnyTotal.toFixed(2): '*'}}</td>
+            <td style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(mnyTotal, 2): '*'}}</td>
           </tr>
           <tr class="total-tr" v-else>
             <td></td>
             <td></td>
             <td>合计</td>
             <td></td>
-            <td>{{numTotal}}</td>
-            <td>{{wetTotal}}</td>
+            <td style="text-align: right;">numTotal}}</td>
+            <td style="text-align: right;">
+              {{$store.getters.toThousand(wetTotal, 2)}}
+            </td>
             <td></td>
-            <td>*</td>
+            <td style="text-align: right;">*</td>
           </tr>
         </table>
         <div class="bottom">
@@ -212,11 +216,7 @@ export default {
       orderDetail: [],
       showContent: 1,
       selectValue: [],
-      lists: [
-        {
-          soNo: 1
-        }
-      ],
+      lists: [],
       numTotal: 0,
       wetTotal: 0,
       mnyTotal: 0
@@ -231,8 +231,12 @@ export default {
     }
   },
   methods: {
+    // 默认选中
+    toggleRow (row) {
+      this.$refs.table.toggleRowSelection(row, true)
+    },
     // 表格选择
-    selectChange(val) {
+    selectChange (val) {
       this.selectValue = val
     },
     getData () {
@@ -241,13 +245,16 @@ export default {
         soNo: this.orderInfo.soNo,
         workInstCd: this.orderInfo.workInstCd
       }).then(resp => {
-        console.log(resp)
         if (resp.success) {
-          this.orderDetail = resp.data.map(item => {
-            this.numTotal = this.numTotal + item.soQty
-            this.wetTotal = this.wetTotal + item.soWt
-            this.mnyTotal = this.mnyTotal + this.getTotal(item)
-            return item
+          this.selectValue = []
+          this.lists = resp.data
+          resp.data.map(item => {
+            if (item.status === 1) {
+              this.selectValue.push(item)
+              this.$nextTick(() => {
+                this.toggleRow(item)
+              })
+            }
           })
         }
       })
@@ -255,7 +262,7 @@ export default {
     // 获取单位
     getPeice (a) {
       if (a === '2') return 'KG'
-      if (a === '7') return '个'
+      if (a === '7') return '個'
       if (a === '8') return '件'
     },
     // 计算总金额
@@ -297,6 +304,20 @@ export default {
         //   this.$message.error(resp.message)
         // }
       })
+    },
+    // 预览
+    looking () {
+      this.numTotal = 0
+      this.wetTotal = 0
+      this.mnyTotal = 0
+      this.orderDetail = this.selectValue.map(item => {
+        this.numTotal = this.numTotal + item.soQty
+        this.wetTotal = this.wetTotal + item.soWt
+        this.mnyTotal = this.mnyTotal + this.getTotal(item)
+        return item
+      })
+      this.showContent = 2
+      console.log(this.orderDetail)
     }
   }
 }
@@ -305,6 +326,16 @@ export default {
 <style scoped>
   * {
     font-family: 宋体;
+    font-size: 20px;
+  }
+  .logo {
+    width: 100px;
+    position: absolute;
+    left: 30px;
+    bottom: 0px;
+  }
+  .table-line-height {
+    line-height: 30px;
   }
   .info-table {
     width: 100%;
@@ -390,8 +421,11 @@ export default {
   }
   .title {
     text-align: center;
-    margin: 10px 0;
+    margin: 20px 0;
     width: 1075px;
+  }
+  .title h2 {
+    font-size: 40px;
   }
   .title span {
     float: left;

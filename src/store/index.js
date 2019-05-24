@@ -79,6 +79,16 @@ const myStore = new Vuex.Store({
         return ''
       }
     },
+    // 加千分符，保留两位小数点
+    toThousand: (state, getters) => (string, type = 1) => {
+      if (type === 1) {
+        return string.replace(/(\d{1,3})(?=(\d{3})+$)/g, '$1,')
+      } else {
+        let a = JSON.stringify(string)
+        let ar = a.split('.')
+        return ar[0].replace(/(\d{1,3})(?=(\d{3})+$)/g, '$1,') + parseFloat(('0.' + ar[1])).toFixed(2).substring(1)
+      }
+    },
     getTime: (state, getters) => (string) => {
       if (string != null) {
         let d = new Date(string)

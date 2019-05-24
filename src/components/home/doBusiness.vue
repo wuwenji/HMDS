@@ -3,7 +3,7 @@
     <table class="table" border="1">
       <tr>
         <td rowspan="4" align="center">
-          制<br/>造<br/>部<br/>︵<br/>P<br/>C<br/>S<br/>︶
+          制造部<br/>(PCS)
         </td>
         <td>时间</td>
         <td colspan="2">今天</td>
@@ -23,25 +23,25 @@
       </tr>
       <tr>
         <td>切断</td>
-        <td align="right" v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
+        <td align="right" v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr>
         <td>加工</td>
-        <td align="right" v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
+        <td align="right" v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr class="tr-box">
         <td colspan="10"></td>
       </tr>
       <tr>
         <td rowspan="2" align="center">
-          热处理部门<br/>(KG)
+          热处理部<br/>(KG)
         </td>
         <td>QT</td>
-        <td align="right" v-for="(item, index) in tableData.qtList" :key="'qt' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
+        <td align="right" v-for="(item, index) in tableData.qtList" :key="'qt' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr>
         <td>NVG</td>
-        <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{item.replace(/(\d{1,3})(?=(\d{3})+$)/g,'$1,')}}</td>
+        <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
     <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
@@ -132,7 +132,7 @@ export default {
 
 <style scoped>
   * {
-    font-size: 30px;
+    font-size: 25px;
   }
 .table {
   text-align: center;

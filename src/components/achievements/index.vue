@@ -14,13 +14,14 @@
             <el-option label="自定义" value="0"></el-option>
           </el-select>
         </el-form-item>
+        <template v-if="formData.dateType == 0">
         <el-form-item class="form-item" label="起始时间">
           <el-col>
             <el-form-item prop="startTime">
               <el-date-picker
                 type="date"
                 placeholder="选择日期"
-                value-format="yyyy-MM-dd"
+                value-format="timestamp"
                 v-model="formData.startTime"
                 style="width: 100%;"></el-date-picker>
             </el-form-item>
@@ -32,16 +33,18 @@
               <el-date-picker
                 type="date"
                 placeholder="选择日期"
-                value-format="yyyy-MM-dd"
+                value-format="timestamp"
                 v-model="formData.endTime"
                 style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
+        </template>
         <el-form-item class="form-item" label="绩效部门" prop="department">
           <el-select v-model="formData.department" placeholder="绩效部门">
-            <el-option label="制造部门" value="1"></el-option>
-            <el-option label="热处理部门" value="2"></el-option>
+            <el-option label="切断部门" value="1"></el-option>
+            <el-option label="加工部门" value="2"></el-option>
+            <el-option label="热处理部门" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
@@ -55,15 +58,15 @@
         <tr>
           <td>指标</td>
           <td>内部加工</td>
-          <td>外发</td>
-          <td v-if="department == 1">理论值</td>
+          <td>理论值</td>
+          <td v-if="department != 3">外发</td>
         </tr>
         <tr>
           <td>数量</td>
           <td v-for="(item, index) in tableData.counts" :key="'a' + index">{{item}}</td>
-          <td v-if="department == 1">-</td>
+          <td v-if="department != 3">-</td>
         </tr>
-        <tr v-if="department == 1">
+        <tr v-if="department != 3">
           <td>表面积</td>
           <td v-for="(item, index) in tableData.area" :key="'b' + index">{{item}}</td>
           <td>-</td>
@@ -71,12 +74,14 @@
         <tr>
           <td>重量（切断加工 是<br/>表面积*标准值*数量）</td>
           <td v-for="(item, index) in tableData.weight" :key="'c' + index">{{item}}</td>
+          <td v-if="department != 3">-</td>
         </tr>
         <tr>
           <td>工作时长</td>
           <td v-for="(item, index) in tableData.workTime" :key="'c' + index">
             {{item}}
           </td>
+          <td v-if="department != 3">-</td>
         </tr>
       </table>
     </div>

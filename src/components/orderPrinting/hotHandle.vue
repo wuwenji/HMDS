@@ -273,11 +273,15 @@ export default {
       obj.heatTreatment.orderCode = this.orderInfo.soNo
       obj.heatTreatment.contDueDate = this.date
       obj.heatTreatment.workInstCd = this.orderInfo.workInstCd
+      obj.heatTreatment.type = this.orderInfo.workInstCd
       // console.log(this.newDatas)
       this.newDatas.map(item => {
         if (item.gradeCd !== '') {
           obj.treatmentEntrys.push(item)
         }
+      })
+      obj.treatmentEntrys.map((item, key) => {
+        item.heatCode = '00' + (key + 1)
       })
       this.http('/heatTreatment/saveHeatTreatment', {
         heatTreatment: obj.heatTreatment,

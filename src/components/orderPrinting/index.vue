@@ -71,20 +71,24 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
@@ -118,20 +122,24 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
@@ -165,27 +173,32 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="tempMachineSpecCd"
-          label="加工类型">
+          label="加工类型"
+          width="130">
         </el-table-column>
         <el-table-column
           label="操作"
@@ -221,20 +234,24 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
@@ -268,20 +285,24 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>

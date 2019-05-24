@@ -90,15 +90,18 @@
         </el-table-column>
         <el-table-column
           prop="whseCd"
-          label="smart编号">
+          label="smart编号"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="stockNo"
-          label="库存号码">
+          label="库存号码"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="matCntlNo"
-          label="现品管理号">
+          label="现品管理号"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="caseNo"
@@ -114,7 +117,8 @@
         </el-table-column>
         <el-table-column
           prop="stockSizeNote"
-          label="尺寸">
+          label="尺寸"
+          width="150">
         </el-table-column>
         <el-table-column
           prop="stockQty"
@@ -127,30 +131,39 @@
         <el-table-column
           prop="orgSizeNote"
           label="母材尺寸"
-          width="180px">
+          width="150px">
         </el-table-column>
         <el-table-column
           prop="storageName"
-          label="放置位置">
+          label="放置位置"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="stockRemarks"
-          label="备注">
+          label="备注"
+          width="200">
         </el-table-column>
         <el-table-column
-          prop="latestIoDate"
-          label="入出库日期">
+          label="入出库日期"
+          width="120">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.latestToDate, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="soNO"
-          label="接单号码">
+          prop="soNo"
+          label="接单号码"
+          width="120">
         </el-table-column>
         <el-table-column
-          prop=""
-          label="入库时间">
+          label="入库时间"
+          width="120">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.lastStorageTime, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop=""
+          prop="printCount"
           label="打印次数">
         </el-table-column>
       </el-table>
@@ -220,16 +233,24 @@
         label="备注">
       </el-table-column>
       <el-table-column
-        prop="latestIoDate"
         label="入出库日期">
+        <template slot-scope="scope">
+          {{$store.getters.getDate(scope.row.latestToDate, 2)}}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="soNO"
+        prop="soNo"
         label="接单号码">
       </el-table-column>
       <el-table-column
-        prop=""
         label="入库时间">
+        <template slot-scope="scope">
+          {{$store.getters.getDate(scope.row.lastStorageTime, 2)}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="printCount"
+        label="打印次数">
       </el-table-column>
     </el-table>
     <el-dialog
@@ -351,10 +372,14 @@ export default {
       console.log(index, row)
     },
     // 选择数据
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val
       this.qrCodes = val.map(item => {
-        return item.qrCode
+        let obj = {
+          id: item.id,
+          code: item.qrCode
+        }
+        return obj
       })
     },
     // 匹配数据

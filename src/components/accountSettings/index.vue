@@ -52,6 +52,10 @@
           label="姓名">
         </el-table-column>
         <el-table-column
+          prop="position"
+          label="职位">
+        </el-table-column>
+        <el-table-column
           prop="department"
           label="部门">
         </el-table-column>
@@ -95,7 +99,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="240"
+          width="260"
           label="操作">
           <template slot-scope="scope">
             <el-button

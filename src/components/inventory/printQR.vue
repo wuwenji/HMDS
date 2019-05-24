@@ -13,7 +13,7 @@
         <el-option label="150mm" :value="0"></el-option>
         <el-option label="300mm" :value="1"></el-option>
       </el-select>
-      <el-button v-print="'#printAll'" type="primary">打印</el-button>
+      <el-button @click="printId" v-print="'#printAll'" type="primary">打印</el-button>
     </p>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
   data () {
     return {
       qrUrls: [],
-      type: 1
+      type: 1,
+      printIds: []
     }
   },
   created () {
@@ -39,10 +40,23 @@ export default {
   methods: {
     getQrs () {
       this.qrUrls = []
+      this.printIds = []
       this.qrCodes.map(item => {
         this.qrUrls.push(
-          this.$store.state.qrUrl + item + '&w=550&h=550'
+          this.$store.state.qrUrl + item.code + '&w=550&h=550'
         )
+        this.printIds.push(
+          item.id
+        )
+      })
+    },
+    // 记录打印次数
+    printId () {
+      let ids = this.printIds.join(',')
+      this.http('/tMaterial/updatePrintCountByIds', {
+        printCountIds: ids
+      }).then(resp => {
+        console.log(resp)
       })
     }
   }

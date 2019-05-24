@@ -67,30 +67,36 @@
         </el-table-column>
         <el-table-column
           prop="contName"
-          label="订购商名称">
+          label="订购商名称"
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="指示书打印次数">
+          label="指示书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '整条作业指示书打印历史', 1)"
@@ -125,30 +131,36 @@
         </el-table-column>
         <el-table-column
           prop="contName"
-          label="订购商名称">
+          label="订购商名称"
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="指示书打印次数">
+          label="指示书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '切断作业指示书打印历史', 1)"
@@ -183,34 +195,41 @@
         </el-table-column>
         <el-table-column
           prop="contName"
-          label="订购商名称">
+          label="订购商名称"
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="type"
-          label="加工类型">
+          label="加工类型"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="切断书打印次数">
+          label="切断书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '切断作业指示书打印历史', 1)"
@@ -221,7 +240,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="加工书打印次数">
+          label="加工书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '加工作业指示书打印历史', 2)"
@@ -265,26 +285,31 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="热处理书打印次数">
+          label="热处理书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '热处理作业指示书打印历史', 3)"
@@ -319,30 +344,36 @@
         </el-table-column>
         <el-table-column
           prop="contName"
-          label="订购商名称">
+          label="订购商名称"
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="130">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="切断书打印次数">
+          label="切断书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '切断作业指示书打印历史', 1)"
@@ -353,7 +384,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="加工书打印次数">
+          label="加工书打印次数"
+          width="130">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '加工作业指示书打印历史', 2)"
@@ -364,7 +396,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="热处理书打印次数">
+          label="热处理书打印次数"
+          width="140">
           <template slot-scope="scope">
             <el-button
               @click.native.prevent="getHistory(scope.row.soNo, '热处理作业指示书打印历史', 3)"
@@ -445,7 +478,7 @@
 // import machining from './machining'
 // import wholePage from './whole'
 import printPage from '../orderPrinting/printing'
-import hotHandle from './hotHandle'
+import hotHandle from '../orderPrinting/hotHandle'
 import machining from '../orderPrinting/machining'
 import wholePage from '../orderPrinting/whole'
 export default {

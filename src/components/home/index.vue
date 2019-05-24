@@ -134,7 +134,7 @@ export default {
 
 <style scoped>
   * {
-    font-size: 30px;
+    font-size: 25px;
   }
 .title {
   font-size: 35px;
@@ -144,17 +144,6 @@ export default {
 .john-item {
   float: left;
 }
-@media (min-width: 1800px) {
-  .john-col-m3 {
-    width: calc(25% - 20px);
-    margin: 10px;
-  }
-  .john-col-m6 {
-    width: calc(50% - 20px);
-    margin: 10px;
-  }
-}
-@media (max-width: 1800px) {
   .john-col-x12 {
     width: calc(100% - 20px);
     margin: 10px;
@@ -163,7 +152,26 @@ export default {
     width: calc(50% - 20px);
     margin: 10px;
   }
-}
+/*@media (min-width: 1800px) {*/
+  /*.john-col-m3 {*/
+    /*width: calc(25% - 20px);*/
+    /*margin: 10px;*/
+  /*}*/
+  /*.john-col-m6 {*/
+    /*width: calc(50% - 20px);*/
+    /*margin: 10px;*/
+  /*}*/
+/*}*/
+/*@media (max-width: 1800px) {*/
+  /*.john-col-x12 {*/
+    /*width: calc(100% - 20px);*/
+    /*margin: 10px;*/
+  /*}*/
+  /*.john-col-x6 {*/
+    /*width: calc(50% - 20px);*/
+    /*margin: 10px;*/
+  /*}*/
+/*}*/
 .john-content {
   border: 1px solid #aaa;
   height: 140px;
@@ -214,4 +222,14 @@ export default {
 .tab ul li:last-child {
   border-radius: 0 4px 4px 0;
 }
+  .row-item {
+    text-align: center;
+    background: #d4eefa;
+    border: 1px solid #8ad1f2;
+    margin: 10px;
+    width: calc(100% - 20px);
+    border-radius: 4px;
+    overflow: hidden;
+    padding-bottom: 20px;
+  }
 </style>

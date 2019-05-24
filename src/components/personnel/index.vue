@@ -5,8 +5,8 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="查询范围" prop="type">
-          <el-select v-model="formData.type" placeholder="昨日完成">
+        <el-form-item class="form-item" label="查询范围" prop="dateType">
+          <el-select v-model="formData.dateType" placeholder="昨日完成">
             <el-option label="昨日完成" value="0"></el-option>
             <el-option label="本周完成" value="1"></el-option>
             <el-option label="本月完成" value="2"></el-option>
@@ -14,8 +14,8 @@
         </el-form-item>
         <el-form-item class="form-item" label="起始时间">
           <el-col>
-            <el-form-item prop="oneDate">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.oneDate" style="width: 100%;"></el-date-picker>
+            <el-form-item prop="startTime">
+              <el-date-picker type="date" placeholder="选择日期" value-format="timestamp" v-model="formData.startTime" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -73,30 +73,11 @@
         </el-table-column>
         <el-table-column
           prop="oneDate"
-          label="技能等级">
-        </el-table-column>
-        <el-table-column
-          prop="oneDate"
           label="理论值">
         </el-table-column>
         <el-table-column
           prop="oneDate"
           label="实际值">
-        </el-table-column>
-        <el-table-column
-          prop="oneDate"
-          label="自定义">
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          width="140"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="cutFun(scope.$index, scope.row)">详情</el-button>
-          </template>
         </el-table-column>
       </el-table>
       <div class="block">

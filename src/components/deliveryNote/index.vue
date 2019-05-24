@@ -57,41 +57,49 @@
         </el-table-column>
         <el-table-column
           prop="contName"
-          label="订购商名称">
+          label="订购商名称"
+          min-width="130">
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="100">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="isOutward"
-          label="外发">
+          label="外发"
+          width="100">
           <template slot-scope="scope">
             {{scope.row.isOutward == 1? '外发': '没外发'}}
           </template>
         </el-table-column>
         <el-table-column
           prop="heatMillingRemarks"
-          label="类型">
+          label="类型"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="是否关联母材">
+          label="是否关联母材"
+          width="120">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.relationMoth"
@@ -147,37 +155,44 @@
         </el-table-column>
         <el-table-column
           prop="sUserName"
-          label="营业员">
+          label="营业员"
+          width="100">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
-          label="发件人">
+          label="发件人"
+          width="100">
         </el-table-column>
         <el-table-column
-          label="接单时间">
+          label="接单时间"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.soDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
-          label="交期">
+          label="交期"
+          width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           prop="isOutward"
-          label="外发">
+          label="外发"
+          width="100">
           <template slot-scope="scope">
             {{scope.row.isOutward == 1? '外发': '没外发'}}
           </template>
         </el-table-column>
         <el-table-column
           prop="heatMillingRemarks"
-          label="类型">
+          label="类型"
+          width="130">
         </el-table-column>
         <el-table-column
-          label="打印次数">
+          label="打印次数"
+          width="100">
           <template slot-scope="scope">
             <el-button type="text" size="small">{{scope.row.onePrinting}}</el-button>
           </template>

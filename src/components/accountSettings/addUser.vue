@@ -24,6 +24,32 @@
         <el-input v-model="dynamicValidateForm.userName"></el-input>
       </el-form-item>
       <el-form-item
+        prop="position"
+        label="职位"
+        :rules="[
+      { required: true, message: '请选择职位', trigger: 'blur' },
+    ]"
+      >
+        <el-select v-model="dynamicValidateForm.position" placeholder="请选择职位">
+          <el-option label="总经理" value="1"></el-option>
+          <el-option label="本部长" value="2"></el-option>
+          <el-option label="部长" value="3"></el-option>
+          <el-option label="部长助理" value="4"></el-option>
+          <el-option label="副部长" value="5"></el-option>
+          <el-option label="课长" value="6"></el-option>
+          <el-option label="副课长" value="7"></el-option>
+          <el-option label="主任" value="8"></el-option>
+          <el-option label="副主任" value="9"></el-option>
+          <el-option label="担当" value="10"></el-option>
+          <el-option label="工程师" value="11"></el-option>
+          <el-option label="技术工程师" value="12"></el-option>
+          <el-option label="技术员" value="13"></el-option>
+          <el-option label="文员" value="14"></el-option>
+          <el-option label="营业员" value="15"></el-option>
+          <el-option label="管员" value="16"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item
         prop="department"
         label="所属部门"
       >
@@ -46,12 +72,7 @@
       </el-form-item>
       <el-form-item
         prop="email"
-        label="邮箱"
-        :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-    ]"
-      >
+        label="邮箱">
         <el-input v-model="dynamicValidateForm.email"></el-input>
       </el-form-item>
       <el-form-item style="padding-left: 60px;">
@@ -73,7 +94,8 @@ export default {
         department: '',
         userPassword: '',
         phone: '',
-        email: ''
+        email: '',
+        position: ''
       }
     }
   },
