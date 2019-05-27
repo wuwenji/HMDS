@@ -44,16 +44,12 @@
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
-    <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
-    <br/>
-    <br/>
-    <br/>
-    <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCapacity" :twoData="macEchart.macCompletedCount"/>
+    <drawEchart title="切断部机器负荷表数量(件)" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
   </div>
 </template>
 
 <script>
-import drawEchart from './lineEchart'
+import drawEchart from './cutLine'
 export default {
   name: 'doBusiness',
   data () {
@@ -64,14 +60,9 @@ export default {
       cutCompletedCount: [],
       title: '切断部机器负荷表',
       cutEchart: {
-        cutCode: [],
+        cutCode: ['小机器(单重50KG以下)', '中机器(单重50KG~400G以下)', '大机器(单重400KG以上)'],
         cutCapacity: [],
         cutCompletedCount: []
-      },
-      macEchart: {
-        macCode: [],
-        macCapacity: [],
-        macCompletedCount: []
       }
     }
   },
@@ -89,28 +80,12 @@ export default {
         console.log(resp)
         if (resp.success) {
           this.cutEchart.cutCapacity = []
-          this.cutEchart.cutCode = []
+          // this.cutEchart.cutCode = []
           this.cutEchart.cutCompletedCount = []
           resp.data.map(item => {
             this.cutEchart.cutCapacity.push(item.capacity)
-            this.cutEchart.cutCode.push(item.code)
+            // this.cutEchart.cutCode.push(item.code)
             this.cutEchart.cutCompletedCount.push(item.completedCount)
-          })
-        }
-      })
-    },
-    // 加工图表数据
-    getMacData () {
-      this.http('/show/getMachiningList', {}).then(resp => {
-        console.log(resp)
-        if (resp.success) {
-          this.macEchart.macCode = []
-          this.macEchart.macCapacity = []
-          this.macEchart.macCompletedCount = []
-          resp.data.map(item => {
-            this.macEchart.macCapacity.push(item.capacity)
-            this.macEchart.macCode.push(item.code)
-            this.macEchart.macCompletedCount.push(item.completedCount)
           })
         }
       })

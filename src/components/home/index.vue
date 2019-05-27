@@ -83,6 +83,7 @@
           <li :class="{active: showCommd == 1}" @click="showCommd = 1">切断部</li>
           <li :class="{active: showCommd == 2}" @click="showCommd = 2">加工部</li>
           <li :class="{active: showCommd == 3}" @click="showCommd = 3">热处理</li>
+          <li :class="{active: showCommd == 4}" @click="showCommd = 4">生产管理</li>
         </ul>
       </div>
       <div style="margin: 0 10px;">

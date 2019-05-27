@@ -69,7 +69,6 @@
     </div>
     <div class="data-list">
       <el-table
-        v-show="johnTab == 0"
         :data="listData"
         border
         height="calc(100% - 75px)">
@@ -128,7 +127,6 @@ export default {
     return {
       pageNum: 1,
       pageSize: 10,
-      johnTab: 0,
       total: 0,
       listData: [],
       formData: {
@@ -167,19 +165,12 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = parseInt(`${val}`)
+      this.onSubmit()
     },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-    },
-    cutFun (index, row) {
-      console.log(index, row)
-    },
-    addFun (index, row) {
-      console.log(index, row)
-    },
-    tabClick (index) {
-      this.johnTab = index
+      this.pageNum = parseInt(`${val}`)
+      this.onSubmit()
     }
   },
   computed: {

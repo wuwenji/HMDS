@@ -5,60 +5,56 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="查询范围" prop="type">
-          <el-select v-model="formData.type" placeholder="昨日完成">
-            <el-option label="昨日完成" value="0"></el-option>
-            <el-option label="本周完成" value="1"></el-option>
-            <el-option label="本月完成" value="2"></el-option>
+        <el-form-item class="form-item" label="查询范围" prop="dateType">
+          <el-select v-model="formData.dateType" placeholder="昨日完成">
+            <!--<el-option label="全部" value=""></el-option>-->
+            <el-option label="昨日" value="1"></el-option>
+            <el-option label="本周" value="2"></el-option>
+            <el-option label="本月" value="3"></el-option>
+            <el-option label="自定义" value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item class="form-item" label="起始时间">
-          <el-col>
-            <el-form-item prop="oneDate">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.oneDate" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item class="form-item" label="最后时间">
-          <el-col>
-            <el-form-item prop="twoDate">
-              <el-date-picker type="date" placeholder="选择日期" v-model="formData.twoDate" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item class="form-item" label="绩效部门" prop="type">
-          <el-select v-model="formData.type" placeholder="绩效部门">
-            <el-option label="制造部门" value="0"></el-option>
-            <el-option label="热处理部门" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item class="form-item" label="绩效指标" prop="type">
-          <el-select v-model="formData.type" placeholder="绩效指标">
-            <el-option label="制造部门" value="0"></el-option>
-            <el-option label="热处理部门" value="1"></el-option>
+        <template v-if="formData.dateType == 0">
+          <el-form-item class="form-item" label="起始时间">
+            <el-col>
+              <el-form-item prop="startTime">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  value-format="timestamp"
+                  v-model="formData.startTime"
+                  style="width: 100%;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item class="form-item" label="最后时间">
+            <el-col>
+              <el-form-item prop="endTime">
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  value-format="timestamp"
+                  v-model="formData.endTime"
+                  style="width: 100%;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+        </template>
+        <el-form-item class="form-item" label="绩效部门" prop="department">
+          <el-select v-model="formData.department" placeholder="绩效部门">
+            <el-option label="切断部门" value="1"></el-option>
+            <el-option label="加工部门" value="2"></el-option>
+            <el-option label="热处理" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" plain @click="onSubmit">导出</el-button>
+          <el-button type="primary" plain @click="onSubmit">查询</el-button>
           <el-button type="success" plain>查询</el-button>
         </el-form-item>
       </el-form>
     </div>
-    <div class="john-tab" style="margin-bottom: 20px;">
-      <div style="margin-left: 10px;margin-bottom: 10px;">
-        <el-select v-model="formData.type" >
-          <el-option label="切断" value="0"></el-option>
-          <el-option label="热处理" value="1"></el-option>
-        </el-select>
-        <el-select v-model="formData.type" >
-          <el-option label="移动率(运行率)" value="0"></el-option>
-          <el-option label="表面积" value="1"></el-option>
-        </el-select>
-      </div>
-    </div>
     <div class="data-list">
       <el-table
-        v-show="johnTab == 0"
         :data="listData"
         border
         height="calc(100% - 75px)">
@@ -68,39 +64,57 @@
           width="50">
         </el-table-column>
         <el-table-column
-          prop="id"
           label="部门">
+          <template slot-scope="scope">
+            {{getDepart(scope.row.department)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="oneAddress"
-          label="设备编号">
+          prop="name"
+          label="设备名称">
         </el-table-column>
         <el-table-column
-          prop="twoNumb"
-          label="昨日完成">
+          prop="actualWeight"
+          label="重量">
         </el-table-column>
         <el-table-column
-          prop="twoAddress"
-          label="本周完成">
+          prop="counts"
+          label="数量">
         </el-table-column>
         <el-table-column
-          prop="oneDate"
-          label="本月完成">
+          prop="area"
+          label="表面积">
         </el-table-column>
         <el-table-column
-          prop="oneDate"
-          label="自定义">
+          prop="workTime"
+          label="稼动时间">
+        </el-table-column>
+        <el-table-column
+          prop="workPercent"
+          label="运行率">
+        </el-table-column>
+        <el-table-column
+          prop="power"
+          label="达成率">
+        </el-table-column>
+        <el-table-column
+          prop="failTime"
+          label="故障时间">
+        </el-table-column>
+        <el-table-column
+          prop="failPercent"
+          label="故障率">
         </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page="currentPage"
+          :current-page="pageNum"
           :page-sizes="[10, 20, 50, 100]"
-          :page-size="10"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="100">
+          :total="total">
         </el-pagination>
       </div>
     </div>
@@ -112,37 +126,51 @@ export default {
   name: 'index',
   data () {
     return {
-      currentPage: 1,
-      johnTab: 0,
+      pageSize: 10,
+      pageNum: 1,
+      total: 0,
+      listData: [],
       formData: {
-        id: '',
-        oneDate: '',
-        twoDate: '',
-        type: '全部'
+        dateType: '1',
+        endTime: '',
+        startTime: '',
+        department: '1',
+        equipmentType: '1'
       }
     }
   },
+  created () {
+    this.onSubmit()
+  },
   methods: {
+    // 搜索数据
     onSubmit () {
-      console.log(this.formData)
+      this.formData.pageSize = this.pageSize
+      this.formData.pageNum = this.pageNum
+      this.http('/statistics/equipmentPerformanceStatistics', this.formData).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.listData = resp.data.list
+          this.total = resp.data.total
+        }
+      })
+    },
+    // 返回部门
+    getDepart (num) {
+      if (num === 1) return '切断部门'
+      if (num === 2) return '加工部门'
+      return '热处理部门'
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.pageSize = parseInt(`${val}`)
+      this.onSubmit()
     },
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
-    },
-    cutFun (index, row) {
-      console.log(index, row)
-    },
-    addFun (index, row) {
-      console.log(index, row)
-    },
-    tabClick (index) {
-      this.johnTab = index
+      this.pageNum = parseInt(`${val}`)
+      this.onSubmit()
     }
   },
   computed: {
@@ -181,6 +209,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 180px);
+    height: calc(100% - 130px);
   }
 </style>
