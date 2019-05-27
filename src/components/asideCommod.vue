@@ -228,7 +228,7 @@ export default {
     getRole () {
       console.log(this.$store.state.users.id)
       this.http('/tUserMenu/find', {
-      sysUserId: this.$store.state.users.id
+        sysUserId: this.$store.state.users.id
       }).then(resp => {
         let menus = []
         if (resp.success) {
@@ -237,6 +237,7 @@ export default {
           })
         }
         this.getL(menus.sort())
+        console.log(menus.sort())
       })
     },
     getL (list) {

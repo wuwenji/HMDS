@@ -134,10 +134,10 @@ export default {
 
 <style scoped>
   * {
-    font-size: 25px;
+    font-size: 20px;
   }
 .title {
-  font-size: 35px;
+  font-size: 25px;
   margin-top: 10px;
   color: #666;
 }
@@ -186,7 +186,7 @@ export default {
   color: #666;
 }
 .john-content span {
-  font-size: 45px;
+  font-size: 35px;
 }
 .tab {
   height: 60px;
@@ -194,7 +194,7 @@ export default {
   margin-bottom: 30px;
 }
 .tab ul {
-  width: 720px;
+  width: 600px;
   margin: 0 auto;
 }
 .tab ul li {

@@ -71,7 +71,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="customerName"
+          prop="taskName"
           label="作业名"
           width="100">
         </el-table-column>

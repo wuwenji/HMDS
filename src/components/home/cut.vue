@@ -199,8 +199,8 @@ export default {
 .title {
   text-align: center;
   line-height: 20px;
-  font-size: 40px;
-  padding-left: 375px;
+  font-size: 30px;
+  padding-left: 255px;
   padding-top: 30px;
 }
 .table td,.table th {

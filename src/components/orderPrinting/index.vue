@@ -41,6 +41,7 @@
           <!--<el-button type="primary" plain>更新</el-button>-->
           <el-button type="success" plain @click="searchList(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
+          <el-button type="primary" plain @click="updaData">数据同步</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -414,6 +415,29 @@ export default {
   computed: {
   },
   methods: {
+    // 同步日本数据
+    updaData () {
+      const loading = this.$loading({
+        lock: true,
+        text: '正在同步，需要两到三分钟，请耐心等待！',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      this.http('/sync/updateAllData', {}).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.$message({
+            message: resp.message,
+            duration: 1000,
+            type: 'success'
+          })
+          loading.close()
+        } else {
+          this.$message.error(resp.message)
+          loading.close()
+        }
+      })
+    },
     getLists (num, size, type) {
       this.http('/tSalesOrder/list', {
         pageNum: num,

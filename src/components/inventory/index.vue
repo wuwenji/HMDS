@@ -44,6 +44,7 @@
             <el-option label="全部" value=""></el-option>
             <el-option label="F" value="F"></el-option>
             <el-option label="R" value="R"></el-option>
+            <el-option label="MR" value="MR"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
@@ -90,7 +91,7 @@
         </el-table-column>
         <el-table-column
           prop="whseCd"
-          label="smart编号"
+          label="仓库名代码"
           width="100">
         </el-table-column>
         <el-table-column
@@ -122,11 +123,28 @@
           width="150">
         </el-table-column>
         <el-table-column
+          prop="size1"
+          sortable
+          label="厚">
+        </el-table-column>
+        <el-table-column
+          prop="size2"
+          sortable
+          label="宽">
+        </el-table-column>
+        <el-table-column
+          prop="size3"
+          sortable
+          label="长">
+        </el-table-column>
+        <el-table-column
           prop="stockQty"
+          sortable
           label="数量">
         </el-table-column>
         <el-table-column
           prop="stockWt"
+          sortable
           label="重量">
         </el-table-column>
         <el-table-column
@@ -173,7 +191,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[10, 20, 50, 100]"
+          :page-sizes="[10, 50, 100, 500, 1000, 5000, 10000]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -186,7 +204,7 @@
       :data="multipleSelection">
       <el-table-column
         prop="whseCd"
-        label="smart编号">
+        label="仓库名代码">
       </el-table-column>
       <el-table-column
         prop="stockNo"
@@ -211,6 +229,18 @@
       <el-table-column
         prop="stockSizeNote"
         label="尺寸">
+      </el-table-column>
+      <el-table-column
+        prop="size1"
+        label="厚">
+      </el-table-column>
+      <el-table-column
+        prop="size2"
+        label="宽">
+      </el-table-column>
+      <el-table-column
+        prop="size3"
+        label="长">
       </el-table-column>
       <el-table-column
         prop="stockQty"
@@ -304,7 +334,7 @@ export default {
     getList (pageNum, pageSize) {
       this.http('/tMaterial/list', {
         pageNum,
-        pageSize,
+        pageSize
       }).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -375,12 +405,15 @@ export default {
     // 选择数据
     handleSelectionChange (val) {
       this.multipleSelection = val
+      console.log(val)
       this.qrCodes = val.map(item => {
-        let obj = {
-          id: item.id,
-          code: item.qrCode
-        }
-        return obj
+        // let obj = {
+        //   id: item.id,
+        //   code: item.qrCode,
+        //   size: item.stockSizeNote,
+        //   name: item.gradeCdKey
+        // }
+        return item
       })
     },
     // 匹配数据

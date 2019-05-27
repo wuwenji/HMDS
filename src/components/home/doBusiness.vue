@@ -132,7 +132,7 @@ export default {
 
 <style scoped>
   * {
-    font-size: 25px;
+    font-size: 17px;
   }
 .table {
   text-align: center;

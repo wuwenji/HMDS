@@ -3,7 +3,15 @@
     <div id="printAll" :style="{width:(type==1? '540px': '320px')}">
       <ul :class="type == 1 ? 'ul1': 'ul2'" style="margin-left: 25px;">
         <li v-for="(item, key) in qrUrls" :key="key">
-          <img :src="item" alt="">
+          <div v-if="type == 1" class="img-box">
+            <img :src="item.url" alt="">
+            <span class="img-span">
+              {{getRow(item.name)}}
+              <!--{{item.name}}-->
+            </span>
+            <p style="font-size: 8px; width: 130px; text-align: center;">{{item.size}}</p>
+          </div>
+          <img v-else :src="item.url" alt="">
         </li>
       </ul>
     </div>
@@ -43,12 +51,17 @@ export default {
       this.printIds = []
       this.qrCodes.map(item => {
         this.qrUrls.push(
-          this.$store.state.qrUrl + item.code + '&w=550&h=550'
+          {
+            url: this.$store.state.qrUrl + item.qrCode + '&w=550&h=550',
+            size: item.stockSizeNote,
+            name: item.gradeCdKey
+          }
         )
         this.printIds.push(
           item.id
         )
       })
+      console.log(this.qrUrls)
     },
     // 记录打印次数
     printId () {
@@ -58,6 +71,13 @@ export default {
       }).then(resp => {
         console.log(resp)
       })
+    },
+    getRow (string) {
+      if (string) {
+        return string.split('').join(' ')
+      } else {
+        return ''
+      }
     }
   }
 }
@@ -65,6 +85,19 @@ export default {
 
 <style scoped>
   #printAll {
+  }
+  .img-span {
+    float: right;
+    width: 7px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    font-size: 7px;
+    line-height: 10px;
+    margin-right: 10px;
+    text-align: center;
   }
   #printAll .ul1 li {
     float: left;
@@ -74,17 +107,22 @@ export default {
     margin-top: 10px;
   }
   #printAll .ul1 li img {
-    width: 100%;
+    width: 130px;
+  }
+  .img-box {
+    width: 154px;
+    height: 154px;
+    margin-bottom: 4px;
   }
   .ul2 {
     padding: 0px 10px 0px 10px;
     margin-left: 20px;
-    margin-top: 2px;
+    /*margin-top: 2px;*/
   }
   .ul2 li {
     float: left;
     width: 70px;
-    margin: 10px 9px 0 9px;
+    margin: 14px 9px 0 7px;
     /*margin-bottom: 10px;*/
     list-style: none;
     padding: 0;

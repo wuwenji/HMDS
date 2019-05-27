@@ -183,7 +183,7 @@ export default {
 .title {
   text-align: center;
   line-height: 20px;
-  font-size: 40px;
+  font-size: 30px;
   padding-left: 375px;
   padding-top: 30px;
 }

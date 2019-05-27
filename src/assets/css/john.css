@@ -130,8 +130,8 @@ body {
   margin: 0;
 }
 .table_changeTd .cell{
-  font-size: 25px;
-  line-height: 35px;
+  font-size: 17px;
+  line-height: 20px;
 }
 .el-table__body tr:hover>td{
   background-color: #eeffab!important;

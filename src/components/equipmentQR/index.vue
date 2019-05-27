@@ -187,7 +187,7 @@ export default {
     getType (a) {
       if (a === 1) return '切断部门'
       if (a === 2) return '加工部门'
-      if (a === 3) return '热处理部门'
+      return '热处理部门'
     },
     // 条件查询
     onSubmit () {

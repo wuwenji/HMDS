@@ -22,7 +22,7 @@ export default {
           x: 'center',
           y: 'top',
           textStyle: {
-            fontSize: 35
+            fontSize: 25
           }
         },
         tooltip: {
@@ -37,7 +37,7 @@ export default {
           y: '50px',
           data: [this.type, '标准'],
           textStyle: {
-            fontSize: 25
+            fontSize: 17
           }
         },
         xAxis: {
@@ -45,7 +45,7 @@ export default {
           axisLabel: {
             show: true,
             textStyle: {
-              fontSize: 25
+              fontSize: 17
             }
           }
         },
@@ -53,7 +53,7 @@ export default {
           axisLabel: {
             show: true,
             textStyle: {
-              fontSize: 25
+              fontSize: 17
             }
           }
         },
