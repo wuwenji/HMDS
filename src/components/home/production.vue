@@ -1,5 +1,54 @@
 <template>
   <div>
+    <table class="table" border="1">
+      <thead>
+        <tr>
+          <th rowspan="3"></th>
+          <th rowspan="3">当日急件数量</th>
+          <th rowspan="3">产能</th>
+          <th colspan="4">纳斯分布</th>
+          <th rowspan="3">当日累计接单</th>
+          <th rowspan="3">当日累累计完成</th>
+        </tr>
+        <tr>
+          <th colspan="2">今天</th>
+          <th>明天</th>
+          <th>后天</th>
+        </tr>
+        <tr>
+          <th>纳斯数量</th>
+          <th>未完成数量</th>
+          <th>纳斯数量</th>
+          <th>纳斯数量</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>切断组</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>加工组</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <br/>
     <div class="left-table">
       <table class="table" border="1">
         <thead>
@@ -138,118 +187,6 @@
         </tbody>
       </table>
     </div>
-
-
-    <div class="title">客户财产登记表</div>
-    <template>
-      <div class="elTable">
-        <el-table
-        :data="lists"
-        height="250"
-        border
-        style="width: 100%">
-        <el-table-column
-          prop="date"
-          label="">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="成绩书单号">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="客户名称">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="41">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="作业名">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="数">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="重">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="硬度要求">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="特别事项">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="作业名">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="使用炉">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="工艺">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="入炉日期">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="计划货期">
-        </el-table-column>
-        <el-table-column
-          label="生产进度"
-          width="250">
-          <template slot-scope="scope">
-            <ul class="prog">
-              <li>
-                Q<br/>
-                <span :class="getClass(1)"></span>
-              </li>
-              <li>
-                T1<br/>
-                <span :class="getClass(2)"></span>
-              </li>
-              <li>
-                T2<br/>
-                <span :class="getClass(3)"></span>
-              </li>
-              <li>
-                T3<br/>
-                <span :class="getClass(4)"></span>
-              </li>
-              <li>
-                检查
-                <span :class="getClass(5)"></span>
-              </li>
-            </ul>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="备注">
-          <template slot-scope="scope">
-            <img @click="scope.row.remark = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
-            <img @click="scope.row.remark = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
-          </template>
-        </el-table-column>
-      </el-table>
-      </div>
-    </template>
-    <div class="page">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="pageNum"
-        layout="prev, pager, next"
-        :total="100">
-      </el-pagination>
-    </div>
   </div>
 </template>
 
@@ -259,20 +196,6 @@ export default {
   data () {
     return {
       widthTd: '',
-      lists: [
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 1
-        },
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 2
-        }
-      ],
       pageNum: 1,
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }

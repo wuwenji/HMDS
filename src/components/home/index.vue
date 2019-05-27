@@ -91,6 +91,7 @@
         <cutCommod v-if="showCommd == 1"/>
         <manufacture v-if="showCommd == 2"/>
         <heatTreatment v-if="showCommd ==3"/>
+        <prodPage v-if="showCommd ==4"/>
       </div>
     </div>
 </template>
@@ -99,6 +100,7 @@
 import doBusiness from './doBusiness'
 import manufacture from './manufacture'
 import heatTreatment from './heatTreatment'
+import prodPage from './production'
 import cutCommod from './cut'
 export default {
   name: 'index',
@@ -128,7 +130,8 @@ export default {
     doBusiness,
     manufacture,
     heatTreatment,
-    cutCommod
+    cutCommod,
+    prodPage
   }
 }
 </script>
@@ -195,7 +198,7 @@ export default {
   margin-bottom: 30px;
 }
 .tab ul {
-  width: 600px;
+  width: 770px;
   margin: 0 auto;
 }
 .tab ul li {
