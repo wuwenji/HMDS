@@ -214,7 +214,7 @@
               size="mini"
               type="text"
               :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
-              @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
+              @click="cutFun(scope.$index, scope.row, '打印加工作业指示票')">打印加工作业指示票</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -347,7 +347,7 @@
               size="mini"
               type="text"
               :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
-              @click="cutFun(scope.$index, scope.row, '打印加工作业指示书')">打印加工作业指示书</el-button>
+              @click="cutFun(scope.$index, scope.row, '打印加工作业指示票')">打印加工作业指示票</el-button>
             <el-button
               size="mini"
               type="text"
@@ -375,7 +375,7 @@
       center>
       <printPage v-if="title == '打印切断作业指示书'" :orderInfo="info" :title="title"/>
       <hotHandle v-if="title == '生成热处理指示书'" :orderInfo="info" :title="title"/>
-      <machining v-if="title == '打印加工作业指示书'" :orderInfo="info" :title="title"/>
+      <machining v-if="title == '打印加工作业指示票'" :orderInfo="info" :title="title"/>
       <wholePage v-if="title == '整条'" :orderInfo="info" :title="title"/>
     </el-dialog>
   </div>

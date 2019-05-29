@@ -13,8 +13,8 @@
           <dd v-show="show">
             <ol class="ol">
               <li
-                @click="asideFun(item.title, 1)"
-                :class="{active: selet == item.title}"
+                @click="asideFun(item.title, 1, item.id)"
+                :class="getClass(item, selet)"
                 v-for="(item, key) in data.children"
                 :key="key">
                 {{item.title}}
@@ -40,7 +40,22 @@ export default {
     // }
   },
   methods: {
-    asideFun (val, type = 2) {
+    getClass (item, selet) {
+      if (this.selet === '打印送货单1') {
+        console.log(item)
+        if (item.id === 12) {
+          return 'active'
+        }
+      } else if (this.selet === '打印送货单2') {
+        if (item.id === 24) {
+          return 'active'
+        }
+      } else if (selet === item.title) {
+        return 'active'
+      }
+      // {active: selet == item.title}
+    },
+    asideFun (val, type = 2, num = 0) {
       if (this.data.children !== undefined && type === 2) {
         this.show = !this.show
       }
@@ -48,15 +63,15 @@ export default {
         // this.$emit('update:selet', val)
         if (val === '首页') {
           this.$router.push('/')
-        } else if (val === '订单打印') {
+        } else if (val === '打印订单') {
           this.$router.push('/orderPrint')
         } else if (val === '历史订单') {
           this.$router.push('/historyOrder')
-        } else if (val === '送货单打印') {
+        } else if (val === '打印送货单' && num === 12) {
           this.$router.push('/deliveryNote')
         } else if (val === '打印成绩书') {
           this.$router.push('/printingResults')
-        } else if (val === '打印送货单') {
+        } else if (val === '打印送货单' && num === 24) {
           this.$router.push('/printingNote')
         } else if (val === '切断/切断&加工') {
           this.$router.push('/machiningSchedule')

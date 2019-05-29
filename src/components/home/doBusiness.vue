@@ -69,7 +69,6 @@ export default {
   created () {
     this.getTableData()
     this.getCutData()
-    this.getMacData()
   },
   mounted () {
   },

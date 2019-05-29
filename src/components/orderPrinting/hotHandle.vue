@@ -1,7 +1,7 @@
 <template>
     <div>
       <div id="printContent" style="height: 800px;">
-        <div class="title">热处理订单及作业指导书</div>
+        <div class="title">热处理订单及作业指示书</div>
         <div class="top cl">
           <div class="top-left">
             <div class="top-left-left">

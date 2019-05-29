@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="position">
-      所在的位置：热处理管理 -> <span>打印成绩书</span>
+      所在的位置：热处理管理 -> <span>打印送货单</span>
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">

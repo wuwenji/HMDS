@@ -2,7 +2,7 @@
   <div class="container">
     <headerCommod />
     <main>
-      <asideCommod selet="打印送货单" class="left"></asideCommod>
+      <asideCommod selet="打印送货单2" class="left"></asideCommod>
       <printingNote class="right"></printingNote>
     </main>
   </div>

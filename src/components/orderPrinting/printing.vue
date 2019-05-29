@@ -214,15 +214,28 @@ export default {
         // id: 362
         soNo: this.orderInfo.soNo
       }).then(resp => {
-        console.log(resp)
         if (resp.success) {
+          console.log(resp)
           this.pinkData = []
           resp.data.map(item => {
             let workList = item.orderList.map(val => {
+              // let obj = {}
               let obj = {
-                ...val.soWkInstList,
-                ...val
+                ...val,
+                ...val.soWkInstList
               }
+              // for (let key in obj) {
+              //   if (obj[key] === null) {
+              //     obj[key] = val.soWkInstList[key]
+              //   }
+              // }
+              // val.forEach((val, key) => {
+              //   if (val === null) {
+              //     obj[key] = val.soWkInstList[key]
+              //   } else {
+              //     obj[key] = val
+              //   }
+              // })
               return obj
             })
             let obj = {
@@ -230,8 +243,8 @@ export default {
               workList
             }
             this.pinkData.push(obj)
-            console.log(this.pinkData)
           })
+          // console.log(this.pinkData)
           // this.pinkData = []
           // // this.pinkData = resp.data
           // resp.data.map(item => {

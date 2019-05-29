@@ -6,7 +6,7 @@
           <th rowspan="3"></th>
           <th rowspan="3">当日急件数量</th>
           <th rowspan="3">产能</th>
-          <th colspan="4">纳斯分布</th>
+          <th colspan="4">纳期分布</th>
           <th rowspan="3">当日累计接单</th>
           <th rowspan="3">当日累累计完成</th>
         </tr>
@@ -16,10 +16,10 @@
           <th>后天</th>
         </tr>
         <tr>
-          <th>纳斯数量</th>
+          <th>纳期数量</th>
           <th>未完成数量</th>
-          <th>纳斯数量</th>
-          <th>纳斯数量</th>
+          <th>纳期数量</th>
+          <th>纳期数量</th>
         </tr>
       </thead>
       <tbody>

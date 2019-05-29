@@ -44,12 +44,12 @@
           <el-select v-model="formData.department" placeholder="绩效部门">
             <el-option label="切断部门" value="1"></el-option>
             <el-option label="加工部门" value="2"></el-option>
-            <el-option label="热处理" value="3"></el-option>
+            <el-option label="热处理部门" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" plain @click="onSubmit">查询</el-button>
-          <el-button type="success" plain>查询</el-button>
+          <el-button type="success" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>

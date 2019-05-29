@@ -29,13 +29,13 @@ export default {
           show: false,
           children: [{
             id: 10,
-            title: '订单打印'
+            title: '打印订单'
           }, {
             id: 11,
             title: '历史订单'
           }, {
             id: 12,
-            title: '送货单打印'
+            title: '打印送货单'
           }, {
             id: 22,
             title: '外发订单管理'
@@ -126,13 +126,13 @@ export default {
           show: false,
           children: [
             {
-              title: '订单打印'
+              title: '打印订单'
             },
             {
               title: '历史订单'
             },
             {
-              title: '送货单打印'
+              title: '打印送货单'
             },
             {
               title: '外发订单管理'
@@ -237,7 +237,6 @@ export default {
           })
         }
         this.getL(menus.sort())
-        console.log(menus.sort())
       })
     },
     getL (list) {
@@ -277,7 +276,16 @@ export default {
       this.data = this.data.map(resp => {
         if (resp.children !== undefined) {
           resp.children.map(resps => {
-            if (resps.title === this.selet) {
+            if (this.selet === '打印送货单1') {
+              console.log(resp.icon === 'icon2')
+              if (resp.icon === 'icon2') {
+                resp.show = true
+              }
+            } else if (this.selet === '打印送货单2') {
+              if (resp.icon === 'icon3') {
+                resp.show = true
+              }
+            } else if (resps.title === this.selet) {
               resp.show = true
             }
           })

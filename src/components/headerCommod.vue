@@ -3,6 +3,7 @@
     <div class="logo">
       <img class="logo-img" src="../../static/images/logo.png" alt="">
       <h2><span>日立金属</span> HMDS智能管理系统</h2>
+      <!--<progress max="100" value="20"/>-->
     </div>
     <div class="login">
       <span>{{$store.state.nowTime}}</span>

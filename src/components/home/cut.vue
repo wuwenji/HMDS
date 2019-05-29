@@ -3,7 +3,8 @@
     <table class="mid-table" border="1" borderColor="#0070c0">
       <tr>
         <td>日期：</td>
-        <td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>
+        <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
+        <td colspan="3">{{$store.state.date}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
@@ -171,7 +172,7 @@ export default {
     // 切断图表数据
     getCutData () {
       this.http('/show/getCutShowList', {}).then(resp => {
-        // console.log(resp)
+        console.log(resp)
         if (resp.success) {
           this.cutEchart.cutCapacity = []
           this.cutEchart.cutCode = []

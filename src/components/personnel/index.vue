@@ -63,7 +63,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" plain @click="onSubmit">查询</el-button>
-          <el-button type="success" plain>查询</el-button>
+          <el-button type="success" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
