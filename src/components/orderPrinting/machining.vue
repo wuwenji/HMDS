@@ -63,7 +63,7 @@
               </tr>
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
-                  <p style="font-size: 25px;">{{machiningData.order.gradeCd}}</p></td>
+                  <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
                 <td class="b" colspan="7"><strong>加工公差</strong></td>
               </tr>
               <tr>
@@ -194,7 +194,7 @@
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>
-                <td class="l" colspan="2">{{machiningData.order.gradeCd}}</td>
+                <td class="l" colspan="2">{{item.gradeCd}}</td>
                 <td class="bl bb tb" colspan="3"><strong>数量</strong></td>
                 <td class="br bb tb" colspan="3"><strong>kg重量</strong></td>
               </tr>
@@ -360,7 +360,7 @@
               </tr>
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
-                  <p style="font-size: 25px;">{{machiningData.order.gradeCd}}</p></td>
+                  <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
                 <td class="b" colspan="7"><strong>加工公差</strong></td>
               </tr>
               <tr>
@@ -491,7 +491,7 @@
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>
-                <td class="l" colspan="2">{{machiningData.order.gradeCd}}</td>
+                <td class="l" colspan="2">{{item.gradeCd}}</td>
                 <td class="bl bb tb" colspan="3"><strong>数量</strong></td>
                 <td class="br bb tb" colspan="3"><strong>kg重量</strong></td>
               </tr>

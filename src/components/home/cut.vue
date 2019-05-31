@@ -4,13 +4,15 @@
       <tr>
         <td>日期：</td>
         <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
-        <td colspan="3">{{$store.state.date}}</td>
+        <td>{{$store.state.date}}</td>
+        <td >切断延迟：</td>
+        <td >{{summaryData.cutingDelayCount}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
-        <td>30</td>
+        <td>{{summaryData.cutOrderCount}}</td>
         <td>切断中：</td>
-        <td>10</td>
+        <td>{{summaryData.cutingCount}}</td>
       </tr>
     </table>
     <div class="title">切断部未完成明细</div>
@@ -119,7 +121,7 @@
       </el-pagination>
     </div>
     <div class="total">
-      <span>切断完成总件数：20</span>
+      <span>切断完成总件数：{{cutEndTotal}}</span>
     </div>
     <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
   </div>
@@ -132,7 +134,9 @@ export default {
   data () {
     return {
       lists: [],
+      summaryData: {},
       pageNum: 1,
+      cutEndTotal: 0,
       total: 0,
       title: '切断部机器负荷表',
       cutEchart: {
@@ -174,14 +178,21 @@ export default {
       this.http('/show/getCutShowList', {}).then(resp => {
         console.log(resp)
         if (resp.success) {
+          this.cutEndTotal = resp.data.totalCount
           this.cutEchart.cutCapacity = []
           this.cutEchart.cutCode = []
           this.cutEchart.cutCompletedCount = []
-          resp.data.map(item => {
+          resp.data.list.map(item => {
             this.cutEchart.cutCapacity.push(item.capacity)
             this.cutEchart.cutCode.push(item.code)
             this.cutEchart.cutCompletedCount.push(item.completedCount)
           })
+        }
+      })
+      this.http('/show/getSummaryShowData', {}).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.summaryData = resp.data
         }
       })
     }

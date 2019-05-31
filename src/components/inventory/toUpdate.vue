@@ -161,6 +161,18 @@
             prop="storageName"
             label="放置位置">
           </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="deleteRow(scope.$index, localData, scope.row.id)"
+                type="text"
+                size="small">
+                移除
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
         <div class="pages">
           <el-pagination
@@ -218,12 +230,27 @@ export default {
         let divisionCd = this.smartData[this.smartSelect].divisionCd
         let stockNo = this.smartData[this.smartSelect].stockNo
         let whseCd = this.smartData[this.smartSelect].whseCd
+        let shape = this.smartData[this.smartSelect].machineShapeCd
+        let size1 = this.smartData[this.smartSelect].size1
+        let size1DecDigit = this.smartData[this.smartSelect].size1DecDigit
+        let size2 = this.smartData[this.smartSelect].size2
+        let size2DecDigit = this.smartData[this.smartSelect].size2DecDigit
+        let size3 = this.smartData[this.smartSelect].size3
+        let size3DecDigit = this.smartData[this.smartSelect].size3DecDigit
+        // let materialNumber = this.smartData[this.smartSelect].stockNo
         let params = {
           ...this.localData[this.localSelect],
           corpCd,
           divisionCd,
           stockNo,
-          whseCd
+          whseCd,
+          shape,
+          size1,
+          size1DecDigit,
+          size2,
+          size2DecDigit,
+          size3,
+          size3DecDigit
         }
         this.http('/tMaterial/bindData', params).then(resp => {
           console.log(resp)
@@ -241,6 +268,16 @@ export default {
           }
         })
       }
+    },
+    // 删除本地库
+    deleteRow (index, rows, id) {
+      this.http('/tMaterial/deleteByPrimaryKey', id).then(resp => {
+        if (resp.success) {
+          rows.splice(index, 1)
+        } else {
+          this.$message.error(resp.message)
+        }
+      })
     },
     // 获取smart数据
     getSmart (size, num) {

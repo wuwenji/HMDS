@@ -221,7 +221,10 @@ body {
   width: 100px;
 }
 .input-two .el-form-item__content {
-  width: 80px !important;
+  /*width: 80px !important;*/
+}
+.join-input-row > .el-form-item__content {
+  width: 150px;
 }
 table {
   border-collapse: collapse;

@@ -3,13 +3,16 @@
     <table class="mid-table" border="1" borderColor="#0070c0">
       <tr>
         <td>日期：</td>
-        <td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>
+        <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
+        <td>{{$store.state.date}}</td>
+        <td >加工延迟：</td>
+        <td >{{summaryData.machiningDelayCount}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
-        <td>30</td>
-        <td>切断中：</td>
-        <td>10</td>
+        <td>{{summaryData.machiningOrderCount}}</td>
+        <td>加工中：</td>
+        <td>{{summaryData.machiningCount}}</td>
       </tr>
     </table>
     <div class="title">加工部未完成明细</div>
@@ -107,7 +110,7 @@
       </el-pagination>
     </div>
     <div class="total">
-      <span>加工完成总件数：20</span>
+      <span>加工完成总件数：{{cutEndTotal}}</span>
     </div>
     <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCapacity" :twoData="macEchart.macCompletedCount"/>
   </div>
@@ -119,6 +122,8 @@ export default {
   name: 'doBusiness',
   data () {
     return {
+      summaryData: {},
+      cutEndTotal: 0,
       lists: [
         {
           name: 1,
@@ -157,14 +162,21 @@ export default {
     getMacData () {
       this.http('/show/getMachiningList', {}).then(resp => {
         if (resp.success) {
+          this.cutEndTotal = resp.data.totalCount
           this.macEchart.macCode = []
           this.macEchart.macCapacity = []
           this.macEchart.macCompletedCount = []
-          resp.data.map(item => {
+          resp.data.list.map(item => {
             this.macEchart.macCapacity.push(item.capacity)
             this.macEchart.macCode.push(item.code)
             this.macEchart.macCompletedCount.push(item.completedCount)
           })
+        }
+      })
+      this.http('/show/getSummaryShowData', {}).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.summaryData = resp.data
         }
       })
     }

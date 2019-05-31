@@ -75,13 +75,13 @@ export default {
   methods: {
     // 切断图表数据
     getCutData () {
-      this.http('/show/getCutShowList', {}).then(resp => {
+      this.http('/show/getCutLoadShowData', {}).then(resp => {
         console.log(resp)
         if (resp.success) {
           this.cutEchart.cutCapacity = []
           // this.cutEchart.cutCode = []
           this.cutEchart.cutCompletedCount = []
-          resp.data.map(item => {
+          resp.data.list.map(item => {
             this.cutEchart.cutCapacity.push(item.capacity)
             // this.cutEchart.cutCode.push(item.code)
             this.cutEchart.cutCompletedCount.push(item.completedCount)

@@ -151,9 +151,9 @@
             <td>{{getPeice(item.unitPriceCd)}}</td>
             <td  style="text-align: right;">{{item.soQty}}</td>
             <td  style="text-align: right;">{{$store.getters.toThousand(item.soWt, 2)}}</td>
-            <td  style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(item.soUnitPrice, 2) : '*'}}</td>
+            <td  style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(item.soUnitPrice, 2) : ''}}</td>
             <td  style="text-align: right;">
-              {{orderInfo.isShowAmount? $store.getters.toThousand(getTotal(item), 2): '*'}}
+              {{orderInfo.isShowAmount? $store.getters.toThousand(getTotal(item), 2): ''}}
             </td>
           </tr>
           <tr>
@@ -175,19 +175,19 @@
               {{$store.getters.toThousand(wetTotal, 2)}}
             </td>
             <td></td>
-            <td style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(mnyTotal, 2): '*'}}</td>
+            <td style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(mnyTotal, 2): ''}}</td>
           </tr>
           <tr class="total-tr" v-else>
             <td></td>
             <td></td>
             <td>合计</td>
             <td></td>
-            <td style="text-align: right;">numTotal}}</td>
+            <td style="text-align: right;">{{numTotal}}</td>
             <td style="text-align: right;">
               {{$store.getters.toThousand(wetTotal, 2)}}
             </td>
             <td></td>
-            <td style="text-align: right;">*</td>
+            <td style="text-align: right;"></td>
           </tr>
         </table>
         <div class="bottom">
@@ -223,6 +223,7 @@ export default {
     }
   },
   created () {
+    // console.log(this.orderInfo)
     this.getData()
   },
   watch: {
@@ -289,20 +290,25 @@ export default {
     },
     // 打印次数
     printing () {
-      this.http('/tSalesOrder/isDelivery', {
-        corpCd: this.orderInfo.corpCd,
-        divisionCd: this.orderInfo.divisionCd,
-        soNo: this.orderInfo.soNo,
-        soLnNo: this.orderInfo.soLnNo,
-        isDelivery: 1
-      }).then(resp => {
-        document.getElementById('bunt').click()
-        // console.log(resp)
+      let parameters = []
+      this.orderDetail.map(item => {
+        parameters.push({
+          soNo: item.soNo,
+          soLnNo: item.soLnNo
+        })
+      })
+      // console.log(parameters)
+      this.http('/tSalesOrder/isDelivery', parameters).then(resp => {
+        console.log(resp)
         // if (resp.success) {
         //   document.getElementById('bunt').click()
-        // } else {
-        //   this.$message.error(resp.message)
         // }
+        // console.log(resp)
+        if (resp.success) {
+          document.getElementById('bunt').click()
+        } else {
+          this.$message.error(resp.message)
+        }
       })
     },
     // 预览

@@ -30,9 +30,20 @@
         <el-form-item class="form-item" label="溶解编号" prop="changeNo">
           <el-input v-model="formData.changeNo" placeholder="溶解编号"></el-input>
         </el-form-item>
-        <!--<el-form-item style="width: 110px" class="form-item input-two" label="长" prop="id">-->
-          <!--<el-input style="width: 50px" v-model="formData.id" placeholder="长"></el-input>-->
-        <!--</el-form-item>-->
+        <!--<div class="input-row">-->
+          <!--<label>长</label>-->
+          <!--<div class="input-left">-->
+            <!--<el-form-item prop="size1Start">-->
+              <!--<el-input v-model="formData.size1Start"></el-input>-->
+            <!--</el-form-item>-->
+          <!--</div>-->
+          <!--<div class="input-center"> - </div>-->
+          <!--<div class="input-right">-->
+            <!--<el-form-item prop="size1End">-->
+              <!--<el-input v-model="formData.size1End"></el-input>-->
+            <!--</el-form-item>-->
+          <!--</div>-->
+        <!--</div>-->
         <!--<el-form-item style="width: 110px" class="form-item input-two" label="宽" prop="id">-->
           <!--<el-input style="width: 50px" v-model="formData.id" placeholder="宽"></el-input>-->
         <!--</el-form-item>-->
@@ -46,6 +57,53 @@
             <el-option label="R" value="R"></el-option>
             <el-option label="MR" value="MR"></el-option>
           </el-select>
+        </el-form-item>
+        <div class="cl" style="margin-top: 10px;"></div>
+        <el-form-item class="form-item" label="是否已贴" prop="isPaste">
+          <el-select v-model="formData.isPaste" placeholder="是否已贴">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="join-input-row" label="厚">
+          <el-col :span="11">
+            <el-form-item prop="size1Start">
+              <el-input v-model="formData.size1Start"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col style="" :span="2" class="line">- </el-col>
+          <el-col :span="11">
+            <el-form-item prop="size1End">
+              <el-input v-model="formData.size1End"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="join-input-row" label="宽">
+          <el-col :span="11">
+            <el-form-item prop="size2Start">
+              <el-input v-model="formData.size2Start"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col style="" :span="2" class="line">- </el-col>
+          <el-col :span="11">
+            <el-form-item prop="size2End">
+              <el-input v-model="formData.size2End"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="join-input-row" label="长">
+          <el-col :span="11">
+            <el-form-item prop="size3Start">
+              <el-input v-model="formData.size3Start"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col style="" :span="2" class="line">- </el-col>
+          <el-col :span="11">
+            <el-form-item prop="size3End">
+              <el-input v-model="formData.size3End"></el-input>
+            </el-form-item>
+          </el-col>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
@@ -185,6 +243,13 @@
           prop="printCount"
           label="打印次数">
         </el-table-column>
+        <el-table-column
+          prop="isPaste"
+          label="是否已贴">
+          <template slot-scope="scope">
+            {{scope.row.isPaste == 1? '是': '否'}}
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -318,9 +383,16 @@ export default {
       formData: {
         storageType: '',
         storageId: '',
+        size1Start: '',
+        size2Start: '',
+        size3Start: '',
+        size1End: '',
+        size2End: '',
+        size3End: '',
         materialType: '',
         changeNo: '',
-        shape: ''
+        shape: '',
+        isPaste: ''
       },
       options: [],
       listData: []
@@ -361,6 +433,7 @@ export default {
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
       this.http('/tMaterial/list', this.formData).then(resp => {
+        console.log(resp)
         if (resp.success) {
           this.pageSize = pageSize
           this.pageNum = pageNum
@@ -463,6 +536,16 @@ export default {
   .form-item {
     width:180px;
   }
+  .input-row {
+    display: inline-block;
+    line-height: 38px;
+  }
+  .input-row label {
+    margin-right: 7px;
+  }
+  .input-left,.input-right,.input-center {
+    display: inline-block;
+  }
   .btns {
     float: right;
   }
@@ -474,6 +557,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 170px);
+    height: calc(100% - 220px);
   }
 </style>

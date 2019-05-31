@@ -93,8 +93,8 @@
               <td width="30" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                <p class="spans">
-                  <span>{{item.order.machineShapeCd}}</span>
+                <p class="">
+                  <span style="width: 65px;display: inline-block;">{{item.order.machineShapeCd}}</span>
                   <span>{{list.size1}} X </span>
                   <span>
                     {{list.size2 > 0? list.size2 : ''}}
@@ -221,14 +221,14 @@ export default {
             let workList = item.orderList.map(val => {
               // let obj = {}
               let obj = {
-                ...val,
-                ...val.soWkInstList
+                ...val.soWkInstList,
+                ...val
               }
-              // for (let key in obj) {
-              //   if (obj[key] === null) {
-              //     obj[key] = val.soWkInstList[key]
-              //   }
-              // }
+              for (let key in obj) {
+                if (obj[key] === null) {
+                  obj[key] = val.soWkInstList[key]
+                }
+              }
               // val.forEach((val, key) => {
               //   if (val === null) {
               //     obj[key] = val.soWkInstList[key]

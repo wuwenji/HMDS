@@ -97,8 +97,13 @@
           <td>{{item.workName}}</td>
           <td>{{$store.getters.getTime(item.startTime)}}</td>
           <td>{{item.taskName.indexOf('SZ') > -1? '深冷': ''}}</td>
-          <td>{{item.status != null? '已完成': '未完成'}}</td>
-          <td v-if="item.status != null">{{item.status < 3? '合格': '不合格'}}</td>
+          <td>{{item.status > 0? '已完成': '未完成'}}</td>
+          <td v-if="item.status != null">
+            {{item.status == 1? '合格': ''}}
+            {{item.status == 2? '特采': ''}}
+            {{item.status == 3? '该流程重做': ''}}
+            {{item.status == 4? '报废': ''}}
+          </td>
           <td v-if="item.status == null"></td>
           <td>{{$store.getters.getTime(item.endTime)}}</td>
           <td>
@@ -140,7 +145,10 @@
             <td>{{item.workName}}</td>
             <td>{{$store.getters.getTime(item.startTime)}}</td>
             <td>{{$store.getters.getTime(item.endTime)}}</td>
-            <td>{{item.status &lt; 2? '合格': '不合格'}}</td>
+            <td>
+              <!--{{item.status &lt; 2? '合格': '不合格'}}-->
+              {{returnStatus(item.status)}}
+            </td>
           </tr>
           <!--<tr>-->
             <!--<td colspan="2">作业行号：{{cutCode + '-' + (keys + 1)}} ({{item.counts}})</td>-->
@@ -216,6 +224,15 @@ export default {
       } else {
         return a
       }
+    },
+    // 返回状态
+    returnStatus (a) {
+      if (a === 1) return '合格'
+      if (a === 2) return '差异合格'
+      if (a === 3) return '该流程重做'
+      if (a === 4) return '报废'
+      if (a === 5) return '存在部份不合格回火'
+      return ''
     },
     // 查看单条数据详情
     seeDetail (id, treatmentId) {

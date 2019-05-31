@@ -119,13 +119,13 @@
         <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
           <tr>
             <td style="position: relative;" rowspan="2">
-              {{item}}
-              <div :style="getStyle(10, 22)" class="midLine">
+              {{item.name}}
+              <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
                 <img class="line-left" src="../../../static/images/left.png" alt="">
                 <img class="line-right" src="../../../static/images/right.png" alt="">
               </div>
-              <div :style="getStyle(10, 22)" class="explan">
-                客户：阿雷斯提，比亚迪，型腔。材质：DAC,DAC55
+              <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
+                {{item.showStr}}
               </div>
             </td>
             <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
@@ -277,6 +277,9 @@ export default {
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }
   },
+  created () {
+    this.heatTime()
+  },
   mounted () {
     this.$nextTick(() => {
       this.widthTd = this.$refs.tdWidth.clientWidth
@@ -284,6 +287,48 @@ export default {
     })
   },
   methods: {
+    // 热处理时间表
+    heatTime () {
+      this.http('/show/getHeatTimeData', {}).then(resp => {
+        if (resp.success) {
+          console.log(resp)
+          // this.nowPic = resp.data
+          // let arrt = [
+          //   {
+          //     endTime: 1559275186,
+          //     name: '真空淬火炉',
+          //     showStr: '客户：null。材质：null',
+          //     startTime: 1559275186
+          //   },
+          //   {
+          //     endTime: null,
+          //     name: '真空淬火',
+          //     showStr: '客户：null。材质：null',
+          //     startTime: 1559275186
+          //   }
+          // ]
+          this.nowPic = resp.data.map(item => {
+            if (item.startTime > 0) {
+              let sh = new Date(item.startTime).getHours()
+              let eh = null
+              if (item.endTime > 0) {
+                eh = new Date(item.endTime).getHours()
+              } else {
+                eh = new Date().getHours()
+              }
+              item.startTime = sh
+              item.endTime = eh
+            }
+            return item
+          })
+        }
+      })
+    },
+    // 当开始时间为null时，不显示
+    isShow (start, end) {
+      if (start === null) return false
+      return true
+    },
     handleCurrentChange (val) {
       console.log(parseInt(`$(val)`))
     },
@@ -310,7 +355,7 @@ export default {
       }
 
       let left = 'left:' + (a * this.widthTd + 6 + a) + 'px;'
-      let width = 'width:' + (c * this.widthTd + d) + 'px;'
+      let width = 'min-width:' + (c * this.widthTd + d) + 'px;'
       return left + width
     }
   }
