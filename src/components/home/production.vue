@@ -25,25 +25,15 @@
       <tbody>
       <tr>
         <td>切断组</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td v-for="(item, key) in productTable[0]" :key="'a' +key">
+          {{item}}
+        </td>
       </tr>
       <tr>
         <td>加工组</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td v-for="(item, key) in productTable[1]" :key="'b' +key">
+          {{item}}
+        </td>
       </tr>
       </tbody>
     </table>
@@ -118,13 +108,13 @@
           </tr>
           <tr>
             <td>QT</td>
-            <td></td>
-            <td></td>
+            <td>{{qtNvg.QT.notDoneOrderCount}}</td>
+            <td>{{qtNvg.QT.notDoneWeight}}</td>
           </tr>
           <tr>
             <td>NVG</td>
-            <td></td>
-            <td></td>
+            <td>{{qtNvg.NVG.notDoneOrderCount}}</td>
+            <td>{{qtNvg.NVG.notDoneWeight}}</td>
           </tr>
         </table>
     </div>
@@ -196,12 +186,15 @@ export default {
   data () {
     return {
       widthTd: '',
+      qtNvg: {},
       pageNum: 1,
+      productTable: [],
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }
   },
   created () {
     this.heatTime()
+    this.getQtNvg()
   },
   mounted () {
     this.$nextTick(() => {
@@ -210,6 +203,19 @@ export default {
     })
   },
   methods: {
+    // QT、NVG处理
+    getQtNvg () {
+      this.http('/show/getHeatTotalData', {}).then(resp => {
+        if (resp.success) {
+          this.qtNvg = resp.data
+        }
+      })
+      this.http('/show/getProduceCutMachiningTable', {}).then(resp => {
+        if (resp.success) {
+          this.productTable = resp.data
+        }
+      })
+    },
     // 热处理时间表
     heatTime () {
       this.http('/show/getHeatTimeData', {}).then(resp => {

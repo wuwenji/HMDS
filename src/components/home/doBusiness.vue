@@ -44,7 +44,7 @@
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
-    <drawEchart title="切断部机器负荷表数量(件)" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
+    <drawEchart title="切断部机器负荷表数量(件)" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity"/>
   </div>
 </template>
 
@@ -61,8 +61,7 @@ export default {
       title: '切断部机器负荷表',
       cutEchart: {
         cutCode: ['小机器(单重50KG以下)', '中机器(单重50KG~400G以下)', '大机器(单重400KG以上)'],
-        cutCapacity: [],
-        cutCompletedCount: []
+        cutCapacity: []
       }
     }
   },
@@ -78,14 +77,7 @@ export default {
       this.http('/show/getCutLoadShowData', {}).then(resp => {
         console.log(resp)
         if (resp.success) {
-          this.cutEchart.cutCapacity = []
-          // this.cutEchart.cutCode = []
-          this.cutEchart.cutCompletedCount = []
-          resp.data.list.map(item => {
-            this.cutEchart.cutCapacity.push(item.capacity)
-            // this.cutEchart.cutCode.push(item.code)
-            this.cutEchart.cutCompletedCount.push(item.completedCount)
-          })
+          this.cutEchart.cutCapacity = resp.data
         }
       })
     },

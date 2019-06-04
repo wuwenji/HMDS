@@ -53,9 +53,22 @@
         <el-form-item class="form-item" label="形状" prop="shape">
           <el-select v-model="formData.shape" placeholder="形状">
             <el-option label="全部" value=""></el-option>
+            <el-option label="2MF" value="2MF"></el-option>
+            <el-option label="4M6F" value="4M6F"></el-option>
+            <el-option label="6F" value="6F"></el-option>
+            <el-option label="CC" value="CC"></el-option>
             <el-option label="F" value="F"></el-option>
-            <el-option label="R" value="R"></el-option>
+            <el-option label="FD" value="FD"></el-option>
+            <el-option label="M6F" value="M6F"></el-option>
+            <el-option label="MF" value="MF"></el-option>
             <el-option label="MR" value="MR"></el-option>
+            <el-option label="NO" value="NO"></el-option>
+            <el-option label="PL" value="PL"></el-option>
+            <el-option label="R" value="R"></el-option>
+            <el-option label="RB" value="RB"></el-option>
+            <el-option label="RD" value="RD"></el-option>
+            <el-option label="RG" value="RG"></el-option>
+            <el-option label="S" value="S"></el-option>
           </el-select>
         </el-form-item>
         <div class="cl" style="margin-top: 10px;"></div>
@@ -176,9 +189,9 @@
           label="溶解编号">
         </el-table-column>
         <el-table-column
-          prop="stockSizeNote"
-          label="尺寸"
-          width="150">
+          prop="shape"
+          label="形状"
+          width="60">
         </el-table-column>
         <el-table-column
           prop="size1"
@@ -292,8 +305,9 @@
         label="溶解编号">
       </el-table-column>
       <el-table-column
-        prop="stockSizeNote"
-        label="尺寸">
+        prop="shape"
+        label="形状"
+        width="60">
       </el-table-column>
       <el-table-column
         prop="size1"

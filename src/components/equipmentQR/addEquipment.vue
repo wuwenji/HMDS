@@ -5,16 +5,16 @@
       ref="dynamicValidateForm"
       label-width="100px"
       class="demo-dynamic">
-      <el-form-item
-        prop="id"
-        label="设备编号"
-        :rules="[
-      { required: true, message: '设备编号不能为空', trigger: 'blur' },
-      { validator: checkNum, trigger: 'blur'}
-    ]"
-      >
-        <el-input v-model="dynamicValidateForm.id"></el-input>
-      </el-form-item>
+      <!--<el-form-item-->
+        <!--prop="id"-->
+        <!--label="设备编号"-->
+        <!--:rules="[-->
+      <!--{ required: true, message: '设备编号不能为空', trigger: 'blur' },-->
+      <!--{ validator: checkNum, trigger: 'blur'}-->
+    <!--]"-->
+      <!--&gt;-->
+        <!--<el-input v-model="dynamicValidateForm.id"></el-input>-->
+      <!--</el-form-item>-->
       <el-form-item
         prop="name"
         label="设备名"
@@ -40,6 +40,9 @@
       <el-form-item
         prop="code"
         label="工厂编号"
+        :rules="[
+      { required: true, message: '请选择部门', trigger: 'blur' },
+    ]"
       >
         <el-input v-model="dynamicValidateForm.code"></el-input>
       </el-form-item>
@@ -85,7 +88,7 @@ export default {
   data () {
     return {
       dynamicValidateForm: {
-        id: '',
+        // id: '',
         name: '',
         type: '',
         code: '',

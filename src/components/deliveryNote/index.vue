@@ -93,9 +93,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="heatMillingRemarks"
           label="类型"
-          width="130">
+          width="160">
+          <template slot-scope="scope">
+            {{getType(scope.row.workInstCd)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop=""
+          label="全部完成"
+          width="80">
         </el-table-column>
         <el-table-column
           label="是否关联母材"
@@ -140,11 +147,6 @@
         border
         height="calc(100% - 75px)">
         <el-table-column
-          type="index"
-          label="序号"
-          width="50">
-        </el-table-column>
-        <el-table-column
           prop="soNo"
           width="100px"
           label="接单号">
@@ -186,9 +188,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="heatMillingRemarks"
           label="类型"
-          width="130">
+          width="160">
+          <template slot-scope="scope">
+            {{getType(scope.row.workInstCd)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop=""
+          label="全部完成"
+          width="80">
         </el-table-column>
         <el-table-column
           label="是否关联母材"
@@ -276,11 +285,19 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    // 获取订单类型
+    getType (numb) {
+      if (numb === '1') return '整条'
+      if (numb === '2') return '切断'
+      if (numb === '3') return '切断&加工'
+      if (numb === '5') return '热处理'
+      if (numb === '6') return '切断&加工&热处理'
+    },
     getList (pageSize, pageNum, type) {
       this.http('/tSalesOrder/list', {
         pageSize,
         pageNum,
-        isPrinted: type
+        isDeilvery: type // 1:已打印  0：未打印
       }).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -335,10 +352,10 @@ export default {
       this.johnTab = index
       this.pageSize = 10
       this.pageNum = 1
-      this.getList(this.pageSize, this.pageNum, this.johnTab)
+      this.research(this.pageSize, this.pageNum)
     },
     research (pageSize, pageNum) {
-      this.formData.isPrinted = this.johnTab
+      this.formData.isDeilvery = this.johnTab
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
       this.http('/tSalesOrder/list', this.formData).then(resp => {

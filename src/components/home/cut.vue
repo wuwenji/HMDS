@@ -19,96 +19,100 @@
     <template>
       <div class="table_changeTd">
         <el-table
-        :data="lists"
-        height="350"
-        border
-        style="width: 100%">
-        <el-table-column
-          prop="soNo"
-          label="订单号"
-          fixed
-          width="160">
-        </el-table-column>
-        <el-table-column
-          label="接单时间"
-          width="160">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="contKname"
-          label="客户名"
-          width="200">
-        </el-table-column>
-        <el-table-column
-          prop="soLnNo"
-          label="行号">
-        </el-table-column>
-        <el-table-column
-          prop="gradeCd"
-          label="材质">
-        </el-table-column>
-        <el-table-column
-          prop="specExternalNote"
-          width="150"
-          label="规格">
-        </el-table-column>
-        <el-table-column
-          prop="workInstQty"
-          label="数量">
-        </el-table-column>
-        <el-table-column
-          prop="machineSpecCd"
-          label="作业名称">
-        </el-table-column>
-        <el-table-column
-          prop="showData"
-          label="完成件数">
-        </el-table-column>
-        <el-table-column
-          label="要求交期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="生产进度"
-          width="350">
-          <template slot-scope="scope">
-            <ul class="prog">
-              <li v-if="scope.row.cutStatus != null">
-                切断<br/>
-                <span :class="getClass(scope.row.cutStatus)"></span>
-              </li>
-              <li v-if="scope.row.machineStatus != null">
-                加工
-                <span :class="getClass(scope.row.machineStatus)"></span>
-              </li>
-              <li v-if="scope.row.grindingStatus != null">
-                研磨
-                <span :class="getClass(scope.row.grindingStatus)"></span>
-              </li>
-              <li v-if="scope.row.heatStatus != null">
-                热处理
-                <span :class="getClass(scope.row.heatStatus)"></span>
-              </li>
-              <li v-if="scope.row.deliveryStatus != null">
-                出货
-                <span :class="getClass(scope.row.deliveryStatus)"></span>
-              </li>
-            </ul>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="备注"
-          width="150">
-          <template slot-scope="scope">
-            <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
-            <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
-          </template>
-        </el-table-column>
-      </el-table>
+          :data="lists"
+          height="350"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="soNo"
+            label="订单号"
+            fixed
+            width="120">
+          </el-table-column>
+          <el-table-column
+            label="接单时间"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.soDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="contKname"
+            label="客户名">
+          </el-table-column>
+          <el-table-column
+            prop="soLnNo"
+            width="60"
+            label="行号">
+          </el-table-column>
+          <el-table-column
+            prop="gradeCd"
+            width="100"
+            label="材质">
+          </el-table-column>
+          <el-table-column
+            prop="specExternalNote"
+            label="规格">
+          </el-table-column>
+          <el-table-column
+            prop="workInstQty"
+            width="60"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="machineSpecCd"
+            width="100"
+            label="作业名称">
+          </el-table-column>
+          <el-table-column
+            prop="showData"
+            width="100"
+            label="完成件数">
+          </el-table-column>
+          <el-table-column
+            label="要求交期"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="生产进度"
+            width="260">
+            <template slot-scope="scope">
+              <ul class="prog">
+                <li v-if="scope.row.cutStatus != null">
+                  切断<br/>
+                  <span :class="getClass(scope.row.cutStatus)"></span>
+                </li>
+                <li v-if="scope.row.machineStatus != null">
+                  加工
+                  <span :class="getClass(scope.row.machineStatus)"></span>
+                </li>
+                <li v-if="scope.row.grindingStatus != null">
+                  研磨
+                  <span :class="getClass(scope.row.grindingStatus)"></span>
+                </li>
+                <li v-if="scope.row.heatStatus != null">
+                  热处理
+                  <span :class="getClass(scope.row.heatStatus)"></span>
+                </li>
+                <li v-if="scope.row.deliveryStatus != null">
+                  出货
+                  <span :class="getClass(scope.row.deliveryStatus)"></span>
+                </li>
+              </ul>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="备注"
+            width="150">
+            <template slot-scope="scope">
+              <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
+              <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </template>
     <div class="page">

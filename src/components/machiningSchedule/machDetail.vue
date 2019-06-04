@@ -85,14 +85,14 @@
 
         </tr>
         <tr>
-          <td>加工工差</td>
-          <td>切断指示尺寸</td>
-          <td>实际尺寸</td>
-          <td>直角度</td>
-          <td>平行度</td>
-          <td>倒角规格</td>
-          <td colspan="2">加工规格</td>
-          <td colspan="2">加工指示备注</td>
+          <td><b>加工工差</b></td>
+          <td><b>切断指示尺寸</b></td>
+          <td><b>实际尺寸</b></td>
+          <td><b>直角度</b></td>
+          <td><b>平行度</b></td>
+          <td><b>倒角规格</b></td>
+          <td colspan="2"><b>加工规格</b></td>
+          <td colspan="2"><b>加工指示备注</b></td>
         </tr>
         <tr>
           <td>
@@ -113,12 +113,12 @@
           </td>
         </tr>
         <tr>
-          <td>现在加工设备</td>
-          <td>现在加工人员</td>
-          <td>加工开始时间</td>
-          <td>加工完成时间</td>
-          <td>检测完成时间</td>
-          <td colspan="2">操作</td>
+          <td><b>现在加工设备</b></td>
+          <td><b>现在加工人员</b></td>
+          <td><b>加工开始时间</b></td>
+          <td><b>加工完成时间</b></td>
+          <td><b>检测完成时间</b></td>
+          <td colspan="2"><b>操作</b></td>
         </tr>
         <tr>
           <td>

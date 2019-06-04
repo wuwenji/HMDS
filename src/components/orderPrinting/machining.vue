@@ -56,7 +56,7 @@
               </tr>
               <tr>
                 <td class="r"><strong>送货地址名称</strong></td>
-                <td class="l" colspan="5"> {{machiningData.order.custKname}} </td>
+                <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
                 <td class="r t"></td>
                 <td class="t l"></td>
                 <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
@@ -83,16 +83,16 @@
               </tr>
               <tr>
                 <td class="b"><strong>直角度</strong></td>
-                <td class="b"><strong>平等度</strong></td>
+                <td class="b"><strong>平行度</strong></td>
                 <td class="b"><strong>加工规格</strong></td>
                 <td class="b"><strong>倒角规格</strong></td>
                 <td class="b" colspan="5"><strong>切断指示尺寸</strong></td>
               </tr>
               <tr>
-                <td class="t">&nbsp;</td>
-                <td class="t">&nbsp;</td>
+                <td class="t">&nbsp;{{item.mRightAngle}}</td>
+                <td class="t">{{item.mParallel}}</td>
                 <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
-                <td class="t">&nbsp;</td>
+                <td class="t">{{item.chamferSpec}}</td>
                 <td align="center" style="font-size: 20px;" colspan="5" class="t">
                   {{machiningData.order.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
                   <!--{{item.instSizeNote}}-->
@@ -121,14 +121,16 @@
               </tr>
               <tr>
                 <td  class="b" colspan="9">
-                  <strong>加工指示备注</strong> {{item.millingRemarks1}}
-                  {{item.millingRemarks2}}
-                  {{item.instRemarks1}}
-                  {{item.instRemarks2}}
+                  <strong style="float: left;margin-right:10px;">加工指示备注</strong>
+                  <div style="width:320px;float: left;">
+                    <p>&nbsp;{{item.instRemarks1}}</p>
+                    <p>&nbsp;{{item.instRemarks2}}</p>
+                  </div>
+                  <div style="width:330px;float: right;">
+                    <p>&nbsp;{{item.millingRemarks1}}</p>
+                    <p>&nbsp;{{item.millingRemarks2}}</p>
+                  </div>
                 </td>
-              </tr>
-              <tr>
-                <td  class="t" colspan="9">&nbsp;</td>
               </tr>
             </table>
             <table class="table" style="width: 85%;margin: 0 auto;border-top: none;" border="1" cellspacing="0" bordercolor="#000000">
@@ -187,7 +189,7 @@
                 <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contKname}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.custKname}}</td>
+                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
               </tr>
               <tr>
                 <td colspan="9"><strong>订单号：</strong></td>
@@ -353,7 +355,7 @@
               </tr>
               <tr>
                 <td class="r"><strong>送货地址名称</strong></td>
-                <td class="l" colspan="5"> {{machiningData.order.custKname}} </td>
+                <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
                 <td class="r t"></td>
                 <td class="t l"></td>
                 <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
@@ -380,16 +382,16 @@
               </tr>
               <tr>
                 <td class="b"><strong>直角度</strong></td>
-                <td class="b"><strong>平等度</strong></td>
+                <td class="b"><strong>平行度</strong></td>
                 <td class="b"><strong>加工规格</strong></td>
                 <td class="b"><strong>倒角规格</strong></td>
                 <td class="b" colspan="5"><strong>切断指示尺寸</strong></td>
               </tr>
               <tr>
-                <td class="t">&nbsp;</td>
-                <td class="t">&nbsp;</td>
+                <td class="t">&nbsp;{{item.mRightAngle}}</td>
+                <td class="t">{{item.mParallel}}</td>
                 <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
-                <td class="t">&nbsp;</td>
+                <td class="t">{{item.chamferSpec}}</td>
                 <td align="center" style="font-size: 20px;" colspan="5" class="t">
                   {{machiningData.order.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
                   <!--{{item.instSizeNote}}-->
@@ -418,14 +420,16 @@
               </tr>
               <tr>
                 <td  class="b" colspan="9">
-                  <strong>加工指示备注</strong> {{item.millingRemarks1}}
-                  {{item.millingRemarks2}}
-                  {{item.instRemarks1}}
-                  {{item.instRemarks2}}
+                  <strong style="float: left;margin-right:10px;">加工指示备注</strong>
+                  <div style="width:320px;float: left;">
+                    <p>&nbsp;{{item.instRemarks1}}</p>
+                    <p>&nbsp;{{item.instRemarks2}}</p>
+                  </div>
+                  <div style="width:330px;float: right;">
+                    <p>&nbsp;{{item.millingRemarks1}}</p>
+                    <p>&nbsp;{{item.millingRemarks2}}</p>
+                  </div>
                 </td>
-              </tr>
-              <tr>
-                <td  class="t" colspan="9">&nbsp;</td>
               </tr>
             </table>
             <table class="table" style="width: 85%;margin: 0 auto;border-top: none;" border="1" cellspacing="0" bordercolor="#000000">
@@ -484,7 +488,7 @@
                 <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contKname}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.custKname}}</td>
+                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
               </tr>
               <tr>
                 <td colspan="9"><strong>订单号：</strong></td>

@@ -169,7 +169,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.cutCount, scope.row.totalCount)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.machineCount, scope.row.totalCount)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column

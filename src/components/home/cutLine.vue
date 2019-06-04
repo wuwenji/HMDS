@@ -9,7 +9,7 @@ let echarts = require('echarts/lib/echarts')
               require('echarts/lib/component/title')
 export default {
   name: 'lineEchart',
-  props: ['title', 'xAxis', 'oneData', 'twoData', 'type'],
+  props: ['title', 'xAxis', 'oneData'],
   mounted () {
     this.drawEchar()
   },
@@ -60,7 +60,7 @@ export default {
         },
         series: [
           {
-            name: this.type,
+            name: '',
             type: 'bar',
             barGap: 0,
             data: this.oneData
@@ -72,12 +72,6 @@ export default {
   },
   watch: {
     oneData () {
-      this.drawEchar()
-    },
-    twoData () {
-      this.drawEchar()
-    },
-    xAxis () {
       this.drawEchar()
     }
   }

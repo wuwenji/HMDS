@@ -19,86 +19,100 @@
     <template>
       <div class="table_changeTd">
         <el-table
-        :data="lists"
-        height="350"
-        border
-        style="width: 100%">
-        <el-table-column
-          prop="date"
-          label="接单时间">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="客户名">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="订单号">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="行号">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="材质">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="规格">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="数量">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="作业名称">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="完成件数">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="要求交期">
-        </el-table-column>
-        <el-table-column
-          label="生产进度"
-          width="250">
-          <template slot-scope="scope">
-            <ul class="prog">
-              <li>
-                切断<br/>
-                <span :class="getClass(1)"></span>
-              </li>
-              <li>
-                加工
-                <span :class="getClass(2)"></span>
-              </li>
-              <li>
-                研磨
-                <span :class="getClass(3)"></span>
-              </li>
-              <li>
-                热处理
-                <span :class="getClass(4)"></span>
-              </li>
-              <li>
-                出货
-                <span :class="getClass(5)"></span>
-              </li>
-            </ul>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="备注">
-          <template slot-scope="scope">
-            <img @click="scope.row.remark = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
-            <img @click="scope.row.remark = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
-          </template>
-        </el-table-column>
-      </el-table>
+          :data="lists"
+          height="350"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="soNo"
+            label="订单号"
+            fixed
+            width="120">
+          </el-table-column>
+          <el-table-column
+            label="接单时间"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.soDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="contKname"
+            label="客户名">
+          </el-table-column>
+          <el-table-column
+            prop="soLnNo"
+            width="60"
+            label="行号">
+          </el-table-column>
+          <el-table-column
+            prop="gradeCd"
+            width="100"
+            label="材质">
+          </el-table-column>
+          <el-table-column
+            prop="specExternalNote"
+            label="规格">
+          </el-table-column>
+          <el-table-column
+            prop="workInstQty"
+            width="60"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="machineSpecCd"
+            width="100"
+            label="作业名称">
+          </el-table-column>
+          <el-table-column
+            prop="showData"
+            width="100"
+            label="完成件数">
+          </el-table-column>
+          <el-table-column
+            label="要求交期"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="生产进度"
+            width="260">
+            <template slot-scope="scope">
+              <ul class="prog">
+                <li v-if="scope.row.cutStatus != null">
+                  切断<br/>
+                  <span :class="getClass(scope.row.cutStatus)"></span>
+                </li>
+                <li v-if="scope.row.machineStatus != null">
+                  加工
+                  <span :class="getClass(scope.row.machineStatus)"></span>
+                </li>
+                <li v-if="scope.row.grindingStatus != null">
+                  研磨
+                  <span :class="getClass(scope.row.grindingStatus)"></span>
+                </li>
+                <li v-if="scope.row.heatStatus != null">
+                  热处理
+                  <span :class="getClass(scope.row.heatStatus)"></span>
+                </li>
+                <li v-if="scope.row.deliveryStatus != null">
+                  出货
+                  <span :class="getClass(scope.row.deliveryStatus)"></span>
+                </li>
+              </ul>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="备注"
+            width="150">
+            <template slot-scope="scope">
+              <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
+              <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </template>
     <div class="page">
@@ -106,7 +120,7 @@
         @current-change="handleCurrentChange"
         :current-page.sync="pageNum"
         layout="prev, pager, next"
-        :total="100">
+        :total="total">
       </el-pagination>
     </div>
     <div class="total">
@@ -124,21 +138,10 @@ export default {
     return {
       summaryData: {},
       cutEndTotal: 0,
-      lists: [
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 1
-        },
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 2
-        }
-      ],
+      pageSize: 10,
       pageNum: 1,
+      total: 0,
+      lists: [],
       title: '切断部机器负荷表',
       macEchart: {
         macCode: [],
@@ -149,14 +152,27 @@ export default {
   },
   mounted () {
     this.getMacData()
+    this.getList()
   },
   methods: {
     handleCurrentChange (val) {
-      console.log(parseInt(`$(val)`))
+      this.pageNum = parseInt(`${val}`)
+      this.getList()
     },
     getClass (a) {
       if (a === 1) return 'red'
       if (a === 2) return 'blue'
+    },
+    // 表格数据
+    getList () {
+      this.http('/show/getShowMachiningDepartmentTable', {
+        pageSize: this.pageSize,
+        pageNum: this.pageNum
+      }).then(resp => {
+        console.log(resp)
+        this.lists = resp.data.list
+        this.total = resp.data.total
+      })
     },
     // 加工图表数据
     getMacData () {

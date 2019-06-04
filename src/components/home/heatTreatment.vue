@@ -69,13 +69,13 @@
           </tr>
           <tr>
             <td>QT</td>
-            <td></td>
-            <td></td>
+            <td>{{qtNvg.QT.notDoneOrderCount}}</td>
+            <td>{{qtNvg.QT.notDoneWeight}}</td>
           </tr>
           <tr>
             <td>NVG</td>
-            <td></td>
-            <td></td>
+            <td>{{qtNvg.NVG.notDoneOrderCount}}</td>
+            <td>{{qtNvg.NVG.notDoneWeight}}</td>
           </tr>
         </table>
     </div>
@@ -149,43 +149,45 @@
         border
         style="width: 100%">
         <el-table-column
-          prop="date"
           label="">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="managementNumber"
           label="成绩书单号">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="customerName"
           label="客户名称">
         </el-table-column>
         <el-table-column
-          prop="date"
-          label="41">
+          prop="material"
+          label="钢种">
+        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="name"-->
+          <!--label="作业名">-->
+        <!--</el-table-column>-->
+        <el-table-column
+          prop="totalCount"
+          label="数量">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="作业名">
+          prop="totalWeight"
+          label="重量">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="数">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="重">
-        </el-table-column>
-        <el-table-column
-          prop="name"
+          prop="hardnessRequirement"
           label="硬度要求">
         </el-table-column>
         <el-table-column
-          prop="address"
+          prop="attention"
           label="特别事项">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="taskName"
           label="作业名">
         </el-table-column>
         <el-table-column
@@ -193,51 +195,62 @@
           label="使用炉">
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="type"
           label="工艺">
         </el-table-column>
         <el-table-column
-          prop="date"
           label="入炉日期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.tempStartTime, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="date"
           label="计划货期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
           label="生产进度"
           width="250">
           <template slot-scope="scope">
             <ul class="prog">
-              <li>
-                Q<br/>
-                <span :class="getClass(1)"></span>
-              </li>
-              <li>
-                T1<br/>
-                <span :class="getClass(2)"></span>
-              </li>
-              <li>
-                T2<br/>
-                <span :class="getClass(3)"></span>
-              </li>
-              <li>
-                T3<br/>
-                <span :class="getClass(4)"></span>
-              </li>
-              <li>
-                检查
-                <span :class="getClass(5)"></span>
+              <li v-for="item in scope.row.mapList" :key="item.equipmentId">
+                {{item.type}}<br/>
+                <span :class="getClass(item)"></span>
               </li>
             </ul>
+            <!--<ul class="prog">-->
+              <!--<li>-->
+                <!--Q<br/>-->
+                <!--<span :class="getClass(1)"></span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--T1<br/>-->
+                <!--<span :class="getClass(2)"></span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--T2<br/>-->
+                <!--<span :class="getClass(3)"></span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--T3<br/>-->
+                <!--<span :class="getClass(4)"></span>-->
+              <!--</li>-->
+              <!--<li>-->
+                <!--检查-->
+                <!--<span :class="getClass(5)"></span>-->
+              <!--</li>-->
+            <!--</ul>-->
           </template>
         </el-table-column>
         <el-table-column
+          prop="specialMatters"
           label="备注">
-          <template slot-scope="scope">
-            <img @click="scope.row.remark = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
-            <img @click="scope.row.remark = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
-          </template>
+          <!--<template slot-scope="scope">-->
+            <!--<img @click="scope.row.specialMatters = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">-->
+            <!--<img @click="scope.row.specialMatters = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">-->
+          <!--</template>-->
         </el-table-column>
       </el-table>
       </div>
@@ -247,7 +260,7 @@
         @current-change="handleCurrentChange"
         :current-page.sync="pageNum"
         layout="prev, pager, next"
-        :total="100">
+        :total="total">
       </el-pagination>
     </div>
   </div>
@@ -259,26 +272,26 @@ export default {
   data () {
     return {
       widthTd: '',
-      lists: [
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 1
+      qtNvg: {
+        NVG: {
+          notDoneOrderCount: 0,
+          notDoneWeight: 0
         },
-        {
-          name: 1,
-          address: 1,
-          date: 1,
-          remark: 2
+        QT: {
+          notDoneOrderCount: 0,
+          notDoneWeight: 0
         }
-      ],
+      },
+      total: 0,
+      lists: [],
       pageNum: 1,
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }
   },
   created () {
     this.heatTime()
+    this.getQtNvg()
+    this.getPropertyRegistration()
   },
   mounted () {
     this.$nextTick(() => {
@@ -287,11 +300,33 @@ export default {
     })
   },
   methods: {
+    // QT、NVG处理
+    getQtNvg () {
+      this.http('/show/getHeatTotalData', {}).then(resp => {
+        if (resp.success) {
+          this.qtNvg = resp.data
+        }
+      })
+    },
+    // 财产管理登记列表
+    getPropertyRegistration () {
+      this.http('/show/getPropertyRegistration', {
+        pageSize: 10,
+        tempStartTime: 1553011200000,
+        tempEndTime: 1559491200000,
+        pageNum: this.pageNum
+      }).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.lists = resp.data.lists
+          this.total = resp.data.total
+        }
+      })
+    },
     // 热处理时间表
     heatTime () {
       this.http('/show/getHeatTimeData', {}).then(resp => {
         if (resp.success) {
-          console.log(resp)
           // this.nowPic = resp.data
           // let arrt = [
           //   {
@@ -330,11 +365,21 @@ export default {
       return true
     },
     handleCurrentChange (val) {
-      console.log(parseInt(`$(val)`))
+      this.pageNum = parseInt(`${val}`)
+      this.getPropertyRegistration()
     },
-    getClass (a) {
-      if (a === 1) return 'red'
-      if (a === 2) return 'blue'
+    getClass (item) {
+      if (item.equipmentId > 0) {
+        if (item.status > 0) {
+          return 'red'
+        } else {
+          return 'blue'
+        }
+      } else {
+        return ''
+      }
+      // if (a === 1) return 'red'
+      // if (a === 2) return 'blue'
     },
     getStyle (a, b) {
       let c = b - a + 1
