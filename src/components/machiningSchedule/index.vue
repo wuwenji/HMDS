@@ -162,7 +162,7 @@
           label="状态"
           width="100">
           <template slot-scope="scope">
-            {{scope.row.status == 0? '未完成' : '已完成'}}
+            {{returnType(scope.row)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -231,6 +231,13 @@ export default {
     this.getList(1, 10)
   },
   methods: {
+    // 返回加工状态
+    returnType (item) {
+      if (item.totalCount === item.machineCount) {
+        return '已完成'
+      }
+      return '未完成'
+    },
     getList (num, size) {
       if (this.johnTab === 0) {
         this.http('/cut/list', {

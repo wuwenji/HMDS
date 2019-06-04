@@ -127,7 +127,7 @@
     <div class="total">
       <span>切断完成总件数：{{cutEndTotal}}</span>
     </div>
-    <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity" :twoData="cutEchart.cutCompletedCount"/>
+    <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
   </div>
 </template>
 
@@ -161,7 +161,7 @@ export default {
         pageSize: 10,
         pageNum: this.pageNum
       }).then(resp => {
-        console.log(resp)
+        // console.log(resp)
         if (resp.success) {
           this.total = resp.data.total
           this.lists = resp.data.list
@@ -194,7 +194,7 @@ export default {
         }
       })
       this.http('/show/getSummaryShowData', {}).then(resp => {
-        console.log(resp)
+        // console.log(resp)
         if (resp.success) {
           this.summaryData = resp.data
         }

@@ -63,6 +63,18 @@ export default {
             name: '',
             type: 'bar',
             barGap: 0,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: 'red',
+                    fontSize: 20
+                  }
+                }
+              }
+            },
             data: this.oneData
           }
         ],

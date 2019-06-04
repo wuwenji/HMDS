@@ -104,7 +104,7 @@
       </tr>
     </table>
     <el-dialog
-      width="700px"
+      width="1000px"
       title="详情"
       :modal=false
       top="25vh"
@@ -114,12 +114,16 @@
         <thead>
           <tr>
             <th>切断行号</th>
+            <th>数量</th>
             <th>作业员</th>
             <th>目前刀数</th>
             <th>开始时间</th>
             <th>结束时间</th>
+            <th>总用时(分)</th>
+            <th>设备</th>
             <th>完成尺寸</th>
-            <th>理论重量</th>
+            <th>产品重量</th>
+            <!--<th>理论重量</th>-->
           </tr>
         </thead>
         <tbody v-for="(item, key) in lists" :key="'a' + key">
@@ -127,13 +131,17 @@
             <td v-if="index == 0" :rowspan="item.cutters.length">
               <p>{{cutCode + '-' + (key + 1)}}</p>
             </td>
+            <td>{{item.counts}}</td>
             <td>{{val.userName}}</td>
             <td>{{val.cutterMiddleList.length}}</td>
             <td>{{$store.getters.getDate(val.startTime)}}</td>
             <td>{{$store.getters.getDate(val.endTime)}}</td>
+            <td>{{userTime(val.cutterMiddleList)}}</td>
+            <td>{{item.equipmentName}}</td>
             <!--<td>{{returnPrsent(item.completion1, item.completion2, item.completion3, item.status)}}%</td>-->
             <td>{{item.size1}}X<template v-if="item.size2 > 0">{{item.size2}}X</template>{{item.size3}}</td>
             <td>{{item.actualWeight}}</td>
+            <!--<td>{{item.actualWeight}}</td>-->
           </tr>
         </tbody>
         <!--<tr v-for="(item, key) in lists" :key="'a' + key">-->
@@ -169,6 +177,14 @@ export default {
     }
   },
   methods: {
+    // 获取使用时间
+    userTime (item) {
+      let sum = 0
+      item.map(item => {
+        sum += item.estimateTime
+      })
+      return sum
+    },
     getData () {
       this.http('/cut/find', this.orderInfo.id).then(resp => {
         if (resp.success) {
@@ -205,10 +221,10 @@ export default {
     border-collapse: collapse;
   }
   .table td:nth-child(odd) {
-    width:80px;
+    /*width:80px;*/
   }
   .table td:nth-child(even) {
-    min-width:80px;
+    /*min-width:80px;*/
   }
   .table td {
     padding: 7px;

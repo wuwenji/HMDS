@@ -62,38 +62,62 @@ export default {
             name: this.type,
             type: 'bar',
             barGap: 0,
-            data: this.oneData,
-            markLine: {
-              itemStyle: {
-                normal: {
-                  lineStyle: {
-                    color: '#ff0000 '
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: 'red',
+                    fontSize: 20
                   }
                 }
-              },
-              data: [
-                [
-                  {
-                    name: '预警线',
-                    yAxis: 50,
-                    xAxis: 0
-                  },
-                  {
-                    yAxis: 50,
-                    xAxis: this.xAxis[this.xAxis.length - 1]
-                  }
-                ]
-              ]
-            }
+              }
+            },
+            data: this.oneData
+            // markLine: {
+            //   itemStyle: {
+            //     normal: {
+            //       lineStyle: {
+            //         color: '#ff0000 '
+            //       }
+            //     }
+            //   },
+            //   data: [
+            //     [
+            //       {
+            //         name: '预警线',
+            //         yAxis: 50,
+            //         xAxis: 0
+            //       },
+            //       {
+            //         yAxis: 50,
+            //         xAxis: this.xAxis[this.xAxis.length - 1]
+            //       }
+            //     ]
+            //   ]
+            // }
           },
           {
             name: '标准',
             type: 'bar',
             barGap: 0,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: 'red',
+                    fontSize: 20
+                  }
+                }
+              }
+            },
             data: this.twoData
           }
         ],
-        color: ['#5b9bd5', '#ed7d31']
+        color: ['#5b9bd5', '#ff0000']
       })
     }
   },

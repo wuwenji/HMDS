@@ -126,7 +126,7 @@
     <div class="total">
       <span>加工完成总件数：{{cutEndTotal}}</span>
     </div>
-    <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCapacity" :twoData="macEchart.macCompletedCount"/>
+    <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCompletedCount" :twoData="macEchart.macCapacity"/>
   </div>
 </template>
 

@@ -363,8 +363,17 @@ export default {
         if (resp.success) {
           this.pageSize = pageSize
           this.pageNum = pageNum
+          this.listData = resp.data.list.filter(item => {
+            item.relationMoth = false
+            if (item.isShowAmount === '1') {
+              item.isShowAmount = true
+            } else {
+              // item.isShowAmount = false
+              item.isShowAmount = true
+            }
+            return item
+          })
           this.total = resp.data.total
-          this.listData = resp.data.list
         }
       })
     }
