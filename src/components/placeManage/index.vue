@@ -49,10 +49,12 @@
         </el-table-column>
         <el-table-column
           prop="materialCount"
+          align="right"
           label="现有材料数量">
         </el-table-column>
         <el-table-column
           prop="materialWt"
+          align="right"
           label="重量">
         </el-table-column>
         <el-table-column

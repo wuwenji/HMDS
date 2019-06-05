@@ -51,20 +51,20 @@
         <td>
           客户要求尺寸<br/>
           <p class="p-spans">
-            <span>交期</span>
-            <span>单位</span>
-            <span>数量</span>
-            <span>kg重量</span>
+            <span style="width: 60px">交期</span>
+            <span style="width: 50px;text-align: right;">单位</span>
+            <span style="width: 50px;text-align: right;">数量</span>
+            <span style="width: 50px;text-align: right;">kg重量</span>
           </p>
           <p class="p-spans">
             <!--{{item.machineTolerance.replace(/\((.+?)\)/g, '')}}-->
           </p>
           <!--<p style="width: 170px;">{{item.instRemarks1}}</p>-->
           <p>
-            <span style="font-size: 10px">{{$store.getters.getDate(cutDetail.deliveryTime, 2)}}</span>
-            <span>{{item.unitWtCd == 1? 'KG': '个'}}</span>
-            <span>{{item.soQty}}</span>
-            <span>{{item.soWt}}</span>
+            <span style="width: 60px;display:inline-block;font-size: 10px">{{$store.getters.getDate(cutDetail.deliveryTime, 2)}}</span>
+            <span class="span-right">{{item.unitWtCd == 1? 'KG': '個'}}</span>
+            <span class="span-right">{{item.soQty}}</span>
+            <span class="span-right">{{item.soWt}}</span>
           </p>
         </td>
         <!--<td>-->
@@ -79,16 +79,16 @@
             <!--<span>切断指示尺寸</span>-->
           <!--</p>-->
         <!--</td>-->
-        <td>
+        <td align="right">
           {{item.counts}}
         </td>
         <td>
           {{$store.getters.getDate(item.startTime)}}
         </td>
         <td>{{$store.getters.getDate(item.endTime)}}</td>
-        <td>{{item.totalWeight}}</td>
+        <td align="right">{{item.totalWeight}}</td>
         <!--<td>{{item.size3}}*{{item.size2}}*{{item.size1}}</td>-->
-        <td>{{item.confirmCount}}</td>
+        <td align="right">{{item.confirmCount}}</td>
         <td>{{item.equipmentName}}</td>
         <td>{{item.workName}}</td>
         <!--<td>是否合格</td>-->
@@ -131,16 +131,17 @@
             <td v-if="index == 0" :rowspan="item.cutters.length">
               <p>{{cutCode + '-' + (key + 1)}}</p>
             </td>
-            <td>{{item.counts}}</td>
+            <td align="right">{{item.counts}}</td>
             <td>{{val.userName}}</td>
-            <td>{{val.cutterMiddleList.length}}</td>
+            <td align="right">{{val.cutterMiddleList.length}}</td>
             <td>{{$store.getters.getDate(val.startTime)}}</td>
             <td>{{$store.getters.getDate(val.endTime)}}</td>
-            <td>{{userTime(val.cutterMiddleList)}}</td>
+            <!--<td>{{userTime(val.cutterMiddleList)}}</td>-->
+            <td align="right">{{item.totalTime}}</td>
             <td>{{item.equipmentName}}</td>
             <!--<td>{{returnPrsent(item.completion1, item.completion2, item.completion3, item.status)}}%</td>-->
             <td>{{item.size1}}X<template v-if="item.size2 > 0">{{item.size2}}X</template>{{item.size3}}</td>
-            <td>{{item.actualWeight}}</td>
+            <td align="right">{{item.actualWeight}}</td>
             <!--<td>{{item.actualWeight}}</td>-->
           </tr>
         </tbody>
@@ -228,6 +229,11 @@ export default {
   }
   .table td {
     padding: 7px;
+  }
+  .span-right {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
   }
   .table-list {
     border-collapse: collapse;

@@ -50,10 +50,12 @@
           </el-table-column>
           <el-table-column
             prop="stockQty"
+            align="right"
             label="数量">
           </el-table-column>
           <el-table-column
             prop="stockWt"
+            align="right"
             label="重量">
           </el-table-column>
           <el-table-column
@@ -134,22 +136,27 @@
           </el-table-column>
           <el-table-column
             prop="size1"
+            align="right"
             label="厚">
           </el-table-column>
           <el-table-column
             prop="size2"
+            align="right"
             label="宽">
           </el-table-column>
           <el-table-column
             prop="size3"
+            align="right"
             label="长">
           </el-table-column>
           <el-table-column
             prop="stockQty"
+            align="right"
             label="数量">
           </el-table-column>
           <el-table-column
             prop="stockWt"
+            align="right"
             label="重量">
           </el-table-column>
           <el-table-column

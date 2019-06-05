@@ -78,6 +78,7 @@
         <el-table-column
           prop="counts"
           label="数量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column
@@ -148,6 +149,7 @@
         <el-table-column
           prop="counts"
           label="数量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column

@@ -132,6 +132,7 @@ body {
 .table_changeTd .cell{
   font-size: 17px;
   line-height: 20px;
+  color: #333;
 }
 .el-table__body tr:hover>td{
   background-color: #eeffab!important;
@@ -256,4 +257,7 @@ table {
 }
 .aPrint {
   font-weight: bold;
+}
+.john-right {
+  text-align: right;
 }

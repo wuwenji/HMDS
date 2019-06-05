@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="left-table">
-      <table class="table" border="1">
+      <table class="table" border="1" borderColor="#ddd">
         <thead>
         <tr>
           <th></th>
@@ -28,7 +28,7 @@
         <tbody>
         <tr>
           <td>VQ1</td>
-          <td></td>
+          <td class="john-right"></td>
           <td></td>
           <td></td>
           <td></td>
@@ -42,7 +42,7 @@
         </tr>
         <tr>
           <td>VQ2</td>
-          <td></td>
+          <td class="john-right"></td>
           <td></td>
           <td></td>
           <td></td>
@@ -58,24 +58,24 @@
       </table>
     </div>
     <div class="right-table">
-        <table class="table" border="1">
+        <table class="table" border="1" borderColor="#ddd">
           <tr>
             <th colspan="3">当天<br/>(日期/星期)</th>
           </tr>
           <tr>
             <th>种类</th>
-            <th>未处理<br/>单数</th>
-            <th>未处理<br/>重量</th>
+            <th>未处理单数</th>
+            <th>未处理重量</th>
           </tr>
           <tr>
             <td>QT</td>
-            <td>{{qtNvg.QT.notDoneOrderCount}}</td>
-            <td>{{qtNvg.QT.notDoneWeight}}</td>
+            <td class="john-right">{{qtNvg.QT.notDoneOrderCount}}</td>
+            <td class="john-right">{{qtNvg.QT.notDoneWeight}}</td>
           </tr>
           <tr>
             <td>NVG</td>
-            <td>{{qtNvg.NVG.notDoneOrderCount}}</td>
-            <td>{{qtNvg.NVG.notDoneWeight}}</td>
+            <td class="john-right">{{qtNvg.NVG.notDoneOrderCount}}</td>
+            <td class="john-right">{{qtNvg.NVG.notDoneWeight}}</td>
           </tr>
         </table>
     </div>
@@ -156,7 +156,7 @@
         </el-table-column>
         <el-table-column
           prop="managementNumber"
-          label="成绩书单号">
+          label="单号">
         </el-table-column>
         <el-table-column
           prop="customerName"
@@ -172,10 +172,12 @@
         <!--</el-table-column>-->
         <el-table-column
           prop="totalCount"
+          align="right"
           label="数量">
         </el-table-column>
         <el-table-column
           prop="totalWeight"
+          align="right"
           label="重量">
         </el-table-column>
         <el-table-column
@@ -408,6 +410,9 @@ export default {
 </script>
 
 <style scoped>
+  *{
+    font-size: 17px;
+  }
 .table {
   text-align: center;
   width: 100%;
@@ -419,7 +424,7 @@ export default {
   padding-top: 30px;
 }
 .table td,.table th {
-  padding: 6px 10px;
+  padding: 12px 10px;
 }
 .page {
   text-align: right;

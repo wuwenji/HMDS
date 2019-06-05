@@ -4,15 +4,15 @@
       <tr>
         <td>日期：</td>
         <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
-        <td>{{$store.state.date}}</td>
+        <td class="john-right">{{$store.state.date}}</td>
         <td >切断延迟：</td>
-        <td >{{summaryData.cutingDelayCount}}</td>
+        <td class="john-right">{{summaryData.cutingDelayCount}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
-        <td>{{summaryData.cutOrderCount}}</td>
+        <td class="john-right">{{summaryData.cutOrderCount}}</td>
         <td>切断中：</td>
-        <td>{{summaryData.cutingCount}}</td>
+        <td class="john-right">{{summaryData.cutingCount}}</td>
       </tr>
     </table>
     <div class="title">切断部未完成明细</div>
@@ -57,6 +57,7 @@
           <el-table-column
             prop="workInstQty"
             width="60"
+            align="right"
             label="数量">
           </el-table-column>
           <el-table-column
@@ -67,6 +68,7 @@
           <el-table-column
             prop="showData"
             width="100"
+            align="right"
             label="完成件数">
           </el-table-column>
           <el-table-column

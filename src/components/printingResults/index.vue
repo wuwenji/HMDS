@@ -87,11 +87,13 @@
         <el-table-column
           prop="totalCount"
           label="数量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column
           prop="totalWeight"
           label="重量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column

@@ -15,7 +15,7 @@
           <tr v-for="(itemItem, nmb) in item.groupData" :key="key + '-' +nmb">
             <td v-if="nmb == 0" :rowspan="item.groupData.length">{{item.taskName}}</td>
             <td>{{itemItem.heatCode}}</td>
-            <td>{{itemItem.counts}}</td>
+            <td align="right">{{itemItem.counts}}</td>
             <td>{{itemItem.sizeNote}}</td>
             <td v-if="nmb == 0" :rowspan="item.groupData.length">
               <el-button
@@ -74,9 +74,9 @@
           <td>{{item.taskName}}</td>
           <td>{{item.itemName}}</td>
           <td>{{item.sizeNote}}</td>
-          <td>{{item.counts}}</td>
-          <td>{{item.wt}}</td>
-          <td>{{item.hardnessRequirement}}</td>
+          <td align="right">{{item.counts}}</td>
+          <td align="right">{{item.wt}}</td>
+          <td align="right">{{item.hardnessRequirement}}</td>
           <td>{{$store.getters.getTime(item.startTime)}}</td>
           <td colspan="2">{{$store.getters.getTime(item.endTime)}}</td>
         </tr>

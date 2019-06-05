@@ -75,14 +75,17 @@
         </el-table-column>
         <el-table-column
           prop="actualWeight"
+          align="right"
           label="重量">
         </el-table-column>
         <el-table-column
           prop="counts"
+          align="right"
           label="数量">
         </el-table-column>
         <el-table-column
           prop="area"
+          align="right"
           label="表面积">
         </el-table-column>
         <el-table-column
@@ -91,10 +94,12 @@
         </el-table-column>
         <el-table-column
           prop="workPercent"
+          align="right"
           label="运行率">
         </el-table-column>
         <el-table-column
           prop="power"
+          align="right"
           label="达成率">
         </el-table-column>
         <el-table-column
@@ -103,6 +108,7 @@
         </el-table-column>
         <el-table-column
           prop="failPercent"
+          align="right"
           label="故障率">
         </el-table-column>
       </el-table>

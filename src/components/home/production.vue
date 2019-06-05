@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table" border="1">
+    <table class="table" border="1" borderColor="#ddd">
       <thead>
         <tr>
           <th rowspan="3"></th>
@@ -25,13 +25,13 @@
       <tbody>
       <tr>
         <td>切断组</td>
-        <td v-for="(item, key) in productTable[0]" :key="'a' +key">
+        <td class="john-right" v-for="(item, key) in productTable[0]" :key="'a' +key">
           {{item}}
         </td>
       </tr>
       <tr>
         <td>加工组</td>
-        <td v-for="(item, key) in productTable[1]" :key="'b' +key">
+        <td class="john-right" v-for="(item, key) in productTable[1]" :key="'b' +key">
           {{item}}
         </td>
       </tr>
@@ -40,7 +40,7 @@
     <br/>
     <br/>
     <div class="left-table">
-      <table class="table" border="1">
+      <table class="table" border="1" borderColor="#ddd">
         <thead>
         <tr>
           <th></th>
@@ -67,7 +67,7 @@
         <tbody>
         <tr>
           <td>VQ1</td>
-          <td></td>
+          <td class="john-right"></td>
           <td></td>
           <td></td>
           <td></td>
@@ -81,7 +81,7 @@
         </tr>
         <tr>
           <td>VQ2</td>
-          <td></td>
+          <td class="john-right"></td>
           <td></td>
           <td></td>
           <td></td>
@@ -97,24 +97,24 @@
       </table>
     </div>
     <div class="right-table">
-        <table class="table" border="1">
+        <table class="table" border="1" borderColor="#ddd">
           <tr>
             <th colspan="3">当天<br/>(日期/星期)</th>
           </tr>
           <tr>
             <th>种类</th>
-            <th>未处理<br/>单数</th>
-            <th>未处理<br/>重量</th>
+            <th>未处理单数</th>
+            <th>未处理重量</th>
           </tr>
           <tr>
             <td>QT</td>
-            <td>{{qtNvg.QT.notDoneOrderCount}}</td>
-            <td>{{qtNvg.QT.notDoneWeight}}</td>
+            <td class="john-right">{{qtNvg.QT.notDoneOrderCount}}</td>
+            <td class="john-right">{{qtNvg.QT.notDoneWeight}}</td>
           </tr>
           <tr>
             <td>NVG</td>
-            <td>{{qtNvg.NVG.notDoneOrderCount}}</td>
-            <td>{{qtNvg.NVG.notDoneWeight}}</td>
+            <td class="john-right">{{qtNvg.NVG.notDoneOrderCount}}</td>
+            <td class="john-right">{{qtNvg.NVG.notDoneWeight}}</td>
           </tr>
         </table>
     </div>
@@ -292,6 +292,9 @@ export default {
 </script>
 
 <style scoped>
+  *{
+    font-size: 17px;
+  }
 .table {
   text-align: center;
   width: 100%;
@@ -303,7 +306,7 @@ export default {
   padding-top: 30px;
 }
 .table td,.table th {
-  padding: 6px 10px;
+  padding: 12px 10px;
 }
 .page {
   text-align: right;

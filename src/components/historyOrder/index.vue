@@ -96,6 +96,7 @@
         </el-table-column>
         <el-table-column
           label="指示书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -160,6 +161,7 @@
         </el-table-column>
         <el-table-column
           label="指示书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -223,12 +225,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="type"
+          prop="tempMachineSpecCd"
           label="加工类型"
           width="130">
         </el-table-column>
         <el-table-column
           label="切断书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -241,6 +244,7 @@
         </el-table-column>
         <el-table-column
           label="加工书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -309,6 +313,7 @@
         </el-table-column>
         <el-table-column
           label="热处理书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -373,6 +378,7 @@
         </el-table-column>
         <el-table-column
           label="切断书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -385,6 +391,7 @@
         </el-table-column>
         <el-table-column
           label="加工书打印次数"
+          align="right"
           width="130">
           <template slot-scope="scope">
             <el-button
@@ -397,6 +404,7 @@
         </el-table-column>
         <el-table-column
           label="热处理书打印次数"
+          align="right"
           width="140">
           <template slot-scope="scope">
             <el-button

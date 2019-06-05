@@ -78,11 +78,13 @@
         <el-table-column
           prop="totalCount"
           label="数量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column
           prop="totalWeight"
           label="重量"
+          align="right"
           width="50">
         </el-table-column>
         <el-table-column
@@ -193,7 +195,11 @@ export default {
         if (resp.success) {
           this.pageSize = pageSize
           this.pageNum = pageNum
-          this.listData = resp.data.list
+          this.listData = resp.data.list.filter(item => {
+            item.isShowAmount = true
+            item.relationMoth = false
+            return item
+          })
           this.total = resp.data.total
         }
       })

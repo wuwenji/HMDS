@@ -6,13 +6,13 @@
         <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
         <td>{{$store.state.date}}</td>
         <td >加工延迟：</td>
-        <td >{{summaryData.machiningDelayCount}}</td>
+        <td class="john-right">{{summaryData.machiningDelayCount}}</td>
       </tr>
       <tr>
         <td>接单总数：</td>
-        <td>{{summaryData.machiningOrderCount}}</td>
+        <td class="john-right">{{summaryData.machiningOrderCount}}</td>
         <td>加工中：</td>
-        <td>{{summaryData.machiningCount}}</td>
+        <td class="john-right">{{summaryData.machiningCount}}</td>
       </tr>
     </table>
     <div class="title">加工部未完成明细</div>
@@ -57,6 +57,7 @@
           <el-table-column
             prop="workInstQty"
             width="60"
+            align="right"
             label="数量">
           </el-table-column>
           <el-table-column
@@ -67,6 +68,7 @@
           <el-table-column
             prop="showData"
             width="100"
+            align="right"
             label="完成件数">
           </el-table-column>
           <el-table-column

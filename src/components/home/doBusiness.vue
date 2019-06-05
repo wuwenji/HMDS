@@ -1,32 +1,32 @@
 <template>
   <div>
-    <table class="table" border="1">
+    <table class="table" border="1" borderColor="#ddd">
       <tr>
         <td rowspan="4" align="center">
-          制造部<br/>(PCS)
+          <b>制造部</b><br/><b>(PCS)</b>
         </td>
-        <td>时间</td>
-        <td colspan="2">今天</td>
-        <td colspan="3">明天</td>
-        <td colspan="3">后天</td>
+        <td><b>时间</b></td>
+        <td colspan="2"><b>今天</b></td>
+        <td colspan="3"><b>明天</b></td>
+        <td colspan="3"><b>后天</b></td>
       </tr>
       <tr>
-        <td>能力管理</td>
-        <td>接单未完成</td>
-        <td>剩余能力</td>
-        <td>接单能力</td>
-        <td>已接单数量</td>
-        <td>剩余能力</td>
-        <td>接单能力</td>
-        <td>已接单数量</td>
-        <td>剩余能力</td>
+        <td><b>能力管理</b></td>
+        <td><b>接单未完成</b></td>
+        <td><b>剩余能力</b></td>
+        <td><b>接单能力</b></td>
+        <td><b>已接单数量</b></td>
+        <td><b>剩余能力</b></td>
+        <td><b>接单能力</b></td>
+        <td><b>已接单数量</b></td>
+        <td><b>剩余能力</b></td>
       </tr>
       <tr>
-        <td>切断</td>
+        <td><b>切断</b></td>
         <td align="right" v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr>
-        <td>加工</td>
+        <td><b>加工</b></td>
         <td align="right" v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr class="tr-box">
@@ -34,13 +34,13 @@
       </tr>
       <tr>
         <td rowspan="2" align="center">
-          热处理部<br/>(KG)
+          <b>热处理部</b><br/><b>(KG)</b>
         </td>
-        <td>QT</td>
+        <td><b>QT</b></td>
         <td align="right" v-for="(item, index) in tableData.qtList" :key="'qt' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr>
-        <td>NVG</td>
+        <td><b>NVG</b></td>
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
@@ -106,7 +106,7 @@ export default {
   margin-bottom: 40px;
 }
 .table td {
-  padding: 6px 10px;
+  padding: 12px 10px;
 }
 .tr-box {
   height: 20px;

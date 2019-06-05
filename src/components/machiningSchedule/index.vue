@@ -74,11 +74,13 @@
         <el-table-column
           prop="totalCount"
           label="材料数量"
+          align="right"
           width="80">
         </el-table-column>
         <el-table-column
           prop="cutCount"
           label="已切断数量"
+          align="right"
           width="100">
         </el-table-column>
         <el-table-column
@@ -146,16 +148,19 @@
         <el-table-column
           prop="totalCount"
           label="材料数量"
+          align="right"
           width="80">
         </el-table-column>
         <el-table-column
           prop="cutCount"
           label="已切断数量"
+          align="right"
           width="100">
         </el-table-column>
         <el-table-column
           prop="machineCount"
           label="已加工数量"
+          align="right"
           width="100">
         </el-table-column>
         <el-table-column

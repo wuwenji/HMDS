@@ -32,10 +32,12 @@
         </el-table-column>
         <el-table-column
           prop="soQty"
+          align="right"
           label="指示数量">
         </el-table-column>
         <el-table-column
           prop="soWt"
+          align="right"
           label="重量">
         </el-table-column>
         <el-table-column
@@ -50,159 +52,164 @@
       </p>
     </div>
     <div class="table-line-height" v-show="showContent == 2">
-      <div v-if="orderDetail.length > 0" id="printContent">
-        <table class="table">
-          <tr>
-            <td rowspan="3" valign="top" align="right" style="position: relative; font-size: 23px;">
-              <img class="logo" src="../../../static/images/logo.jpg" alt="">
-              日立金属（东莞）特殊钢有限公司 本部</td>
-            <td>
-              <span>邮编：</span>523380
-              <span style="width: 150px;">HMDS-QR-49-2/A0</span>
-              <span>page：</span>1/1
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span>电话：</span>86-769-8640-6726
-              <span style="width: 60px;">传真：</span>86-769-8640-6716
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span>地址：</span>广东省东莞市茶山镇茶山工业园
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span style="width: 90px;">致：</span>{{orderDetail[0].contKname}}
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span>货送至：</span>{{orderDetail[0].custKname}}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span><p>&nbsp;</p></span>{{orderDetail[0].shiptonameadd}}
-            </td>
-            <td>
-              <span>账号：</span>{{orderDetail[0].sBarnchUserDef1}}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress1}}
-            </td>
-            <td>
-              <span><p>&nbsp;</p></span>{{orderDetail[0].sBarnchUserDef2}}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <span>营业员：</span>{{orderDetail[0].sUserName}}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <span>送货单号：</span>{{orderDetail[0].soNo}}
-              <span>日期：</span>{{$store.state.date.replace('年', '/').replace('月', '/').replace('日', '')}}
-            </td>
-          </tr>
-        </table>
-        <div class="title">
-          <span>电话：{{orderDetail[0].shipToTelno}}</span>
-          <h2>送货单</h2>
-        </div>
-        <table border="0" class="table-list">
-          <thead>
-          <tr>
-            <th></th>
-            <th colspan="7">产品规格说明</th>
-          </tr>
-          <tr>
-            <th>项目</th>
-            <th>订单号</th>
-            <th>接单号</th>
-            <th>单位</th>
-            <th style="text-align: right;">数量(件)</th>
-            <th style="text-align: right;">重量(KG)</th>
-            <th style="text-align: right;">接单单价(RMB)</th>
-            <th style="text-align: right;">金额(RMB)</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th colspan="6">备注</th>
-            <th>最终客户订单</th>
-          </tr>
-          </thead>
-          <tbody v-for="(item, key) in orderDetail" :key="key">
-          <tr>
-            <td></td>
-            <td colspan="7">{{item.specExternalNote}}</td>
-          </tr>
-          <tr>
-            <td>{{key + 1}}</td>
-            <td>{{item.contPoNo}}</td>
-            <td>{{item.soNo + '-' + item.soLnNo}}</td>
-            <td>{{getPeice(item.unitPriceCd)}}</td>
-            <td  style="text-align: right;">{{item.soQty}}</td>
-            <td  style="text-align: right;">{{$store.getters.toThousand(item.soWt, 2)}}</td>
-            <td  style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(item.soUnitPrice, 2) : ''}}</td>
-            <td  style="text-align: right;">
-              {{orderInfo.isShowAmount? $store.getters.toThousand(getTotal(item), 2): ''}}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td colspan="6">
-              {{item.lineRemarks}}
-              {{orderInfo.relationMoth ? '12*12*12': ''}}
-            </td>
-            <td>{{item.custPoNo}}&nbsp;</td>
-          </tr>
-          </tbody>
-          <tr class="total-tr" v-if="orderInfo.isShowAmount">
-            <td></td>
-            <td></td>
-            <td>合计</td>
-            <td></td>
-            <td style="text-align: right;">{{numTotal}}</td>
-            <td style="text-align: right;">
-              {{$store.getters.toThousand(wetTotal, 2)}}
-            </td>
-            <td></td>
-            <td style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(mnyTotal, 2): ''}}</td>
-          </tr>
-          <tr class="total-tr" v-else>
-            <td></td>
-            <td></td>
-            <td>合计</td>
-            <td></td>
-            <td style="text-align: right;">{{numTotal}}</td>
-            <td style="text-align: right;">
-              {{$store.getters.toThousand(wetTotal, 2)}}
-            </td>
-            <td></td>
-            <td style="text-align: right;"></td>
-          </tr>
-        </table>
-        <div class="bottom">
-          <p>注意：<br/>货到月底后30天内支付</p>
-          <p>
-            <span>客户公章</span>
-            <span>日立金属（东莞）特殊钢有限公司</span>
-          </p>
-        </div>
-      </div>
       <p class="btn">
         <el-button id="bunt" v-print="'#printContent'" type="primary">打印</el-button>
         <el-button @click="printing" type="primary">打印</el-button>
         <el-button @click="showContent = 1" type="primary">返回</el-button>
       </p>
+      <br/><br/>
+      <div v-if="orderDetail.length > 0" id="printContent">
+        <div style="height:1490px;page-break-after: always;" v-for="(deliveryItem, deliveKey) in dataLists" :key="'cdb' + deliveKey">
+          <table class="table">
+            <tr>
+              <td rowspan="3" valign="top" align="right" style="position: relative; font-size: 23px;">
+                <img class="logo" src="../../../static/images/logo.jpg" alt="">
+                日立金属（东莞）特殊钢有限公司 本部</td>
+              <td>
+                <span>邮编：</span>523380
+                <span style="width: 150px;">HMDS-QR-49-2/A0</span>
+                <span>page：</span>{{deliveKey + 1}}/{{dataLists.length}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>电话：</span>86-769-8640-6726
+                <span style="width: 60px;">传真：</span>86-769-8640-6716
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span>地址：</span>广东省东莞市茶山镇茶山工业园
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <span style="width: 90px;">致：</span>{{orderDetail[0].contKname}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <span>货送至：</span>{{orderDetail[0].shipToName}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span><p>&nbsp;</p></span>{{orderDetail[0].shipToNameAdd}}
+              </td>
+              <td>
+                <span>账号：</span>{{orderDetail[0].sBarnchUserDef1}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress1}}
+              </td>
+              <td>
+                <span><p>&nbsp;</p></span>{{orderDetail[0].sBarnchUserDef2}}
+              </td>
+            </tr>
+            <tr>
+              <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress2}}</td>
+              <td>
+                <span>营业员：</span>{{orderDetail[0].sUserName}}
+              </td>
+            </tr>
+            <tr>
+              <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress3}}</td>
+              <td>
+                <span>送货单号：</span>{{orderDetail[0].soNo}}
+                <span>日期：</span>{{$store.state.date.replace('年', '/').replace('月', '/').replace('日', '')}}
+              </td>
+            </tr>
+          </table>
+          <div class="title">
+            <span>电话：{{orderDetail[0].shipToTelno}}</span>
+            <h2>送货单</h2>
+          </div>
+          <table border="0" class="table-list">
+            <thead>
+            <tr>
+              <th></th>
+              <th colspan="7">产品规格说明</th>
+            </tr>
+            <tr>
+              <th>项目</th>
+              <th>订单号</th>
+              <th>接单号</th>
+              <th>单位</th>
+              <th style="text-align: right;">数量(件)</th>
+              <th style="text-align: right;">重量(KG)</th>
+              <th style="text-align: right;">接单单价(RMB)</th>
+              <th style="text-align: right;">金额(RMB)</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th colspan="6">备注</th>
+              <th>最终客户订单</th>
+            </tr>
+            </thead>
+            <tbody v-for="(item, key) in deliveryItem" :key="key">
+            <tr>
+              <td></td>
+              <td colspan="7">{{item.specExternalNote}}</td>
+            </tr>
+            <tr>
+              <td>{{key + 1}}</td>
+              <td>{{item.contPoNo}}</td>
+              <td>{{item.soNo + '-' + item.soLnNo}}</td>
+              <td>{{getPeice(item.unitPriceCd)}}</td>
+              <td  style="text-align: right;">{{item.soQty}}</td>
+              <td  style="text-align: right;">{{$store.getters.toThousand(item.soWt, 2)}}</td>
+              <td  style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(item.soUnitPrice, 2) : ''}}</td>
+              <td  style="text-align: right;">
+                {{orderInfo.isShowAmount? $store.getters.toThousand(getTotal(item), 2): ''}}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="6">
+                {{item.lineRemarks}}
+                {{orderInfo.relationMoth ? item.chargeNo + '' + item.stockSizeNote: ''}}
+              </td>
+              <td>{{item.custPoNo}}&nbsp;</td>
+            </tr>
+            </tbody>
+            <template v-if="(deliveKey + 1) == dataLists.length">
+              <tr class="total-tr" v-if="orderInfo.isShowAmount">
+              <td></td>
+              <td></td>
+              <td>合计</td>
+              <td></td>
+              <td style="text-align: right;">{{numTotal}}</td>
+              <td style="text-align: right;">
+                {{$store.getters.toThousand(wetTotal, 2)}}
+              </td>
+              <td></td>
+              <td style="text-align: right;">{{orderInfo.isShowAmount? $store.getters.toThousand(mnyTotal, 2): ''}}</td>
+            </tr>
+              <tr class="total-tr" v-else>
+              <td></td>
+              <td></td>
+              <td>合计</td>
+              <td></td>
+              <td style="text-align: right;">{{numTotal}}</td>
+              <td style="text-align: right;">
+                {{$store.getters.toThousand(wetTotal, 2)}}
+              </td>
+              <td></td>
+              <td style="text-align: right;"></td>
+            </tr>
+            </template>
+          </table>
+          <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
+            <p>注意：<br/>货到月底后30天内支付</p>
+            <p>
+              <span>客户公章</span>
+              <span>日立金属（东莞）特殊钢有限公司</span>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -216,6 +223,7 @@ export default {
       orderDetail: [],
       showContent: 1,
       selectValue: [],
+      dataLists: [],
       lists: [],
       numTotal: 0,
       wetTotal: 0,
@@ -324,6 +332,12 @@ export default {
       })
       this.showContent = 2
       console.log(this.orderDetail)
+      // let ar = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      this.dataLists = []
+      for (let i = 0; i < this.orderDetail.length; i += 16) {
+        this.dataLists.push(this.orderDetail.slice(i, i + 16))
+      }
+      // console.log(this.dataLists)
     }
   }
 }
@@ -332,7 +346,7 @@ export default {
 <style scoped>
   * {
     font-family: 宋体;
-    font-size: 20px;
+    font-size: 18px;
   }
   .logo {
     width: 100px;
@@ -341,7 +355,7 @@ export default {
     bottom: 0px;
   }
   .table-line-height {
-    line-height: 30px;
+    /*line-height: 30px;*/
   }
   .info-table {
     width: 100%;
@@ -355,7 +369,8 @@ export default {
     display: none;
   }
   #printContent {
-    height: 1500px;
+    /*min-height: 1500px;*/
+    padding-bottom: 70px;
     position: relative;
   }
   .bottom {
@@ -365,7 +380,7 @@ export default {
   }
   .bottom p:nth-child(1){
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 70px;
   }
   .bottom p span:nth-child(1) {
     float: left;
@@ -408,7 +423,7 @@ export default {
     border-top: none;
   }
   .table-list th {
-    padding: 3px;
+    /*padding: 3px;*/
     background: #efefef;
     text-align: left;
   }
@@ -427,11 +442,11 @@ export default {
   }
   .title {
     text-align: center;
-    margin: 20px 0;
+    margin: 20px 0 5px 0;
     width: 1075px;
   }
   .title h2 {
-    font-size: 40px;
+    font-size: 30px;
   }
   .title span {
     float: left;

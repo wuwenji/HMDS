@@ -73,11 +73,13 @@
         <el-table-column
           prop="totalCount"
           label="材料数量"
+          align="right"
           width="80">
         </el-table-column>
         <el-table-column
           prop="heatCount"
           label="已处理数量"
+          align="right"
           width="100">
           <template slot-scope="scope">
             {{scope.row.heatCount + scope.row.scrapCount}}
