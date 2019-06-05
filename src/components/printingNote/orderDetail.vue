@@ -6,7 +6,7 @@
           <td>客户：{{orderInfo.contName}}</td>
           <td>最终客户：{{orderInfo.custName}}</td>
           <td>加工类型：{{orderInfo.heatMillingRemarks}}</td>
-          <td>接单时间：{{$store.getters.getDate(orderInfo.soDate)}}</td>
+          <td>接单时间：{{$store.getters.getDate(orderInfo.acceptTime)}}</td>
         </tr>
         <tr>
           <td>接单号：{{orderInfo.soNo}}</td>
@@ -88,12 +88,12 @@
             </tr>
             <tr>
               <td colspan="2">
-                <span>货送至：</span>{{orderDetail[0].custKname}}
+                <span>货送至：</span>{{orderDetail[0].shipToName}}
               </td>
             </tr>
             <tr>
               <td>
-                <span><p>&nbsp;</p></span>{{orderDetail[0].shiptonameadd}}
+                <span><p>&nbsp;</p></span>{{orderDetail[0].shipToNameAdd}}
               </td>
               <td>
                 <span>账号：</span>{{orderDetail[0].sBarnchUserDef1}}
@@ -108,13 +108,13 @@
               </td>
             </tr>
             <tr>
-              <td></td>
+              <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress2}}</td>
               <td>
                 <span>营业员：</span>{{orderDetail[0].sUserName}}
               </td>
             </tr>
             <tr>
-              <td></td>
+              <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress3}}</td>
               <td>
                 <span>送货单号：</span>{{orderDetail[0].soNo}}
                 <span>日期：</span>{{$store.state.date.replace('年', '/').replace('月', '/').replace('日', '')}}
@@ -168,7 +168,7 @@
               <td></td>
               <td colspan="6">
                 {{item.lineRemarks}}
-                {{orderInfo.relationMoth ? '12*12*12': ''}}
+                {{orderInfo.relationMoth ? item.chargeNo + '' + item.stockSizeNote: ''}}
               </td>
               <td>{{item.custPoNo}}&nbsp;</td>
             </tr>
@@ -230,6 +230,7 @@ export default {
     }
   },
   created () {
+    console.log(this.orderInfo)
     this.getData()
   },
   watch: {

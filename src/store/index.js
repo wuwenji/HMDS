@@ -60,7 +60,9 @@ const myStore = new Vuex.Store({
   },
   getters: {
     getDate: (state, getters) => (string, type = 1) => {
-      if (string != null) {
+      if (string === null || string === 0) {
+        return ''
+      } else {
         let d = new Date(string)
         let y = d.getFullYear()
         let m = d.getMonth() + 1
@@ -76,8 +78,6 @@ const myStore = new Vuex.Store({
         } else {
           return y + '/' + m + '/' + r
         }
-      } else {
-        return ''
       }
     },
     // 加千分符，保留两位小数点
@@ -91,7 +91,9 @@ const myStore = new Vuex.Store({
       }
     },
     getTime: (state, getters) => (string) => {
-      if (string != null) {
+      if (string === null || string === 0) {
+        return ''
+      } else {
         let d = new Date(string)
         let y = d.getFullYear()
         let m = d.getMonth() + 1
@@ -103,8 +105,6 @@ const myStore = new Vuex.Store({
         let f = d.getMinutes()
         f = f > 9 ? f : '0' + f
         return y + '/' + m + '/' + r + ' ' + h + ':' + f
-      } else {
-        return ''
       }
     }
   },

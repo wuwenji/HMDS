@@ -60,6 +60,7 @@
           label="交期"
           width="130">
           <template slot-scope="scope">
+            <!--{{scope.row.deliveryTime == 0? '' : $store.getters.getDate(scope.row.deliveryTime, 2)}}-->
             {{$store.getters.getDate(scope.row.deliveryTime, 2)}}
           </template>
         </el-table-column>
@@ -67,7 +68,8 @@
           label="类型"
           width="130">
           <template slot-scope="scope">
-            {{scope.row.type == 1? '切断' : '加工'}}
+            {{scope.row.type == 5? '热处理' : ''}}
+            {{scope.row.type == 6? '加工&切断&热处理' : ''}}
           </template>
         </el-table-column>
         <el-table-column

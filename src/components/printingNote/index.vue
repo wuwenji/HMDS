@@ -99,14 +99,26 @@
           label="是否关联母材"
           width="120">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.relationMoth">是</el-checkbox>
+            <!--<el-checkbox v-model="scope.row.relationMoth">是</el-checkbox>-->
+            <el-switch
+              v-model="scope.row.relationMoth"
+              @change="switchChange(scope.row.id, scope.row.relationMoth)"
+              active-text="是"
+              inactive-text="否">
+            </el-switch>
           </template>
         </el-table-column>
         <el-table-column
           label="显示金额"
           width="100">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.isShowAmount">是</el-checkbox>
+            <!--<el-checkbox v-model="scope.row.isShowAmount">是</el-checkbox>-->
+            <el-switch
+              v-model="scope.row.isShowAmount"
+              @change="switchChange(scope.row.id, scope.row.isShowAmount)"
+              active-text="是"
+              inactive-text="否">
+            </el-switch>
           </template>
         </el-table-column>
         <el-table-column

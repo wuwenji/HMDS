@@ -81,7 +81,7 @@
             <td><input v-model="item.gradeCd" type="text"></td>
             <td><input v-model="item.heatTreatType" type="text"></td>
             <td><input v-model="item.itemName" type="text"></td>
-            <td><input v-model="item.sizeNote" type="text"></td>
+            <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
             <td class="numb-td"><input v-model="item.qty" type="text">
               <!--<span>件</span>-->
             </td>
@@ -93,7 +93,7 @@
             <td><input v-model="item.gradeCd" type="text"></td>
             <td><input v-model="item.heatTreatType" type="text"></td>
             <td><input v-model="item.itemName" type="text"></td>
-            <td><input v-model="item.sizeNote" type="text"></td>
+            <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
             <td class="numb-td"><input v-model="item.qty" type="text">
               <!--<span>件</span>-->
             </td>
