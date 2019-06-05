@@ -104,6 +104,9 @@ export default {
         }, {
           id: 32,
           label: '作业人员管理'
+        }, {
+          id: 33,
+          label: '电视播放'
         }]
       }],
       defaultProps: {

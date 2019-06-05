@@ -99,6 +99,8 @@ export default {
           this.$router.push('/accountSettings')
         } else if (val === '作业人员管理') {
           this.$router.push('/operationPersonnel')
+        } else if (val === '电视播放') {
+          this.$router.push('/showTV')
         }
       }
     }

@@ -112,6 +112,9 @@ export default {
           }, {
             id: 32,
             title: '作业人员管理'
+          }, {
+            id: 33,
+            title: '电视播放'
           }]
         }],
       // data: []
@@ -214,6 +217,9 @@ export default {
             },
             {
               title: '作业人员管理'
+            },
+            {
+              title: '电视播放'
             }
           ]
         }

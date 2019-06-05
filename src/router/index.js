@@ -21,6 +21,7 @@ import operationPersonnel from '../pages/operationPersonnel'
 import placeManage from '../pages/placeManage'
 import materialQR from '../pages/materialQR'
 import equipmentQR from '../pages/equipmentQR'
+import showTV from '../pages/showTV'
 
 Vue.use(Router)
 
@@ -127,6 +128,11 @@ const routes = [
     path: '/equipmentQR',
     name: 'equipmentQR',
     component: equipmentQR
+  },
+  {
+    path: '/showTV',
+    name: 'showTV',
+    component: showTV
   }
 ]
 
