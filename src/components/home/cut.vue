@@ -1,135 +1,140 @@
 <template>
   <div>
-    <table class="mid-table" border="1" borderColor="#0070c0">
-      <tr>
-        <td>日期：</td>
-        <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
-        <td class="john-right">{{$store.state.date}}</td>
-        <td >切断延迟：</td>
-        <td class="john-right">{{summaryData.cutingDelayCount}}</td>
-      </tr>
-      <tr>
-        <td>接单总数：</td>
-        <td class="john-right">{{summaryData.cutOrderCount}}</td>
-        <td>切断中：</td>
-        <td class="john-right">{{summaryData.cutingCount}}</td>
-      </tr>
-    </table>
-    <div class="title">切断部未完成明细</div>
-    <template>
-      <div class="table_changeTd">
-        <el-table
-          :data="lists"
-          height="350"
-          border
-          style="width: 100%">
-          <el-table-column
-            prop="soNo"
-            label="订单号"
-            fixed
-            width="120">
-          </el-table-column>
-          <el-table-column
-            label="接单时间"
-            width="120">
-            <template slot-scope="scope">
-              {{$store.getters.getDate(scope.row.soDate, 2)}}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="contKname"
-            label="客户名">
-          </el-table-column>
-          <el-table-column
-            prop="soLnNo"
-            width="60"
-            label="行号">
-          </el-table-column>
-          <el-table-column
-            prop="gradeCd"
-            width="100"
-            label="材质">
-          </el-table-column>
-          <el-table-column
-            prop="specExternalNote"
-            label="规格">
-          </el-table-column>
-          <el-table-column
-            prop="workInstQty"
-            width="60"
-            align="right"
-            label="数量">
-          </el-table-column>
-          <el-table-column
-            prop="machineSpecCd"
-            width="100"
-            label="作业名称">
-          </el-table-column>
-          <el-table-column
-            prop="showData"
-            width="100"
-            align="right"
-            label="完成件数">
-          </el-table-column>
-          <el-table-column
-            label="要求交期"
-            width="120">
-            <template slot-scope="scope">
-              {{$store.getters.getDate(scope.row.contDueDate, 2)}}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="生产进度"
-            width="260">
-            <template slot-scope="scope">
-              <ul class="prog">
-                <li v-if="scope.row.cutStatus != null">
-                  切断<br/>
-                  <span :class="getClass(scope.row.cutStatus)"></span>
-                </li>
-                <li v-if="scope.row.machineStatus != null">
-                  加工
-                  <span :class="getClass(scope.row.machineStatus)"></span>
-                </li>
-                <li v-if="scope.row.grindingStatus != null">
-                  研磨
-                  <span :class="getClass(scope.row.grindingStatus)"></span>
-                </li>
-                <li v-if="scope.row.heatStatus != null">
-                  热处理
-                  <span :class="getClass(scope.row.heatStatus)"></span>
-                </li>
-                <li v-if="scope.row.deliveryStatus != null">
-                  出货
-                  <span :class="getClass(scope.row.deliveryStatus)"></span>
-                </li>
-              </ul>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="备注"
-            width="150">
-            <template slot-scope="scope">
-              <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
-              <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
-            </template>
-          </el-table-column>
-        </el-table>
+    <div class="carousel">
+      <div :style="{opacity: opacOne}" class="carousel-item">
+        <table class="mid-table" border="1" borderColor="#0070c0">
+          <tr>
+            <td>日期：</td>
+            <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
+            <td class="john-right">{{$store.state.date}}</td>
+            <td >切断延迟：</td>
+            <td class="john-right">{{summaryData.cutingDelayCount}}</td>
+          </tr>
+          <tr>
+            <td>接单总数：</td>
+            <td class="john-right">{{summaryData.cutOrderCount}}</td>
+            <td>切断中：</td>
+            <td class="john-right">{{summaryData.cutingCount}}</td>
+          </tr>
+        </table>
+        <div class="title">切断部未完成明细</div>
+        <template>
+          <div class="table_changeTd">
+            <el-table
+              :data="lists"
+              border
+              style="width: 100%">
+              <el-table-column
+                prop="soNo"
+                label="订单号"
+                fixed
+                width="120">
+              </el-table-column>
+              <el-table-column
+                label="接单时间"
+                width="120">
+                <template slot-scope="scope">
+                  {{$store.getters.getDate(scope.row.soDate, 2)}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="contKname"
+                label="客户名">
+              </el-table-column>
+              <el-table-column
+                prop="soLnNo"
+                width="60"
+                label="行号">
+              </el-table-column>
+              <el-table-column
+                prop="gradeCd"
+                width="100"
+                label="材质">
+              </el-table-column>
+              <el-table-column
+                prop="specExternalNote"
+                label="规格">
+              </el-table-column>
+              <el-table-column
+                prop="workInstQty"
+                width="60"
+                align="right"
+                label="数量">
+              </el-table-column>
+              <el-table-column
+                prop="tempMachineSpecCd"
+                width="100"
+                label="作业名称">
+              </el-table-column>
+              <el-table-column
+                prop="showData"
+                width="100"
+                align="right"
+                label="完成件数">
+              </el-table-column>
+              <el-table-column
+                label="要求交期"
+                width="120">
+                <template slot-scope="scope">
+                  {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="生产进度"
+                width="260">
+                <template slot-scope="scope">
+                  <ul class="prog">
+                    <li v-if="scope.row.cutStatus != null">
+                      切断<br/>
+                      <span :class="getClass(scope.row.cutStatus)"></span>
+                    </li>
+                    <li v-if="scope.row.machineStatus != null">
+                      加工
+                      <span :class="getClass(scope.row.machineStatus)"></span>
+                    </li>
+                    <li v-if="scope.row.grindingStatus != null">
+                      研磨
+                      <span :class="getClass(scope.row.grindingStatus)"></span>
+                    </li>
+                    <li v-if="scope.row.heatStatus != null">
+                      热处理
+                      <span :class="getClass(scope.row.heatStatus)"></span>
+                    </li>
+                    <li v-if="scope.row.deliveryStatus != null">
+                      出货
+                      <span :class="getClass(scope.row.deliveryStatus)"></span>
+                    </li>
+                  </ul>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="备注"
+                width="150">
+                <template slot-scope="scope">
+                  <img v-if="scope.row.remarkPic == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">
+                  <img v-if="scope.row.remarkPic == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </template>
+        <!--<div class="page">-->
+        <!--<el-pagination-->
+        <!--@current-change="handleCurrentChange"-->
+        <!--:current-page.sync="pageNum"-->
+        <!--:page-size="10"-->
+        <!--layout="prev, pager, next"-->
+        <!--:total="total">-->
+        <!--</el-pagination>-->
+        <!--</div>-->
       </div>
-    </template>
-    <div class="page">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="pageNum"
-        :page-size="10"
-        layout="prev, pager, next"
-        :total="total">
-      </el-pagination>
+      <div :style="{opacity: opacTwo}" class="carousel-item">
+        <div class="total">
+          <span>切断完成总件数：{{cutEndTotal}}</span>
+        </div>
+        <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
+      </div>
     </div>
-    <div class="total">
-      <span>切断完成总件数：{{cutEndTotal}}</span>
-    </div>
-    <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
   </div>
 </template>
 
@@ -137,11 +142,15 @@
 import drawEchart from './lineEchart'
 export default {
   name: 'doBusiness',
+  props: ['changeNo'],
   data () {
     return {
       lists: [],
+      opacOne: 1,
+      opacTwo: 0,
       summaryData: {},
       pageNum: 1,
+      showItem: 1,
       cutEndTotal: 0,
       total: 0,
       title: '切断部机器负荷表',
@@ -155,8 +164,52 @@ export default {
   mounted () {
     this.getCutData()
     this.getCutTable()
+    setInterval(() => {
+      this.toggleTable()
+      this.toggleEchart()
+    }, 10000)
   },
   methods: {
+    // 显隐表格
+    toggleTable () {
+      if (this.opacOne > 0) {
+        let setOne = setInterval(() => {
+          if (this.opacOne > 0) {
+            this.opacOne -= 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      } else {
+        let setOne = setInterval(() => {
+          if (this.opacOne < 1) {
+            this.opacOne += 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      }
+    },
+    // 显隐图表
+    toggleEchart () {
+      if (this.opacTwo > 0) {
+        let setOne = setInterval(() => {
+          if (this.opacTwo > 0) {
+            this.opacTwo -= 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      } else {
+        let setOne = setInterval(() => {
+          if (this.opacTwo < 1) {
+            this.opacTwo += 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      }
+    },
     // 切断数据
     getCutTable () {
       this.http('/show/getShowCutDepartmentTable', {
@@ -271,5 +324,15 @@ export default {
     color: #fff;
     display: inline-block;
     border-radius: 4px;
+  }
+  .carousel {
+    height: 1050px;
+    position: relative;
+  }
+  .carousel-item {
+    height: 1050px;
+    position: absolute;
+    top: 0;
+    width: 100%;
   }
 </style>

@@ -261,3 +261,6 @@ table {
 .john-right {
   text-align: right;
 }
+.ql-snow .ql-formats:nth-child(1) {
+  display: none;
+}

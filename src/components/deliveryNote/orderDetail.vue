@@ -46,6 +46,12 @@
             {{scope.row.status == 1? '已完成': '未完成'}}
           </template>
         </el-table-column>
+        <el-table-column
+          label="已打印">
+          <template slot-scope="scope">
+            {{scope.row.isDelivery == 1? '是': '否'}}
+          </template>
+        </el-table-column>
       </el-table>
       <p class="btn">
         <el-button @click="looking" type="primary">预览</el-button>
@@ -302,7 +308,8 @@ export default {
       this.orderDetail.map(item => {
         parameters.push({
           soNo: item.soNo,
-          soLnNo: item.soLnNo
+          soLnNo: item.soLnNo,
+          workInstCd: item.workInstCd
         })
       })
       // console.log(parameters)

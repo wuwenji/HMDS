@@ -94,6 +94,7 @@
         </el-table-column>
         <el-table-column
           prop="position"
+          :formatter="formatter"
           label="职务">
         </el-table-column>
         <el-table-column
@@ -167,6 +168,18 @@ export default {
     handleSizeChange (val) {
       this.pageSize = parseInt(`${val}`)
       this.onSubmit()
+    },
+    formatter (row) {
+      if (row.position === 1) return '副部长'
+      if (row.position === 2) return '主任'
+      if (row.position === 3) return '副主任'
+      if (row.position === 4) return '科长'
+      if (row.position === 5) return '技术工程师'
+      if (row.position === 6) return '作业班长'
+      if (row.position === 7) return '作业员工'
+      if (row.position === 8) return '管员'
+      if (row.position === 9) return '司机'
+      if (row.position === 10) return '文员'
     },
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)

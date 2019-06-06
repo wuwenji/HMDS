@@ -137,7 +137,7 @@ export default {
 
 <style scoped>
   .box {
-    height: 300px;
+    height: 600px;
     overflow: hidden;
   }
 </style>

@@ -88,6 +88,13 @@
           width="50">
         </el-table-column>
         <el-table-column
+          label="全部完成"
+          width="80">
+          <template slot-scope="scope">
+            {{scope.row.status == 1? '是': '否'}}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="source"
           label="类型"
           width="80">
@@ -170,7 +177,8 @@ export default {
         orderCode: '',
         acceptTime: '',
         contDueDate: '',
-        source: ''
+        source: '',
+        type: 5
       },
       listData: []
     }
@@ -184,6 +192,7 @@ export default {
       this.http('/heat/deliveryList', {
         pageSize,
         pageNum,
+        type: 5,
         print: this.johnTab
       }).then(resp => {
         if (resp.success) {

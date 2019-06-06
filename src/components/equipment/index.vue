@@ -40,8 +40,8 @@
             </el-col>
           </el-form-item>
         </template>
-        <el-form-item class="form-item" label="绩效部门" prop="department">
-          <el-select v-model="formData.department" placeholder="绩效部门">
+        <el-form-item class="form-item" label="绩效部门" prop="equipmentType">
+          <el-select v-model="formData.equipmentType" placeholder="绩效部门">
             <el-option label="切断部门" value="1"></el-option>
             <el-option label="加工部门" value="2"></el-option>
             <el-option label="热处理部门" value="3"></el-option>
@@ -66,7 +66,7 @@
         <el-table-column
           label="部门">
           <template slot-scope="scope">
-            {{getDepart(scope.row.department)}}
+            {{getDepart(scope.row.type)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -76,35 +76,35 @@
         <el-table-column
           prop="actualWeight"
           align="right"
-          label="重量">
+          label="重量(kg)">
         </el-table-column>
         <el-table-column
           prop="counts"
           align="right"
-          label="数量">
+          label="数量(個)">
         </el-table-column>
         <el-table-column
           prop="area"
           align="right"
-          label="表面积">
+          label="表面积(mm²)">
         </el-table-column>
         <el-table-column
           prop="workTime"
-          label="稼动时间">
+          label="稼动时间(分)">
         </el-table-column>
         <el-table-column
           prop="workPercent"
           align="right"
-          label="运行率">
+          label="运行率(%)">
         </el-table-column>
         <el-table-column
           prop="power"
           align="right"
-          label="达成率">
+          label="达成率(%)">
         </el-table-column>
         <el-table-column
           prop="failTime"
-          label="故障时间">
+          label="故障时间(分)">
         </el-table-column>
         <el-table-column
           prop="failPercent"
@@ -140,7 +140,6 @@ export default {
         dateType: '1',
         endTime: '',
         startTime: '',
-        department: '1',
         equipmentType: '1'
       }
     }
@@ -165,7 +164,7 @@ export default {
     getDepart (num) {
       if (num === 1) return '切断部门'
       if (num === 2) return '加工部门'
-      return '热处理部门'
+      if (num >= 3) return '热处理部门'
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

@@ -46,6 +46,12 @@
             {{scope.row.status == 1? '已完成': '未完成'}}
           </template>
         </el-table-column>
+        <el-table-column
+          label="已打印">
+          <template slot-scope="scope">
+            {{scope.row.isDelivery == 1? '是': '否'}}
+          </template>
+        </el-table-column>
       </el-table>
       <p class="btn">
         <el-button @click="looking" type="primary">预览</el-button>
@@ -123,7 +129,7 @@
           </table>
           <div class="title">
             <span>电话：{{orderDetail[0].shipToTelno}}</span>
-            <h2>送货单</h2>
+            <h2>热处理送货单</h2>
           </div>
           <table border="0" class="table-list">
             <thead>
@@ -201,7 +207,21 @@
             </template>
           </table>
           <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
-            <p>注意：<br/>货到月底后30天内支付</p>
+            <p>注意：<br/>无商业价值</p>
+            <div class="bottom-center">
+              （热处理种类)<br/>
+              <ol>
+                <li>淬火----------------A</li>
+                <li>时效后处理---------AG</li>
+                <li>除去炉力还火-------RA</li>
+                <li>深冷处理-----------SZ</li>
+                <li>淬火，回火---------QT</li>
+                <li>特殊气体处理-------NVC</li>
+                <li>回火----------------T</li>
+                <li>其它----------------E</li>
+                <li>圆熔化热处理-------ST</li>
+              </ol>
+            </div>
             <p>
               <span>客户公章</span>
               <span>日立金属（东莞）特殊钢有限公司</span>
@@ -298,7 +318,8 @@ export default {
       this.orderDetail.map(item => {
         parameters.push({
           soNo: item.soNo,
-          soLnNo: item.soLnNo
+          soLnNo: item.soLnNo,
+          workInstCd: item.workInstCd
         })
       })
       // console.log(parameters)
@@ -409,6 +430,23 @@ export default {
   }
   .table td {
     width: 50%;
+  }
+  .bottom-center li {
+    list-style: none;
+    float: left;
+    font-size: 13px;
+  }
+  .bottom-center li:nth-child(odd) {
+    margin-right: 60px;
+  }
+  .bottom-center {
+    border: 1px solid #555;
+    width: 350px;
+    margin-left: 300px;
+    position: absolute;
+    font-size: 13px;
+    top: 50px;
+    padding: 10px;
   }
   .table td span {
     width: 120px;

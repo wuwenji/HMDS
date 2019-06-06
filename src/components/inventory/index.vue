@@ -418,7 +418,8 @@ export default {
         materialType: '',
         changeNo: '',
         shape: '',
-        isPaste: ''
+        isPaste: '',
+        inStock: 1
       },
       options: [],
       listData: []
@@ -432,7 +433,8 @@ export default {
     getList (pageNum, pageSize) {
       this.http('/tMaterial/list', {
         pageNum,
-        pageSize
+        pageSize,
+        inStock: 1
       }).then(resp => {
         console.log(resp)
         if (resp.success) {

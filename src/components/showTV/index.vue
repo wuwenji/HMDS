@@ -5,25 +5,9 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="所属部门" prop="type">
-          <el-select v-model="formData.type" placeholder="所属部门">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="切断部门" :value="1"></el-option>
-            <el-option label="加工部门" :value="2"></el-option>
-            <el-option label="热处理部门" :value="3"></el-option>
-          </el-select>
+        <el-form-item class="form-item" label="标题" prop="title">
+          <el-input v-model="formData.title" placeholder="标题"></el-input>
         </el-form-item>
-
-        <el-form-item class="form-item" label="机器编号" prop="code">
-          <el-input v-model="formData.code" placeholder="机器编号"></el-input>
-        </el-form-item>
-        <el-form-item class="form-item" label="设备名" prop="name">
-          <el-input v-model="formData.name" placeholder="设备名"></el-input>
-        </el-form-item>
-        <el-form-item class="form-item" label="型号规格" prop="model">
-          <el-input v-model="formData.model" placeholder="型号规格"></el-input>
-        </el-form-item>
-
         <el-form-item class="btns">
           <el-button type="primary" plain @click="addEquipment">添加</el-button>
           <el-button type="success" plain @click="onSubmit">查询</el-button>
@@ -31,54 +15,49 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="john-tab">
+      <ul>
+        <li @click="tabClick(0)" :class="{active: johnTab == 0}">文字</li>
+        <li @click="tabClick(1)" :class="{active: johnTab == 1}">图片</li>
+        <li @click="tabClick(2)" :class="{active: johnTab == 2}">视频</li>
+      </ul>
+    </div>
     <div class="data-list">
       <el-table
-        v-show="johnTab == 0"
         :data="listData"
+        v-if="johnTab == 0"
         border
         height="calc(100% - 75px)">
         <el-table-column
-          prop="type"
-          label="所属部门">
-          <template slot-scope="scope">
-            {{getType(scope.row.type)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="code"
-          label="机器编号">
-        </el-table-column>
-        <el-table-column
           prop="name"
-          label="设备名">
+          label="标题">
         </el-table-column>
         <el-table-column
           prop="manufacturer"
-          label="生产厂家">
+          width="150"
+          label="添加日期">
         </el-table-column>
         <el-table-column
-          prop="model"
-          label="型号规格">
-        </el-table-column>
-        <el-table-column
-          label="设备状态">
+          label="发布"
+          align="center"
+          width="50">
           <template slot-scope="scope">
-            {{getStatus(scope.row.status)}}
+            <el-button
+              size="mini"
+              type="text"
+              @click="printQr(scope.$index, scope.row)">发</el-button>
           </template>
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="170"
+          width="100"
+          align="center"
           label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="text"
-              @click="getDetail(scope.$index, scope.row)">详情</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              @click="printQr(scope.$index, scope.row)">打印二维码</el-button>
+            @click="getDetail(scope.$index, scope.row)">修改</el-button>
             <el-button
               size="mini"
               type="text"
@@ -86,6 +65,122 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-table
+        :data="listData"
+        v-if="johnTab == 1"
+        border
+        height="calc(100% - 75px)">
+        <el-table-column
+          prop="name"
+          label="图片">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="标题">
+        </el-table-column>
+        <el-table-column
+          prop="manufacturer"
+          width="150"
+          label="添加日期">
+        </el-table-column>
+        <el-table-column
+          label="发布"
+          align="center"
+          width="50">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="printQr(scope.$index, scope.row)">发</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          width="100"
+          align="center"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="getDetail(scope.$index, scope.row)">修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="removeList(scope.$index, scope.row.id, listData)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div
+        v-if="johnTab == 2"
+        style="height: calc(100% - 75px);border: 1px solid #ddd;">
+        <ul class="videos">
+          <li>
+            <video width="200" height="150" controls>
+              <source :src="movieSrc" type="video/mp4">
+            </video>
+            <p>标题：这是一只小熊</p>
+            <p>发布日期：2019-05-01 18:22</p>
+            <div class="bnts">
+              <div class="bnts-left">
+                <a class="john-btn rel">发</a>
+              </div>
+              <div class="bnts-right">
+                <a class="john-btn change">修改</a>
+                <a class="john-btn del">删除</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <video width="200" height="150" controls>
+              <source :src="movieSrc" type="video/mp4">
+            </video>
+            <p>标题：这是一只小熊</p>
+            <p>发布日期：2019-05-01 18:22</p>
+            <div class="bnts">
+              <div class="bnts-left">
+                <a class="john-btn rel">发</a>
+              </div>
+              <div class="bnts-right">
+                <a class="john-btn change">修改</a>
+                <a class="john-btn del">删除</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <video width="200" height="150" controls>
+              <source :src="movieSrc" type="video/mp4">
+            </video>
+            <p>标题：这是一只小熊</p>
+            <p>发布日期：2019-05-01 18:22</p>
+            <div class="bnts">
+              <div class="bnts-left">
+                <a class="john-btn rel">发</a>
+              </div>
+              <div class="bnts-right">
+                <a class="john-btn change">修改</a>
+                <a class="john-btn del">删除</a>
+              </div>
+            </div>
+          </li>
+          <li>
+            <video width="200" height="150" controls>
+              <source :src="movieSrc" type="video/mp4">
+            </video>
+            <p>标题：这是一只小熊</p>
+            <p>发布日期：2019-05-01 18:22</p>
+            <div class="bnts">
+              <div class="bnts-left">
+                <a class="john-btn rel">发</a>
+              </div>
+              <div class="bnts-right">
+                <a class="john-btn change">修改</a>
+                <a class="john-btn del">删除</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
       <div class="block">
         <el-pagination
           @size-change="handleSizeChange"
@@ -102,26 +197,8 @@
       width="1000px"
       :title="dialogTitle"
       :visible.sync="elDialog">
-      <addEquipment :orderInfo="setInfo" v-if="dialogTitle == '添加设备'" />
-      <equipDetail :orderInfo="setInfo" v-if="dialogTitle == '详情' && dialogType == 1"/>
-      <equipDetail :orderInfo="setInfo" v-if="dialogTitle == '详情' && dialogType == 2"/>
-      <heatDetail :orderInfo="setInfo" v-if="dialogTitle == '详情' && dialogType == 3"/>
-      <div class="qr-content" v-if="dialogTitle == '打印二维码'">
-        <div class="printContent cl">
-          <img :src="qrUrl" alt="">
-          <div class="printContRight">
-            <p>
-              <span>机器名称:</span>{{printDat.name}}</p>
-            <p>
-              <span>机器编号:</span>{{printDat.code}}</p>
-            <p>
-              <span>购入年限:</span>{{printDat.buyingTime}}</p>
-          </div>
-        </div>
-        <p>
-          <el-button v-print="'.printContent'" type="primary">打印</el-button>
-        </p>
-      </div>
+      <addEquipment :type="johnTab" v-if="dialogTitle == '添加'" />
+      <equipDetail :orderInfo="setInfo" v-if="dialogTitle == '修改'"/>
     </el-dialog>
   </div>
 </template>
@@ -129,29 +206,21 @@
 <script>
 import addEquipment from './addEquipment'
 import equipDetail from './equipDetail'
-import heatDetail from './heatDetail'
 export default {
   name: 'index',
   data () {
     return {
       pageNum: 1,
       pageSize: 10,
+      setInfo: {},
+      movieSrc: '../../../static/images/movie.mp4',
       johnTab: 0,
-      setInfo: '',
       total: 0,
-      qrUrl: '',
-      printDat: {},
-      dialogType: 1,
-      dialogTitle: '添加设备',
+      dialogTitle: '添加',
       elDialog: false,
       multipleSelection: [],
       formData: {
-        type: '',
-        code: '',
-        name: '',
-        model: '',
-        pageSize: 10,
-        pageNum: 1
+        title: ''
       },
       listData: []
     }
@@ -176,18 +245,6 @@ export default {
         }
       })
     },
-    // 返回设备状态
-    getStatus (a) {
-      if (a === 0) return '正常'
-      if (a === 1) return '故障'
-      if (a === 2) return '报废'
-    },
-    // 返回所属部门
-    getType (a) {
-      if (a === 1) return '切断部门'
-      if (a === 2) return '加工部门'
-      return '热处理部门'
-    },
     // 条件查询
     onSubmit () {
       console.log(this.formData)
@@ -202,28 +259,21 @@ export default {
     },
     // 添加设备
     addEquipment () {
-      this.dialogTitle = '添加设备'
+      this.dialogTitle = '添加'
       this.elDialog = true
+    },
+    // 更换板块
+    tabClick (index) {
+      this.johnTab = index
     },
     // 详情
     getDetail (index, row) {
-      this.dialogTitle = '详情'
-      this.dialogType = row.type
-      this.setInfo = row
-      this.elDialog = true
-    },
-    // 打印二维码
-    printQr (index, row) {
-      this.dialogTitle = '打印二维码'
-      this.printDat = row
-      // row.name row.code row.buyingTime
-      this.qrUrl = this.$store.state.qrUrl + row.qrCode + '&w=450&h=450'
+      this.dialogTitle = '修改'
       this.elDialog = true
     },
     // 删除
     removeList (index, id, row) {
       this.http('/equipment/delete', id).then(resp => {
-        console.log(resp)
         if (resp.success) {
           row.splice(index, 1)
         }
@@ -239,17 +289,13 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)
       this.getList(this.pageSize, this.pageNum)
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     }
   },
   computed: {
   },
   components: {
     addEquipment,
-    equipDetail,
-    heatDetail
+    equipDetail
   }
 }
 </script>
@@ -257,9 +303,6 @@ export default {
 <style scoped>
   .john-tab b {
     margin-left: 10px;
-  }
-  .qr-content {
-    text-align: center;
   }
   .qr-content p {
     margin-top: 40px;
@@ -280,9 +323,6 @@ export default {
   .data-list {
     margin: 10px;
   }
-  .form-item {
-    /*width:180px;*/
-  }
   .btns {
     float: right;
   }
@@ -294,11 +334,7 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 130px);
-  }
-  .printContent {
-    /*width: 873.2px;*/
-    text-align: center;
+    height: calc(100% - 170px);
   }
   .printContent img {
     float: left;
@@ -318,5 +354,43 @@ export default {
     font-weight: bold;
     margin-right: 30px;
     float: left;
+  }
+  .bnts {
+    height: 30px;
+    margin-top: 10px;
+  }
+  .bnts-left {
+    float: left;
+  }
+  .bnts-right {
+    float: right;
+  }
+  .videos li {
+    float: left;
+    list-style: none;
+    width: 200px;
+    margin: 10px;
+    color: #999;
+  }
+  .videos li p {
+    font-size: 12px;
+  }
+  .john-btn {
+    padding: 3px 7px;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .rel {
+    background: #419ee1;
+    color: #fff;
+    border: 1px solid #419ee1;
+  }
+  .del {
+    background: orange;
+    color: #fff;
+    border: 1px solid orange;
   }
 </style>

@@ -10,6 +10,10 @@ let echarts = require('echarts/lib/echarts')
 export default {
   name: 'lineEchart',
   props: ['title', 'xAxis', 'oneData'],
+  data () {
+    return {
+    }
+  },
   mounted () {
     this.drawEchar()
   },
@@ -92,7 +96,7 @@ export default {
 
 <style scoped>
   .box {
-    height: 300px;
+    height: 600px;
     overflow: hidden;
   }
 </style>

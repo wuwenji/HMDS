@@ -100,9 +100,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop=""
           label="全部完成"
           width="80">
+          <template slot-scope="scope">
+            {{scope.row.status == 1? '是': '否'}}
+          </template>
         </el-table-column>
         <el-table-column
           label="是否关联母材"
@@ -195,9 +197,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop=""
           label="全部完成"
           width="80">
+          <template slot-scope="scope">
+            {{scope.row.status == 1? '是': '否'}}
+          </template>
         </el-table-column>
         <el-table-column
           label="是否关联母材"
@@ -297,7 +301,7 @@ export default {
       this.http('/tSalesOrder/list', {
         pageSize,
         pageNum,
-        isDeilvery: type // 1:已打印  0：未打印
+        isDelivery: type // 1:已打印  0：未打印
       }).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -355,7 +359,7 @@ export default {
       this.research(this.pageSize, this.pageNum)
     },
     research (pageSize, pageNum) {
-      this.formData.isDeilvery = this.johnTab
+      this.formData.isDelivery = this.johnTab
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
       this.http('/tSalesOrder/list', this.formData).then(resp => {

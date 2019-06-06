@@ -4,12 +4,15 @@
       <ul :class="type == 1 ? 'ul1': 'ul2'" style="margin-left: 25px;">
         <li v-for="(item, key) in qrUrls" :key="key">
           <div v-if="type == 1" class="img-box">
+            <p style="font-size: 8px;height: 13px; text-align: center;white-space:nowrap;margin-left:2px;">
+              {{item.caseNo}}-{{item.stockQty}}
+            </p>
             <img :src="item.url" alt="">
             <span class="img-span">
               {{getRow(item.name)}}
               <!--{{item.name}}-->
             </span>
-            <p style="font-size: 8px; width: 130px; text-align: center;">{{item.size}}</p>
+            <p style="font-size: 7px; text-align: center;white-space:nowrap;margin-left:2px;">{{item.size}}</p>
           </div>
           <img v-else :src="item.url" alt="">
         </li>
@@ -54,7 +57,9 @@ export default {
           {
             url: this.$store.state.qrUrl + item.qrCode + '&w=550&h=550',
             size: item.stockSizeNote,
-            name: item.gradeCdKey
+            name: item.gradeCdKey,
+            caseNo: item.caseNo,
+            stockQty: item.stockQty
           }
         )
         this.printIds.push(
@@ -107,7 +112,8 @@ export default {
     margin-top: 10px;
   }
   #printAll .ul1 li img {
-    width: 130px;
+    width: 120px;
+    margin-left: 10px;
   }
   .img-box {
     width: 154px;

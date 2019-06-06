@@ -86,12 +86,13 @@
           <li :class="{active: showCommd == 4}" @click="showCommd = 4">生产管理</li>
         </ul>
       </div>
+      <a @click="showCreen" class="all-scrn">全屏</a>
       <div style="margin: 0 10px;">
-        <doBusiness v-if="showCommd == 0"/>
-        <cutCommod v-if="showCommd == 1"/>
-        <manufacture v-if="showCommd == 2"/>
-        <heatTreatment v-if="showCommd ==3"/>
-        <prodPage v-if="showCommd ==4"/>
+        <doBusiness :class="{'send-screen': allScreen == 1}" v-if="showCommd == 0"/>
+        <cutCommod :class="{'send-screen': allScreen == 1}" v-if="showCommd == 1"/>
+        <manufacture :class="{'send-screen': allScreen == 1}" v-if="showCommd == 2"/>
+        <heatTreatment :class="{'send-screen': allScreen == 1}" v-if="showCommd ==3"/>
+        <prodPage :class="{'send-screen': allScreen == 1}" v-if="showCommd ==4"/>
       </div>
     </div>
 </template>
@@ -107,6 +108,7 @@ export default {
   data () {
     return {
       showCommd: 0,
+      allScreen: 0,
       todayData: []
     }
   },
@@ -122,9 +124,37 @@ export default {
           this.todayData = resp.data
         }
       })
+    },
+    // 按ESC键取消全屏
+    showScreen () {
+      let c = this.showCommd
+      this.showCommd = 100
+      this.allScreen = 0
+      setTimeout(() => {
+        this.showCommd = c
+      }, 0)
+    },
+    // 全屏
+    showCreen () {
+      let c = this.showCommd
+      this.showCommd = 100
+      this.allScreen = 1
+      setTimeout(() => {
+        this.showCommd = c
+      }, 0)
     }
   },
-  computed: {
+  mounted () {
+    let self = this
+    this.$nextTick(function () {
+      document.addEventListener('keyup', function (e) {
+        if (e.keyCode === 27) {
+          if (self.allScreen === 1) {
+            self.showScreen()
+          }
+        }
+      })
+    })
   },
   components: {
     doBusiness,
@@ -201,6 +231,19 @@ export default {
   width: 770px;
   margin: 0 auto;
 }
+.all-scrn {
+  background: orange;
+  color: #fff;
+  border-radius: 4px;
+  width: 56px;
+  text-align: center;
+  position: relative;
+  top: -20px;
+  height: 30px;
+  margin: 0 auto;
+  display: block;
+  cursor: pointer;
+}
 .tab ul li {
   float: left;
   list-style: none;
@@ -235,5 +278,17 @@ export default {
     border-radius: 4px;
     overflow: hidden;
     padding-bottom: 20px;
+  }
+  .send-screen {
+    position: absolute;
+    /*width: 1920px;*/
+    /*height: 1080px;*/
+    top: 0;
+    left: 0;
+    background: #fff;
+    padding: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    overflow: hidden;
   }
 </style>

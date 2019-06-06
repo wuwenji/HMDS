@@ -57,29 +57,29 @@
       <table border="1" borderColor="#ccc" class="john-table">
         <tr>
           <td>指标</td>
-          <td>内部加工</td>
-          <td>理论值</td>
+          <td>内部加工(实际计算值)</td>
+          <td>理论值(系统计算值)</td>
           <td v-if="department != 3">外发</td>
         </tr>
         <tr>
-          <td>数量</td>
+          <td>数量(個)</td>
           <td class="john-right" v-for="(item, index) in tableData.counts" :key="'a' + index">{{item}}</td>
           <td class="john-right" v-if="department != 3">-</td>
           <td class="john-right" v-if="tableData.counts.length < 2">-</td>
         </tr>
         <tr v-if="department != 3">
-          <td>表面积</td>
+          <td>表面积(mm²)</td>
           <td class="john-right" v-for="(item, index) in tableData.area" :key="'b' + index">{{item}}</td>
           <td class="john-right">-</td>
           <td class="john-right" v-if="tableData.area.length < 2">-</td>
         </tr>
         <tr>
-          <td>重量（切断加工 是<br/>表面积*标准值*数量）</td>
+          <td>重量（kg）</td>
           <td class="john-right" v-for="(item, index) in tableData.weight" :key="'c' + index">{{item}}</td>
           <td class="john-right" v-if="department != 3 && tableData.weight.length < 3">-</td>
         </tr>
         <tr>
-          <td>工作时长</td>
+          <td>工作时长(分)</td>
           <td class="john-right" v-for="(item, index) in tableData.workTime" :key="'c' + index">
             {{item}}
           </td>

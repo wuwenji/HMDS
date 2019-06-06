@@ -48,7 +48,8 @@
               <table class="table table2" borderColor="#000" border="1px">
                 <tr>
                   <td>管理编号</td>
-                  <td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>
+                  <!--<td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>-->
+                  <td colspan="3"><input type="text"></td>
                 </tr>
                 <tr>
                   <td>确认人</td>
@@ -134,7 +135,7 @@
         </div>
       </div>
       <p class="btn">
-        <el-button @click="preservation()" type="primary">保存</el-button>
+        <!--<el-button @click="preservation()" type="primary">保存</el-button>-->
         <el-button @click="keeyHistory" type="primary">打印</el-button>
         <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
       </p>
@@ -297,7 +298,6 @@ export default {
           } else {
             document.getElementById('printClick').click()
           }
-
         } else {
           this.$message({
             message: resp.message,
@@ -308,14 +308,17 @@ export default {
       })
     },
     keeyHistory () {
-      this.preservation(1)
-      // this.http('/printHistory/saveOrUpdate', {
-      //   soNo: this.orderInfo.soNo,
-      //   dataJson: {...this.hotData},
-      //   printType: '3'// 1为切断指示书，2为加工指示书，3为热加工指示书
-      // }).then(resp => {
-      //   console.log(resp)
-      // })
+      // this.preservation(1)
+      this.http('/printHistory/saveOrUpdate', {
+        soNo: this.orderInfo.soNo,
+        // dataJson: {...this.hotData},
+        dataJson: {
+          data: '不需要打印数据'
+        },
+        printType: '3'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      }).then(resp => {
+        document.getElementById('printClick').click()
+      })
     }
   }
 }

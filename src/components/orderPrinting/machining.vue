@@ -203,7 +203,7 @@
               <tr>
                 <td class="r"><strong>加工规格</strong></td>
                 <td class="l" colspan="5">{{item.machineSpecCd}}</td>
-                <td colspan="3"><strong>倒角规格</strong></td>
+                <td colspan="3"><strong>倒角规格</strong>&nbsp;{{item.chamferSpec}}</td>
               </tr>
               <tr>
                 <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
@@ -502,7 +502,7 @@
               <tr>
                 <td class="r"><strong>加工规格</strong></td>
                 <td class="l" colspan="5">{{item.machineSpecCd}}</td>
-                <td colspan="3"><strong>倒角规格</strong></td>
+                <td colspan="3"><strong>倒角规格</strong>&nbsp;{{item.chamferSpec}}</td>
               </tr>
               <tr>
                 <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
