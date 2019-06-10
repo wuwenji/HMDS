@@ -1,270 +1,274 @@
 <template>
   <div>
-    <div class="left-table">
-      <table class="table" border="1" borderColor="#ddd">
-        <thead>
-        <tr>
-          <th></th>
-          <th colspan="2">当天<br>(日期/星期)</th>
-          <th colspan="3">明天(日期/星期)</th>
-          <th colspan="3">后天(日期/星期)</th>
-          <th colspan="3">第三天(日期/星期)</th>
-        </tr>
-        <tr>
-          <th>炉名</th>
-          <th>入炉重量</th>
-          <th>设备能力</th>
-          <th>预定重量</th>
-          <th>剩余能力</th>
-          <th>设备能力</th>
-          <th>预定重量</th>
-          <th>剩余能力</th>
-          <th>设备能力</th>
-          <th>预定重量</th>
-          <th>剩余能力</th>
-          <th>设备能力</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>VQ1</td>
-          <td class="john-right"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>VQ2</td>
-          <td class="john-right"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="right-table">
-        <table class="table" border="1" borderColor="#ddd">
-          <tr>
-            <th colspan="3">当天<br/>(日期/星期)</th>
-          </tr>
-          <tr>
-            <th>种类</th>
-            <th>未处理单数</th>
-            <th>未处理重量</th>
-          </tr>
-          <tr>
-            <td>QT</td>
-            <td class="john-right">{{qtNvg.QT.notDoneOrderCount}}</td>
-            <td class="john-right">{{qtNvg.QT.notDoneWeight}}</td>
-          </tr>
-          <tr>
-            <td>NVG</td>
-            <td class="john-right">{{qtNvg.NVG.notDoneOrderCount}}</td>
-            <td class="john-right">{{qtNvg.NVG.notDoneWeight}}</td>
-          </tr>
-        </table>
-    </div>
-    <div class="cl-nowPic"></div>
-    <div class="nowPic">
-      <table style="table-layout:fixed;" class="table nowPicTable" border="1">
-        <tr>
-          <td></td>
-          <td class="green" ref="tdWidth">平</td>
-          <td class="red">峰</td>
-          <td class="red">峰</td>
-          <td class="red">峰</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="red">峰</td>
-          <td class="red">峰</td>
-          <td class="red">峰</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td class="green">平</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td>谷</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>时间</td>
-          <td v-for="item in 17" :key="'a' + item">{{item + 7}}</td>
-          <td v-for="item in 7" :key="'b' + item">{{item}}</td>
-          <td>备注</td>
-        </tr>
-        <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
-          <tr>
-            <td style="position: relative;" rowspan="2">
-              {{item.name}}
-              <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
-                <img class="line-left" src="../../../static/images/left.png" alt="">
-                <img class="line-right" src="../../../static/images/right.png" alt="">
-              </div>
-              <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
-                {{item.showStr}}
-              </div>
-            </td>
-            <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
-            <td rowspan="2">
-            </td>
-          </tr>
-          <tr>
-            <td style="border-top: 1px dashed #000;" v-for="index in 24" :key="index"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-
-    <div class="title">客户财产登记表</div>
-    <template>
-      <div class="elTable">
-        <el-table
-        :data="lists"
-        height="250"
-        border
-        style="width: 100%">
-        <el-table-column
-          label="">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="managementNumber"
-          label="单号">
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          label="客户名称">
-        </el-table-column>
-        <el-table-column
-          prop="material"
-          label="钢种">
-        </el-table-column>
-        <!--<el-table-column-->
-          <!--prop="name"-->
-          <!--label="作业名">-->
-        <!--</el-table-column>-->
-        <el-table-column
-          prop="totalCount"
-          align="right"
-          label="数量">
-        </el-table-column>
-        <el-table-column
-          prop="totalWeight"
-          align="right"
-          label="重量">
-        </el-table-column>
-        <el-table-column
-          prop="hardnessRequirement"
-          label="硬度要求">
-        </el-table-column>
-        <el-table-column
-          prop="attention"
-          label="特别事项">
-        </el-table-column>
-        <el-table-column
-          prop="taskName"
-          label="作业名">
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="使用炉">
-        </el-table-column>
-        <el-table-column
-          prop="type"
-          label="工艺">
-        </el-table-column>
-        <el-table-column
-          label="入炉日期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.tempStartTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="计划货期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="生产进度"
-          width="250">
-          <template slot-scope="scope">
-            <ul class="prog">
-              <li v-for="item in scope.row.mapList" :key="item.equipmentId">
-                {{item.type}}<br/>
-                <span :class="getClass(item)"></span>
-              </li>
-            </ul>
-            <!--<ul class="prog">-->
-              <!--<li>-->
-                <!--Q<br/>-->
-                <!--<span :class="getClass(1)"></span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--T1<br/>-->
-                <!--<span :class="getClass(2)"></span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--T2<br/>-->
-                <!--<span :class="getClass(3)"></span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--T3<br/>-->
-                <!--<span :class="getClass(4)"></span>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--检查-->
-                <!--<span :class="getClass(5)"></span>-->
-              <!--</li>-->
-            <!--</ul>-->
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="specialMatters"
-          label="备注">
-          <!--<template slot-scope="scope">-->
-            <!--<img @click="scope.row.specialMatters = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">-->
-            <!--<img @click="scope.row.specialMatters = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">-->
-          <!--</template>-->
-        </el-table-column>
-      </el-table>
+    <div class="carousel">
+      <div :style="{opacity: opacOne}" class="carousel-item">
+        <div class="left-table">
+          <table class="table" border="1" borderColor="#ddd">
+            <thead>
+            <tr>
+              <th></th>
+              <th colspan="2">当天<br>(日期/星期)</th>
+              <th colspan="3">明天(日期/星期)</th>
+              <th colspan="3">后天(日期/星期)</th>
+              <th colspan="3">第三天(日期/星期)</th>
+            </tr>
+            <tr>
+              <th>炉名</th>
+              <th>入炉重量</th>
+              <th>设备能力</th>
+              <th>预定重量</th>
+              <th>剩余能力</th>
+              <th>设备能力</th>
+              <th>预定重量</th>
+              <th>剩余能力</th>
+              <th>设备能力</th>
+              <th>预定重量</th>
+              <th>剩余能力</th>
+              <th>设备能力</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>VQ1</td>
+              <td class="john-right"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>VQ2</td>
+              <td class="john-right"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="right-table">
+          <table class="table" border="1" borderColor="#ddd">
+            <tr>
+              <th colspan="3">当天<br/>(日期/星期)</th>
+            </tr>
+            <tr>
+              <th>种类</th>
+              <th>未处理单数</th>
+              <th>未处理重量</th>
+            </tr>
+            <tr>
+              <td>QT</td>
+              <td class="john-right">{{qtNvg.QT.notDoneOrderCount}}</td>
+              <td class="john-right">{{qtNvg.QT.notDoneWeight}}</td>
+            </tr>
+            <tr>
+              <td>NVG</td>
+              <td class="john-right">{{qtNvg.NVG.notDoneOrderCount}}</td>
+              <td class="john-right">{{qtNvg.NVG.notDoneWeight}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="cl-nowPic"></div>
+        <div class="title">客户财产登记表</div>
+        <template>
+          <div class="elTable">
+            <el-table
+              :data="lists"
+              border
+              style="width: 100%">
+              <el-table-column
+                label="">
+                <template slot-scope="scope">
+                  {{$store.getters.getDate(scope.row.acceptTime, 2)}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="managementNumber"
+                label="单号">
+              </el-table-column>
+              <el-table-column
+                prop="customerName"
+                label="客户名称">
+              </el-table-column>
+              <el-table-column
+                prop="material"
+                label="钢种">
+              </el-table-column>
+              <!--<el-table-column-->
+              <!--prop="name"-->
+              <!--label="作业名">-->
+              <!--</el-table-column>-->
+              <el-table-column
+                prop="totalCount"
+                align="right"
+                label="数量">
+              </el-table-column>
+              <el-table-column
+                prop="totalWeight"
+                align="right"
+                label="重量">
+              </el-table-column>
+              <el-table-column
+                prop="hardnessRequirement"
+                label="硬度要求">
+              </el-table-column>
+              <el-table-column
+                prop="attention"
+                label="特别事项">
+              </el-table-column>
+              <el-table-column
+                prop="taskName"
+                label="作业名">
+              </el-table-column>
+              <el-table-column
+                prop="date"
+                label="使用炉">
+              </el-table-column>
+              <el-table-column
+                prop="type"
+                label="工艺">
+              </el-table-column>
+              <el-table-column
+                label="入炉日期">
+                <template slot-scope="scope">
+                  {{$store.getters.getDate(scope.row.tempStartTime, 2)}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="计划货期">
+                <template slot-scope="scope">
+                  {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="生产进度"
+                width="250">
+                <template slot-scope="scope">
+                  <ul class="prog">
+                    <li v-for="item in scope.row.mapList" :key="item.equipmentId">
+                      {{item.type}}<br/>
+                      <span :class="getClass(item)"></span>
+                    </li>
+                  </ul>
+                  <!--<ul class="prog">-->
+                  <!--<li>-->
+                  <!--Q<br/>-->
+                  <!--<span :class="getClass(1)"></span>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                  <!--T1<br/>-->
+                  <!--<span :class="getClass(2)"></span>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                  <!--T2<br/>-->
+                  <!--<span :class="getClass(3)"></span>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                  <!--T3<br/>-->
+                  <!--<span :class="getClass(4)"></span>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                  <!--检查-->
+                  <!--<span :class="getClass(5)"></span>-->
+                  <!--</li>-->
+                  <!--</ul>-->
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="specialMatters"
+                label="备注">
+                <!--<template slot-scope="scope">-->
+                <!--<img @click="scope.row.specialMatters = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">-->
+                <!--<img @click="scope.row.specialMatters = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">-->
+                <!--</template>-->
+              </el-table-column>
+            </el-table>
+          </div>
+        </template>
+        <!--<div class="page">-->
+          <!--<el-pagination-->
+            <!--@current-change="handleCurrentChange"-->
+            <!--:current-page.sync="pageNum"-->
+            <!--layout="prev, pager, next"-->
+            <!--:total="total">-->
+          <!--</el-pagination>-->
+        <!--</div>-->
       </div>
-    </template>
-    <div class="page">
-      <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page.sync="pageNum"
-        layout="prev, pager, next"
-        :total="total">
-      </el-pagination>
+      <div :style="{opacity: opacTwo}" class="carousel-item">
+        <div class="nowPic">
+          <table style="table-layout:fixed;" class="table nowPicTable" border="1">
+            <tr>
+              <td></td>
+              <td class="green" ref="tdWidth">平</td>
+              <td class="red">峰</td>
+              <td class="red">峰</td>
+              <td class="red">峰</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="red">峰</td>
+              <td class="red">峰</td>
+              <td class="red">峰</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td class="green">平</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td>谷</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>时间</td>
+              <td v-for="item in 17" :key="'a' + item">{{item + 7}}</td>
+              <td v-for="item in 7" :key="'b' + item">{{item}}</td>
+              <td>备注</td>
+            </tr>
+            <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
+            <tr>
+              <td style="position: relative;" rowspan="2">
+                {{item.name}}
+                <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
+                  <img class="line-left" src="../../../static/images/left.png" alt="">
+                  <img class="line-right" src="../../../static/images/right.png" alt="">
+                </div>
+                <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
+                  {{item.showStr}}
+                </div>
+              </td>
+              <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
+              <td rowspan="2">
+              </td>
+            </tr>
+            <tr>
+              <td style="border-top: 1px dashed #000;" v-for="index in 24" :key="index"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -274,6 +278,8 @@ export default {
   data () {
     return {
       widthTd: '',
+      opacOne: 1,
+      opacTwo: 0,
       qtNvg: {
         NVG: {
           notDoneOrderCount: 0,
@@ -300,8 +306,52 @@ export default {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
+    setInterval(() => {
+      this.toggleTable()
+      this.toggleEchart()
+    }, 10000)
   },
   methods: {
+    // 显隐表格
+    toggleTable () {
+      if (this.opacOne > 0) {
+        let setOne = setInterval(() => {
+          if (this.opacOne > 0) {
+            this.opacOne -= 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      } else {
+        let setOne = setInterval(() => {
+          if (this.opacOne < 1) {
+            this.opacOne += 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      }
+    },
+    // 显隐图表
+    toggleEchart () {
+      if (this.opacTwo > 0) {
+        let setOne = setInterval(() => {
+          if (this.opacTwo > 0) {
+            this.opacTwo -= 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      } else {
+        let setOne = setInterval(() => {
+          if (this.opacTwo < 1) {
+            this.opacTwo += 0.03
+          } else {
+            clearInterval(setOne)
+          }
+        }, 50)
+      }
+    },
     // QT、NVG处理
     getQtNvg () {
       this.http('/show/getHeatTotalData', {}).then(resp => {
@@ -530,4 +580,14 @@ export default {
   width: 10px;
   height: 10px;
 }
+  .carousel {
+    height: 1050px;
+    position: relative;
+  }
+  .carousel-item {
+    height: 1050px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
 </style>

@@ -3,16 +3,16 @@
     <div v-show="showContent == 1">
       <table class="info-table">
         <tr>
-          <td>客户：{{orderInfo.contName}}</td>
-          <td>最终客户：{{orderInfo.custName}}</td>
-          <td>加工类型：{{orderInfo.heatMillingRemarks}}</td>
-          <td>接单时间：{{$store.getters.getDate(orderInfo.acceptTime)}}</td>
+          <td>客户：{{lists[0].contName}}</td>
+          <td>最终客户：{{lists[0].custName}}</td>
+          <td>加工类型：{{getTypeTw(lists[0].workInstCd)}}</td>
+          <td>接单时间：{{$store.getters.getDate(lists[0].soDate, 2)}}</td>
         </tr>
         <tr>
-          <td>接单号：{{orderInfo.soNo}}</td>
-          <td>营业员：{{orderInfo.sUserName}}</td>
-          <td>发件人：{{orderInfo.entryUserName}}</td>
-          <td>交期时间：{{$store.getters.getDate(orderInfo.contDueDate)}}</td>
+          <td>接单号：{{lists[0].soNo}}</td>
+          <td>营业员：{{lists[0].sUserName}}</td>
+          <td>发件人：{{lists[0].entryUserName}}</td>
+          <td>交期时间：{{$store.getters.getDate(lists[0].contDueDate, 2)}}</td>
         </tr>
       </table>
       <el-table
@@ -259,6 +259,14 @@ export default {
     }
   },
   methods: {
+    // 获取订单类型
+    getTypeTw (numb) {
+      if (numb === '1') return '整条'
+      if (numb === '2') return '切断'
+      if (numb === '3') return '切断&加工'
+      if (numb === '5') return '热处理'
+      if (numb === '6') return '切断&加工&热处理'
+    },
     // 默认选中
     toggleRow (row) {
       this.$refs.table.toggleRowSelection(row, true)
@@ -281,6 +289,8 @@ export default {
               })
             }
           })
+        } else {
+          this.$message.error(resp.message)
         }
       })
     },

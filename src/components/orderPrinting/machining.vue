@@ -9,7 +9,10 @@
           <div class="pri-left" style="border-right: 1px dashed #000;border-bottom: 1px dashed #000;">
             <table>
               <tr>
-                <td width="487"><p>切断&加工 </p>
+                <td width="487"><p>
+                  {{item.workInstCd > 3? '切断&加工&热处理': ''}}
+                  {{item.workInstCd == 3? '切断&加工': ''}}
+                </p>
                   <p>&nbsp;<span class="span span-left">切断</span> </p></td>
                 <td width="590">
                   <p style="font-size: 18px;font-weight: bold; position: relative;">
@@ -308,7 +311,9 @@
           <div class="pri-left" style="padding-top: 10px;">
             <table>
               <tr>
-                <td width="487"><p>切断&加工 </p>
+                <td width="487"><p>
+                  {{item.workInstCd > 3? '切断&加工&热处理': ''}}
+                  {{item.workInstCd == 3? '切断&加工': ''}}</p>
                   <p>&nbsp;<span class="span span-left">加工</span> </p></td>
                 <td width="590">
                   <p style="font-size: 18px;font-weight: bold; position: relative;">
