@@ -115,7 +115,6 @@ export default {
   created () {
     this.aPlus = 5
     this.getToday()
-    console.log(navigator)
   },
   methods: {
     // 获取今日处理数量

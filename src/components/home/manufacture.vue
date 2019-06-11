@@ -162,12 +162,18 @@ export default {
   mounted () {
     this.getMacData()
     this.getList()
-    setInterval(() => {
-      this.toggleTable()
-      this.toggleEchart()
-    }, 10000)
+    this.carousel()
   },
   methods: {
+    // 轮播
+    carousel () {
+      let b = setInterval(() => {
+        this.toggleTable()
+        this.toggleEchart()
+        clearInterval(b)
+        this.carousel()
+      }, 10000)
+    },
     // 显隐表格
     toggleTable () {
       if (this.opacOne > 0) {

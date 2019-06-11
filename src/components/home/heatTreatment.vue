@@ -28,34 +28,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>VQ1</td>
-              <td class="john-right"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+            <tr v-for="(item, key) in heatPlan" :key="'VQ1' + key">
+              <td v-for="(val, index) in item" :key="key + '' + index">{{val}}</td>
             </tr>
-            <tr>
-              <td>VQ2</td>
-              <td class="john-right"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <!--<tr>-->
+              <!--<td>VQ2</td>-->
+              <!--<td class="john-right"></td>-->
+              <!--<td v-for="(item, key) in heatPlan.VQ2" :key="'VQ2' + key">{{item}}</td>-->
+            <!--</tr>-->
             </tbody>
           </table>
         </div>
@@ -280,6 +260,7 @@ export default {
       widthTd: '',
       opacOne: 1,
       opacTwo: 0,
+      heatPlan: [],
       qtNvg: {
         NVG: {
           notDoneOrderCount: 0,
@@ -300,18 +281,25 @@ export default {
     this.heatTime()
     this.getQtNvg()
     this.getPropertyRegistration()
+    this.getHeatPlanData()
   },
   mounted () {
     this.$nextTick(() => {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    setInterval(() => {
-      this.toggleTable()
-      this.toggleEchart()
-    }, 10000)
+    this.carousel()
   },
   methods: {
+    // 轮播
+    carousel () {
+      let b = setInterval(() => {
+        this.toggleTable()
+        this.toggleEchart()
+        clearInterval(b)
+        this.carousel()
+      }, 10000)
+    },
     // 显隐表格
     toggleTable () {
       if (this.opacOne > 0) {
@@ -372,6 +360,15 @@ export default {
         if (resp.success) {
           this.lists = resp.data.lists
           this.total = resp.data.total
+        }
+      })
+    },
+    // 右上角数据表格
+    getHeatPlanData () {
+      this.http('/show/getHeatPlanData', {}).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.heatPlan = resp.data
         }
       })
     },

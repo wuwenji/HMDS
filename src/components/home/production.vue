@@ -67,33 +67,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>VQ1</td>
-              <td class="john-right"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>VQ2</td>
-              <td class="john-right"></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+            <tr v-for="(item, key) in heatPlan" :key="'VQ1' + key">
+              <td v-for="(val, index) in item" :key="key + '' + index">{{val}}</td>
             </tr>
             </tbody>
           </table>
@@ -202,6 +177,7 @@ export default {
           notDoneWeight: 0
         }
       },
+      heatPlan: [],
       opacOne: 1,
       opacTwo: 0,
       pageNum: 1,
@@ -212,18 +188,25 @@ export default {
   created () {
     this.heatTime()
     this.getQtNvg()
+    this.getHeatPlanData()
   },
   mounted () {
     this.$nextTick(() => {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    setInterval(() => {
-      this.toggleTable()
-      this.toggleEchart()
-    }, 10000)
+    this.carousel()
   },
   methods: {
+    // 轮播
+    carousel () {
+      let b = setInterval(() => {
+        this.toggleTable()
+        this.toggleEchart()
+        clearInterval(b)
+        this.carousel()
+      }, 10000)
+    },
     // 显隐表格
     toggleTable () {
       if (this.opacOne > 0) {
@@ -243,6 +226,15 @@ export default {
           }
         }, 50)
       }
+    },
+    // 右上角数据表格
+    getHeatPlanData () {
+      this.http('/show/getHeatPlanData', {}).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.heatPlan = resp.data
+        }
+      })
     },
     // 显隐图表
     toggleEchart () {

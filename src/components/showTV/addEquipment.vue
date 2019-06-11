@@ -75,7 +75,7 @@
             <div class="pic-right">
               <span class="el-icon-delete"></span>
               <span class="el-icon-upload">
-                <input @change="selectImg($event)" accept="image/jpg, image/jpeg, image/png" class="file" type="file">
+                <input @change="selectImg($event, 'imgSrc')" accept="image/jpg, image/jpeg, image/png" class="file" type="file">
               </span>
             </div>
           </div>
@@ -111,17 +111,18 @@
         </el-form-item>
         <el-form-item
           prop="name"
-          label="发布日期">
-          <el-date-picker
-            type="date"
-            placeholder="选择日期"
-            value-format="yyyy-MM-dd"
-            v-model="dynamicValidateForm.name" style="width: 100%;"></el-date-picker>
-        </el-form-item>
-        <el-form-item
-          prop="name"
-          label="内容">
-          <VueEditor v-model="content"/>
+          label="视频">
+          <div class="video">
+            <video v-if="movieLoad" width="500" height="400" controls>
+              <source :src="movieSrc" type="video/mp4">
+            </video>
+            <div class="pic-right">
+              <span class="el-icon-delete"></span>
+              <span class="el-icon-upload">
+                <input @change="selectImg($event, 'movieSrc')" accept="video/mp4" class="file" type="file">
+              </span>
+            </div>
+          </div>
         </el-form-item>
         <el-form-item style="text-align: center;">
           <el-button type="primary" @click="submitForm('dynamicValidateForm')">添加</el-button>
@@ -139,6 +140,8 @@ export default {
   data () {
     return {
       imgSrc: '../../../static/images/suolie.jpg',
+      movieSrc: '',
+      movieLoad: true,
       dynamicValidateForm: {
         // id: '',
         name: '',
@@ -156,9 +159,9 @@ export default {
   },
   methods: {
     // 选中图片
-    selectImg (e) {
+    selectImg (e, dom) {
       console.log(e)
-      this.imgSrc = this.getUrl(e.target.files[0])
+      this[dom] = this.getUrl(e.target.files[0])
     },
     // 获取file选中图片路径
     getUrl (value) {
@@ -173,29 +176,29 @@ export default {
       return url
     },
     submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          this.http('/equipment/add', this.dynamicValidateForm).then(resp => {
-            console.log(resp)
-            if (resp.success) {
-              this.$message({
-                message: '添加成功',
-                duration: 1000,
-                type: 'success'
-              })
-              setTimeout(() => {
-                this.$parent.$parent.elDialog = false
-                this.$parent.$parent.getList(10, 1)
-              }, 1000)
-            } else {
-              this.$message.error(resp.message)
-            }
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     this.http('/equipment/add', this.dynamicValidateForm).then(resp => {
+      //       console.log(resp)
+      //       if (resp.success) {
+      //         this.$message({
+      //           message: '添加成功',
+      //           duration: 1000,
+      //           type: 'success'
+      //         })
+      //         setTimeout(() => {
+      //           this.$parent.$parent.elDialog = false
+      //           this.$parent.$parent.getList(10, 1)
+      //         }, 1000)
+      //       } else {
+      //         this.$message.error(resp.message)
+      //       }
+      //     })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
@@ -203,6 +206,14 @@ export default {
   },
   components: {
     VueEditor
+  },
+  watch: {
+    movieSrc () {
+      this.movieLoad = false
+      setTimeout(() => {
+        this.movieLoad = true
+      }, 0)
+    }
   }
 }
 </script>
@@ -234,5 +245,8 @@ export default {
   left: 0px;
   opacity: 0;
   cursor: pointer;
+}
+.video .pic-right {
+  left: 510px;
 }
 </style>
