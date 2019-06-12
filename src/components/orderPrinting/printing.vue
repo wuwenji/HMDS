@@ -92,7 +92,7 @@
             <template v-for="list in item.workList">
             <tr class="tr1">
               <td width="30" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstNo}}</p></td>
+              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p>
                   <span style="width: 35px;display: inline-block;">{{list.machineShapeCd}}</span>

@@ -86,7 +86,7 @@
           <li :class="{active: showCommd == 4}" @click="showCommd = 4">生产管理</li>
         </ul>
       </div>
-      <a @click="showCreen" class="all-scrn">全屏</a>
+      <!--<a @click="showCreen" class="all-scrn">全屏</a>-->
       <div style="margin: 0 10px;">
         <doBusiness :class="{'send-screen': allScreen == 1}" v-if="showCommd == 0"/>
         <cutCommod :class="{'send-screen': allScreen == 1}" v-if="showCommd == 1"/>

@@ -118,6 +118,10 @@
             </el-table>
           </div>
         </template>
+        <div class="total">
+          <span>加工完成总件数：{{cutEndTotal}}</span>
+        </div>
+        <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCompletedCount" :twoData="macEchart.macCapacity"/>
         <!--<div class="page">-->
           <!--<el-pagination-->
             <!--@current-change="handleCurrentChange"-->
@@ -128,11 +132,7 @@
         <!--</div>-->
       </div>
       <div :style="{opacity: opacTwo}" class="carousel-item">
-        <div class="total">
-          <span>加工完成总件数：{{cutEndTotal}}</span>
-        </div>
-        <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCompletedCount" :twoData="macEchart.macCapacity"/>
-      </div>
+       </div>
     </div>
   </div>
 </template>
@@ -145,7 +145,7 @@ export default {
     return {
       summaryData: {},
       cutEndTotal: 0,
-      pageSize: 10,
+      pageSize: 6,
       opacOne: 1,
       opacTwo: 0,
       pageNum: 1,
@@ -162,7 +162,7 @@ export default {
   mounted () {
     this.getMacData()
     this.getList()
-    this.carousel()
+    // this.carousel()
   },
   methods: {
     // 轮播

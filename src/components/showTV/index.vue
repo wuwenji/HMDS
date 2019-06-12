@@ -21,6 +21,7 @@
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">图片</li>
         <li @click="tabClick(2)" :class="{active: johnTab == 2}">视频</li>
       </ul>
+      <span @click="playBanner" class="play">播放</span>
     </div>
     <div class="data-list">
       <el-table
@@ -200,18 +201,23 @@
       <addEquipment :type="johnTab" v-if="dialogTitle == '添加'" />
       <equipDetail :orderInfo="setInfo" v-if="dialogTitle == '修改'"/>
     </el-dialog>
+    <div v-if="play" class="play_box">
+      <playCommod height="1050px"/>
+    </div>
   </div>
 </template>
 
 <script>
 import addEquipment from './addEquipment'
 import equipDetail from './equipDetail'
+import playCommod from './playCommod'
 export default {
   name: 'index',
   data () {
     return {
       pageNum: 1,
       pageSize: 10,
+      play: false,
       setInfo: {},
       movieSrc: '../../../static/images/movie.mp4',
       johnTab: 0,
@@ -229,6 +235,16 @@ export default {
     this.getList(10, 1)
   },
   mounted () {
+    let that = this
+    this.$nextTick(function () {
+      document.addEventListener('keyup', function (e) {
+        if (e.keyCode === 27) {
+          if (that.play) {
+            that.play = false
+          }
+        }
+      })
+    })
   },
   methods: {
     // 获取列表
@@ -279,6 +295,10 @@ export default {
         }
       })
     },
+    // 播放
+    playBanner () {
+      this.play = true
+    },
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
@@ -295,12 +315,16 @@ export default {
   },
   components: {
     addEquipment,
-    equipDetail
+    equipDetail,
+    playCommod
   }
 }
 </script>
 
 <style scoped>
+  .john-tab {
+    position: relative;
+  }
   .john-tab b {
     margin-left: 10px;
   }
@@ -392,5 +416,26 @@ export default {
     background: orange;
     color: #fff;
     border: 1px solid orange;
+  }
+  .play {
+    position: absolute;
+    right: 20px;
+    top: 2px;
+    background: orange;
+    color: #fff;
+    padding: 2px 10px;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .play_box {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    overflow: hidden;
   }
 </style>

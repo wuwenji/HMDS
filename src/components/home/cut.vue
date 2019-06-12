@@ -118,6 +118,10 @@
             </el-table>
           </div>
         </template>
+        <div class="total">
+          <span>切断完成总件数：{{cutEndTotal}}</span>
+        </div>
+        <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
         <!--<div class="page">-->
         <!--<el-pagination-->
         <!--@current-change="handleCurrentChange"-->
@@ -129,10 +133,7 @@
         <!--</div>-->
       </div>
       <div :style="{opacity: opacTwo}" class="carousel-item">
-        <div class="total">
-          <span>切断完成总件数：{{cutEndTotal}}</span>
-        </div>
-        <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
+
       </div>
     </div>
   </div>
@@ -164,7 +165,7 @@ export default {
   mounted () {
     this.getCutData()
     this.getCutTable()
-    this.carousel()
+    // this.carousel()
   },
   methods: {
     // 轮播
@@ -219,7 +220,7 @@ export default {
     // 切断数据
     getCutTable () {
       this.http('/show/getShowCutDepartmentTable', {
-        pageSize: 10,
+        pageSize: 6,
         pageNum: this.pageNum
       }).then(resp => {
         // console.log(resp)

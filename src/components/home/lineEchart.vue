@@ -117,7 +117,7 @@ export default {
             data: this.twoData
           }
         ],
-        color: ['#5b9bd5', '#ff0000']
+        color: ['#5b9bd5', '#10dc40']
       })
     }
   },
@@ -137,7 +137,7 @@ export default {
 
 <style scoped>
   .box {
-    height: 600px;
+    height: 400px;
     overflow: hidden;
   }
 </style>

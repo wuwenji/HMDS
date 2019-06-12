@@ -288,7 +288,7 @@ export default {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    this.carousel()
+    // this.carousel()
   },
   methods: {
     // 轮播
@@ -356,9 +356,10 @@ export default {
         tempEndTime: 1559491200000,
         pageNum: this.pageNum
       }).then(resp => {
+        console.log('财产登记表')
         console.log(resp)
         if (resp.success) {
-          this.lists = resp.data.lists
+          this.lists = resp.data.list
           this.total = resp.data.total
         }
       })

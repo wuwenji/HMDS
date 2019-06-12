@@ -75,7 +75,6 @@ export default {
     // 切断图表数据
     getCutData () {
       this.http('/show/getCutLoadShowData', {}).then(resp => {
-        console.log(resp)
         if (resp.success) {
           this.cutEchart.cutCapacity = resp.data
         }

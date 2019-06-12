@@ -71,6 +71,13 @@
             <el-option label="S" value="S"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item class="form-item" label="已打印" prop="printCount">
+          <el-select v-model="formData.printCount" placeholder="已打印">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
+          </el-select>
+        </el-form-item>
         <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="form-item" label="是否已贴" prop="isPaste">
           <el-select v-model="formData.isPaste" placeholder="是否已贴">
@@ -117,6 +124,9 @@
               <el-input v-model="formData.size3End"></el-input>
             </el-form-item>
           </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="备注" prop="stockRemarks">
+          <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
@@ -374,6 +384,13 @@
         align="right"
         label="打印次数">
       </el-table-column>
+      <el-table-column
+        prop="isPaste"
+        label="是否已贴">
+        <template slot-scope="scope">
+          {{scope.row.isPaste == 1? '是': '否'}}
+        </template>
+      </el-table-column>
     </el-table>
     <el-dialog
       width="610px"
@@ -419,7 +436,9 @@ export default {
         changeNo: '',
         shape: '',
         isPaste: '',
-        inStock: 1
+        inStock: 1,
+        stockRemarks: '',
+        printCount: ''
       },
       options: [],
       listData: []

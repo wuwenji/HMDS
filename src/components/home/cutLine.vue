@@ -12,12 +12,27 @@ export default {
   props: ['title', 'xAxis', 'oneData'],
   data () {
     return {
+      dataOne: [],
+      dataTwo: []
     }
   },
   mounted () {
+    // let arr = [2, 4, 5, 6, 7, 8]
+    // this.getArray(arr)
+    this.getArray(this.oneData)
     this.drawEchar()
   },
   methods: {
+    // 数据分组
+    getArray (art) {
+      for (let i = 0; i < art.length; i++) {
+        if (i % 2 === 0) {
+          this.dataTwo.push(art[i])
+        } else {
+          this.dataOne.push(art[i])
+        }
+      }
+    },
     drawEchar () {
       let myChart = echarts.init(this.$refs.lineChart)
       myChart.setOption({
@@ -79,10 +94,28 @@ export default {
                 }
               }
             },
-            data: this.oneData
+            data: this.dataTwo
+          },
+          {
+            name: '',
+            type: 'bar',
+            barGap: 0,
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: 'red',
+                    fontSize: 20
+                  }
+                }
+              }
+            },
+            data: this.dataOne
           }
         ],
-        color: ['#5b9bd5']
+        color: ['#5b9bd5', '#10dc40']
       })
     }
   },
