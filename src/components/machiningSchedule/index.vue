@@ -87,6 +87,7 @@
           label="状态"
           width="100">
           <template slot-scope="scope">
+            {{scope.row.status}}
             {{scope.row.status == 0? '未完成' : '已完成'}}
           </template>
         </el-table-column>
@@ -94,7 +95,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.cutCount, scope.row.totalCount)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.cutCount, scope.row.totalCount, scope.row.status)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -174,7 +175,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.machineCount, scope.row.totalCount)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.machineCount, scope.row.totalCount, 3)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -272,8 +273,24 @@ export default {
     onSubmit () {
       console.log(this.formData)
     },
-    progress (a, b) {
-      return parseInt(a / b * 100)
+    progress (a, b, c) {
+      let pre = 0
+      if (b === 0) {
+        return 0
+      } else {
+        pre = parseInt(a / b * 100)
+      }
+      if (pre === 100) {
+        if (c === 0) {
+          return 99
+        } else if (c === 1) {
+          return 100
+        } else {
+          return 100
+        }
+      } else {
+        return pre
+      }
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

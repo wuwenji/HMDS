@@ -51,7 +51,7 @@
             </tr>
             <tr class="tr2s">
               <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b style="font-size: 20px;">钢种</b> </p></td>
-              <td colspan="4" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{val.orderList[0].soWkInstList.gradeCd}}</b></p></td>
+              <td colspan="4" style="width: 253px;" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{val.orderList[0].soWkInstList.gradeCd}}</b></p></td>
               <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>接单号码</b> </p></td>
               <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{val.orderList[0].soWkInstList.soNo}}</p></td>
               <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>营业员</b></p></td>
@@ -85,9 +85,16 @@
               <td width="62" nowrap="nowrap" align="right" class="l r t"><p ><b>数量</b> </p></td>
               <td align="right" nowrap="nowrap" class="l t"><p ><b>kg重量</b> </p></td>
             </tr>
-            <template v-for="item in val.orderList">
-            <tr class="tr1">
-              <td width="30" style="border-right:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soLnNo: ''}}</p></td>
+            <template v-for="(item, listIndex) in val.orderList">
+            <tr class="tr1" :key="listIndex">
+              <td width="30" style="border-right:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
+                <template v-if="listIndex > 0">
+                  {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soLnNo}}
+                </template>
+                <template v-else>
+                  {{item.soWkInstList.soLnNo}}
+                </template>
+              </p></td>
               <td width="25" style="border-left:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.soWkInstList.workInstNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p class="spans">
@@ -112,8 +119,24 @@
                     {{item.soWkInstList.unitPriceCd == 7? '個': ''}}
                     {{item.soWkInstList.unitPriceCd == 8? '套': ''}}
                   </span>
-                  <span class="align-right">{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soQty : ''}}</span>
-                  <span class="align-right">{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soKgWt : ''}}</span>
+                  <span class="align-right">
+                    <!--{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soQty : ''}}-->
+                    <template v-if="listIndex > 0">
+                      {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soQty}}
+                    </template>
+                    <template v-else>
+                      {{item.soWkInstList.soQty}}
+                    </template>
+                  </span>
+                  <span class="align-right">
+                    <!--{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soKgWt : ''}}-->
+                    <template v-if="listIndex > 0">
+                      {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soKgWt}}
+                    </template>
+                    <template v-else>
+                      {{item.soWkInstList.soKgWt}}
+                    </template>
+                  </span>
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >

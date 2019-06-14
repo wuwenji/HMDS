@@ -58,7 +58,7 @@
               <span style="width: 70px; text-align: right;">kg重量</span>
             </p>
             <p class="p-spans">
-              {{item.machineTolerance.replace(/\((.+?)\)/g, '')}}
+              {{item.machineTolerance == null? '' : item.machineTolerance.replace(/\((.+?)\)/g, '')}}
             </p>
             <!--<p style="width: 170px;">{{item.instRemarks1}}</p>-->
             <p>
@@ -84,7 +84,7 @@
           <td>{{item.status == 0? '未完成': '已完成'}}</td>
 
         </tr>
-        <tr>
+        <tr class="dan-grren">
           <td><b>加工工差</b></td>
           <td><b>切断指示尺寸</b></td>
           <td><b>实际尺寸</b></td>
@@ -112,7 +112,7 @@
             {{item.millingRemarks1}}
           </td>
         </tr>
-        <tr>
+        <tr class="dan-grren">
           <td><b>现在加工设备</b></td>
           <td><b>现在加工人员</b></td>
           <td><b>加工开始时间</b></td>
@@ -138,7 +138,6 @@
           </td>
           <td colspan="2">
             <el-button
-              v-if="item.machining != null"
               size="mini"
               @click="alertDetail(item.id, item.cutCode, item)"
               type="primary">
@@ -323,13 +322,17 @@ export default {
     },
     alertDetail (id, cutCo, item) {
       this.cutCode = cutCo
-      // console.log(item)
-      this.http('/machining/detail', item.machining.id).then(resp => {
-        console.log(resp)
-        if (resp.success) {
-          this.lists = resp.data
-        }
-      })
+      if (item.machining !== null) {
+        this.http('/machining/detail', item.machining.id).then(resp => {
+          console.log(resp)
+          if (resp.success) {
+            this.lists = resp.data
+          }
+        })
+      } else {
+        this.lists = []
+      }
+
       this.http('/cut/findEntry', id).then(resp => {
         // console.log(resp)
         if (resp.success) {

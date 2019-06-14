@@ -41,8 +41,12 @@
             label="钢种">
           </el-table-column>
           <el-table-column
-            prop="changeNo"
+            prop="chargeNo"
             label="溶解编号">
+          </el-table-column>
+          <el-table-column
+            prop="machineShapeCd"
+            label="形状">
           </el-table-column>
           <el-table-column
             prop="stockSizeNote"
@@ -64,7 +68,7 @@
             width="180px">
           </el-table-column>
           <el-table-column
-            prop="storageName"
+            prop="stockRemarks"
             label="放置位置">
           </el-table-column>
           <el-table-column
@@ -73,9 +77,12 @@
             width="200">
           </el-table-column>
           <el-table-column
-            prop="latestIoDate"
-            label="入出库日期"
+            prop="latestStockOutDate"
+            label="出库日期"
             width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockOutDate, 2)}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="soNo"
@@ -83,9 +90,12 @@
             width="120">
           </el-table-column>
           <el-table-column
-            prop=""
+            prop="latestStockInDate"
             label="入库时间"
             width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
+            </template>
           </el-table-column>
         </el-table>
         <div class="pages">

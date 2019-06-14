@@ -109,7 +109,7 @@
         <el-table-column
           prop="failPercent"
           align="right"
-          label="故障率">
+          label="故障率(%)">
         </el-table-column>
       </el-table>
       <div class="block">

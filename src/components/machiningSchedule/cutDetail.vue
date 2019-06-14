@@ -57,7 +57,7 @@
             <span style="width: 50px;text-align: right;">kg重量</span>
           </p>
           <p class="p-spans">
-            <!--{{item.machineTolerance.replace(/\((.+?)\)/g, '')}}-->
+            {{item.instSizeNote}}
           </p>
           <!--<p style="width: 170px;">{{item.instRemarks1}}</p>-->
           <p>

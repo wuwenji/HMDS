@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="carousel">
-      <div :style="{opacity: opacOne}" class="carousel-item">
+      <div :style="{opacity: opacOne, 'z-index': 99}" class="carousel-item">
         <div class="left-table">
           <table class="table" border="1" borderColor="#ddd">
             <thead>
@@ -29,12 +29,12 @@
             </thead>
             <tbody>
             <tr v-for="(item, key) in heatPlan" :key="'VQ1' + key">
-              <td v-for="(val, index) in item" :key="key + '' + index">{{val}}</td>
+              <td v-for="(val, index) in item" :key="key + 'c' + index">{{val}}</td>
             </tr>
             <!--<tr>-->
-              <!--<td>VQ2</td>-->
-              <!--<td class="john-right"></td>-->
-              <!--<td v-for="(item, key) in heatPlan.VQ2" :key="'VQ2' + key">{{item}}</td>-->
+            <!--<td>VQ2</td>-->
+            <!--<td class="john-right"></td>-->
+            <!--<td v-for="(item, key) in heatPlan.VQ2" :key="'VQ2' + key">{{item}}</td>-->
             <!--</tr>-->
             </tbody>
           </table>
@@ -62,9 +62,25 @@
           </table>
         </div>
         <div class="cl-nowPic"></div>
-        <div class="title">客户财产登记表</div>
-        <template>
-          <div class="elTable">
+        <div class="title">
+         <span>客户财产登记表</span>
+          <div v-if="$parent.allScreen === 0" class="form">
+            <el-date-picker
+              type="date"
+              placeholder="开始日期"
+              v-model="formData.startTime"
+              value-format="timestamp"></el-date-picker>
+            -
+            <el-date-picker
+              type="date"
+              placeholder="结束日期"
+              v-model="formData.endTime"
+              value-format="timestamp"></el-date-picker>
+            <el-button @click="searchList" type="primary" size="small">查询</el-button>
+            <el-button class="export" type="primary" size="small" @click="exportExcel">导出</el-button>
+          </div>
+        </div>
+        <div id="out-table" class="elTable">
             <el-table
               :data="lists"
               border
@@ -77,6 +93,7 @@
               </el-table-column>
               <el-table-column
                 prop="managementNumber"
+                width="120"
                 label="单号">
               </el-table-column>
               <el-table-column
@@ -94,11 +111,13 @@
               <el-table-column
                 prop="totalCount"
                 align="right"
+                width="60"
                 label="数量">
               </el-table-column>
               <el-table-column
                 prop="totalWeight"
                 align="right"
+                width="80"
                 label="重量">
               </el-table-column>
               <el-table-column
@@ -107,6 +126,7 @@
               </el-table-column>
               <el-table-column
                 prop="attention"
+                show-overflow-tooltip="true"
                 label="特别事项">
               </el-table-column>
               <el-table-column
@@ -114,12 +134,16 @@
                 label="作业名">
               </el-table-column>
               <el-table-column
-                prop="date"
                 label="使用炉">
+                <template slot-scope="scope">
+                  {{getValue(scope.row.equipmentData, 0)}}
+                </template>
               </el-table-column>
               <el-table-column
-                prop="type"
                 label="工艺">
+                <template slot-scope="scope">
+                  {{getValue(scope.row.equipmentData, 1)}}
+                </template>
               </el-table-column>
               <el-table-column
                 label="入炉日期">
@@ -143,49 +167,25 @@
                       <span :class="getClass(item)"></span>
                     </li>
                   </ul>
-                  <!--<ul class="prog">-->
-                  <!--<li>-->
-                  <!--Q<br/>-->
-                  <!--<span :class="getClass(1)"></span>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--T1<br/>-->
-                  <!--<span :class="getClass(2)"></span>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--T2<br/>-->
-                  <!--<span :class="getClass(3)"></span>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--T3<br/>-->
-                  <!--<span :class="getClass(4)"></span>-->
-                  <!--</li>-->
-                  <!--<li>-->
-                  <!--检查-->
-                  <!--<span :class="getClass(5)"></span>-->
-                  <!--</li>-->
-                  <!--</ul>-->
                 </template>
               </el-table-column>
               <el-table-column
                 prop="specialMatters"
                 label="备注">
-                <!--<template slot-scope="scope">-->
-                <!--<img @click="scope.row.specialMatters = 2" v-if="scope.row.remark == 1" class="gaotie" src="../../../static/images/gaotie.jpg" alt="">-->
-                <!--<img @click="scope.row.specialMatters = 1" v-if="scope.row.remark == 2" class="feiji" src="../../../static/images/feiji.jpg" alt="">-->
-                <!--</template>-->
               </el-table-column>
             </el-table>
           </div>
-        </template>
-        <!--<div class="page">-->
-          <!--<el-pagination-->
-            <!--@current-change="handleCurrentChange"-->
-            <!--:current-page.sync="pageNum"-->
-            <!--layout="prev, pager, next"-->
-            <!--:total="total">-->
-          <!--</el-pagination>-->
-        <!--</div>-->
+        <div class="page">
+        <el-pagination
+          v-if="$parent.allScreen === 0"
+        @current-change="handleCurrentChange"
+        @size-change="sizeChange"
+        :current-page.sync="pageNum"
+        :page-size="pageSize"
+        layout="total, sizes, prev, next, jumper"
+        :total="total">
+        </el-pagination>
+        </div>
       </div>
       <div :style="{opacity: opacTwo}" class="carousel-item">
         <div class="nowPic">
@@ -253,6 +253,8 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 export default {
   name: 'doBusiness',
   data () {
@@ -260,6 +262,12 @@ export default {
       widthTd: '',
       opacOne: 1,
       opacTwo: 0,
+      carouseing: '',
+      nextPage: '',
+      formData: {
+        startTime: '',
+        endTime: ''
+      },
       heatPlan: [],
       qtNvg: {
         NVG: {
@@ -273,6 +281,7 @@ export default {
       },
       total: 0,
       lists: [],
+      pageSize: 10,
       pageNum: 1,
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }
@@ -288,17 +297,46 @@ export default {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    // this.carousel()
+    this.carousel()
+    this.carouselPage()
+  },
+  beforeDestroy () {
+    clearInterval(this.carouseing)
+    clearInterval(this.nextPage)
   },
   methods: {
+    // 查询客户财产登记表
+    searchList () {
+      this.getPropertyRegistration()
+    },
+    // 返回设备工艺
+    getValue (string, num) {
+      if (string !== null) {
+        let array = string.split('/')
+        return array[num]
+      }
+    },
     // 轮播
     carousel () {
-      let b = setInterval(() => {
+      this.carouseing = setInterval(() => {
         this.toggleTable()
         this.toggleEchart()
-        clearInterval(b)
+        clearInterval(this.carouseing)
         this.carousel()
       }, 10000)
+    },
+    // 导出excel
+    exportExcel () {
+      /* generate workbook object from table */
+      let wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+      /* get binary string as output */
+      let wbout = XLSX.write(wb, { bookType: 'xls', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '客户财产登录表.xls')
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
     },
     // 显隐表格
     toggleTable () {
@@ -351,13 +389,11 @@ export default {
     // 财产管理登记列表
     getPropertyRegistration () {
       this.http('/show/getPropertyRegistration', {
-        pageSize: 10,
-        tempStartTime: 1553011200000,
-        tempEndTime: 1559491200000,
+        pageSize: this.pageSize,
+        tempStartTime: this.formData.startTime,
+        tempEndTime: this.formData.endTime,
         pageNum: this.pageNum
       }).then(resp => {
-        console.log('财产登记表')
-        console.log(resp)
         if (resp.success) {
           this.lists = resp.data.list
           this.total = resp.data.total
@@ -372,6 +408,20 @@ export default {
           this.heatPlan = resp.data
         }
       })
+    },
+    // 轮播页数
+    carouselPage () {
+      let num = 0
+      this.nextPage = setInterval(() => {
+        num = num + 1
+        if (num <= 3) {
+          this.pageNum = num
+          this.getPropertyRegistration()
+        } else {
+          clearInterval(this.nextPage)
+          this.carouselPage()
+        }
+      }, 3000)
     },
     // 热处理时间表
     heatTime () {
@@ -414,8 +464,14 @@ export default {
       if (start === null) return false
       return true
     },
+    // 换页
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)
+      this.getPropertyRegistration()
+    },
+    // 换数量
+    sizeChange (val) {
+      this.pageSize = parseInt(`${val}`)
       this.getPropertyRegistration()
     },
     getClass (item) {
@@ -461,123 +517,127 @@ export default {
   *{
     font-size: 17px;
   }
-.table {
-  text-align: center;
-  width: 100%;
-}
-.title {
-  text-align: center;
-  line-height: 50px;
-  font-size: 24px;
-  padding-top: 30px;
-}
-.table td,.table th {
-  padding: 12px 10px;
-}
-.page {
-  text-align: right;
-  margin-top: 5px;
-}
-.line {
-  height: 300px;
-}
-.prog li {
-  float: left;
-  margin: 0 5px;
-  list-style: none;
-}
-.prog li span {
-  width: 30px;
-  height: 10px;
-  border: 1px solid #0070c0;
-  border-radius: 2px;
-  display: block;
-  background: #efefef
-}
-.prog li span.red {
-  background: #ff0000;
-}
-.prog li span.blue {
-  background: #0070c0;
-}
-.gaotie,.feiji {
-  width: 115px;
-  cursor: pointer;
-}
-.mid-table {
-  float: right;
-}
-.mid-table td{
-  padding: 5px;
-  color: #0070c0;
-}
-.left-table {
-  width: 70%;
-  float: left;
-}
-.right-table {
-  width: calc(30% - 20px);
-  margin-left: 20px;
-  float: left;
-}
-.total {
-  text-align: right;
-  margin-top: 50px;
-}
-.green {
-  background: #00b050;
-}
-.red {
-  background: #ff0000;
-}
-.cl-nowPic {
-  height: 20px;
-  clear: both;
-}
-.total span {
-  padding: 4px 20px;
-  background: #0070c0;
-  color: #fff;
-  display: inline-block;
-  border-radius: 4px;
-}
-.nowPicTable td{
-  height: 40px;
-  padding: 5px 0;
-  /*width: calc(100%/26);*/
-  /*width: 20px;*/
-}
-.midLine {
-  background: #4a7ebb;
-  position: relative;
-  height: 2px;
-  position: absolute;
-  left: 20px;
-  top: 17px;
-}
-.explan {
-  background: #fdeada;
-  position: absolute;
-  left: 20px;
-  padding: 4px 0;
-  top: 39px;
-  color: red;
-  border: 1px solid #4a7ebb;
-}
-.line-left {
-  position: absolute;
-  left: -6px;
-  width: 10px;
-  top: -4px;
-  height: 10px;
-}
-.line-right {
-  position: absolute;
-  right: -6px;
-  top: -4px;
-  width: 10px;
-  height: 10px;
-}
+  .table {
+    text-align: center;
+    width: 100%;
+  }
+  .title {
+    text-align: left;
+    line-height: 50px;
+    font-size: 24px;
+    padding-top: 30px;
+  }
+  .title span {
+    font-size: 34px;
+    /*padding-right: 400px;*/
+  }
+  .table td,.table th {
+    padding: 12px 10px;
+  }
+  .page {
+    text-align: right;
+    margin-top: 5px;
+  }
+  .line {
+    height: 300px;
+  }
+  .prog li {
+    float: left;
+    margin: 0 5px;
+    list-style: none;
+  }
+  .prog li span {
+    width: 30px;
+    height: 10px;
+    border: 1px solid #0070c0;
+    border-radius: 2px;
+    display: block;
+    background: #efefef
+  }
+  .prog li span.red {
+    background: #ff0000;
+  }
+  .prog li span.blue {
+    background: #0070c0;
+  }
+  .gaotie,.feiji {
+    width: 115px;
+    cursor: pointer;
+  }
+  .mid-table {
+    float: right;
+  }
+  .mid-table td{
+    padding: 5px;
+    color: #0070c0;
+  }
+  .left-table {
+    width: 70%;
+    float: left;
+  }
+  .right-table {
+    width: calc(30% - 20px);
+    margin-left: 20px;
+    float: left;
+  }
+  .total {
+    text-align: right;
+    margin-top: 50px;
+  }
+  .green {
+    background: #00b050;
+  }
+  .red {
+    background: #ff0000;
+  }
+  .cl-nowPic {
+    height: 20px;
+    clear: both;
+  }
+  .total span {
+    padding: 4px 20px;
+    background: #0070c0;
+    color: #fff;
+    display: inline-block;
+    border-radius: 4px;
+  }
+  .nowPicTable td{
+    height: 40px;
+    padding: 5px 0;
+    /*width: calc(100%/26);*/
+    /*width: 20px;*/
+  }
+  .midLine {
+    background: #4a7ebb;
+    position: relative;
+    height: 2px;
+    position: absolute;
+    left: 20px;
+    top: 17px;
+  }
+  .explan {
+    background: #fdeada;
+    position: absolute;
+    left: 20px;
+    padding: 4px 0;
+    top: 39px;
+    color: red;
+    border: 1px solid #4a7ebb;
+  }
+  .line-left {
+    position: absolute;
+    left: -6px;
+    width: 10px;
+    top: -4px;
+    height: 10px;
+  }
+  .line-right {
+    position: absolute;
+    right: -6px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+  }
   .carousel {
     height: 1050px;
     position: relative;
@@ -587,5 +647,11 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+  }
+  .export {
+    margin-left: 10px;
+  }
+  .form {
+    float: right;
   }
 </style>

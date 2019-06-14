@@ -17,9 +17,9 @@ export default {
     }
   },
   mounted () {
-    // let arr = [2, 4, 5, 6, 7, 8]
-    // this.getArray(arr)
-    this.getArray(this.oneData)
+    let arr = [20, 40, 15, 60, 7, 50]
+    this.getArray(arr)
+    // this.getArray(this.oneData)
     this.drawEchar()
   },
   methods: {

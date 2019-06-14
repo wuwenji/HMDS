@@ -152,8 +152,10 @@ export default {
       summaryData: {},
       pageNum: 1,
       showItem: 1,
+      nextPage: '',
       cutEndTotal: 0,
       total: 0,
+      pages: 0,
       title: '切断部机器负荷表',
       cutEchart: {
         cutCode: [],
@@ -165,9 +167,35 @@ export default {
   mounted () {
     this.getCutData()
     this.getCutTable()
+    this.getNext()
     // this.carousel()
   },
+  beforeDestroy () {
+    clearInterval(this.nextPage)
+  },
   methods: {
+    // 获取分页数
+    getPages (numb) {
+      if (numb % 6 === 0) {
+        this.pages = numb / 6
+      } else {
+        this.pages = parseInt(numb / 6) + 1
+      }
+    },
+    // 每隔三秒跳下一页
+    getNext () {
+      let times = 1
+      this.nextPage = setInterval(() => {
+        if (times <= this.pages) {
+          times++
+          this.pageNum = times
+          this.getCutTable()
+        } else {
+          clearInterval(this.nextPage)
+          this.getNext()
+        }
+      }, 3000)
+    },
     // 轮播
     carousel () {
       let b = setInterval(() => {
@@ -226,6 +254,7 @@ export default {
         // console.log(resp)
         if (resp.success) {
           this.total = resp.data.total
+          this.getPages(resp.data.total)
           this.lists = resp.data.list
         }
       })

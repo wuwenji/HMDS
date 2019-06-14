@@ -148,7 +148,9 @@ export default {
       pageSize: 6,
       opacOne: 1,
       opacTwo: 0,
+      nextPage: '',
       pageNum: 1,
+      pages: 0,
       total: 0,
       lists: [],
       title: '切断部机器负荷表',
@@ -162,9 +164,35 @@ export default {
   mounted () {
     this.getMacData()
     this.getList()
+    this.getNext()
     // this.carousel()
   },
+  beforeDestroy () {
+    clearInterval(this.nextPage)
+  },
   methods: {
+    // 获取分页数
+    getPages (numb) {
+      if (numb % 6 === 0) {
+        this.pages = numb / 6
+      } else {
+        this.pages = parseInt(numb / 6) + 1
+      }
+    },
+    // 每隔三秒跳下一页
+    getNext () {
+      let times = 1
+      this.nextPage = setInterval(() => {
+        if (times <= this.pages) {
+          times++
+          this.pageNum = times
+          this.getList()
+        } else {
+          clearInterval(this.nextPage)
+          this.getNext()
+        }
+      }, 3000)
+    },
     // 轮播
     carousel () {
       let b = setInterval(() => {
@@ -232,6 +260,7 @@ export default {
         console.log(resp)
         this.lists = resp.data.list
         this.total = resp.data.total
+        this.getPages(resp.data.total)
       })
     },
     // 加工图表数据

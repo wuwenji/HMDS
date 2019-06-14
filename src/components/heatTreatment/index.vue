@@ -98,7 +98,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.heatCount, scope.row.totalCount, scope.row.scrapCount)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.heatCount, scope.row.totalCount, scope.row.scrapCount, scope.row.status)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -182,8 +182,25 @@ export default {
         }
       })
     },
-    progress (a, b, c) {
-      return parseInt(a / (b - c) * 100)
+    progress (a, b, c, d) {
+      let num = parseInt(a / (b - c) * 100)
+      if (b > c) {
+        if (num === 100) {
+          if (d === 0) {
+            return 99
+          } else {
+            return 100
+          }
+        } else {
+          return num
+        }
+      } else {
+        if (d === 0) {
+          return 99
+        } else {
+          return 100
+        }
+      }
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

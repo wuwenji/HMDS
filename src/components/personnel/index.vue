@@ -81,7 +81,7 @@
           prop="department"
           label="部门">
           <template slot-scope="scope">
-            {{getDepartment(scope.row.department)}}
+            {{getDepartment(department)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -98,12 +98,15 @@
           label="职务">
         </el-table-column>
         <el-table-column
-          prop="theoreticalCounts"
-          label="理论值">
+          :formatter="actual"
+          label="实际值">
         </el-table-column>
         <el-table-column
-          prop="actualCounts"
-          label="实际值">
+          :formatter="theor"
+          label="理论值">
+          <!--<template slot-scope="scope">-->
+            <!--{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}-->
+          <!--</template>-->
         </el-table-column>
       </el-table>
       <div class="block">
@@ -126,9 +129,11 @@ export default {
   name: 'index',
   data () {
     return {
+      type: '1',
       pageNum: 1,
       pageSize: 10,
       total: 0,
+      department: '1',
       listData: [],
       formData: {
         dateType: '1',
@@ -144,17 +149,79 @@ export default {
     this.onSubmit()
   },
   methods: {
+    // 根据绩效指标返回不同字段值
+    actual (row) {
+      if (this.type === '1') {
+        if (row.actualCounts === null || row.actualCounts === undefined) {
+          return '-'
+        } else {
+          return row.actualCounts + ' 個'
+        }
+      }
+      if (this.type === '2') {
+        if (row.actualWeight === null || row.actualWeight === undefined) {
+          return '-'
+        } else {
+          return row.actualWeight + ' kg'
+        }
+      }
+      if (this.type === '3') {
+        if (row.actualArea === null || row.actualArea === undefined) {
+          return '-'
+        } else {
+          return row.actualArea + ' mm²'
+        }
+      }
+      if (this.type === '4') {
+        if (row.actualTime === null || row.actualTime === undefined) {
+          return '-'
+        } else {
+          return row.actualTime + ' 分'
+        }
+      }
+    },
+    theor (row) {
+      if (this.type === '1') {
+        if (row.theoreticalCounts === null || row.theoreticalCounts === undefined) {
+          return '-'
+        } else {
+          return row.theoreticalCounts + ' 個'
+        }
+      }
+      if (this.type === '2') {
+        if (row.theoreticalWeigh === null || row.theoreticalWeigh === undefined) {
+          return '-'
+        } else {
+          return row.theoreticalWeigh + ' kg'
+        }
+      }
+      if (this.type === '3') {
+        if (row.theoreticalArea === null || row.theoreticalArea === undefined) {
+          return '-'
+        } else {
+          return row.theoreticalArea + ' mm²'
+        }
+      }
+      if (this.type === '4') {
+        if (row.theoreticalTime === null || row.theoreticalTime === undefined) {
+          return '-'
+        } else {
+          return row.theoreticalTime + ' 分'
+        }
+      }
+    },
     // 获取部门
     getDepartment (numb) {
-      if (numb === 1) return '切断部门'
-      if (numb === 2) return '加工部门'
-      return '热处理部门'
+      if (numb === '1') return '切断部门'
+      if (numb === '2') return '加工部门'
+      return ''
     },
     onSubmit () {
       this.formData.pageNum = this.pageNum
       this.formData.pageSize = this.pageSize
       this.http('/statistics/workerPerformanceStatistics', this.formData).then(resp => {
-        console.log(1)
+        this.type = this.formData.performanceIndex
+        this.department = this.formData.department
         console.log(resp)
         if (resp.success) {
           this.listData = resp.data.list

@@ -181,6 +181,7 @@ export default {
       opacOne: 1,
       opacTwo: 0,
       pageNum: 1,
+      carouseing: '',
       productTable: [],
       nowPic: ['VQ1', 'VQ2', 'VQ3', '半VQ', 'VD']
     }
@@ -197,13 +198,16 @@ export default {
     })
     this.carousel()
   },
+  beforeDestroy () {
+    clearInterval(this.carouseing)
+  },
   methods: {
     // 轮播
     carousel () {
-      let b = setInterval(() => {
+      this.carouseing = setInterval(() => {
         this.toggleTable()
         this.toggleEchart()
-        clearInterval(b)
+        clearInterval(this.carouseing)
         this.carousel()
       }, 10000)
     },
