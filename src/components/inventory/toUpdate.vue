@@ -2,8 +2,12 @@
   <div>
     <div class="row cl">
       <div class="left">
-        <div class="title">smart库</div>
+        <div class="title">
+          smart库
+          <span @click="smartExport('smart-table', 'smart库')">导出</span>
+        </div>
         <el-table
+          id="smart-table"
           :data="smartData"
           border
           height="500px">
@@ -48,9 +52,27 @@
             prop="machineShapeCd"
             label="形状">
           </el-table-column>
+          <!--<el-table-column-->
+            <!--prop="stockSizeNote"-->
+            <!--label="尺寸">-->
+          <!--</el-table-column>-->
           <el-table-column
-            prop="stockSizeNote"
-            label="尺寸">
+            prop="size1"
+            align="right"
+            sortable
+            label="厚">
+          </el-table-column>
+          <el-table-column
+            prop="size2"
+            align="right"
+            sortable
+            label="宽">
+          </el-table-column>
+          <el-table-column
+            prop="size3"
+            align="right"
+            sortable
+            label="长">
           </el-table-column>
           <el-table-column
             prop="stockQty"
@@ -103,7 +125,7 @@
             @size-change="smartSizeChange"
             @current-change="smartNumChange"
             :current-page="smartPageNum"
-            :page-sizes="[10, 50, 100, 200]"
+            :page-sizes="[100, 500, 1000]"
             :page-size="smartSize"
             layout="total, sizes, prev, next, jumper"
             :total="smartTotal">
@@ -111,8 +133,12 @@
         </div>
       </div>
       <div class="right">
-        <div class="title">本地库</div>
+        <div class="title">
+          本地库
+          <span @click="smartExport('local-table', '本地库')">导出</span>
+        </div>
         <el-table
+          id="local-table"
           :data="localData"
           border
           height="500px">
@@ -147,16 +173,19 @@
           <el-table-column
             prop="size1"
             align="right"
+            sortable
             label="厚">
           </el-table-column>
           <el-table-column
             prop="size2"
             align="right"
+            sortable
             label="宽">
           </el-table-column>
           <el-table-column
             prop="size3"
             align="right"
+            sortable
             label="长">
           </el-table-column>
           <el-table-column
@@ -196,7 +225,7 @@
             @size-change="localSizeChange"
             @current-change="localNumChange"
             :current-page="localPageNum"
-            :page-sizes="[10, 50, 100, 200]"
+            :page-sizes="[100, 500, 1000]"
             :page-size="localSize"
             layout="total, sizes, prev, next, jumper"
             :total="localTotal">
@@ -211,16 +240,18 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 export default {
   name: 'toUpdate',
   data () {
     return {
       smartPageNum: 1,
-      smartSize: 10,
+      smartSize: 100,
       smartTotal: 0,
       smartSelect: '',
       localPageNum: 1,
-      localSize: 10,
+      localSize: 100,
       localTotal: 0,
       localSelect: '',
       smartData: [],
@@ -233,9 +264,31 @@ export default {
   methods: {
     // 获取数据
     getData () {
-      this.getSmart(10, 1)
-      this.getLocal(10, 1)
+      this.getSmart(100, 1)
+      this.getLocal(100, 1)
     },
+    // 导出excel表
+    smartExport (id, string) {
+      /* generate workbook object from table */
+      let fix = document.querySelector('.el-table__fixed') // 是否存在浮动列
+      let wb
+      if (fix) {
+        // 存在浮动列就拿掉浮动
+        wb = XLSX.utils.table_to_book(document.querySelector('#' + id).removeChild(fix))
+      } else {
+        wb = XLSX.utils.table_to_book(document.querySelector('#' + id))
+      }
+      /* get binary string as output */
+      let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), string + '.xlsx')
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
+    },
+    // 导出local库
+    localExport () {},
     // 匹配
     sumbit () {
       // console.log(this.smartData[this.smartSelect])
@@ -333,11 +386,11 @@ export default {
     },
     localSizeChange (val) {
       this.localSize = parseInt(`${val}`)
-      this.getLocal(this.smartSize, this.smartPageNum)
+      this.getLocal(this.localSize, this.localPageNum)
     },
     localNumChange (val) {
       this.localPageNum = parseInt(`${val}`)
-      this.getLocal(this.smartSize, this.smartPageNum)
+      this.getLocal(this.localSize, this.localPageNum)
     }
   }
 }
@@ -358,6 +411,16 @@ export default {
 .btnP {
   text-align: center;
   margin-top: 20px;
+}
+.title span {
+  float: right;
+  margin-right: 20px;
+  font-size: 12px;
+  background: #409EFF;
+  border-radius: 4px;
+  padding: 4px 10px;
+  color: #fff;
+  cursor: pointer;
 }
 .pages {
   text-align: center;
