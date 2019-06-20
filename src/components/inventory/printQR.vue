@@ -53,20 +53,25 @@ export default {
       this.qrUrls = []
       this.printIds = []
       this.qrCodes.map(item => {
-        this.qrUrls.push(
-          {
-            url: this.$store.state.qrUrl + item.qrCode + '&w=550&h=550',
-            size: item.stockSizeNote,
-            name: item.gradeCdKey,
-            caseNo: item.caseNo,
-            stockQty: item.stockQty
-          }
-        )
-        this.printIds.push(
-          item.id
-        )
+        let num = 1
+        if (this.$parent.$parent.pringAll === 1) {
+          num = item.stockQty
+        }
+        while (num--) {
+          this.qrUrls.push(
+            {
+              url: this.$store.state.qrUrl + item.qrCode + '&w=550&h=550',
+              size: item.stockSizeNote,
+              name: item.gradeCdKey,
+              caseNo: item.caseNo,
+              stockQty: item.stockQty
+            }
+          )
+          this.printIds.push(
+            item.id
+          )
+        }
       })
-      console.log(this.qrUrls)
     },
     // 记录打印次数
     printId () {

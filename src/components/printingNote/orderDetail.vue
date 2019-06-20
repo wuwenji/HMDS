@@ -159,7 +159,7 @@
               <td colspan="7">{{item.specExternalNote}}</td>
             </tr>
             <tr>
-              <td>{{key + 1}}</td>
+              <td>{{item.NO}}</td>
               <td>{{item.contPoNo}}</td>
               <td>{{item.soNo + '-' + item.soLnNo}}</td>
               <td>{{getPeice(item.unitPriceCd)}}</td>
@@ -366,10 +366,11 @@ export default {
       this.numTotal = 0
       this.wetTotal = 0
       this.mnyTotal = 0
-      this.orderDetail = this.selectValue.map(item => {
+      this.orderDetail = this.selectValue.map((item, index) => {
         this.numTotal = this.numTotal + item.soQty
         this.wetTotal = this.wetTotal + item.soWt
         this.mnyTotal = this.mnyTotal + this.getTotal(item)
+        item.NO = index + 1
         return item
       })
       this.showContent = 2
@@ -386,7 +387,8 @@ export default {
 <style scoped>
   * {
     font-family: 宋体;
-    font-size: 18px;
+    font-size:20px;
+    line-height: 21px;
   }
   .logo {
     width: 100px;

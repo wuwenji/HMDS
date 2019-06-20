@@ -78,6 +78,13 @@
             <el-option label="否" value="0"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="入出库日期">
+          <el-date-picker
+            type="date"
+            value-format="yyyy-MM-dd"
+            v-model="formData.latestToDateStr"
+            ></el-date-picker>
+        </el-form-item>
         <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="form-item" label="是否已贴" prop="isPaste">
           <el-select v-model="formData.isPaste" placeholder="是否已贴">
@@ -141,7 +148,12 @@
           size="mini"
           style="float: left;margin-left: 10px;"
           type="primary"
-          @click="elDialog = true">打印二维码</el-button>
+          @click="printOneAll(0)">打印二维码</el-button>
+        <el-button
+          size="mini"
+          style="float: left;margin-left: 10px;"
+          type="primary"
+          @click="printOneAll(1)">打印全部二维码</el-button>
         <el-button
           size="mini"
           style="float: left;"
@@ -168,6 +180,7 @@
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
+          fixed
           width="55">
         </el-table-column>
         <el-table-column
@@ -285,7 +298,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[10, 50, 100, 500, 1000, 5000, 10000]"
+          :page-sizes="[100, 500, 1000, 5000, 10000]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -395,7 +408,7 @@
     <el-dialog
       width="610px"
       :visible.sync="elDialog">
-      <printQR :qrCodes="qrCodes"/>
+      <printQR v-if="elDialog" :qrCodes="qrCodes"/>
     </el-dialog>
     <el-dialog
       title="数据匹配"
@@ -416,7 +429,8 @@ export default {
   data () {
     return {
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 100,
+      pringAll: 1,
       updateDialog: false,
       total: 0,
       johnTab: 0,
@@ -438,16 +452,22 @@ export default {
         isPaste: '',
         inStock: 1,
         stockRemarks: '',
-        printCount: ''
+        printCount: '',
+        latestToDateStr: ''
       },
       options: [],
       listData: []
     }
   },
   created () {
-    this.getList(1, 10)
+    this.getList(1, 100)
   },
   methods: {
+    // 打印单个、全部二维码
+    printOneAll (num) {
+      this.pringAll = num
+      this.elDialog = true
+    },
     // 获取列表
     getList (pageNum, pageSize) {
       this.http('/tMaterial/list', {
