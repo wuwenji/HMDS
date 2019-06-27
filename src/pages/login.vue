@@ -105,6 +105,8 @@ export default {
           userPassword: passw
         }).then(res => {
         if (res.success) {
+          console.log('123')
+          console.log(res)
           if (this.remember.length > 0) {
             localStorage.setItem('hmdsUser', this.user)
             localStorage.setItem('hmdsPass', this.password)

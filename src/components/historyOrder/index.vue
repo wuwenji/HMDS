@@ -554,30 +554,35 @@ export default {
       this.searchList(this.pageSize, this.pageNum)
     },
     printingOne (index, row, title) {
-      this.http('/printHistory/list', {
-        soNo: row.soNo
-      }).then(resp => {
-        if (resp.success) {
-          // console.log(resp.data)
-          this.info = resp.data.list[0]
-          this.title = title
-          this.dialogOne = true
-        }
-      })
-      // this.title = title
-      // this.dialogOne = true
-      // this.info = row
+      // this.http('/printHistory/list', {
+      //   soNo: row.soNo
+      // }).then(resp => {
+      //   if (resp.success) {
+      //     // console.log(resp.data)
+      //     this.info = resp.data.list[0]
+      //     this.title = title
+      //     this.dialogOne = true
+      //   }
+      // })
+      this.title = title
+      this.dialogOne = true
+      this.info = row
     },
     cutFun (index, row, title) {
-      this.http('/printHistory/list', {
-        soNo: row.soNo
-      }).then(resp => {
-        if (resp.success) {
-          this.info = resp.data.list[0]
-          this.title = title
-          this.dialogOne = true
-        }
-      })
+      this.title = title
+      this.dialogOne = true
+      this.info = row
+      // this.http('/printHistory/list', {
+      //   soNo: row.soNo
+      // }).then(resp => {
+      //   if (resp.success) {
+      //     console.log('654')
+      //     console.log(resp)
+      //     this.info = resp.data.list[0]
+      //     this.title = title
+      //     this.dialogOne = true
+      //   }
+      // })
     },
     searchList (pageSize, pageNum) {
       this.formData.workInstCd = this.johnTab

@@ -86,11 +86,11 @@
             ></el-date-picker>
         </el-form-item>
         <div class="cl" style="margin-top: 10px;"></div>
-        <el-form-item class="form-item" label="是否已贴" prop="isPaste">
+        <el-form-item class="form-item" label="是否标志" prop="isPaste">
           <el-select v-model="formData.isPaste" placeholder="是否已贴">
             <el-option label="全部" value=""></el-option>
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
+            <el-option label="一致" value="1"></el-option>
+            <el-option label="不一致" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="join-input-row" label="厚">
@@ -132,11 +132,27 @@
             </el-form-item>
           </el-col>
         </el-form-item>
+        <el-form-item class="join-input-row" label="数量">
+          <el-col :span="11">
+            <el-form-item prop="countStart">
+              <el-input v-model="formData.countStart"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col style="" :span="2" class="line">- </el-col>
+          <el-col :span="11">
+            <el-form-item prop="countEnd">
+              <el-input v-model="formData.countEnd"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="接单号" prop="soNo">
+          <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
+        </el-form-item>
         <el-form-item class="form-item" label="备注" prop="stockRemarks">
           <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
+          <el-button type="success" plain @click="onSubmit(100, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -169,6 +185,11 @@
           style="float: left;"
           type="primary"
           @click="updateData">数据同步</el-button>
+        <!--<el-button-->
+          <!--size="mini"-->
+          <!--style="float: left;"-->
+          <!--type="primary"-->
+          <!--@click="initSign">初始化盘点</el-button>-->
       </b>
     </div>
     <div class="data-list">
@@ -287,10 +308,12 @@
         </el-table-column>
         <el-table-column
           prop="isPaste"
-          label="是否已贴">
-          <template slot-scope="scope">
-            {{scope.row.isPaste == 1? '是': '否'}}
-          </template>
+          :formatter="isPaste"
+          label="是否标记">
+        </el-table-column>
+        <el-table-column
+          prop="lastInvUserName"
+          label="盘点人">
         </el-table-column>
       </el-table>
       <div class="block">
@@ -399,10 +422,12 @@
       </el-table-column>
       <el-table-column
         prop="isPaste"
-        label="是否已贴">
-        <template slot-scope="scope">
-          {{scope.row.isPaste == 1? '是': '否'}}
-        </template>
+        :formatter="isPaste"
+        label="是否标记">
+      </el-table-column>
+      <el-table-column
+        prop="lastInvUserName"
+        label="盘点人">
       </el-table-column>
     </el-table>
     <el-dialog
@@ -448,12 +473,15 @@ export default {
         size3End: '',
         materialType: '',
         changeNo: '',
+        soNo: '',
         shape: '',
         isPaste: '',
         inStock: 1,
         stockRemarks: '',
         printCount: '',
-        latestToDateStr: ''
+        latestToDateStr: '',
+        countStart: '',
+        countEnd: ''
       },
       options: [],
       listData: []
@@ -463,6 +491,43 @@ export default {
     this.getList(1, 100)
   },
   methods: {
+    // 初始化盘点
+    initSign () {
+      const loading = this.$loading({
+        lock: true,
+        text: '初始化中...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      console.log(loading)
+      this.http('/tMaterial/inItSign', {}).then(resp => {
+        if (resp.success) {
+          loading.close()
+          this.$message({
+            message: resp.message,
+            type: 'success'
+          })
+          console.log(loading)
+        } else {
+          loading.close()
+          this.$message({
+            message: '初始化盘点失败，请稍后再试！',
+            type: 'warning'
+          })
+          console.log(loading)
+        }
+      })
+    },
+    // 标志
+    isPaste (row) {
+      if (row.isPaste === '1') {
+        return '数据与标签一致'
+      } else if (row.isPaste === '2') {
+        return '数据与标签不一致'
+      } else {
+        return '无'
+      }
+    },
     // 打印单个、全部二维码
     printOneAll (num) {
       this.pringAll = num

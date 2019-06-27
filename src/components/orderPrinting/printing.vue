@@ -253,7 +253,7 @@ export default {
             }
             this.pinkData.push(obj)
           })
-          console.log(this.pinkData)
+          // console.log(this.pinkData)
           // console.log(this.pinkData)
           // this.pinkData = []
           // // this.pinkData = resp.data

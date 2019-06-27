@@ -5,9 +5,115 @@
         <div class="title">
           smart库
           <span @click="smartExport('smart-table', 'smart库')">导出</span>
+          <span @click="smartSeach(100, 1)">搜索</span>
+          <input class="form-input" type="text" placeholder="溶解编号" v-model="smartForm.chargeNo">
+          <input class="form-input" type="text" placeholder="钢种" v-model="smartForm.gradeCd">
         </div>
         <el-table
           id="smart-table"
+          :data="smartData"
+          border
+          height="500px">
+          <el-table-column
+            prop="whseCd"
+            label="smart编号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="stockNo"
+            label="库存号码"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="matCntlNo"
+            label="现品管理号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号">
+          </el-table-column>
+          <el-table-column
+            prop="gradeCdKey"
+            label="钢种">
+          </el-table-column>
+          <el-table-column
+            prop="chargeNo"
+            label="溶解编号">
+          </el-table-column>
+          <el-table-column
+            prop="machineShapeCd"
+            label="形状">
+          </el-table-column>
+          <!--<el-table-column-->
+          <!--prop="stockSizeNote"-->
+          <!--label="尺寸">-->
+          <!--</el-table-column>-->
+          <el-table-column
+            prop="size1"
+            align="right"
+            sortable
+            label="厚">
+          </el-table-column>
+          <el-table-column
+            prop="size2"
+            align="right"
+            sortable
+            label="宽">
+          </el-table-column>
+          <el-table-column
+            prop="size3"
+            align="right"
+            sortable
+            label="长">
+          </el-table-column>
+          <el-table-column
+            prop="stockQty"
+            align="right"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="stockWt"
+            align="right"
+            label="重量">
+          </el-table-column>
+          <el-table-column
+            prop="orgSizeNote"
+            label="母材尺寸"
+            width="180px">
+          </el-table-column>
+          <el-table-column
+            prop="stockRemarks"
+            label="放置位置">
+          </el-table-column>
+          <el-table-column
+            prop="stockRemarks"
+            label="备注"
+            width="200">
+          </el-table-column>
+          <el-table-column
+            prop="latestStockOutDate"
+            label="出库日期"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockOutDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="soNo"
+            label="接单号码"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="latestStockInDate"
+            label="入库时间"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table
           :data="smartData"
           border
           height="500px">
@@ -136,9 +242,72 @@
         <div class="title">
           本地库
           <span @click="smartExport('local-table', '本地库')">导出</span>
+          <span @click="localSeach(100, 1)">搜索</span>
+          <input class="form-input" type="text" placeholder="溶解编号" v-model="localForm.changeNo">
+          <input class="form-input" type="text" placeholder="钢种" v-model="localForm.materialType">
         </div>
         <el-table
           id="local-table"
+          :data="localData"
+          border
+          height="500px">
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="materialType"
+            label="钢种材质"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="changeNo"
+            label="溶解编号">
+          </el-table-column>
+          <el-table-column
+            prop="shape"
+            label="形状">
+          </el-table-column>
+          <el-table-column
+            prop="size1"
+            align="right"
+            sortable
+            label="厚">
+          </el-table-column>
+          <el-table-column
+            prop="size2"
+            align="right"
+            sortable
+            label="宽">
+          </el-table-column>
+          <el-table-column
+            prop="size3"
+            align="right"
+            sortable
+            label="长">
+          </el-table-column>
+          <el-table-column
+            prop="stockQty"
+            align="right"
+            label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="stockWt"
+            align="right"
+            label="重量">
+          </el-table-column>
+          <el-table-column
+            prop="orgSizeNote"
+            label="母材尺寸"
+            width="180px">
+          </el-table-column>
+          <el-table-column
+            prop="storageName"
+            label="放置位置">
+          </el-table-column>
+        </el-table>
+        <el-table
           :data="localData"
           border
           height="500px">
@@ -255,13 +424,49 @@ export default {
       localTotal: 0,
       localSelect: '',
       smartData: [],
-      localData: []
+      localData: [],
+      smartForm: {
+        chargeNo: '',
+        gradeCd: ''
+      },
+      localForm: {
+        changeNo: '',
+        materialType: ''
+      }
     }
   },
   created () {
     this.getData()
   },
   methods: {
+    // 本地库搜索
+    localSeach (size, num) {
+      this.http('/tMaterial/list', {
+        pageSize: size,
+        pageNum: num,
+        notBindData: '1',
+        ...this.localForm
+      }).then(resp => {
+        if (resp.success) {
+          this.localData = resp.data.list
+          this.localTotal = resp.data.total
+        }
+      })
+    },
+    // smart库搜索
+    smartSeach (size, num) {
+      this.http('/stock/findNotBindListBySelective', {
+        pageSize: size,
+        pageNum: num,
+        ...this.smartForm
+      }).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.smartData = resp.data.list
+          this.smartTotal = resp.data.total
+        }
+      })
+    },
     // 获取数据
     getData () {
       this.getSmart(100, 1)
@@ -270,14 +475,15 @@ export default {
     // 导出excel表
     smartExport (id, string) {
       /* generate workbook object from table */
-      let fix = document.querySelector('.el-table__fixed') // 是否存在浮动列
-      let wb
-      if (fix) {
-        // 存在浮动列就拿掉浮动
-        wb = XLSX.utils.table_to_book(document.querySelector('#' + id).removeChild(fix))
-      } else {
-        wb = XLSX.utils.table_to_book(document.querySelector('#' + id))
-      }
+      // let fix = document.querySelector('.el-table__fixed') // 是否存在浮动列
+      let wb = XLSX.utils.table_to_book(document.querySelector('#' + id))
+      // if (fix) {
+      //   // 存在浮动列就拿掉浮动
+      //   wb = XLSX.utils.table_to_book(document.querySelector('#' + id).removeChild(fix))
+      //   document.querySelector('#' + id).appendChild(fix)
+      // } else {
+      //   wb = XLSX.utils.table_to_book(document.querySelector('#' + id))
+      // }
       /* get binary string as output */
       let wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
       try {
@@ -378,19 +584,19 @@ export default {
     },
     smartSizeChange (val) {
       this.smartSize = parseInt(`${val}`)
-      this.getSmart(this.smartSize, this.smartPageNum)
+      this.smartSeach(this.smartSize, this.smartPageNum)
     },
     smartNumChange (val) {
       this.smartPageNum = parseInt(`${val}`)
-      this.getSmart(this.smartSize, this.smartPageNum)
+      this.smartSeach(this.smartSize, this.smartPageNum)
     },
     localSizeChange (val) {
       this.localSize = parseInt(`${val}`)
-      this.getLocal(this.localSize, this.localPageNum)
+      this.localSeach(this.localSize, this.localPageNum)
     },
     localNumChange (val) {
       this.localPageNum = parseInt(`${val}`)
-      this.getLocal(this.localSize, this.localPageNum)
+      this.localSeach(this.localSize, this.localPageNum)
     }
   }
 }
@@ -414,7 +620,7 @@ export default {
 }
 .title span {
   float: right;
-  margin-right: 20px;
+  margin-right: 5px;
   font-size: 12px;
   background: #409EFF;
   border-radius: 4px;
@@ -422,8 +628,20 @@ export default {
   color: #fff;
   cursor: pointer;
 }
+.form-input {
+  float: right;
+  height: 22px;
+  width: 100px;
+  margin: 0 5px;
+  padding: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 .pages {
   text-align: center;
   margin-top: 10px;
+}
+#smart-table,#local-table {
+  display: none;
 }
 </style>

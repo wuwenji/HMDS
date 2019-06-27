@@ -41,7 +41,7 @@
           <!--<el-button type="primary" plain>更新</el-button>-->
           <el-button type="success" plain @click="searchList(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
-          <el-button type="primary" plain @click="updaData">数据同步</el-button>
+          <el-button v-if="bntShow" type="primary" plain @click="updaData">数据同步</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -413,6 +413,14 @@ export default {
     this.getLists(1, 10, 1)
   },
   computed: {
+    bntShow () {
+      let position = JSON.parse(localStorage.getItem('hmdsUsers'))
+      if (position.role === '1') {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   methods: {
     // 同步日本数据
