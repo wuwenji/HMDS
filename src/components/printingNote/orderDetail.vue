@@ -72,8 +72,8 @@
                 日立金属（东莞）特殊钢有限公司 本部</td>
               <td>
                 <span>邮编：</span>523380
-                <span style="width: 150px;">HMDS-QR-49-2/A0</span>
-                <span>page：</span>1/1
+                <span style="width: 190px;">HMDS-QR-49-2/A0</span>
+                <span style="width: 60px;">page：</span>1/1
               </td>
             </tr>
             <tr>
@@ -134,23 +134,23 @@
           <table border="0" class="table-list">
             <thead>
             <tr>
-              <th></th>
-              <th colspan="7">产品规格说明</th>
+              <td></td>
+              <td colspan="7">产品规格说明</td>
             </tr>
             <tr>
-              <th>项目</th>
-              <th>订单号</th>
-              <th>接单号</th>
-              <th>单位</th>
-              <th style="text-align: right;">数量(件)</th>
-              <th style="text-align: right;">重量(KG)</th>
-              <th style="text-align: right;">接单单价(RMB)</th>
-              <th style="text-align: right;">金额(RMB)</th>
+              <td>项目</td>
+              <td>订单号</td>
+              <td>接单号</td>
+              <td>单位</td>
+              <td style="text-align: right;">数量(件)</td>
+              <td style="text-align: right;">重量(KG)</td>
+              <td style="text-align: right;">接单单价(RMB)</td>
+              <td style="text-align: right;">金额(RMB)</td>
             </tr>
             <tr>
-              <th></th>
-              <th colspan="6">备注</th>
-              <th>最终客户订单</th>
+              <td></td>
+              <td colspan="6">备注</td>
+              <td>最终客户订单</td>
             </tr>
             </thead>
             <tbody v-for="(item, key) in deliveryItem" :key="key">
@@ -386,8 +386,8 @@ export default {
 
 <style scoped>
   * {
-    font-family: 宋体;
-    font-size:20px;
+    /*font-family: 宋体;*/
+    font-size: 19px;
     line-height: 21px;
   }
   .logo {
@@ -461,7 +461,7 @@ export default {
     padding: 10px;
   }
   .table td span {
-    width: 120px;
+    width: 110px;
     display: inline-block;;
     text-align: right;
     margin-right: 10px;

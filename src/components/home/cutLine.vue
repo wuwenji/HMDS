@@ -17,10 +17,10 @@ export default {
     }
   },
   mounted () {
-    let arr = [20, 40, 15, 60, 7, 50]
-    this.getArray(arr)
+    // let arr = [20, 40, 15, 60, 7, 50]
+    // this.getArray(arr)
     // this.getArray(this.oneData)
-    this.drawEchar()
+    // this.drawEchar()
   },
   methods: {
     // 数据分组
@@ -121,6 +121,7 @@ export default {
   },
   watch: {
     oneData () {
+      this.getArray(this.oneData)
       this.drawEchar()
     }
   }

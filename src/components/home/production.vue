@@ -97,66 +97,66 @@
         </div>
         <!--<div class="cl-nowPic"></div>-->
       </div>
-      <div :style="{opacity: opacTwo}" class="carousel-item">
-        <div class="nowPic">
-          <table style="table-layout:fixed;" class="table nowPicTable" border="1">
-            <tr>
-              <td></td>
-              <td class="green" ref="tdWidth">平</td>
-              <td class="red">峰</td>
-              <td class="red">峰</td>
-              <td class="red">峰</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="red">峰</td>
-              <td class="red">峰</td>
-              <td class="red">峰</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td class="green">平</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td>谷</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>时间</td>
-              <td v-for="item in 17" :key="'a' + item">{{item + 7}}</td>
-              <td v-for="item in 7" :key="'b' + item">{{item}}</td>
-              <td>备注</td>
-            </tr>
-            <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
-            <tr>
-              <td style="position: relative;" rowspan="2">
-                {{item.name}}
-                <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
-                  <img class="line-left" src="../../../static/images/left.png" alt="">
-                  <img class="line-right" src="../../../static/images/right.png" alt="">
-                </div>
-                <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
-                  {{item.showStr}}
-                </div>
-              </td>
-              <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
-              <td rowspan="2">
-              </td>
-            </tr>
-            <tr>
-              <td style="border-top: 1px dashed #000;" v-for="index in 24" :key="index"></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <!--<div :style="{opacity: opacTwo}" class="carousel-item">-->
+        <!--<div class="nowPic">-->
+          <!--<table style="table-layout:fixed;" class="table nowPicTable" border="1">-->
+            <!--<tr>-->
+              <!--<td></td>-->
+              <!--<td class="green" ref="tdWidth">平</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="red">峰</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td class="green">平</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td>谷</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>时间</td>-->
+              <!--<td v-for="item in 17" :key="'a' + item">{{item + 7}}</td>-->
+              <!--<td v-for="item in 7" :key="'b' + item">{{item}}</td>-->
+              <!--<td>备注</td>-->
+            <!--</tr>-->
+            <!--<tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">-->
+            <!--<tr>-->
+              <!--<td style="position: relative;" rowspan="2">-->
+                <!--{{item.name}}-->
+                <!--<div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">-->
+                  <!--<img class="line-left" src="../../../static/images/left.png" alt="">-->
+                  <!--<img class="line-right" src="../../../static/images/right.png" alt="">-->
+                <!--</div>-->
+                <!--<div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">-->
+                  <!--{{item.showStr}}-->
+                <!--</div>-->
+              <!--</td>-->
+              <!--<td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>-->
+              <!--<td rowspan="2">-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td style="border-top: 1px dashed #000;" v-for="index in 24" :key="index"></td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
@@ -192,14 +192,14 @@ export default {
     this.getHeatPlanData()
   },
   mounted () {
-    this.$nextTick(() => {
-      this.widthTd = this.$refs.tdWidth.clientWidth
-      console.log(this.widthTd)
-    })
-    this.carousel()
+    // this.$nextTick(() => {
+    //   this.widthTd = this.$refs.tdWidth.clientWidth
+    //   console.log(this.widthTd)
+    // })
+    // this.carousel()
   },
   beforeDestroy () {
-    clearInterval(this.carouseing)
+    // clearInterval(this.carouseing)
   },
   methods: {
     // 轮播

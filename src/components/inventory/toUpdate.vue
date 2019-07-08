@@ -123,7 +123,8 @@
             width="55">
             <template slot-scope="scope">
               <el-radio-group v-model="smartSelect">
-                <el-radio :label="scope.$index">&nbsp;</el-radio>
+                <!--<el-radio :label="scope.$index">&nbsp;</el-radio>-->
+                <el-radio :label="scope.row.stockNo">&nbsp;</el-radio>
               </el-radio-group>
             </template>
           </el-table-column>
@@ -317,7 +318,7 @@
             width="55">
             <template slot-scope="scope">
               <el-radio-group v-model="localSelect">
-                <el-radio :label="scope.$index">&nbsp;</el-radio>
+                <el-radio :label="scope.row.id">&nbsp;</el-radio>
               </el-radio-group>
             </template>
           </el-table-column>
@@ -469,8 +470,10 @@ export default {
     },
     // 获取数据
     getData () {
-      this.getSmart(100, 1)
-      this.getLocal(100, 1)
+      // this.getSmart(100, 1)
+      // this.getLocal(100, 1)
+      this.localSeach(this.localSize, this.localPageNum)
+      this.smartSeach(this.smartSize, this.smartPageNum)
     },
     // 导出excel表
     smartExport (id, string) {
@@ -497,25 +500,52 @@ export default {
     localExport () {},
     // 匹配
     sumbit () {
-      // console.log(this.smartData[this.smartSelect])
-      // console.log(this.localData[this.localSelect])
+      let smart = ''
+      this.smartData.map(item => {
+        if (item.stockNo === this.smartSelect) {
+          smart = item
+        }
+      })
+      let local = ''
+      this.localData.map(item => {
+        if (item.id === this.localSelect) {
+          local = item
+        }
+      })
       if (this.smartSelect === '' || this.localSelect === '') {
         this.$message.error('请选择需要绑定的数据')
       } else {
-        let corpCd = this.smartData[this.smartSelect].corpCd
-        let divisionCd = this.smartData[this.smartSelect].divisionCd
-        let stockNo = this.smartData[this.smartSelect].stockNo
-        let whseCd = this.smartData[this.smartSelect].whseCd
-        let shape = this.smartData[this.smartSelect].machineShapeCd
-        let size1 = this.smartData[this.smartSelect].size1
-        let size1DecDigit = this.smartData[this.smartSelect].size1DecDigit
-        let size2 = this.smartData[this.smartSelect].size2
-        let size2DecDigit = this.smartData[this.smartSelect].size2DecDigit
-        let size3 = this.smartData[this.smartSelect].size3
-        let size3DecDigit = this.smartData[this.smartSelect].size3DecDigit
+        // let corpCd = this.smartData[this.smartSelect].corpCd
+        // let divisionCd = this.smartData[this.smartSelect].divisionCd
+        // let stockNo = this.smartData[this.smartSelect].stockNo
+        // let whseCd = this.smartData[this.smartSelect].whseCd
+        // let shape = this.smartData[this.smartSelect].machineShapeCd
+        // let size1 = this.smartData[this.smartSelect].size1
+        // let size1DecDigit = this.smartData[this.smartSelect].size1DecDigit
+        // let size2 = this.smartData[this.smartSelect].size2
+        // let size2DecDigit = this.smartData[this.smartSelect].size2DecDigit
+        // let size3 = this.smartData[this.smartSelect].size3
+        // let size3DecDigit = this.smartData[this.smartSelect].size3DecDigit
+        let corpCd = smart.corpCd
+        let divisionCd = smart.divisionCd
+        let stockNo = smart.stockNo
+        let whseCd = smart.whseCd
+        let shape = smart.machineShapeCd
+        let size1 = smart.size1
+        let size1DecDigit = smart.size1DecDigit
+        let size2 = smart.size2
+        let size2DecDigit = smart.size2DecDigit
+        let size3 = smart.size3
+        let size3DecDigit = smart.size3DecDigit
+        /**/
+        let materialType = smart.gradeCd
+        let changeNo = smart.chargeNo
+        let caseNo = smart.caseNo
+        let stockQty = smart.stockQty
         // let materialNumber = this.smartData[this.smartSelect].stockNo
         let params = {
-          ...this.localData[this.localSelect],
+          // ...this.localData[this.localSelect],
+          ...local,
           corpCd,
           divisionCd,
           stockNo,
@@ -526,10 +556,15 @@ export default {
           size2,
           size2DecDigit,
           size3,
-          size3DecDigit
+          size3DecDigit,
+          materialType,
+          changeNo,
+          caseNo,
+          stockQty
         }
         this.http('/tMaterial/bindData', params).then(resp => {
-          console.log(resp)
+          console.log('已匹配')
+          console.log(params)
           if (resp.success) {
             this.getData()
             this.$message({

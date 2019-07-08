@@ -31,7 +31,8 @@ export default {
   data () {
     return {
       showCommd: 0,
-      allScreen: 0
+      allScreen: 0,
+      fullscreen: false
     }
   },
   mounted () {
@@ -50,6 +51,7 @@ export default {
     // 按ESC键取消全屏
     showScreen () {
       let c = this.showCommd
+      this.fullscreen = false
       this.showCommd = 100
       this.allScreen = 0
       setTimeout(() => {
@@ -64,6 +66,34 @@ export default {
       setTimeout(() => {
         this.showCommd = c
       }, 0)
+      this.handleFullScreen()
+    },
+    // 模拟F11
+    handleFullScreen () {
+      let element = document.documentElement
+      if (this.fullscreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen()
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen()
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen()
+        }
+      } else {
+        if (element.requestFullscreen) {
+          element.requestFullscreen()
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen()
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen()
+        } else if (element.msRequestFullscreen) {
+          // IE11
+          element.msRequestFullscreen()
+        }
+      }
+      this.fullscreen = !this.fullscreen
     }
   },
   components: {

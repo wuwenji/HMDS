@@ -182,7 +182,7 @@ export default {
         this.pages = parseInt(numb / 6) + 1
       }
     },
-    // 每隔三秒跳下一页
+    // 每隔8秒跳下一页
     getNext () {
       let times = 1
       this.nextPage = setInterval(() => {
@@ -194,7 +194,7 @@ export default {
           clearInterval(this.nextPage)
           this.getNext()
         }
-      }, 3000)
+      }, 8000)
     },
     // 轮播
     carousel () {

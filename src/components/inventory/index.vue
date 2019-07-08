@@ -89,6 +89,7 @@
         <el-form-item class="form-item" label="是否标志" prop="isPaste">
           <el-select v-model="formData.isPaste" placeholder="是否已贴">
             <el-option label="全部" value=""></el-option>
+            <el-option label="无" value="0"></el-option>
             <el-option label="一致" value="1"></el-option>
             <el-option label="不一致" value="2"></el-option>
           </el-select>
