@@ -68,6 +68,17 @@ body {
 .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
   border-right: 1px solid #ddd;
 }
+
+.back-table .el-table td,.back-table .el-table th.is-leaf {
+  border-bottom: 1px solid #000;
+}
+.back-table .el-table--border,.back-table .el-table--group {
+  border: 1px solid #000;
+}
+.back-table .el-table--border td,.back-table .el-table--border th,.back-table .el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+  border-right: 1px solid #000;
+}
+
 .john-dialog .el-dialog__header {
   background: #409eff;
 }

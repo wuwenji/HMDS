@@ -53,9 +53,9 @@ export default {
           bottom: 40
         },
         legend: {
-          show: false,
+          // show: false,
           y: '50px',
-          data: ['标准'],
+          data: ['接单数量', '开始切断数量'],
           textStyle: {
             fontSize: 17
           }
@@ -79,7 +79,7 @@ export default {
         },
         series: [
           {
-            name: '',
+            name: '接单数量',
             type: 'bar',
             barGap: 0,
             itemStyle: {
@@ -97,7 +97,7 @@ export default {
             data: this.dataTwo
           },
           {
-            name: '',
+            name: '开始切断数量',
             type: 'bar',
             barGap: 0,
             itemStyle: {

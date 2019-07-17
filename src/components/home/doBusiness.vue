@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table" border="1" borderColor="#ddd">
+    <table class="table" border="1" borderColor="#000">
       <tr>
         <td rowspan="4" align="center">
           <b>制造部</b><br/><b>(PCS)</b>

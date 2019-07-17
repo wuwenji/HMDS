@@ -8,18 +8,26 @@
             <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
             <td>{{$store.state.date}}</td>
             <td >加工延迟：</td>
-            <td class="john-right">{{summaryData.machiningDelayCount}}</td>
+            <td class="john-right">
+              {{$store.getters.toThousand(JSON.stringify(summaryData.machiningDelayCount), 3)}}
+            </td>
           </tr>
           <tr>
             <td>接单总数：</td>
-            <td class="john-right">{{summaryData.machiningOrderCount}}</td>
+            <td class="john-right">
+              <!--{{summaryData.machiningOrderCount}}-->
+              {{$store.getters.toThousand(JSON.stringify(summaryData.machiningOrderCount), 3)}}
+            </td>
             <td>加工中：</td>
-            <td class="john-right">{{summaryData.machiningCount}}</td>
+            <td class="john-right">
+              <!--{{summaryData.machiningCount}}-->
+              {{$store.getters.toThousand(JSON.stringify(summaryData.machiningCount), 3)}}
+            </td>
           </tr>
         </table>
         <div class="title">加工部未完成明细</div>
         <template>
-          <div class="table_changeTd">
+          <div class="table_changeTd back-table">
             <el-table
               :data="lists"
               border
@@ -27,11 +35,13 @@
               <el-table-column
                 prop="soNo"
                 label="订单号"
+                align="right"
                 fixed
                 width="120">
               </el-table-column>
               <el-table-column
                 label="接单时间"
+                align="right"
                 width="120">
                 <template slot-scope="scope">
                   {{$store.getters.getDate(scope.row.soDate, 2)}}
@@ -43,6 +53,7 @@
               </el-table-column>
               <el-table-column
                 prop="soLnNo"
+                align="right"
                 width="60"
                 label="行号">
               </el-table-column>
@@ -74,6 +85,7 @@
               </el-table-column>
               <el-table-column
                 label="要求交期"
+                align="right"
                 width="120">
                 <template slot-scope="scope">
                   {{$store.getters.getDate(scope.row.contDueDate, 2)}}
@@ -119,7 +131,7 @@
           </div>
         </template>
         <div class="total">
-          <span>加工完成总件数：{{cutEndTotal}}</span>
+          <span>加工完成总件数：{{$store.getters.toThousand(JSON.stringify(cutEndTotal), 3)}}</span>
         </div>
         <drawEchart title="加工部机器负荷" type="加工" :xAxis="macEchart.macCode" :oneData="macEchart.macCompletedCount" :twoData="macEchart.macCapacity"/>
         <!--<div class="page">-->

@@ -8,18 +8,27 @@
             <!--<td colspan="3">{{$store.state.time.substring(0, 10) + ' ' + $store.state.time.substring(11)}}</td>-->
             <td class="john-right">{{$store.state.date}}</td>
             <td >切断延迟：</td>
-            <td class="john-right">{{summaryData.cutingDelayCount}}</td>
+            <td class="john-right">
+              <!--{{summaryData.cutingDelayCount}}-->
+              {{$store.getters.toThousand(JSON.stringify(summaryData.cutingDelayCount), 3)}}
+            </td>
           </tr>
           <tr>
             <td>接单总数：</td>
-            <td class="john-right">{{summaryData.cutOrderCount}}</td>
+            <td class="john-right">
+              <!--{{summaryData.cutOrderCount}}-->
+              {{$store.getters.toThousand(JSON.stringify(summaryData.cutOrderCount), 3)}}
+            </td>
             <td>切断中：</td>
-            <td class="john-right">{{summaryData.cutingCount}}</td>
+            <td class="john-right">
+              <!--{{summaryData.cutingCount}}-->
+              {{$store.getters.toThousand(JSON.stringify(summaryData.cutingCount), 3)}}
+            </td>
           </tr>
         </table>
         <div class="title">切断部未完成明细</div>
         <template>
-          <div class="table_changeTd">
+          <div class="table_changeTd back-table">
             <el-table
               :data="lists"
               border
@@ -27,6 +36,7 @@
               <el-table-column
                 prop="soNo"
                 label="订单号"
+                align="right"
                 fixed
                 width="120">
               </el-table-column>
@@ -43,6 +53,7 @@
               </el-table-column>
               <el-table-column
                 prop="soLnNo"
+                align="right"
                 width="60"
                 label="行号">
               </el-table-column>
@@ -74,6 +85,7 @@
               </el-table-column>
               <el-table-column
                 label="要求交期"
+                align="right"
                 width="120">
                 <template slot-scope="scope">
                   {{$store.getters.getDate(scope.row.contDueDate, 2)}}
@@ -119,7 +131,10 @@
           </div>
         </template>
         <div class="total">
-          <span>切断完成总件数：{{cutEndTotal}}</span>
+          <span>切断完成总件数：
+            <!--{{cutEndTotal}}-->
+            {{$store.getters.toThousand(JSON.stringify(cutEndTotal), 3)}}
+          </span>
         </div>
         <drawEchart title="切断部机器负荷表" type="切断" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCompletedCount" :twoData="cutEchart.cutCapacity"/>
         <!--<div class="page">-->

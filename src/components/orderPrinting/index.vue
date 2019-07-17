@@ -415,7 +415,7 @@ export default {
   computed: {
     bntShow () {
       let position = JSON.parse(localStorage.getItem('hmdsUsers'))
-      if (position.role === '1') {
+      if (position.role === 1 || position.role === '1') {
         return true
       } else {
         return false

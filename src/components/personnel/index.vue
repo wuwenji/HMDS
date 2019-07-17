@@ -42,25 +42,25 @@
         </template>
         <el-form-item class="form-item" label="绩效部门" prop="department">
           <el-select v-model="formData.department" placeholder="绩效部门">
-            <el-option label="切断部门" value="1"></el-option>
-            <el-option label="加工部门" value="2"></el-option>
+            <el-option label="切断部门" :value="1"></el-option>
+            <el-option label="加工部门" :value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item class="form-item" label="绩效指标" prop="performanceIndex">
-          <el-select v-model="formData.performanceIndex" placeholder="绩效指标">
-            <el-option label="数量" value="1"></el-option>
-            <el-option label="重量" value="2"></el-option>
-            <el-option label="表面积" value="3"></el-option>
-            <el-option label="工作时长" value="4"></el-option>
-            <!--<el-option label="切断理论时长" value="5"></el-option>-->
-            <!--<el-option label="加工理论时长" value="6"></el-option>-->
-            <!--<el-option label="达成率" value="7"></el-option>-->
-            <!--<el-option label="稼动时间" value="8"></el-option>-->
-            <!--<el-option label="稼动率" value="9"></el-option>-->
-            <!--<el-option label="故障时间" value="10"></el-option>-->
-            <!--<el-option label="故障率" value="11"></el-option>-->
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item class="form-item" label="绩效指标" prop="performanceIndex">-->
+          <!--<el-select v-model="formData.performanceIndex" placeholder="绩效指标">-->
+            <!--<el-option label="数量" value="1"></el-option>-->
+            <!--<el-option label="重量" value="2"></el-option>-->
+            <!--<el-option label="表面积" value="3"></el-option>-->
+            <!--<el-option label="工作时长" value="4"></el-option>-->
+            <!--&lt;!&ndash;<el-option label="切断理论时长" value="5"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="加工理论时长" value="6"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="达成率" value="7"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="稼动时间" value="8"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="稼动率" value="9"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="故障时间" value="10"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-option label="故障率" value="11"></el-option>&ndash;&gt;-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item class="btns">
           <el-button type="primary" plain @click="onSubmit">查询</el-button>
           <el-button type="success" plain @click="resetForm('formData')">重置</el-button>
@@ -70,6 +70,7 @@
     <div class="data-list">
       <el-table
         :data="listData"
+        v-if="department == 1"
         border
         height="calc(100% - 75px)">
         <el-table-column
@@ -93,21 +94,191 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="position"
-          :formatter="formatter"
-          label="职务">
+          prop="workNumber"
+          label="出勤理论时间">
         </el-table-column>
         <el-table-column
-          :formatter="actual"
-          label="实际值">
+          prop="workNumber"
+          label="实际切削时间">
+          <template slot-scope="scope">
+            <table>
+              <tr>
+                <td>设备</td>
+                <td>时间</td>
+              </tr>
+              <tr>
+                <td>切断</td>
+                <td>20分钟</td>
+              </tr>
+            </table>
+          </template>
         </el-table-column>
         <el-table-column
-          :formatter="theor"
-          label="理论值">
-          <!--<template slot-scope="scope">-->
-            <!--{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}-->
-          <!--</template>-->
+          prop="workNumber"
+          label="理论切削时间">
+          <template slot-scope="scope">
+            <table>
+              <tr>
+                <td>设备</td>
+                <td>时间</td>
+              </tr>
+              <tr>
+                <td>切断</td>
+                <td>20分钟</td>
+              </tr>
+            </table>
+          </template>
         </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="人员稼动详情">
+          <template slot-scope="scope">
+            <table>
+              <tr>
+                <td>序号</td>
+                <td>设备</td>
+                <td>时间</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>切断</td>
+                <td>20分钟</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="切断件数">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="重量">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="面积">
+        </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="position"-->
+          <!--:formatter="formatter"-->
+          <!--label="职务">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+          <!--:formatter="actual"-->
+          <!--label="实际值">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+          <!--:formatter="theor"-->
+          <!--label="理论值">-->
+          <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
+            <!--&lt;!&ndash;{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}&ndash;&gt;-->
+          <!--&lt;!&ndash;</template>&ndash;&gt;-->
+        <!--</el-table-column>-->
+      </el-table>
+      <el-table
+        :data="listData"
+        v-if="department == 2"
+        border
+        height="calc(100% - 75px)">
+        <el-table-column
+          type="index"
+          label="序号"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="department"
+          label="部门">
+          <template slot-scope="scope">
+            {{getDepartment(department)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="作业员">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="工号">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="出勤理论时间">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="实际加工时间">
+          <template slot-scope="scope">
+            <table>
+              <tr>
+                <td>设备</td>
+                <td>时间</td>
+              </tr>
+              <tr>
+                <td>切断</td>
+                <td>20分钟</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="人员稼动详情">
+          <template slot-scope="scope">
+            <table>
+              <tr>
+                <td>序号</td>
+                <td>设备</td>
+                <td>时间</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>切断</td>
+                <td>20分钟</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="加工件数">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="重量">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="面积">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="检查时间">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="打钢印时间">
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="其它工序">
+        </el-table-column>
+        <!--<el-table-column-->
+        <!--prop="position"-->
+        <!--:formatter="formatter"-->
+        <!--label="职务">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+        <!--:formatter="actual"-->
+        <!--label="实际值">-->
+        <!--</el-table-column>-->
+        <!--<el-table-column-->
+        <!--:formatter="theor"-->
+        <!--label="理论值">-->
+        <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
+        <!--&lt;!&ndash;{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}&ndash;&gt;-->
+        <!--&lt;!&ndash;</template>&ndash;&gt;-->
+        <!--</el-table-column>-->
       </el-table>
       <div class="block">
         <el-pagination
@@ -133,15 +304,14 @@ export default {
       pageNum: 1,
       pageSize: 10,
       total: 0,
+      departmentShow: 1,
       department: '1',
       listData: [],
       formData: {
         dateType: '1',
         endTime: '',
         startTime: '',
-        department: '1',
-        performanceIndex: '1',
-        equipmentType: '1'
+        department: 1
       }
     }
   },

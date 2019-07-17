@@ -10,25 +10,33 @@
               <div class="john-item john-col-m3 john-col-x6">
                 <div class="john-content">
                   <p>今日新接<br/>切断订单</p>
-                  <p><span>{{todayData[0]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[0], 3)}}
+                  </span></p>
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
                 <div class="john-content">
                   <p>今日新接切断<br/>&加工订单</p>
-                  <p><span>{{todayData[1]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[1], 3)}}
+                  </span></p>
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
                 <div class="john-content">
                   <p>切断<br/>正在处理</p>
-                  <p><span>{{todayData[4]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[4], 3)}}
+                  </span></p>
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
                 <div class="john-content">
                   <p>切断&加工<br/>正在处理</p>
-                  <p><span>{{todayData[5]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[5], 3)}}
+                  </span></p>
                 </div>
               </div>
             </div>
@@ -43,13 +51,17 @@
               <div class="john-item john-col-m6 john-col-x12">
                 <div class="john-content">
                   <p>今日新接<br/>热处理订单</p>
-                  <p><span>{{todayData[2]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[2], 3)}}
+                  </span></p>
                 </div>
               </div>
               <div class="john-item john-col-m6 john-col-x12">
                 <div class="john-content">
                   <p>热处理<br/>正在处理</p>
-                  <p><span>{{todayData[6]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[6], 3)}}
+                  </span></p>
                 </div>
               </div>
             </div>
@@ -64,13 +76,17 @@
               <div class="john-item john-col-m6 john-col-x12">
                 <div class="john-content">
                   <p><br/>加工外发</p>
-                  <p><span>{{todayData[3]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[3], 3)}}
+                  </span></p>
                 </div>
               </div>
               <div class="john-item john-col-m6 john-col-x12">
                 <div class="john-content">
                   <p><br/>热处理外发</p>
-                  <p><span>{{todayData[7]}}</span></p>
+                  <p><span>
+                    {{$store.getters.toThousand(todayData[7], 3)}}
+                  </span></p>
                 </div>
               </div>
             </div>

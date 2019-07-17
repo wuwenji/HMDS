@@ -105,13 +105,21 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="140"
+          width="180"
           label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="text"
-              @click="downBook(scope.$index, scope.row)">下载外发依赖书</el-button>
+              @click="summons(scope.row, '依赖书兼入库传票')">传票</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="summons(scope.row, '作业指示')">作业指示书</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="downBook(scope.$index, scope.row)">采购单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -204,19 +212,24 @@
     </div>
     <el-dialog
       :visible.sync="elDialog"
-      width="800px"
-      title="图片库">
-      <ul class="imgs cl">
-        <li v-for="(item, index) in imgSrcs" :key="'img' + index">
-          <img :src="item.src" alt="">
-        </li>
-      </ul>
+      width="1290px"
+      :title="title"
+      top="5vh">
+      <summonsCommd v-if="title === '依赖书兼入库传票'" :order="wfOrder"/>
+      <taskBook v-if="title === '作业指示'" :order="wfOrder"/>
+      <!--<ul class="imgs cl">-->
+        <!--<li v-for="(item, index) in imgSrcs" :key="'img' + index">-->
+          <!--<img :src="item.src" alt="">-->
+        <!--</li>-->
+      <!--</ul>-->
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getExcel } from "../../http"
+import { getExcel } from '../../http'
+import summonsCommd from './summons'
+import taskBook from './taskBook'
 export default {
   name: 'index',
   data () {
@@ -224,6 +237,8 @@ export default {
       johnTab: 0,
       total: 0,
       elDialog: false,
+      title: '外发加工依赖书兼入库传票',
+      wfOrder: 'WF-190621354',
       imgSrcs: [],
       pageSize: 10,
       pageNum: 1,
@@ -315,6 +330,15 @@ export default {
         }
       })
     },
+    // 传票与及作业书
+    summons (row, title) {
+      this.wfOrder = row.outCode
+      this.title = ''
+      setTimeout(() => {
+        this.title = title
+        this.elDialog = true
+      }, 10)
+    },
     // 获取照片
     getPics (index, row) {
       this.http('/tImages/list', {
@@ -337,6 +361,10 @@ export default {
     }
   },
   computed: {
+  },
+  components: {
+    summonsCommd,
+    taskBook
   }
 }
 </script>

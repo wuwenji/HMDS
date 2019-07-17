@@ -2,7 +2,7 @@
   <div>
     <div class="carousel">
       <div :style="{opacity: opacOne}" class="carousel-item">
-        <table class="table" border="1" borderColor="#ddd">
+        <table class="table" border="1" borderColor="#000">
           <thead>
           <tr>
             <th rowspan="3"></th>
@@ -28,13 +28,15 @@
           <tr>
             <td>切断组</td>
             <td class="john-right" v-for="(item, key) in productTable[0]" :key="'a' +key">
-              {{item}}
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           <tr>
             <td>加工组</td>
             <td class="john-right" v-for="(item, key) in productTable[1]" :key="'b' +key">
-              {{item}}
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           </tbody>
@@ -42,14 +44,14 @@
         <br/>
         <br/>
         <div class="left-table">
-          <table class="table" border="1" borderColor="#ddd">
+          <table class="table" border="1" borderColor="#000">
             <thead>
             <tr>
               <th></th>
-              <th colspan="2">当天<br>(日期/星期)</th>
-              <th colspan="3">明天(日期/星期)</th>
-              <th colspan="3">后天(日期/星期)</th>
-              <th colspan="3">第三天(日期/星期)</th>
+              <th colspan="2">当天<br>({{days[0].date}}/{{days[0].week}})</th>
+              <th colspan="3">明天<br>({{days[1].date}}/{{days[1].week}})</th>
+              <th colspan="3">后天<br>({{days[2].date}}/{{days[2].week}})</th>
+              <th colspan="3">第三天<br>({{days[3].date}}/{{days[3].week}})</th>
             </tr>
             <tr>
               <th>炉名</th>
@@ -66,17 +68,19 @@
               <th>设备能力</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="td-first-left">
             <tr v-for="(item, key) in heatPlan" :key="'VQ1' + key">
-              <td v-for="(val, index) in item" :key="key + '' + index">{{val}}</td>
+              <td v-for="(val, index) in item" :key="key + '' + index"  class="john-right">
+                {{$store.getters.toThousand(val, 3)}}
+              </td>
             </tr>
             </tbody>
           </table>
         </div>
         <div class="right-table">
-          <table class="table" border="1" borderColor="#ddd">
+          <table class="table" border="1" borderColor="#000">
             <tr>
-              <th colspan="3">当天<br/>(日期/星期)</th>
+              <th colspan="3">当天<br/>({{days[0].date}}/{{days[0].week}})</th>
             </tr>
             <tr>
               <th>种类</th>
@@ -85,13 +89,25 @@
             </tr>
             <tr>
               <td>QT</td>
-              <td class="john-right">{{qtNvg.QT.notDoneOrderCount}}</td>
-              <td class="john-right">{{qtNvg.QT.notDoneWeight}}</td>
+              <td class="john-right">
+                <!--{{qtNvg.QT.notDoneOrderCount}}-->
+                {{$store.getters.toThousand(JSON.stringify(qtNvg.QT.notDoneOrderCount), 3)}}
+              </td>
+              <td class="john-right">
+                <!--{{qtNvg.QT.notDoneWeight}}-->
+                {{$store.getters.toThousand(JSON.stringify(qtNvg.QT.notDoneWeight), 3)}}
+              </td>
             </tr>
             <tr>
               <td>NVG</td>
-              <td class="john-right">{{qtNvg.NVG.notDoneOrderCount}}</td>
-              <td class="john-right">{{qtNvg.NVG.notDoneWeight}}</td>
+              <td class="john-right">
+                <!--{{qtNvg.NVG.notDoneOrderCount}}-->
+                {{$store.getters.toThousand(JSON.stringify(qtNvg.NVG.notDoneOrderCount), 3)}}
+              </td>
+              <td class="john-right">
+                <!--{{qtNvg.NVG.notDoneWeight}}-->
+                {{$store.getters.toThousand(JSON.stringify(qtNvg.NVG.notDoneWeight), 3)}}
+              </td>
             </tr>
           </table>
         </div>
@@ -167,6 +183,7 @@ export default {
   data () {
     return {
       widthTd: '',
+      days: [],
       qtNvg: {
         NVG: {
           notDoneOrderCount: 0,
@@ -192,6 +209,7 @@ export default {
     this.getHeatPlanData()
   },
   mounted () {
+    this.days = this.getDays(3)
     // this.$nextTick(() => {
     //   this.widthTd = this.$refs.tdWidth.clientWidth
     //   console.log(this.widthTd)
@@ -202,6 +220,34 @@ export default {
     // clearInterval(this.carouseing)
   },
   methods: {
+    // 获取日期
+    getDays (dayCount) {
+      var date = new Date()
+      var dates = []
+      var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+      for (var i = 0; i <= dayCount; i++) {
+        var d = null
+        var date1 = date.getDate()
+        var month = date.getMonth() + 1
+        if (month < 10) {
+          month = '0' + month
+        }
+        if (date1 < 10) {
+          date1 = '0' + date1
+        }
+        d = date.getFullYear() + '-' + month + '-' + date1
+        var weeks = ''
+        var day = new Date(d)
+        var z = day.getDay()
+        weeks = week[z]
+        dates.push({
+          'date': d,
+          'week': weeks
+        })
+        date.setDate(date.getDate() + 1)
+      }
+      return dates
+    },
     // 轮播
     carousel () {
       this.carouseing = setInterval(() => {
@@ -351,6 +397,9 @@ export default {
 <style scoped>
   *{
     font-size: 17px;
+  }
+  .td-first-left td:first-child {
+    text-align: center;
   }
 .table {
   text-align: center;
