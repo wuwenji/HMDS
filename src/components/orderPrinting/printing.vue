@@ -95,8 +95,8 @@
               <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p>
-                  <span style="width: 35px;display: inline-block;">{{list.machineShapeCd}}</span>
-                  <span style="width: 55px;display: inline-block;text-align: right;">{{list.size1}}</span>X<span style="margin-left:10px;width: 55px;display: inline-block;text-align: right;">
+                  <span style="width: 25px;display: inline-block;">{{list.machineShapeCd}}</span>
+                  <span style="width: 55px;display: inline-block;text-align: right;margin-right:5px;">{{list.size1}}</span>X<span style="margin-right:5px;margin-left:10px;width: 55px;display: inline-block;text-align: right;">
                     {{list.size2 > 0? list.size2 : ''}}</span>X<span style="width: 55px;display: inline-block;text-align: right;margin-left:10px;">
                   {{list.size3}}</span>
                   <!--<span>100.99X </span>-->
@@ -119,7 +119,7 @@
                     {{list.unitPriceCd == 7? '個': ''}}
                     {{list.unitPriceCd == 8? '套': ''}}
                   </span>
-                  <span class="align-right">{{list.workInstQty}}</span><span class="align-right">{{list.soKgWt}}</span>
+                  <span class="align-right">{{list.workInstQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >

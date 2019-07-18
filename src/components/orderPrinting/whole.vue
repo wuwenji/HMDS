@@ -70,7 +70,7 @@
               <td colspan="2" valign="center" nowrap="nowrap" class="b"><p ><b>库存类别</b> </p></td>
               <td colspan="4" valign="center" nowrap="nowrap" class="b"><p ><b>库存备注</b> </p></td>
               <td rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>指示<br/>数量</b> </p></td>
-              <td rowspan="2" class="bt bl" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>产品单长</b> </p></td>
+              <td rowspan="2" class="bt bl" style="width: 80px;" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>产品单长</b> </p></td>
               <td rowspan="2" class="bt" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>净重</b> </p></td>
               <td rowspan="2" class="bt br" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>毛重</b> </p></td>
             </tr>
@@ -82,7 +82,7 @@
               <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>现品管理NO</b> </p></td>
               <td valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
               <td width="100" nowrap="nowrap" class="l r t"><p ><b>指示尺寸</b> </p></td>
-              <td width="62" nowrap="nowrap" align="right" class="l r t"><p ><b>数量</b> </p></td>
+              <td width="52" nowrap="nowrap" align="right" class="l r t"><p ><b>数量</b> </p></td>
               <td align="right" nowrap="nowrap" class="l t"><p ><b>kg重量</b> </p></td>
             </tr>
             <template v-for="(item, listIndex) in val.orderList">
@@ -164,9 +164,9 @@
                 {{item.soWkInstList.stockKgWt}}
               </td>
               <td width="30" class="bb" rowspan="2" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.soWkInstList.workInstQty}}</p></td>
-              <td class="bl bb" rowspan="2" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bb" width="137" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bb br" rowspan="2" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bl bb" rowspan="2" width="80" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bb" width="80" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bb br" rowspan="2" width="80" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
             <tr class="tr2">
               <!--<td class="bt bb bl" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>-->

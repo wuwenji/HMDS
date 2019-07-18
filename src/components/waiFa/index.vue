@@ -32,6 +32,7 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
+          <el-button type="success" @click="exportData" plain>导出</el-button>
           <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
@@ -45,18 +46,18 @@
     </div>
     <div class="data-list">
       <el-table
-        v-show="johnTab == 0"
         :data="listData"
         border
-        height="calc(100% - 75px)">
+        height="calc(100% - 75px)"
+        @selection-change="selectionChange">
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
         <el-table-column
           prop="outCode"
           label="外发单号"
           width="160">
-        </el-table-column>
-        <el-table-column
-          prop="customerAddress"
-          label="外发厂商地址">
         </el-table-column>
         <el-table-column
           label="外发部门"
@@ -77,7 +78,19 @@
         </el-table-column>
         <el-table-column
           prop="counts"
-          label="数量"
+          label="单数"
+          align="right"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="件数"
+          align="right"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="重量"
           align="right"
           width="50">
         </el-table-column>
@@ -89,6 +102,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="预定纳期"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="已入库"
           width="70">
           <template slot-scope="scope">
@@ -97,8 +117,20 @@
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          label="预定纳期"
+          prop="counts"
+          label="指示票数量"
+          align="right"
           width="100">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="实际入库数量"
+          align="right"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          label="最后入库日期"
+          width="120">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>
@@ -119,13 +151,26 @@
             <el-button
               size="mini"
               type="text"
-              @click="downBook(scope.$index, scope.row)">采购单</el-button>
+              @click="summons(scope.row, '采购单')">采购单</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNum"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
+      <!--导出数据-->
       <el-table
-        v-show="johnTab == 1"
-        :data="listData"
+        :data="selectionList"
+        id="exportdata"
+        style="display: none;"
         border
         height="calc(100% - 75px)">
         <el-table-column
@@ -134,12 +179,8 @@
           width="160">
         </el-table-column>
         <el-table-column
-          prop="customerAddress"
-          label="外发厂商地址">
-        </el-table-column>
-        <el-table-column
           label="外发部门"
-          width="80">
+          width="100">
           <template slot-scope="scope">
             {{scope.row.type == 1? '加工': '热处理'}}
           </template>
@@ -156,7 +197,19 @@
         </el-table-column>
         <el-table-column
           prop="counts"
-          label="数量"
+          label="单数"
+          align="right"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="件数"
+          align="right"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="重量"
           align="right"
           width="50">
         </el-table-column>
@@ -168,6 +221,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="预定纳期"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="已入库"
           width="70">
           <template slot-scope="scope">
@@ -176,45 +236,32 @@
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          label="预定纳期"
+          prop="counts"
+          label="指示票数量"
+          align="right"
           width="100">
+        </el-table-column>
+        <el-table-column
+          prop="counts"
+          label="实际入库数量"
+          align="right"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          label="最后入库日期"
+          width="120">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          width="240"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              @click="downBook(scope.$index, scope.row)">下载外发依赖书</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              @click="getPics(scope.$index, scope.row)">入货照片</el-button>
-          </template>
-        </el-table-column>
       </el-table>
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageNum"
-          :page-sizes="[10, 20, 50, 100]"
-          :page-size="10"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total">
-        </el-pagination>
-      </div>
     </div>
     <el-dialog
       :visible.sync="elDialog"
       width="1290px"
       :title="title"
       top="5vh">
+      <purchase v-if="title === '采购单'" :order="wfOrder"/>
       <summonsCommd v-if="title === '依赖书兼入库传票'" :order="wfOrder"/>
       <taskBook v-if="title === '作业指示'" :order="wfOrder"/>
       <!--<ul class="imgs cl">-->
@@ -228,8 +275,11 @@
 
 <script>
 import { getExcel } from '../../http'
+import FileSaver from 'file-saver'
+import XLSX from 'xlsx'
 import summonsCommd from './summons'
 import taskBook from './taskBook'
+import purchase from './purchase'
 export default {
   name: 'index',
   data () {
@@ -238,6 +288,7 @@ export default {
       total: 0,
       elDialog: false,
       title: '外发加工依赖书兼入库传票',
+      selectionList: [],
       wfOrder: 'WF-190621354',
       imgSrcs: [],
       pageSize: 10,
@@ -256,6 +307,23 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    // 导出
+    exportData () {
+      // #exportdata
+      var wb = XLSX.utils.table_to_book(document.querySelector('#exportdata'))
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout],
+          { type: 'application/octet-stream' }), '外发.xlsx')
+      } catch (e) {
+        if (typeof console !== 'undefined') console.log(e, wbout)
+      }
+      return wbout
+    },
+    // 选择
+    selectionChange (val) {
+      this.selectionList = val
+    },
     getList (pageSize, pageNum, status) {
       this.http('/outward/list', {
         pageSize,
@@ -349,7 +417,7 @@ export default {
           getExcel('/tImages/getImageById', {
             id: item.id
           }).then(res => {
-            let src = 'data:image/jpg;base64,'+ btoa(new Uint8Array(res).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+            let src = 'data:image/jpg;base64,' + btoa(new Uint8Array(res).reduce((data, byte) => data + String.fromCharCode(byte), ''))
             this.imgSrcs.push({
               src,
               id: item.id
@@ -364,7 +432,8 @@ export default {
   },
   components: {
     summonsCommd,
-    taskBook
+    taskBook,
+    purchase
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table width="100%" height="816" border="1" cellpadding="0" cellspacing="0">
+    <div id="printAll">
+      <table width="100%" height="816" border="1" cellpadding="0" cellspacing="0">
       <tr>
         <td class="l" colspan="2">&nbsp;</td>
         <td class="l" colspan="6" rowspan="4"><div align="center">热处理成绩书</div></td>
@@ -57,28 +58,15 @@
       </tr>
       <tr>
         <td colspan="6">
-          检查项目&nbsp;&nbsp;&nbsp;&nbsp;{
-          伤痕&nbsp;&nbsp;&nbsp;
-          薄壁&nbsp;&nbsp;&nbsp;
-          R角&nbsp;&nbsp;&nbsp;
-          形状&nbsp;&nbsp;&nbsp;
-          黑皮&nbsp;&nbsp;&nbsp;
-          颜色&nbsp;&nbsp;&nbsp;
-          毛刺&nbsp;&nbsp;&nbsp;
-          焊接&nbsp;&nbsp;&nbsp;
-          刀痕&nbsp;&nbsp;&nbsp;
-          异物&nbsp;&nbsp;&nbsp;
-          要求
-          }</td>
+          检查项目&nbsp;{ 伤痕&nbsp;薄壁&nbsp;R角&nbsp;形状&nbsp;黑皮&nbsp;颜色&nbsp;毛刺&nbsp;焊接&nbsp;刀痕&nbsp;异物&nbsp;要求 }</td>
         <td valign="top" style="border-right: 1px solid #000;" colspan="7" rowspan="2">特别事项：</td>
       </tr>
       <tr>
-        <td colspan="4">检查结果： OK&nbsp;<span class="box"></span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          处置后OK&nbsp;<span class="box"></span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          NO&nbsp;<span class="box"></span>
-          &nbsp;&nbsp;&nbsp;&nbsp;        </td>
+        <td colspan="4">检查结果： OK <span class="box"></span>
+          &nbsp;
+          处置后OK <span class="box"></span>
+          &nbsp;
+          NO <span class="box"></span></td>
         <td colspan="2">确认者:</td>
       </tr>
       <tr>
@@ -220,8 +208,12 @@
         <td class="l" colspan="3">作业者</td>
       </tr>
     </table>
-    <input type="file" :id="id" name="image" class="getImgUrl_file" @change="preview($event)">
-    <img :src="imgDataUrl" alt="">
+    </div>
+    <p>
+      <el-button v-print="'#printAll'" type="primary">打印</el-button>
+    </p>
+    <!--<input type="file" :id="id" name="image" class="getImgUrl_file" @change="preview($event)">-->
+    <!--<img :src="imgDataUrl" alt="">-->
   </div>
 </template>
 
@@ -257,6 +249,11 @@ export default {
 </script>
 
 <style scoped>
+* {
+  /*font-family: 宋体;*/
+}
+#printAll {
+}
 span.box {
   width: 10px;
   height: 10px;

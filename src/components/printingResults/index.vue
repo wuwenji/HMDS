@@ -116,7 +116,8 @@
             <el-button
               size="mini"
               type="text"
-              @click="inputScore(scope.$index, scope.row)">录入成绩书</el-button>
+              @click="inputScore(scope.$index, scope.row)">成绩书</el-button>
+              <!--@click="inputScore(scope.$index, scope.row)">录入成绩书</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -137,6 +138,7 @@
       width="1400px"
       :visible.sync="dialog">
       <inputCommod v-if="dialog" :inputDate="inputDate"/>
+      <!--<scorBook/>-->
     </el-dialog>
     <el-dialog
       title="下载成绩书"
@@ -160,6 +162,7 @@
 
 <script>
 import inputCommod from './inputCommod'
+import scorBook from './scorBook'
 import { getExcel } from '../../http'
 export default {
   name: 'index',
@@ -333,7 +336,8 @@ export default {
   computed: {
   },
   components: {
-    inputCommod
+    inputCommod,
+    scorBook
   }
 }
 </script>

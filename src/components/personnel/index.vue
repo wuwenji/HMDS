@@ -70,7 +70,7 @@
     <div class="data-list">
       <el-table
         :data="listData"
-        v-if="department == 1"
+        v-show="department == 1"
         border
         height="calc(100% - 75px)">
         <el-table-column
@@ -80,6 +80,7 @@
         </el-table-column>
         <el-table-column
           prop="department"
+          width="80"
           label="部门">
           <template slot-scope="scope">
             {{getDepartment(department)}}
@@ -87,15 +88,19 @@
         </el-table-column>
         <el-table-column
           prop="name"
+          width="100"
           label="作业员">
         </el-table-column>
         <el-table-column
           prop="workNumber"
+          width="100"
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="出勤理论时间">
+          prop="theoreticalTime"
+          align="right"
+          width="150"
+          label="出勤理论时间(min)">
         </el-table-column>
         <el-table-column
           prop="workNumber"
@@ -148,37 +153,27 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="切断件数">
+          prop="actualCounts"
+          align="right"
+          width="120"
+          label="切断件数(個)">
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="重量">
+          prop="actualWeight"
+          align="right"
+          width="80"
+          label="重量(kg)">
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="面积">
+          prop="actualArea"
+          align="right"
+          width="100"
+          label="面积(mm²)">
         </el-table-column>
-        <!--<el-table-column-->
-          <!--prop="position"-->
-          <!--:formatter="formatter"-->
-          <!--label="职务">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--:formatter="actual"-->
-          <!--label="实际值">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-          <!--:formatter="theor"-->
-          <!--label="理论值">-->
-          <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
-            <!--&lt;!&ndash;{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}&ndash;&gt;-->
-          <!--&lt;!&ndash;</template>&ndash;&gt;-->
-        <!--</el-table-column>-->
       </el-table>
       <el-table
         :data="listData"
-        v-if="department == 2"
+        v-show="department == 2"
         border
         height="calc(100% - 75px)">
         <el-table-column
@@ -188,6 +183,7 @@
         </el-table-column>
         <el-table-column
           prop="department"
+          width="80"
           label="部门">
           <template slot-scope="scope">
             {{getDepartment(department)}}
@@ -195,15 +191,19 @@
         </el-table-column>
         <el-table-column
           prop="name"
+          width="100"
           label="作业员">
         </el-table-column>
         <el-table-column
           prop="workNumber"
+          width="100"
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="出勤理论时间">
+          prop="theoreticalTime"
+          align="right"
+          width="150"
+          label="出勤理论时间(min)">
         </el-table-column>
         <el-table-column
           prop="workNumber"
@@ -240,45 +240,40 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          label="加工件数">
+          prop="actualCounts"
+          align="right"
+          width="120"
+          label="加工件数(個)">
+        </el-table-column>
+        <el-table-column
+          prop="actualWeight"
+          align="right"
+          width="80"
+          label="重量(kg)">
+        </el-table-column>
+        <el-table-column
+          prop="actualArea"
+          align="right"
+          width="100"
+          label="面积(mm²)">
+        </el-table-column>
+        <el-table-column
+          prop="inspectTime"
+          align="right"
+          width="120"
+          label="检查时间(min)">
+        </el-table-column>
+        <el-table-column
+          prop="stampingTime"
+          align="right"
+          width="130"
+          label="打钢印时间(min)">
         </el-table-column>
         <el-table-column
           prop="workNumber"
-          label="重量">
-        </el-table-column>
-        <el-table-column
-          prop="workNumber"
-          label="面积">
-        </el-table-column>
-        <el-table-column
-          prop="workNumber"
-          label="检查时间">
-        </el-table-column>
-        <el-table-column
-          prop="workNumber"
-          label="打钢印时间">
-        </el-table-column>
-        <el-table-column
-          prop="workNumber"
+          width="100"
           label="其它工序">
         </el-table-column>
-        <!--<el-table-column-->
-        <!--prop="position"-->
-        <!--:formatter="formatter"-->
-        <!--label="职务">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--:formatter="actual"-->
-        <!--label="实际值">-->
-        <!--</el-table-column>-->
-        <!--<el-table-column-->
-        <!--:formatter="theor"-->
-        <!--label="理论值">-->
-        <!--&lt;!&ndash;<template slot-scope="scope">&ndash;&gt;-->
-        <!--&lt;!&ndash;{{scope.row.theoreticalCounts == null ? '-' : scope.row.theoreticalCounts}}&ndash;&gt;-->
-        <!--&lt;!&ndash;</template>&ndash;&gt;-->
-        <!--</el-table-column>-->
       </el-table>
       <div class="block">
         <el-pagination
@@ -382,8 +377,8 @@ export default {
     },
     // 获取部门
     getDepartment (numb) {
-      if (numb === '1') return '切断部门'
-      if (numb === '2') return '加工部门'
+      if (numb === 1) return '切断部门'
+      if (numb === 2) return '加工部门'
       return ''
     },
     onSubmit () {
