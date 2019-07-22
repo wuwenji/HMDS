@@ -4,21 +4,21 @@
       <el-button v-print="'#printContent'" type="primary"> 打印</el-button>
     </p>
     <div id="printContent">
-      <div class="printing-item printPage" style="height: 820px;">
+      <div v-for="(value, key) in list" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
-          <p>日期：2019/07/17</p>
+          <p>日期：{{$store.state.date}}</p>
           <p>使用部门：{{type === 0 ? '加工部门' : '热处理部门'}}</p>
         </div>
         <div class="top-content">
           <h2>
             {{type === 0 ? '外发加工依赖书兼入库传票' : '热处理依赖书兼入库传票'}}
-            <img class="qrimg" :src="$store.state.qrUrl + '123' + '&w=500&h=500'" alt="">
+            <img class="qrimg" :src="$store.state.qrUrl + order.outQrcode + '&w=500&h=500'" alt="">
           </h2>
         </div>
         <div class="top-right">
-          <p>页码：1/2</p>
-          <p>传票号码：12585965</p>
+          <p>页码：{{key + 1}}/{{list.length}}</p>
+          <p>传票号码：{{order.outCode}}</p>
         </div>
       </div>
       <div class="lists">
@@ -37,8 +37,12 @@
             <td>钢种</td>
             <td>尺寸</td>
             <td>形状</td>
-            <td>加工规格</td>
-            <td>传票单号</td>
+            <td>
+              {{type === 0 ? '加工规格' : '作业名'}}
+            </td>
+            <td>
+              {{type === 0 ? '传票单号' : '成绩书单号'}}
+            </td>
             <td>倒角</td>
             <td>钢印</td>
             <td>数量</td>
@@ -50,17 +54,52 @@
             <td>单位</td>
             <td>入库日期</td>
           </tr>
-          <tr v-for="item in 10" :key="item">
-            <td>{{item}}</td>
-            <td>在</td>
+          <tr v-for="(item, index) in value" :key="index">
+            <td>
+              <template v-if="key === 0">
+                {{index + 1}}
+              </template>
+              <template v-else>
+                {{(key + 1) * 10 + index + 1}}
+              </template>
+            </td>
+            <td>{{order.companyName}}</td>
+            <td>{{item.gradeCd}}</td>
+            <td>{{item.machineTolerance}}</td>
+            <td>{{item.machineShapeCd}}</td>
+            <td>
+              {{type === 0 ? item.machineSpecCd : item.taskName}}
+            </td>
+            <td>
+              <template v-if="type === 0">
+                {{item.soNo + '-' + item.soLnNo}}
+              </template>
+              <template v-else>
+                {{item.hardnessRequirement}}
+              </template>
+            </td>
+            <td>{{item.chamferSpec}}</td>
+            <td></td>
+            <td class="john-right">{{item.soQty}}</td>
+            <td class="john-right">{{item.soWt}}</td>
+            <td>件</td>
+            <td>{{item.status === 1 ? '是' : '否'}}</td>
+            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+            <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>一</td>
             <td></td>
             <td></td>
-            <td>要</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -125,9 +164,21 @@
 export default {
   name: 'summons',
   props: ['order'],
+  data () {
+    return {
+      list: []
+    }
+  },
+  created () {
+    this.list = JSON.parse(JSON.stringify(this.order.dataList))
+  },
   computed: {
     type () {
-      return 0
+      if (this.order.type === 1) {
+        return 0
+      } else {
+        return 1
+      }
     }
   }
 }

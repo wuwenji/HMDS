@@ -40,11 +40,11 @@
             </el-col>
           </el-form-item>
         </template>
-        <el-form-item class="form-item" label="绩效部门" prop="equipmentType">
-          <el-select v-model="formData.equipmentType" placeholder="绩效部门">
+        <el-form-item class="form-item" label="绩效部门" prop="department">
+          <el-select v-model="formData.department" placeholder="绩效部门">
             <el-option label="切断部门" value="1"></el-option>
             <el-option label="加工部门" value="2"></el-option>
-            <el-option label="热处理部门" value="3"></el-option>
+            <!--<el-option label="热处理部门" value="3"></el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
@@ -71,7 +71,94 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="设备名称">
+          label="设备名">
+        </el-table-column>
+        <el-table-column
+          label="稼动时间">
+          <!--workerProductList-->
+          <template slot-scope="scope">
+            <table v-if="scope.row.equipmentProductList.length > 0" class="table">
+              <tr>
+                <td>班次</td>
+                <td>时间(min)</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.equipmentProductList" :key="item + index">
+                <td>{{item.name}}</td>
+                <td>{{item.actualTime}}</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="待料时间">
+          <!--workerProductList-->
+          <template slot-scope="scope">
+            <table v-if="scope.row.equipmentPendingList.length > 0" class="table">
+              <tr>
+                <td>班次</td>
+                <td>时间(min)</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.equipmentPendingList" :key="item + index">
+                <td>{{item.name}}</td>
+                <td>{{item.actualTime}}</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="故障时间">
+          <!--workerProductList-->
+          <template slot-scope="scope">
+            <table v-if="scope.row.equipmentFaultList.length > 0" class="table">
+              <tr>
+                <td>班次</td>
+                <td>时间(min)</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.equipmentFaultList" :key="item + index">
+                <td>{{item.name}}</td>
+                <td>{{item.actualTime}}</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="workNumber"
+          label="稼动率">
+          <!--workerProductList-->
+          <template slot-scope="scope">
+            <table v-if="scope.row.equipmentProductList.length > 0" class="table">
+              <tr>
+                <td>班次</td>
+                <td>稼动率</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.equipmentProductList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.cropMobility}}%</td>
+              </tr>
+            </table>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="totalMobility"
+          label="综合嫁动率">
+        </el-table-column>
+        <el-table-column
+          label="参与人员">
+          <!--workerProductList-->
+          <template slot-scope="scope">
+            <table v-if="scope.row.participantsList.length > 0" class="table">
+              <tr>
+                <td>班次</td>
+                <td>人员</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.participantsList" :key="item + index">
+                <td>{{item.name}}</td>
+                <td>{{item.userName}}</td>
+              </tr>
+            </table>
+          </template>
         </el-table-column>
         <el-table-column
           prop="actualWeight"
@@ -81,35 +168,21 @@
         <el-table-column
           prop="counts"
           align="right"
-          label="数量(個)">
+          label="件数(個)">
         </el-table-column>
         <el-table-column
           prop="area"
           align="right"
-          label="表面积(mm²)">
+          label="面积(mm²)">
         </el-table-column>
         <el-table-column
-          prop="workTime"
-          label="稼动时间(分)">
+          prop="failTime"
+          label="故障时间(min)">
         </el-table-column>
         <el-table-column
           prop="workPercent"
           align="right"
-          label="运行率(%)">
-        </el-table-column>
-        <el-table-column
-          prop="power"
-          align="right"
-          label="达成率(%)">
-        </el-table-column>
-        <el-table-column
-          prop="failTime"
-          label="故障时间(分)">
-        </el-table-column>
-        <el-table-column
-          prop="failPercent"
-          align="right"
-          label="故障率(%)">
+          label="待料时间">
         </el-table-column>
       </el-table>
       <div class="block">
@@ -140,7 +213,7 @@ export default {
         dateType: '1',
         endTime: '',
         startTime: '',
-        equipmentType: '1'
+        department: '1'
       }
     }
   },
@@ -184,6 +257,11 @@ export default {
 </script>
 
 <style scoped>
+  .table {
+    margin: 10px;
+    width: calc(100% - 20px);
+    border: 1px solid #ccc;
+  }
   .position {
     line-height: 35px;
     border-bottom: 1px solid #ccc;

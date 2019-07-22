@@ -589,7 +589,10 @@ export default {
     /*padding-right: 400px;*/
   }
   .table td,.table th {
-    padding: 12px 10px;
+    /*padding: 12px 10px;*/
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
   }
   .page {
     text-align: right;

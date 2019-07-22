@@ -9,7 +9,7 @@ let echarts = require('echarts/lib/echarts')
               require('echarts/lib/component/title')
 export default {
   name: 'lineEchart',
-  props: ['title', 'xAxis', 'oneData'],
+  props: ['title', 'xAxis', 'oneData', 'stack', 'legend', 'color'],
   data () {
     return {
       dataOne: [],
@@ -55,7 +55,7 @@ export default {
         legend: {
           // show: false,
           y: '50px',
-          data: ['接单数量', '开始切断数量'],
+          data: this.legend,
           textStyle: {
             fontSize: 17
           }
@@ -79,9 +79,10 @@ export default {
         },
         series: [
           {
-            name: '接单数量',
+            name: this.legend[0],
             type: 'bar',
             barGap: 0,
+            stack: '0',
             itemStyle: {
               normal: {
                 label: {
@@ -97,8 +98,9 @@ export default {
             data: this.dataTwo
           },
           {
-            name: '开始切断数量',
+            name: this.legend[1],
             type: 'bar',
+            stack: this.stack,
             barGap: 0,
             itemStyle: {
               normal: {
@@ -115,7 +117,7 @@ export default {
             data: this.dataOne
           }
         ],
-        color: ['#5b9bd5', '#10dc40']
+        color: this.color
       })
     }
   },

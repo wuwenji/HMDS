@@ -4,10 +4,10 @@
       <el-button v-print="'#printContent'" type="primary"> 打印</el-button>
     </p>
     <div id="printContent">
-      <div class="printing-item printPage" style="height: 820px;">
+      <div v-for="(value, key) in list" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
-          <p>日期：2019/07/17</p>
+          <p>日期：{{$store.state.date}}</p>
           <p>使用部门：{{type == 0 ? '加工部门' : '热处理部门'}}</p>
         </div>
         <div class="top-content">
@@ -16,8 +16,8 @@
           </h2>
         </div>
         <div class="top-right">
-          <p>页码：1/2</p>
-          <p>传票号码：12585965</p>
+          <p>页码：{{key + 1}}/{{list.length}}</p>
+          <p>传票号码：{{order.outCode}}</p>
         </div>
       </div>
       <div class="lists">
@@ -42,17 +42,39 @@
             <td>单位</td>
             <td>预定纳期</td>
           </tr>
-          <tr v-for="item in 10" :key="item">
-            <td>{{item}}</td>
-            <td>在</td>
+          <tr v-for="(item, index) in value" :key="index">
+            <td>
+              <template v-if="key === 0">
+                {{index + 1}}
+              </template>
+              <template v-else>
+                {{(key + 1) * 10 + index + 1}}
+              </template>
+            </td>
+            <td>{{order.companyName}}</td>
+            <td>{{item.gradeCd}}</td>
+            <td>{{item.machineTolerance}}</td>
+            <td>{{item.machineShapeCd}}</td>
+            <td>{{item.machineSpecCd}}</td>
+            <td>{{item.soNo + '-' + item.soLnNo}}</td>
+            <td>{{item.chamferSpec}}</td>
+            <td></td>
+            <td class="john-right">{{item.soQty}}</td>
+            <td class="john-right">{{item.soWt}}</td>
+            <td>件</td>
+            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+          </tr>
+          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+            <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>一</td>
             <td></td>
             <td></td>
-            <td>要</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -75,14 +97,32 @@
             <td>传票单号</td>
             <td>预订纳期</td>
           </tr>
-          <tr v-for="item in 10" :key="item">
-            <td>{{item}}</td>
-            <td>在</td>
+          <tr v-for="(item, index) in value" :key="index">
+            <td>
+              <template v-if="key === 0">
+                {{index + 1}}
+              </template>
+              <template v-else>
+                {{(key + 1) * 10 + index + 1}}
+              </template>
+            </td>
+            <td>{{order.companyName}}</td>
+            <td>{{item.gradeCd}}</td>
+            <td class="john-right">{{item.soWt}}</td>
+            <td class="john-right">{{item.soQty}}</td>
+            <td>{{item.taskName}}</td>
+            <td>{{item.hardnessRequirement}}</td>
+            <td>{{item.managementNumber}}</td>
+            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+          </tr>
+          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+            <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>一</td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
@@ -97,9 +137,21 @@
 export default {
   name: 'taskBook',
   props: ['order'],
+  data () {
+    return {
+      list: []
+    }
+  },
+  created () {
+    this.list = JSON.parse(JSON.stringify(this.order.dataList))
+  },
   computed: {
     type () {
-      return 0
+      if (this.order.type === 1) {
+        return 0
+      } else {
+        return 1
+      }
     }
   }
 }

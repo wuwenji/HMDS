@@ -1,14 +1,14 @@
 <template>
   <div>
     <p style="text-align: center;margin-bottom: 20px;">
-      <el-button v-print="'#printContent'" type="primary"> 打印</el-button>
+      <!--<el-button v-print="'#printContent'" type="primary"> 打印</el-button>-->
       <el-button @click="exportExcel" type="primary"> 导出</el-button>
     </p>
     <div id="printContent">
-      <div class="printing-item printPage" style="height: 820px;">
+      <div v-for="(value, key) in data.dataList" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
-          <p>日期：2019/07/17</p>
+          <p>日期：{{$store.state.date}}</p>
           <p>使用部门：采购</p>
         </div>
         <div class="top-content">
@@ -17,25 +17,28 @@
           </h2>
         </div>
         <div class="top-right">
-          <p>页码：1/2</p>
-          <p>传票号码：12585965</p>
+          <p>页码：{{key + 1}}/{{data.dataList.length}}</p>
+          <p>传票号码：{{data.outCode}}</p>
         </div>
       </div>
       <div class="lists">
-        <table v-if="type == 0" border="1" class="table">
+        <table border="1" class="table">
           <tr>
-            <td style="text-align: left;" colspan="10">
-              外发厂家：
+            <td style="text-align: left;" colspan="11">
+              外发厂家：{{data.companyName}}
             </td>
             <td></td>
           </tr>
           <tr>
-            <td style="text-align: left;" colspan="11">
-              外发厂家地址：
+            <td style="text-align: left;" colspan="12">
+              外发厂家地址：{{data.companyAddress}}
             </td>
           </tr>
           <tr class="center-tr">
             <td>序号</td>
+            <td>
+              {{type == 0 ? '加工票号' : '成绩书票号'}}
+            </td>
             <td>钢种</td>
             <td>形状</td>
             <td>尺寸</td>
@@ -44,63 +47,67 @@
             <td>重量</td>
             <td>平方英寸</td>
             <td>计算方式</td>
-            <td>单价</td>
-            <td>金额</td>
+            <td width="50">单价</td>
+            <td width="100">金额</td>
           </tr>
-          <tr v-for="item in 10" :key="item">
-            <td>{{item}}</td>
-            <td>在</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>一</td>
-            <td></td>
+          <tr v-for="(item, index) in value" :key="index">
+            <td>
+              <template v-if="key === 0">
+                {{index + 1}}
+              </template>
+              <template v-else>
+                {{(key + 1) * 10 + index + 1}}
+              </template>
+            </td>
+            <td>
+              {{type == 0 ? item.soNo + '-' + item.soLnNo : item.managementNumber}}
+            </td>
+            <td>{{item.gradeCd}}</td>
+            <td>{{item.machineShapeCd}}</td>
+            <td>{{item.machineTolerance}}</td>
+            <td>{{item.machineSpecCd}}</td>
+            <td class="john-right">{{item.soQty}}</td>
+            <td class="john-right">{{item.soWt}}</td>
+            <td class="john-right">{{item.area }}</td>
             <td width="100">
-              <el-select v-model="select" size="mini">
+              <el-select v-model="item.priceType" size="mini">
                 <el-option
                   label="件数"
-                  value="件数"></el-option>
+                  value="0"></el-option>
                 <el-option
                   label="重量"
-                  value="重量"></el-option>
+                  value="1"></el-option>
                 <el-option
                   label="平方英寸"
-                  value="平方英寸"></el-option>
+                  v-if="type === 0"
+                  value="2"></el-option>
+                <el-option
+                  label="包炉"
+                  v-if="type === 1"
+                  value="4"></el-option>
                 <el-option
                   label="最低消费"
-                  value="最低消费"></el-option>
+                  value="3"></el-option>
               </el-select>
             </td>
-            <td></td>
-            <td></td>
-          </tr>
-        </table>
-        <table v-if="type == 1" border="1" class="table">
-          <tr class="center-tr">
-            <td colspan="14">
-              加工依赖
+            <td>
+              <input class="price-input" type="text" v-model="item.unitPrice">
+            </td>
+            <td class="john-right">
+              {{getTotal(item)}}
             </td>
           </tr>
-          <tr class="center-tr">
-            <td>序号</td>
-            <td>外发厂商</td>
-            <td>钢种</td>
-            <td>重量</td>
-            <td>件数</td>
-            <td>作业名</td>
-            <td>指示硬度</td>
-            <td>传票单号</td>
-            <td>预订纳期</td>
-          </tr>
-          <tr v-for="item in 10" :key="item">
-            <td>{{item}}</td>
-            <td>在</td>
+          <tr v-for="itemKey in (10 - value.length)" :key="'itemKey' + itemKey">
+            <td>&nbsp;</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>一</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
@@ -122,33 +129,84 @@
 </template>
 
 <script>
-// import FileSaver from 'file-saver'
-// import XLSX from 'xlsx'
+import { getExcel } from '../../http'
+
 export default {
   name: 'taskBook',
   props: ['order'],
   data () {
     return {
-      select: ''
+      select: '',
+      data: ''
     }
   },
+  created () {
+    // this.data = JSON.parse(JSON.stringify(this.order))
+    this.getData(this.order)
+  },
   methods: {
+    // 获取总金额
+    getTotal (row) {
+      if (row.priceType === '0') {
+        row.totalPrice = row.soQty * row.unitPrice
+        return row.soQty * row.unitPrice
+      }
+      if (row.priceType === '1') {
+        row.totalPrice = row.soWt * row.unitPrice
+        return row.soWt * row.unitPrice
+      }
+      if (row.priceType === '2') {
+        row.totalPrice = row.area * row.unitPric
+        return row.area * row.unitPric
+      }
+      if (row.priceType === '3' || row.priceType === '4') {
+        row.totalPrice = row.unitPrice
+        return row.unitPrice
+      }
+      return 0
+    },
+    // 获取数据
+    getData (obj) {
+      let newData = JSON.parse(JSON.stringify(obj))
+      newData.dataList.map(item => {
+        item.map(itemVal => {
+          itemVal.priceType = ''
+          itemVal.unitPrice = 0
+          itemVal.totalPrice = 0
+          return itemVal
+        })
+        return item
+      })
+      this.data = newData
+    },
     // 导出
     exportExcel () {
-      // var wb = XLSX.utils.table_to_book(document.querySelector('#printContent'))
-      // var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-      // try {
-      //   FileSaver.saveAs(new Blob([wbout],
-      //     { type: 'application/octet-stream' }), '名字.xlsx')
-      // } catch (e) {
-      //   if (typeof console !== 'undefined') console.log(e, wbout)
-      // }
-      // return wbout
+      // console.log('打印数据', this.data)
+      getExcel('/outward/downExcel', this.data).then(res => {
+        const blob = new Blob([res])
+        const fileName = '采购单.xlsx'
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = fileName
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+      })
     }
   },
   computed: {
     type () {
-      return 0
+      if (this.order.type === 1) {
+        return 0
+      } else {
+        return 1
+      }
     }
   }
 }
@@ -159,6 +217,13 @@ export default {
     font-family: 宋体;
   }
 
+  .price-input {
+    width: 70px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 25px;
+    padding: 0 5px;
+  }
   .top {
     height: 50px;
   }

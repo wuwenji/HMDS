@@ -8,6 +8,25 @@
           <span @click="smartSeach(100, 1)">搜索</span>
           <input class="form-input" type="text" placeholder="溶解编号" v-model="smartForm.chargeNo">
           <input class="form-input" type="text" placeholder="钢种" v-model="smartForm.gradeCd">
+          <select class="form-input" v-model="smartForm.shape" placeholder="形状">
+            <option label="全部" value="">全部</option>
+            <option label="" value="2MF">2MF</option>
+            <option label="" value="4M6F">4M6F</option>
+            <option label="" value="6F">6F</option>
+            <option label="" value="CC">CC</option>
+            <option label="" value="F">F</option>
+            <option label="" value="FD">FD</option>
+            <option label="" value="M6F">M6F</option>
+            <option label="" value="MF">MF</option>
+            <option label="" value="MR">MR</option>
+            <option label="" value="NO">NO</option>
+            <option label="" value="PL">PL</option>
+            <option label="" value="R">R</option>
+            <option label="" value="RB">RB</option>
+            <option label="" value="RD">RD</option>
+            <option label="" value="RG">RG</option>
+            <option label="" value="S">S</option>
+          </select>
         </div>
         <el-table
           id="smart-table"
@@ -246,6 +265,25 @@
           <span @click="localSeach(100, 1)">搜索</span>
           <input class="form-input" type="text" placeholder="溶解编号" v-model="localForm.changeNo">
           <input class="form-input" type="text" placeholder="钢种" v-model="localForm.materialType">
+          <select class="form-input" v-model="localForm.shape" placeholder="形状">
+            <option label="全部" value="">全部</option>
+            <option label="" value="2MF">2MF</option>
+            <option label="" value="4M6F">4M6F</option>
+            <option label="" value="6F">6F</option>
+            <option label="" value="CC">CC</option>
+            <option label="" value="F">F</option>
+            <option label="" value="FD">FD</option>
+            <option label="" value="M6F">M6F</option>
+            <option label="" value="MF">MF</option>
+            <option label="" value="MR">MR</option>
+            <option label="" value="NO">NO</option>
+            <option label="" value="PL">PL</option>
+            <option label="" value="R">R</option>
+            <option label="" value="RB">RB</option>
+            <option label="" value="RD">RD</option>
+            <option label="" value="RG">RG</option>
+            <option label="" value="S">S</option>
+          </select>
         </div>
         <el-table
           id="local-table"
@@ -428,11 +466,13 @@ export default {
       localData: [],
       smartForm: {
         chargeNo: '',
-        gradeCd: ''
+        gradeCd: '',
+        shape: ''
       },
       localForm: {
         changeNo: '',
-        materialType: ''
+        materialType: '',
+        shape: ''
       }
     }
   },

@@ -208,7 +208,7 @@
             </template>
           </table>
           <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
-            <p>注意：<br/>货到月底后30天内支付</p>
+            <p>注意：<br/>{{orderInfo.paymentMethodDesc}}</p>
             <p>
               <span>客户公章</span>
               <span>日立金属（东莞）特殊钢有限公司</span>
@@ -237,7 +237,7 @@ export default {
     }
   },
   created () {
-    // console.log(this.orderInfo)
+    console.log('送货单', this.orderInfo)
     this.getData()
   },
   watch: {

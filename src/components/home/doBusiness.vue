@@ -6,9 +6,9 @@
           <b>制造部</b><br/><b>(PCS)</b>
         </td>
         <td><b>时间</b></td>
-        <td colspan="2"><b>今天</b></td>
-        <td colspan="3"><b>明天</b></td>
-        <td colspan="3"><b>后天</b></td>
+        <td style="color:red" colspan="2"><b>今天<br/>({{days[0].date + '/' + days[0].week}})</b></td>
+        <td colspan="3"><b>明天<br/>({{days[1].date + '/' + days[1].week}})</b></td>
+        <td colspan="3"><b>后天<br/>({{days[2].date + '/' + days[2].week}})</b></td>
       </tr>
       <tr>
         <td><b>能力管理</b></td>
@@ -44,7 +44,26 @@
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
-    <drawEchart title="切断部机器负荷表数量(件)" :xAxis="cutEchart.cutCode" :oneData="cutEchart.cutCapacity"/>
+    <div class="echart-all">
+      <div class="echart-left">
+        <drawEchart
+          title="切断部机器负荷表数量(件)"
+          :legend="cutEchart.legend"
+          :stack="'1'"
+          :color="cutEchart.color"
+          :xAxis="cutEchart.cutCode"
+          :oneData="cutEchart.cutCapacity"/>
+      </div>
+      <div class="echart-right">
+        <drawEchart
+          title="接单未完成数量(件)"
+          :legend="cutNotFinished.legend"
+          :stack="'0'"
+          :color="cutNotFinished.color"
+          :xAxis="cutNotFinished.cutCode"
+          :oneData="cutNotFinished.cutCapacity"/>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,26 +76,65 @@ export default {
       cutCapacuty: [],
       cutCode: [],
       tableData: {},
+      days: [],
       cutCompletedCount: [],
       title: '切断部机器负荷表',
       cutEchart: {
-        cutCode: ['小机器(单重50KG以下)', '中机器(单重50KG~400G以下)', '大机器(单重400KG以上)'],
-        cutCapacity: []
+        cutCode: ['小机器(单重50KG以下)', '中机器(单重50KG~400KG)', '大机器(单重400KG以上)'],
+        cutCapacity: [],
+        legend: ['接单数量', '开始切断数量'],
+        color: ['#5b9bd5', '#10dc40']
+      },
+      cutNotFinished: {
+        cutCode: ['今天', '明天', '后天'],
+        cutCapacity: [],
+        legend: ['切断', '切断加工热处理'],
+        color: ['#d6bb3b', '#cb2fba']
       }
     }
   },
   created () {
+    this.days = this.getDays(2)
     this.getTableData()
     this.getCutData()
   },
   mounted () {
   },
   methods: {
+    // 获取日期
+    getDays (dayCount) {
+      var date = new Date()
+      var dates = []
+      var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+      for (var i = 0; i <= dayCount; i++) {
+        var d = null
+        var date1 = date.getDate()
+        var month = date.getMonth() + 1
+        if (month < 10) {
+          month = '0' + month
+        }
+        if (date1 < 10) {
+          date1 = '0' + date1
+        }
+        d = date.getFullYear() + '-' + month + '-' + date1
+        var weeks = ''
+        var day = new Date(d)
+        var z = day.getDay()
+        weeks = week[z]
+        dates.push({
+          'date': d,
+          'week': weeks
+        })
+        date.setDate(date.getDate() + 1)
+      }
+      return dates
+    },
     // 切断图表数据
     getCutData () {
       this.http('/show/getCutLoadShowData', {}).then(resp => {
         if (resp.success) {
           this.cutEchart.cutCapacity = resp.data
+          this.cutNotFinished.cutCapacity = [0, 0, 0, 0, 0, 0]
         }
       })
     },
@@ -97,7 +155,7 @@ export default {
 
 <style scoped>
   * {
-    font-size: 17px;
+    /*font-size: 17px;*/
   }
 .table {
   text-align: center;
@@ -105,12 +163,23 @@ export default {
   margin-bottom: 40px;
 }
 .table td {
-  padding: 12px 10px;
+  padding: 2px 10px;
+  font-size: 30px;
+  font-weight: bold;
 }
+
 .tr-box {
   height: 20px;
 }
 .line {
   height: 300px;
 }
+  .echart-left {
+    width: 55%;
+    float: left;
+  }
+  .echart-right {
+    width: 45%;
+    float: right;
+  }
 </style>

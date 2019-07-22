@@ -2,6 +2,8 @@
   <div>
     <div class="carousel">
       <div :style="{opacity: opacOne}" class="carousel-item">
+        <br/>
+        <br/>
         <table class="table" border="1" borderColor="#000">
           <thead>
           <tr>
@@ -41,6 +43,7 @@
           </tr>
           </tbody>
         </table>
+        <br/>
         <br/>
         <br/>
         <div class="left-table">
@@ -411,9 +414,15 @@ export default {
   font-size: 24px;
   padding-top: 30px;
 }
+
 .table td,.table th {
-  padding: 12px 10px;
+  padding: 20px 10px;
+  font-size: 25px;
+  font-weight: bold;
 }
+  .table th {
+    font-size: 20px;
+  }
 .page {
   text-align: right;
   margin-top: 5px;

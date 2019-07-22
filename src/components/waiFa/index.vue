@@ -73,26 +73,22 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="outFirm"
+          prop="companyName"
           label="外发厂商">
         </el-table-column>
         <el-table-column
-          prop="counts"
           label="单数"
           align="right"
           width="50">
+          <template slot-scope="scope">
+            {{scope.row.middleList.length}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="counts"
-          label="件数"
-          align="right"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          prop="counts"
+          prop="totalWeight"
           label="重量"
           align="right"
-          width="50">
+          width="100">
         </el-table-column>
         <el-table-column
           label="外发日期"
@@ -117,13 +113,13 @@
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          prop="counts"
-          label="指示票数量"
+          prop="totalCount"
+          label="外发指示件数"
           align="right"
-          width="100">
+          width="110">
         </el-table-column>
         <el-table-column
-          prop="counts"
+          prop="outwardCount"
           label="实际入库数量"
           align="right"
           width="120">
@@ -132,7 +128,7 @@
           label="最后入库日期"
           width="120">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
+            {{$store.getters.getDate(scope.row.confirmDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -192,23 +188,19 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="outFirm"
+          prop="companyName"
           label="外发厂商">
         </el-table-column>
         <el-table-column
-          prop="counts"
           label="单数"
           align="right"
           width="50">
+          <template slot-scope="scope">
+            {{scope.row.middleList.length}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="counts"
-          label="件数"
-          align="right"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          prop="counts"
+          prop="totalWeight"
           label="重量"
           align="right"
           width="50">
@@ -236,13 +228,13 @@
           <!--1,是   0：不是-->
         </el-table-column>
         <el-table-column
-          prop="counts"
-          label="指示票数量"
+          prop="totalCount"
+          label="外发指示件数"
           align="right"
-          width="100">
+          width="110">
         </el-table-column>
         <el-table-column
-          prop="counts"
+          prop="outwardCount"
           label="实际入库数量"
           align="right"
           width="120">
@@ -251,7 +243,7 @@
           label="最后入库日期"
           width="120">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.deliveryDate, 2)}}
+            {{$store.getters.getDate(scope.row.confirmDate, 2)}}
           </template>
         </el-table-column>
       </el-table>
@@ -325,7 +317,7 @@ export default {
       this.selectionList = val
     },
     getList (pageSize, pageNum, status) {
-      this.http('/outward/list', {
+      this.http('/outward/listByGroup', {
         pageSize,
         pageNum,
         status
@@ -338,7 +330,7 @@ export default {
       })
     },
     onSubmit (pageSize, pageNum) {
-      this.http('/outward/list', {
+      this.http('/outward/listByGroup', {
         ...this.formData,
         pageSize,
         pageNum,
@@ -400,7 +392,7 @@ export default {
     },
     // 传票与及作业书
     summons (row, title) {
-      this.wfOrder = row.outCode
+      this.wfOrder = row
       this.title = ''
       setTimeout(() => {
         this.title = title

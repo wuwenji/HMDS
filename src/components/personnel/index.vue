@@ -97,57 +97,57 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="theoreticalTime"
           align="right"
           width="150"
           label="出勤理论时间(min)">
+          <!--prop="theoreticalTime"-->
+          <template>
+            7
+          </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
           label="实际切削时间">
           <template slot-scope="scope">
-            <table>
+            <table v-if="scope.row.workerTimeList.length > 0" class="table">
               <tr>
                 <td>设备</td>
-                <td>时间</td>
+                <td>时间(分)</td>
               </tr>
-              <tr>
-                <td>切断</td>
-                <td>20分钟</td>
+              <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.actualTime}}</td>
               </tr>
             </table>
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
           label="理论切削时间">
           <template slot-scope="scope">
-            <table>
+            <table v-if="scope.row.workerTimeList.length > 0" class="table">
               <tr>
                 <td>设备</td>
-                <td>时间</td>
+                <td>时间(分)</td>
               </tr>
-              <tr>
-                <td>切断</td>
-                <td>20分钟</td>
+              <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.theoryTime}}</td>
               </tr>
             </table>
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
           label="人员稼动详情">
           <template slot-scope="scope">
-            <table>
+            <table v-if="scope.row.workerProductList.length > 0" class="table">
               <tr>
                 <td>序号</td>
                 <td>设备</td>
-                <td>时间</td>
+                <td>稼动率</td>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>切断</td>
-                <td>20分钟</td>
+              <tr v-for="(item, index) in scope.row.workerProductList" :key="item + index">
+                <td>{{index + 1}}</td>
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.cropMobility}}%</td>
               </tr>
             </table>
           </template>
@@ -200,23 +200,26 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          prop="theoreticalTime"
           align="right"
           width="150"
           label="出勤理论时间(min)">
+          <!--prop="theoreticalTime"-->
+          <template>
+            7
+          </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
           label="实际加工时间">
+          <!--workerTimeList-->
           <template slot-scope="scope">
-            <table>
+            <table v-if="scope.row.workerTimeList.length > 0" class="table">
               <tr>
                 <td>设备</td>
-                <td>时间</td>
+                <td>时间(分)</td>
               </tr>
-              <tr>
-                <td>切断</td>
-                <td>20分钟</td>
+              <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.actualTime}}</td>
               </tr>
             </table>
           </template>
@@ -224,17 +227,18 @@
         <el-table-column
           prop="workNumber"
           label="人员稼动详情">
+          <!--workerProductList-->
           <template slot-scope="scope">
-            <table>
+            <table v-if="scope.row.workerProductList.length > 0" class="table">
               <tr>
                 <td>序号</td>
                 <td>设备</td>
-                <td>时间</td>
+                <td>稼动率</td>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>切断</td>
-                <td>20分钟</td>
+              <tr v-for="(item, index) in scope.row.workerProductList" :key="item + index">
+                <td>{{index + 1}}</td>
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.cropMobility}}%</td>
               </tr>
             </table>
           </template>
@@ -270,9 +274,10 @@
           label="打钢印时间(min)">
         </el-table-column>
         <el-table-column
-          prop="workNumber"
-          width="100"
-          label="其它工序">
+          prop="elseTime"
+          align="right"
+          width="120"
+          label="其它工序(min)">
         </el-table-column>
       </el-table>
       <div class="block">
@@ -424,6 +429,14 @@ export default {
 </script>
 
 <style scoped>
+  .table {
+    margin: 10px;
+    width: calc(100% - 20px);
+    border: 1px solid #ccc;
+  }
+  .table td {
+    padding: 5px;
+  }
   .position {
     line-height: 35px;
     border-bottom: 1px solid #ccc;

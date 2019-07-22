@@ -322,7 +322,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[100, 500, 1000, 5000, 10000]"
+          :page-sizes="[100, 500, 1000, 2000, 3000, 5000]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
