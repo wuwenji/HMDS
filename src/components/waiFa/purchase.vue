@@ -35,14 +35,14 @@
             </td>
           </tr>
           <tr class="center-tr">
-            <td>序号</td>
-            <td>
+            <td width="30">序号</td>
+            <td width="80">
               {{type == 0 ? '加工票号' : '成绩书票号'}}
             </td>
-            <td>钢种</td>
+            <td width="30">钢种</td>
             <td>形状</td>
             <td>尺寸</td>
-            <td>加工规格</td>
+            <td width="60">加工规格</td>
             <td>件数</td>
             <td>重量</td>
             <td>平方英寸</td>

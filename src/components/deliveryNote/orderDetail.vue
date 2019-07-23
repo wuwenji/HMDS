@@ -73,7 +73,7 @@
                 日立金属（东莞）特殊钢有限公司 本部</td>
               <td>
                 <span>邮编：</span>523380
-                <span style="width: 190px;">HMDS-QR-49-2/A0</span>
+                <span style="width: 190px;">HMDS-QR-49-1/A0</span>
                 <span style="width: 60px;">page：</span>{{deliveKey + 1}}/{{dataLists.length}}
               </td>
             </tr>

@@ -32,24 +32,24 @@
             </td>
           </tr>
           <tr class="center-tr">
-            <td>序号</td>
-            <td>外发厂商</td>
-            <td>钢种</td>
+            <td width="30">序号</td>
+            <td width="70">外发厂商</td>
+            <td width="30">钢种</td>
             <td>尺寸</td>
             <td>形状</td>
             <td>
               {{type === 0 ? '加工规格' : '作业名'}}
             </td>
-            <td>
+            <td width="80">
               {{type === 0 ? '传票单号' : '成绩书单号'}}
             </td>
             <td>倒角</td>
-            <td>钢印</td>
+            <td width="70">钢印</td>
             <td>数量</td>
             <td>重量</td>
             <td>单位</td>
             <td>是否入库</td>
-            <td>预定纳期</td>
+            <td width="80">预定纳期</td>
             <td>数量</td>
             <td>单位</td>
             <td>入库日期</td>
