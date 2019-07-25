@@ -277,6 +277,7 @@ export default {
       widthTd: '',
       opacOne: 1,
       opacTwo: 0,
+      setInterval: '',
       carouseing: '',
       days: [],
       nextPage: '',
@@ -307,6 +308,11 @@ export default {
     this.getQtNvg()
     this.getPropertyRegistration()
     this.getHeatPlanData()
+    this.setInterval = setInterval(() => {
+      this.days = this.getDays(3)
+      this.heatTime()
+      this.getQtNvg()
+    }, 600000)
   },
   mounted () {
     this.days = this.getDays(3)
@@ -320,6 +326,7 @@ export default {
   beforeDestroy () {
     // clearInterval(this.carouseing)
     clearInterval(this.nextPage)
+    clearInterval(this.setInterval)
   },
   methods: {
     // 获取日期
@@ -481,21 +488,6 @@ export default {
     heatTime () {
       this.http('/show/getHeatTimeData', {}).then(resp => {
         if (resp.success) {
-          // this.nowPic = resp.data
-          // let arrt = [
-          //   {
-          //     endTime: 1559275186,
-          //     name: '真空淬火炉',
-          //     showStr: '客户：null。材质：null',
-          //     startTime: 1559275186
-          //   },
-          //   {
-          //     endTime: null,
-          //     name: '真空淬火',
-          //     showStr: '客户：null。材质：null',
-          //     startTime: 1559275186
-          //   }
-          // ]
           this.nowPic = resp.data.map(item => {
             if (item.startTime > 0) {
               let sh = new Date(item.startTime).getHours()

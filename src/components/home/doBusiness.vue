@@ -75,6 +75,7 @@ export default {
     return {
       cutCapacuty: [],
       cutCode: [],
+      setInterval: '',
       tableData: {},
       days: [],
       cutCompletedCount: [],
@@ -97,6 +98,14 @@ export default {
     this.days = this.getDays(2)
     this.getTableData()
     this.getCutData()
+    this.setInterval = setInterval(() => {
+      this.days = this.getDays(2)
+      this.getTableData()
+      this.getCutData()
+    }, 600000)
+  },
+  beforeDestroy () {
+    clearInterval(this.setInterval)
   },
   mounted () {
   },
@@ -134,7 +143,6 @@ export default {
       this.http('/show/getCutLoadShowData', {}).then(resp => {
         if (resp.success) {
           this.cutEchart.cutCapacity = resp.data
-          this.cutNotFinished.cutCapacity = [0, 0, 0, 0, 0, 0]
         }
       })
     },
@@ -143,6 +151,12 @@ export default {
       this.http('/show/getSalesDepartmentShow', {}).then(resp => {
         if (resp.success) {
           this.tableData = resp.data
+          this.cutNotFinished.cutCapacity = [resp.data.cutList[0],
+            resp.data.machineList[0],
+            resp.data.cutList[3],
+            resp.data.machineList[3],
+            resp.data.cutList[6],
+            resp.data.machineList[6]]
         }
       })
     }

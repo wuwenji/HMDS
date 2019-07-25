@@ -187,6 +187,7 @@ export default {
     return {
       widthTd: '',
       days: [],
+      setInterval: '',
       qtNvg: {
         NVG: {
           notDoneOrderCount: 0,
@@ -210,6 +211,12 @@ export default {
     this.heatTime()
     this.getQtNvg()
     this.getHeatPlanData()
+    this.setInterval = setInterval(() => {
+      this.days = this.getDays(3)
+      this.heatTime()
+      this.getQtNvg()
+      this.getHeatPlanData()
+    }, 600000)
   },
   mounted () {
     this.days = this.getDays(3)
@@ -221,6 +228,7 @@ export default {
   },
   beforeDestroy () {
     // clearInterval(this.carouseing)
+    clearInterval(this.setInterval)
   },
   methods: {
     // 获取日期

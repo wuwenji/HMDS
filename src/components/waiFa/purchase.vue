@@ -184,7 +184,7 @@ export default {
       // console.log('打印数据', this.data)
       getExcel('/outward/downExcel', this.data).then(res => {
         const blob = new Blob([res])
-        const fileName = '采购单.xlsx'
+        const fileName = '采购单.xls'
         if ('download' in document.createElement('a')) { // 非IE下载
           const elink = document.createElement('a')
           elink.download = fileName

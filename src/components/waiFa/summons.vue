@@ -24,7 +24,7 @@
       <div class="lists">
         <table border="1" class="table">
           <tr class="center-tr">
-            <td colspan="14">
+            <td colspan="13">
               加工依赖
             </td>
             <td colspan="3">
@@ -33,28 +33,28 @@
           </tr>
           <tr class="center-tr">
             <td width="30">序号</td>
-            <td width="70">外发厂商</td>
-            <td width="30">钢种</td>
-            <td>尺寸</td>
+            <td width="40">厂商</td>
+            <td width="60">钢种</td>
+            <td width="340">尺寸</td>
             <td>形状</td>
             <td>
               {{type === 0 ? '加工规格' : '作业名'}}
             </td>
-            <td width="80">
+            <td width="110">
               {{type === 0 ? '传票单号' : '成绩书单号'}}
             </td>
             <td>倒角</td>
-            <td width="70">钢印</td>
+            <!--<td width="70">钢印</td>-->
             <td>数量</td>
             <td>重量</td>
             <td>单位</td>
-            <td>是否入库</td>
+            <td>入库</td>
             <td width="80">预定纳期</td>
             <td>数量</td>
             <td>单位</td>
             <td>入库日期</td>
           </tr>
-          <tr v-for="(item, index) in value" :key="index">
+          <tr class="tr-height" v-for="(item, index) in value" :key="index">
             <td>
               <template v-if="key === 0">
                 {{index + 1}}
@@ -79,7 +79,7 @@
               </template>
             </td>
             <td>{{item.chamferSpec}}</td>
-            <td></td>
+            <!--<td>{{item.instRemarks}}</td>-->
             <td class="john-right">{{item.soQty}}</td>
             <td class="john-right">{{item.soWt}}</td>
             <td>件</td>
@@ -89,9 +89,8 @@
             <td></td>
             <td></td>
           </tr>
-          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+          <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td>&nbsp;</td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -220,6 +219,11 @@ export default {
     top: 3px;
   }
 
+  .tr-height td{
+    height: 38px;
+    padding: 0px 10px !important;
+  }
+
   .table {
     width: 100%;
     margin-top: 5px;
@@ -243,7 +247,7 @@ export default {
 
   .center-tr td {
     text-align: center;
-    padding: 15px 5px;
+    padding: 12px 5px;
   }
 
   .bottom {

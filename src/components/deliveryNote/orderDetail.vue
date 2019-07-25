@@ -208,7 +208,7 @@
             </template>
           </table>
           <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
-            <p>注意：<br/>{{orderInfo.paymentMethodDesc}}</p>
+            <p>注意：<br/>{{lists[0].paymentMethodDesc}}</p>
             <p>
               <span>客户公章</span>
               <span>日立金属（东莞）特殊钢有限公司</span>
@@ -237,7 +237,6 @@ export default {
     }
   },
   created () {
-    console.log('送货单', this.orderInfo)
     this.getData()
   },
   watch: {
@@ -269,6 +268,7 @@ export default {
         workInstCd: this.orderInfo.workInstCd
       }).then(resp => {
         if (resp.success) {
+          console.log('送货单', resp)
           this.selectValue = []
           this.lists = resp.data
           resp.data.map(item => {

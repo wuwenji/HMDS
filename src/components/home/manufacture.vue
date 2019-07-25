@@ -159,6 +159,7 @@ export default {
       cutEndTotal: 0,
       pageSize: 6,
       opacOne: 1,
+      setInterval: '',
       opacTwo: 0,
       nextPage: '',
       pageNum: 1,
@@ -177,10 +178,15 @@ export default {
     this.getMacData()
     this.getList()
     this.getNext()
+    this.setInterval = setInterval(() => {
+      this.getMacData()
+      this.getList()
+    }, 600000)
     // this.carousel()
   },
   beforeDestroy () {
     clearInterval(this.nextPage)
+    clearInterval(this.setInterval)
   },
   methods: {
     // 获取分页数

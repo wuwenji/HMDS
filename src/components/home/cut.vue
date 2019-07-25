@@ -165,6 +165,7 @@ export default {
       opacOne: 1,
       opacTwo: 0,
       summaryData: {},
+      setInterval: '',
       pageNum: 1,
       showItem: 1,
       nextPage: '',
@@ -183,10 +184,15 @@ export default {
     this.getCutData()
     this.getCutTable()
     this.getNext()
+    this.setInterval = setInterval(() => {
+      this.getCutData()
+      this.getCutTable()
+    }, 600000)
     // this.carousel()
   },
   beforeDestroy () {
     clearInterval(this.nextPage)
+    clearInterval(this.setInterval)
   },
   methods: {
     // 获取分页数

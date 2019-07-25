@@ -87,7 +87,6 @@
           label="状态"
           width="100">
           <template slot-scope="scope">
-            {{scope.row.status}}
             {{scope.row.status == 0? '未完成' : '已完成'}}
           </template>
         </el-table-column>

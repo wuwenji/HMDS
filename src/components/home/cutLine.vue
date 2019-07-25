@@ -25,6 +25,8 @@ export default {
   methods: {
     // 数据分组
     getArray (art) {
+      this.dataTwo = []
+      this.dataOne = []
       for (let i = 0; i < art.length; i++) {
         if (i % 2 === 0) {
           this.dataTwo.push(art[i])

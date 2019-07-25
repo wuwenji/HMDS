@@ -106,7 +106,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="160"
+          width="170"
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -116,8 +116,11 @@
             <el-button
               size="mini"
               type="text"
-              @click="inputScore(scope.$index, scope.row)">成绩书</el-button>
-              <!--@click="inputScore(scope.$index, scope.row)">录入成绩书</el-button>-->
+              @click="inputScore(scope.$index, scope.row)">录入成绩书</el-button>
+            <!--<el-button-->
+              <!--size="mini"-->
+              <!--type="text"-->
+              <!--@click="inputScore(scope.$index, scope.row)">成绩书</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -135,7 +138,13 @@
     </div>
     <el-dialog
       title="成绩书"
-      width="1400px"
+      width="1220px"
+      :visible.sync="dialog_">
+      <scorBook/>
+    </el-dialog>
+    <el-dialog
+      title="成绩书"
+      width="1520px"
       :visible.sync="dialog">
       <inputCommod v-if="dialog" :inputDate="inputDate"/>
       <!--<scorBook/>-->
@@ -172,6 +181,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       dialogTyep: 0,
+      dialog_: true,
       dialog: false,
       downDialog: false,
       workInstCd: 5,

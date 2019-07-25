@@ -181,7 +181,8 @@ export default {
     getStatus (a) {
       if (a === 0) return '正常'
       if (a === 1) return '故障'
-      if (a === 2) return '报废'
+      if (a === 2) return '待料'
+      if (a === 3) return '报废'
     },
     // 返回所属部门
     getType (a) {
