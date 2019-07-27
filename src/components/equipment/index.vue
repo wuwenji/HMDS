@@ -64,6 +64,7 @@
           width="50">
         </el-table-column>
         <el-table-column
+          width="90"
           label="部门">
           <template slot-scope="scope">
             {{getDepart(scope.row.type)}}
@@ -71,9 +72,12 @@
         </el-table-column>
         <el-table-column
           prop="name"
+          width="90"
           label="设备名">
         </el-table-column>
         <el-table-column
+          width="350"
+          class-name="padding0"
           label="稼动时间">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -90,7 +94,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
+          width="350"
+          class-name="padding0"
           label="待料时间">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -107,7 +112,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
+          width="350"
+          class-name="padding0"
           label="故障时间">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -124,7 +130,8 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="workNumber"
+          width="350"
+          class-name="padding0"
           label="稼动率">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -141,10 +148,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          width="150"
           prop="totalMobility"
           label="综合嫁动率">
         </el-table-column>
         <el-table-column
+          width="350"
+          class-name="padding0"
           label="参与人员">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -163,26 +173,20 @@
         <el-table-column
           prop="actualWeight"
           align="right"
+          width="100"
           label="重量(kg)">
         </el-table-column>
         <el-table-column
           prop="counts"
           align="right"
+          width="100"
           label="件数(個)">
         </el-table-column>
         <el-table-column
           prop="area"
           align="right"
+          width="120"
           label="面积(mm²)">
-        </el-table-column>
-        <el-table-column
-          prop="failTime"
-          label="故障时间(min)">
-        </el-table-column>
-        <el-table-column
-          prop="workPercent"
-          align="right"
-          label="待料时间">
         </el-table-column>
       </el-table>
       <div class="block">

@@ -3,8 +3,9 @@
     <p style="text-align: center;margin-bottom: 20px;">
       <!--<el-button v-print="'#printContent'" type="primary"> 打印</el-button>-->
       <el-button @click="exportExcel" type="primary"> 导出</el-button>
+      <el-button @click="setUp" type="primary"> 设置</el-button>
     </p>
-    <div id="printContent">
+    <div id="printContent" style="height: 820px; overflow: hidden;position: relative;">
       <div v-for="(value, key) in data.dataList" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
@@ -24,13 +25,13 @@
       <div class="lists">
         <table border="1" class="table">
           <tr>
-            <td style="text-align: left;" colspan="11">
+            <td style="text-align: left;" colspan="12">
               外发厂家：{{data.companyName}}
             </td>
             <td></td>
           </tr>
           <tr>
-            <td style="text-align: left;" colspan="12">
+            <td style="text-align: left;" colspan="13">
               外发厂家地址：{{data.companyAddress}}
             </td>
           </tr>
@@ -46,9 +47,10 @@
             <td>件数</td>
             <td>重量</td>
             <td>平方英寸</td>
+            <td>预定交期</td>
             <td>计算方式</td>
             <td width="50">单价</td>
-            <td width="100">金额</td>
+            <td width="60">金额</td>
           </tr>
           <tr v-for="(item, index) in value" :key="index">
             <td>
@@ -56,7 +58,7 @@
                 {{index + 1}}
               </template>
               <template v-else>
-                {{(key + 1) * 10 + index + 1}}
+                {{key * 10 + index + 1}}
               </template>
             </td>
             <td>
@@ -69,6 +71,9 @@
             <td class="john-right">{{item.soQty}}</td>
             <td class="john-right">{{item.soWt}}</td>
             <td class="john-right">{{item.area }}</td>
+            <td class="john-right">
+              {{$store.getters.getDate(item.contDueDate, 2)}}
+            </td>
             <td width="100">
               <el-select v-model="item.priceType" size="mini">
                 <el-option
@@ -110,6 +115,7 @@
             <td></td>
             <td></td>
             <td></td>
+            <td></td>
           </tr>
         </table>
       </div>
@@ -123,6 +129,55 @@
           <p>日立金属（东莞）特殊钢有限公司</p>
         </div>
       </div>
+        <el-dialog
+          width="500px"
+          append-to-body
+          title="设置"
+          height="400px"
+          :visible.sync="setUpDialog">
+          <table class="table">
+            <tr>
+              <td colspan="4" style="color: red;text-align: left; font-size: 12px;">
+                单位：元/KG
+              </td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+              <td>BC</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+              <td>BC</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+              <td>BC</td>
+              <td>
+                <el-input type="text"></el-input>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <el-button type="success">保存</el-button>
+              </td>
+            </tr>
+          </table>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -137,6 +192,7 @@ export default {
   data () {
     return {
       select: '',
+      setUpDialog: false,
       data: ''
     }
   },
@@ -145,6 +201,10 @@ export default {
     this.getData(this.order)
   },
   methods: {
+    // 设置
+    setUp () {
+      this.setUpDialog = true
+    },
     // 获取总金额
     getTotal (row) {
       if (row.priceType === '0') {
@@ -267,8 +327,10 @@ export default {
   }
 
   .bottom {
-    margin-top: 40px;
     line-height: 30px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
   }
 
   .bottom .bottom-left {

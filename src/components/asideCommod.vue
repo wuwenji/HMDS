@@ -96,6 +96,9 @@ export default {
           }, {
             id: 73,
             title: '设备'
+          }, {
+            id: 74,
+            title: '热处理'
           }]
         }, {
           id: 30,
@@ -202,6 +205,9 @@ export default {
             },
             {
               title: '设备'
+            },
+            {
+              title: '热处理'
             }
           ]
         },

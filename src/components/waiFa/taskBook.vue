@@ -48,7 +48,7 @@
                 {{index + 1}}
               </template>
               <template v-else>
-                {{(key + 1) * 10 + index + 1}}
+                {{key * 10 + index + 1}}
               </template>
             </td>
             <td>{{order.companyName}}</td>
@@ -103,7 +103,7 @@
                 {{index + 1}}
               </template>
               <template v-else>
-                {{(key + 1) * 10 + index + 1}}
+                {{key * 10 + index + 1}}
               </template>
             </td>
             <td>{{order.companyName}}</td>

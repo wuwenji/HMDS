@@ -181,7 +181,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       dialogTyep: 0,
-      dialog_: true,
+      dialog_: false,
       dialog: false,
       downDialog: false,
       workInstCd: 5,

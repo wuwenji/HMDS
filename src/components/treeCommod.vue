@@ -101,6 +101,8 @@ export default {
           this.$router.push('/operationPersonnel')
         } else if (val === '电视播放') {
           this.$router.push('/showTV')
+        } else if (val === '热处理') {
+          this.$router.push('/heat')
         }
       }
     }

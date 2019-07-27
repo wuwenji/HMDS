@@ -41,15 +41,6 @@
         height="calc(100% - 75px)"
         style="width: 100%;">
         <el-table-column
-          prop="orderCode"
-          label="接单号"
-          width="110">
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          label="客户">
-        </el-table-column>
-        <el-table-column
           label="接单时间"
           width="130">
           <template slot-scope="scope">
@@ -57,58 +48,115 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="交期"
-          width="130">
-          <template slot-scope="scope">
-            <!--{{scope.row.deliveryTime == 0? '' : $store.getters.getDate(scope.row.deliveryTime, 2)}}-->
-            {{$store.getters.getDate(scope.row.deliveryTime, 2)}}
-          </template>
+          prop="orderCode"
+          label="接单号"
+          width="110">
         </el-table-column>
         <el-table-column
-          label="类型"
-          width="130">
-          <template slot-scope="scope">
-            {{scope.row.type == 5? '热处理' : ''}}
-            {{scope.row.type == 6? '加工&切断&热处理' : ''}}
-          </template>
+          prop="customerName"
+          width="250"
+          label="客户">
         </el-table-column>
         <el-table-column
           prop="totalCount"
-          label="材料数量"
+          width="100"
+          label="钢种">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
           align="right"
-          width="80">
+          width="60"
+          label="数量">
         </el-table-column>
         <el-table-column
-          prop="heatCount"
-          label="已处理数量"
+          prop="totalCount"
           align="right"
-          width="100">
-          <template slot-scope="scope">
-            {{scope.row.heatCount + scope.row.scrapCount}}
-          </template>
+          width="60"
+          label="重量">
         </el-table-column>
         <el-table-column
-          label="状态"
-          width="100">
-          <template slot-scope="scope">
-            {{scope.row.status == 0? '未完成' : '已完成'}}
-          </template>
+          prop="totalCount"
+          width="100"
+          label="硬度要求">
         </el-table-column>
         <el-table-column
-          label="完成度"
-          width="200">
-          <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.heatCount, scope.row.totalCount, scope.row.scrapCount, scope.row.status)"></el-progress>
-          </template>
+          prop="totalCount"
+          width="200"
+          label="特别事项">
+        </el-table-column>
+        <el-table-column
+          prop="taskName"
+          width="150"
+          label="作业名">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="110"
+          label="预定入炉时间">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="预定货期">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="当前使用炉">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="冷却方法">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="入炉时间">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="入炉日期">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="计划货期">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="完成状态">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="出货计划日">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="120"
+          label="纳期延迟原因">
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="延迟天数">
         </el-table-column>
         <el-table-column
           label="操作"
-          width="100">
+          fixed="right"
+          width="180">
           <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="cutFun(scope.$index, scope.row, '设置')">设置</el-button>
             <el-button
             size="mini"
             type="primary"
-            @click="cutFun(scope.$index, scope.row)">查看详情</el-button>
+            @click="cutFun(scope.$index, scope.row, '详情')">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -125,10 +173,32 @@
       </div>
     </div>
     <el-dialog
-      width="1400px"
-      title="详情"
+      :width="title === '详情' ? '700px' : '300px'"
+      :title="title"
       :visible.sync="dialog">
-      <machDetail v-if="dialog" :orderInfo="sendDate"/>
+      <machDetail v-if="dialog && title === '详情'" :orderInfo="sendDate"/>
+      <div v-if="dialog && title === '设置'">
+        <el-form>
+          <el-form-item label="预定入炉时间">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="预定货期">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="冷却方法">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item label="计划货期">
+            <el-input></el-input>
+          </el-form-item>
+          <el-form-item>
+            <p style="margin-top: 20px; text-align: center;">
+              <el-button type="primary">保存</el-button>
+              <el-button>取消</el-button>
+            </p>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -141,6 +211,7 @@ export default {
     return {
       johnTab: 0,
       pageSize: 10,
+      title: '设置',
       pageNum: 1,
       total: 0,
       dialog: false,
@@ -213,8 +284,9 @@ export default {
       this.pageNum = parseInt(`${val} `)
       this.onSubmit(this.pageSize, this.pageNum)
     },
-    cutFun (index, row) {
+    cutFun (index, row, item) {
       // console.log(index, row)
+      this.title = item
       this.sendDate = row
       this.dialog = true
     },

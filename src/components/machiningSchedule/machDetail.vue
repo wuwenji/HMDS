@@ -150,7 +150,7 @@
     <el-dialog
       width="1000px"
       title="详情"
-      :modal=false
+      append-to-body
       top="25vh"
       custom-class="dialogCss"
       :visible.sync="dialog">

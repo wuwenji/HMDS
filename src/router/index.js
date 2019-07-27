@@ -22,6 +22,7 @@ import placeManage from '../pages/placeManage'
 import materialQR from '../pages/materialQR'
 import equipmentQR from '../pages/equipmentQR'
 import showTV from '../pages/showTV'
+import heatTreat from '../pages/heat'
 
 Vue.use(Router)
 
@@ -133,6 +134,11 @@ const routes = [
     path: '/showTV',
     name: 'showTV',
     component: showTV
+  },
+  {
+    path: '/heat',
+    name: 'heatTreat',
+    component: heatTreat
   }
 ]
 

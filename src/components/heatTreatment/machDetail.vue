@@ -1,178 +1,27 @@
 <template>
   <div>
-    <div v-if="showContent == 0">
-      <table class="table-list" border="1">
-        <thead>
-          <tr>
-            <th>作业名</th>
-            <th>行号</th>
-            <th>数量</th>
-            <th>尺寸</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody v-for="(item, key) in newLists" :key="'c' + key">
-          <tr v-for="(itemItem, nmb) in item.groupData" :key="key + '-' +nmb">
-            <td v-if="nmb == 0" :rowspan="item.groupData.length">{{item.taskName}}</td>
-            <td>{{itemItem.heatCode}}</td>
-            <td align="right">{{itemItem.counts}}</td>
-            <td>{{itemItem.sizeNote}}</td>
-            <td v-if="nmb == 0" :rowspan="item.groupData.length">
-              <el-button
-                size="mini"
-                @click="seeDetail(item.id, item.treatmentId)"
-                type="primary">查看</el-button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div v-else>
-      <table class="table">
-        <tr>
-          <td><b>客户：</b></td>
-          <td>{{newData.heat.customerName}}</td>
-          <td><b>送货地址：</b></td>
-          <td>{{newData.heat.finalCustomerName}}</td>
-          <td><b>作业名：</b></td>
-          <td>{{newData.heat.taskName}}</td>
-          <td><b>接单时间：</b></td>
-          <td>{{$store.getters.getDate(newData.heat.acceptTime, 2)}}</td>
-        </tr>
-        <tr>
-          <td><b>接单号：</b></td>
-          <td>{{newData.heat.orderCode}}</td>
-          <td><b>发件人：</b></td>
-          <td>{{newData.heat.sender}}</td>
-          <td><b></b></td>
-          <td></td>
-          <td><b>交期时间：</b></td>
-          <td>{{$store.getters.getDate(newData.heat.deliveryTime, 2)}}</td>
-        </tr>
-      </table>
-      <table border="1" class="table-list">
-        <thead>
-        <tr>
-          <th>序号</th>
-          <th>钢种</th>
-          <th>No</th>
-          <th>热处理方式</th>
-          <th>品名</th>
-          <th>尺寸</th>
-          <th>数量</th>
-          <th>重量(kg)</th>
-          <th>要求硬度</th>
-          <th>开始时间</th>
-          <th colspan="2">完成时间</th>
-        </tr>
-        </thead>
-        <tbody v-for="(item, key) in newData.list" :key="key">
-        <tr>
-          <td rowspan="3">{{key + 1}}</td>
-          <td rowspan="3">{{item.gradeCd}}</td>
-          <td rowspan="3">{{item.heatCode}}</td>
-          <td>{{item.taskName}}</td>
-          <td>{{item.itemName}}</td>
-          <td>{{item.sizeNote}}</td>
-          <td align="right">{{item.counts}}</td>
-          <td align="right">{{item.wt}}</td>
-          <td align="right">{{item.hardnessRequirement}}</td>
-          <td>{{$store.getters.getTime(item.startTime)}}</td>
-          <td colspan="2">{{$store.getters.getTime(item.endTime)}}</td>
-        </tr>
-        <tr>
-          <td>当前进度</td>
-          <td>现在作业炉</td>
-          <td>现在作业人员</td>
-          <td>入炉时间</td>
-          <td>冷却方式</td>
-          <td>完成状态</td>
-          <td>检查结果</td>
-          <td>检测完成时间</td>
-          <td>操作</td>
-        </tr>
-        <tr>
-          <td>{{item.type}}</td>
-          <td>{{item.equipmentName + item.code}}</td>
-          <td>{{item.workName}}</td>
-          <td>{{$store.getters.getTime(item.startTime)}}</td>
-          <td>{{item.taskName.indexOf('SZ') > -1? '深冷': ''}}</td>
-          <td>{{item.status > 0? '已完成': '未完成'}}</td>
-          <td v-if="item.status != null">
-            {{item.status == 1? '合格': ''}}
-            {{item.status == 2? '特采': ''}}
-            {{item.status == 3? '该流程重做': ''}}
-            {{item.status == 4? '报废': ''}}
-          </td>
-          <td v-if="item.status == null"></td>
-          <td>{{$store.getters.getTime(item.endTime)}}</td>
-          <td>
-            <el-button
-              size="mini"
-              @click="alertDetail(item.id, item.heatCode)"
-              type="primary">
-              详情
-            </el-button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <p style="text-align: center; margin-top: 20px;">
-        <el-button
-          @click="showContent = 0"
-          type="primary">返回</el-button>
-      </p>
-      <el-dialog
-        width="600px"
-        title="详情"
-        :modal=false
-        top="5vh"
-        custom-class="dialogCss"
-        :visible.sync="dialog">
-        <table border="1" class="table-list">
-          <thead>
-          <tr>
-            <th>类型</th>
-            <th>工作人员</th>
-            <th>开始时间</th>
-            <th>结束时间</th>
-            <th>结果</th>
-          </tr>
-          </thead>
-          <tbody v-for="(item, keys) in lists" :key="keys">
-          <tr>
-            <td>{{item.type}}</td>
-            <td>{{item.workName}}</td>
-            <td>{{$store.getters.getTime(item.startTime)}}</td>
-            <td>{{$store.getters.getTime(item.endTime)}}</td>
-            <td>
-              <!--{{item.status &lt; 2? '合格': '不合格'}}-->
-              {{returnStatus(item.status)}}
-            </td>
-          </tr>
-          <!--<tr>-->
-            <!--<td colspan="2">作业行号：{{cutCode + '-' + (keys + 1)}} ({{item.counts}})</td>-->
-            <!--<td>类型：QT</td>-->
-            <!--<td>机器：机器</td>-->
-          <!--</tr>-->
-          <!--<template v-for="val in item.heaterList">-->
-            <!--<tr>-->
-              <!--<td>{{val.type}}</td>-->
-              <!--<td>{{val.workName}}</td>-->
-              <!--<td>{{$store.getters.getTime(val.startTime)}}</td>-->
-              <!--<td>{{$store.getters.getTime(val.endTime)}}</td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-              <!--<td>中间检查</td>-->
-              <!--<td>{{val.auditorName}}</td>-->
-              <!--<td>{{$store.getters.getTime(val.endTime)}}</td>-->
-              <!--<td>{{val.status < 2? '合格': '不合格'}}</td>-->
-            <!--</tr>-->
-          <!--</template>-->
-          </tbody>
-        </table>
-      </el-dialog>
-    </div>
+    <table border="1" class="table-list">
+      <thead>
+      <tr>
+        <th>类型</th>
+        <th>工作人员</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>结果</th>
+      </tr>
+      </thead>
+      <tbody v-for="(item, keys) in lists" :key="keys">
+      <tr>
+        <td>{{item.type}}</td>
+        <td>{{item.workName}}</td>
+        <td>{{$store.getters.getTime(item.startTime)}}</td>
+        <td>{{$store.getters.getTime(item.endTime)}}</td>
+        <td>
+          {{returnStatus(item.status)}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 

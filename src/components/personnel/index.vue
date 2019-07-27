@@ -46,24 +46,10 @@
             <el-option label="加工部门" :value="2"></el-option>
           </el-select>
         </el-form-item>
-        <!--<el-form-item class="form-item" label="绩效指标" prop="performanceIndex">-->
-          <!--<el-select v-model="formData.performanceIndex" placeholder="绩效指标">-->
-            <!--<el-option label="数量" value="1"></el-option>-->
-            <!--<el-option label="重量" value="2"></el-option>-->
-            <!--<el-option label="表面积" value="3"></el-option>-->
-            <!--<el-option label="工作时长" value="4"></el-option>-->
-            <!--&lt;!&ndash;<el-option label="切断理论时长" value="5"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="加工理论时长" value="6"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="达成率" value="7"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="稼动时间" value="8"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="稼动率" value="9"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="故障时间" value="10"></el-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<el-option label="故障率" value="11"></el-option>&ndash;&gt;-->
-          <!--</el-select>-->
-        <!--</el-form-item>-->
         <el-form-item class="btns">
-          <el-button type="primary" plain @click="onSubmit">查询</el-button>
-          <el-button type="success" plain @click="resetForm('formData')">重置</el-button>
+          <el-button type="primary" plain @click="diaryDialog = true">解除日记</el-button>
+          <el-button type="success" plain @click="onSubmit">查询</el-button>
+          <el-button plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -88,12 +74,12 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          width="100"
+          width="70"
           label="作业员">
         </el-table-column>
         <el-table-column
           prop="workNumber"
-          width="100"
+          width="70"
           label="工号">
         </el-table-column>
         <el-table-column
@@ -106,6 +92,8 @@
           </template>
         </el-table-column>
         <el-table-column
+          width="350"
+          class-name="padding0"
           label="实际切削时间">
           <template slot-scope="scope">
             <table v-if="scope.row.workerTimeList.length > 0" class="table">
@@ -121,6 +109,8 @@
           </template>
         </el-table-column>
         <el-table-column
+          width="350"
+          class-name="padding0"
           label="理论切削时间">
           <template slot-scope="scope">
             <table v-if="scope.row.workerTimeList.length > 0" class="table">
@@ -136,6 +126,8 @@
           </template>
         </el-table-column>
         <el-table-column
+          width="350"
+          class-name="padding0"
           label="人员稼动详情">
           <template slot-scope="scope">
             <table v-if="scope.row.workerProductList.length > 0" class="table">
@@ -209,6 +201,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          class-name="padding0"
           label="实际加工时间">
           <!--workerTimeList-->
           <template slot-scope="scope">
@@ -226,6 +219,7 @@
         </el-table-column>
         <el-table-column
           prop="workNumber"
+          class-name="padding0"
           label="人员稼动详情">
           <!--workerProductList-->
           <template slot-scope="scope">
@@ -292,10 +286,18 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog
+      title="解除日记"
+      top="10vh"
+      width="1400px"
+      :visible.sync="diaryDialog">
+      <diaryPage/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import diaryPage from './diary'
 export default {
   name: 'index',
   data () {
@@ -303,6 +305,7 @@ export default {
       type: '1',
       pageNum: 1,
       pageSize: 10,
+      diaryDialog: false,
       total: 0,
       departmentShow: 1,
       department: '1',
@@ -424,14 +427,17 @@ export default {
     }
   },
   computed: {
+  },
+  components: {
+    diaryPage
   }
 }
 </script>
 
 <style scoped>
   .table {
-    margin: 10px;
-    width: calc(100% - 20px);
+    /*margin: 10px;*/
+    width: 100%;
     border: 1px solid #ccc;
   }
   .table td {
@@ -456,6 +462,7 @@ export default {
   .form-item {
     width:220px;
   }
+
   .btns {
     float: right;
   }

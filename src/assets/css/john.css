@@ -297,3 +297,9 @@ table {
 /*.correcting .el-checkbox__inner::after {*/
   /*height: 2px;*/
 /*}*/
+.padding0 {
+  padding: 0 !important;
+}
+.padding0 .cell {
+  padding: 0 !important;
+}
