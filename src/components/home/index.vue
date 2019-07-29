@@ -125,7 +125,7 @@ export default {
     return {
       showCommd: 0,
       allScreen: 0,
-      todayData: []
+      todayData: [0, 0, 0, 0, 0, 0, 0, 0]
     }
   },
   created () {

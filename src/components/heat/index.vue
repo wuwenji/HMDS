@@ -40,12 +40,6 @@
             </el-col>
           </el-form-item>
         </template>
-        <el-form-item class="form-item" label="绩效部门" prop="department">
-          <el-select v-model="formData.department" placeholder="绩效部门">
-            <el-option label="切断部门" :value="1"></el-option>
-            <el-option label="加工部门" :value="2"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item class="form-item" label="人数" >
           <el-input v-model="humanCounts"></el-input>
         </el-form-item>
@@ -59,40 +53,47 @@
     <div class="data-list">
       <el-table
         :data="listData"
-        v-show="department == 1"
         border
         height="calc(100% - 75px)">
         <el-table-column
-          prop="name"
-          label="接单日期">
+          label="接单时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="成绩单号">
+          prop="managementNumber"
+          label="成绩书号">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="客户名称">
+          prop="customerName"
+          label="客户">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="material"
           label="钢种">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="totalCount"
+          align="right"
           label="数量">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="totalWeight"
+          align="right"
           label="重量">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="入炉日期">
+          label="入炉时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.startTime, 2)}}
+          </template>
         </el-table-column>
         <el-table-column
-          prop="name"
           label="完成日期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.endTime, 2)}}
+          </template>
         </el-table-column>
       </el-table>
       <div class="block">
@@ -129,8 +130,7 @@ export default {
       formData: {
         dateType: '1',
         endTime: '',
-        startTime: '',
-        department: 1
+        startTime: ''
       }
     }
   },
@@ -138,52 +138,15 @@ export default {
     this.onSubmit()
   },
   methods: {
-    // 根据绩效指标返回不同字段值
-    actual (row) {
-      if (this.type === '1') {
-        if (row.actualCounts === null || row.actualCounts === undefined) {
-          return '-'
-        } else {
-          return row.actualCounts + ' 個'
-        }
-      }
-      if (this.type === '2') {
-        if (row.actualWeight === null || row.actualWeight === undefined) {
-          return '-'
-        } else {
-          return row.actualWeight + ' kg'
-        }
-      }
-      if (this.type === '3') {
-        if (row.actualArea === null || row.actualArea === undefined) {
-          return '-'
-        } else {
-          return row.actualArea + ' mm²'
-        }
-      }
-      if (this.type === '4') {
-        if (row.actualTime === null || row.actualTime === undefined) {
-          return '-'
-        } else {
-          return row.actualTime + ' 分'
-        }
-      }
-    },
-    // 获取部门
-    getDepartment (numb) {
-      if (numb === 1) return '切断部门'
-      if (numb === 2) return '加工部门'
-      return ''
-    },
     onSubmit () {
       this.formData.pageNum = this.pageNum
       this.formData.pageSize = this.pageSize
-      this.http('/statistics/workerPerformanceStatistics', this.formData).then(resp => {
-        this.type = this.formData.performanceIndex
-        this.department = this.formData.department
+      this.http('/statistics/heatPerformanceStatistics', this.formData).then(resp => {
         if (resp.success) {
-          this.listData = resp.data.list
-          this.total = resp.data.total
+          console.log('列表', resp)
+          this.listData = resp.data.list.list
+          this.total = resp.data.list.total
+          this.totalWeight = resp.data.allWeight
         }
       })
     },
@@ -193,18 +156,6 @@ export default {
     handleSizeChange (val) {
       this.pageSize = parseInt(`${val}`)
       this.onSubmit()
-    },
-    formatter (row) {
-      if (row.position === 1) return '副部长'
-      if (row.position === 2) return '主任'
-      if (row.position === 3) return '副主任'
-      if (row.position === 4) return '科长'
-      if (row.position === 5) return '技术工程师'
-      if (row.position === 6) return '作业班长'
-      if (row.position === 7) return '作业员工'
-      if (row.position === 8) return '管员'
-      if (row.position === 9) return '司机'
-      if (row.position === 10) return '文员'
     },
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)
