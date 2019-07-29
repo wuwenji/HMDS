@@ -46,12 +46,16 @@
             <el-option label="加工部门" :value="2"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item class="form-item" label="人数" >
+          <el-input v-model="humanCounts"></el-input>
+        </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit">查询</el-button>
           <el-button plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <p style="margin-left: 15px;">累计重量：<span class="red">{{totalWeight}} (KG)</span>，人均重量：<span class="red">{{averageWeight}} (KG)</span>。</p>
     <div class="data-list">
       <el-table
         :data="listData"
@@ -114,6 +118,8 @@ export default {
     return {
       type: '1',
       pageNum: 1,
+      humanCounts: 1,
+      totalWeight: 100,
       pageSize: 10,
       diaryDialog: false,
       total: 0,
@@ -175,7 +181,6 @@ export default {
       this.http('/statistics/workerPerformanceStatistics', this.formData).then(resp => {
         this.type = this.formData.performanceIndex
         this.department = this.formData.department
-        console.log(resp)
         if (resp.success) {
           this.listData = resp.data.list
           this.total = resp.data.total
@@ -207,6 +212,14 @@ export default {
     }
   },
   computed: {
+    // 求平均重量
+    averageWeight () {
+      if (parseInt(this.humanCounts) === 0 || this.humanCounts === '') {
+        return 0.00
+      } else {
+        return (this.totalWeight / this.humanCounts).toFixed(2)
+      }
+    }
   },
   components: {
     diaryPage
@@ -222,6 +235,9 @@ export default {
   }
   .table td {
     padding: 5px;
+  }
+  .red {
+    color: red;
   }
   .position {
     line-height: 35px;
@@ -254,6 +270,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 130px);
+    height: calc(100% - 160px);
   }
 </style>

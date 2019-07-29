@@ -10,14 +10,18 @@
         <th>结果</th>
       </tr>
       </thead>
-      <tbody v-for="(item, keys) in lists" :key="keys">
+      <tbody v-for="(item, keys) in orderInfo.mapList" :key="keys">
       <tr>
-        <td>{{item.type}}</td>
-        <td>{{item.workName}}</td>
+        <td>{{item.heatName}}</td>
+        <td>{{item.userName1}}</td>
         <td>{{$store.getters.getTime(item.startTime)}}</td>
-        <td>{{$store.getters.getTime(item.endTime)}}</td>
         <td>
-          {{returnStatus(item.status)}}
+          <template v-if="item.endTime">
+            {{$store.getters.getTime(item.endTime)}}
+          </template>
+        </td>
+        <td>
+          {{returnStatus(item.heatStatus)}}
         </td>
       </tr>
       </tbody>
@@ -41,60 +45,17 @@ export default {
     }
   },
   created () {
-    this.getData()
-  },
-  watch: {
-    orderInfo () {
-      this.getData()
-    }
+    console.log(this.orderInfo)
   },
   methods: {
-    getData () {
-      this.http('/heat/get', this.orderInfo.treatmentId).then(resp => {
-        if (resp.success) {
-          // console.log(resp)
-          this.newLists = resp.data
-        }
-      })
-    },
-    alertDetail (id, cutCo) {
-      this.cutCode = cutCo
-      this.http('/heat/detail', id).then(resp => {
-        console.log(resp)
-        if (resp.success) {
-          this.lists = resp.data
-        }
-      })
-      this.dialog = true
-    },
-    returnPrsent (a, b, c, d) {
-      if (b === null && c === null && d === 1) {
-        return 100
-      } else {
-        return a
-      }
-    },
     // 返回状态
     returnStatus (a) {
-      if (a === 1) return '合格'
+      if (a === 1) return '完全合格'
       if (a === 2) return '差异合格'
-      if (a === 3) return '该流程重做'
-      if (a === 4) return '报废'
-      if (a === 5) return '存在部份不合格回火'
+      if (a === 3) return '部分回火'
+      if (a === 4) return '流程重做'
+      if (a === 5) return '全部报废'
       return ''
-    },
-    // 查看单条数据详情
-    seeDetail (id, treatmentId) {
-      this.http('/heat/getEntryDetail', {
-        id,
-        treatmentId
-      }).then(resp => {
-        console.log(resp)
-        if (resp.success) {
-          this.newData = resp.data
-          this.showContent = 1
-        }
-      })
     }
   }
 }
