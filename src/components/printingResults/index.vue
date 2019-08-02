@@ -106,7 +106,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="170"
+          width="220"
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -117,10 +117,10 @@
               size="mini"
               type="text"
               @click="inputScore(scope.$index, scope.row)">录入成绩书</el-button>
-            <!--<el-button-->
-              <!--size="mini"-->
-              <!--type="text"-->
-              <!--@click="inputScore(scope.$index, scope.row)">成绩书</el-button>-->
+            <el-button
+              size="mini"
+              type="text"
+              @click="printScorBook(scope.$index, scope.row)">成绩书</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -139,15 +139,31 @@
     <el-dialog
       title="成绩书"
       width="1220px"
+      top="5vh"
       :visible.sync="dialog_">
-      <scorBook/>
+      <ch-scor-book v-if="language === 0" :orderInfo="inputDate"/>
+      <en-scor-book v-if="language === 1" :orderInfo="inputDate"/>
+      <ja-scor-book v-if="language === 2" :orderInfo="inputDate"/>
+    </el-dialog>
+    <el-dialog
+      title="语言"
+      width="270px"
+      :visible.sync="langDialog">
+      <el-select v-model="language" placeholder="请选择">
+        <el-option label="中文" :value="0"></el-option>
+        <el-option label="英文" :value="1"></el-option>
+        <el-option label="日文" :value="2"></el-option>
+      </el-select>
+      <div class="cl"></div>
+      <p style="text-align: center; margin-top: 20px;">
+        <el-button @click="seedBook" type="primary">查看</el-button>
+      </p>
     </el-dialog>
     <el-dialog
       title="成绩书"
       width="1520px"
       :visible.sync="dialog">
       <inputCommod v-if="dialog" :inputDate="inputDate"/>
-      <!--<scorBook/>-->
     </el-dialog>
     <el-dialog
       title="下载成绩书"
@@ -172,6 +188,9 @@
 <script>
 import inputCommod from './inputCommod'
 import scorBook from './scorBook'
+import chScorBook from './chScorBook'
+import enScorBook from './enScorBook'
+import jaScorBook from './jaScorBook'
 import { getExcel } from '../../http'
 export default {
   name: 'index',
@@ -179,8 +198,10 @@ export default {
     return {
       johnTab: 5,
       pageSize: 10,
+      language: 0,
       pageNum: 1,
       dialogTyep: 0,
+      langDialog: false,
       dialog_: false,
       dialog: false,
       downDialog: false,
@@ -288,6 +309,16 @@ export default {
       this.downCode = row.orderCode
       this.downDialog = true
     },
+    // 打印成绩书
+    printScorBook (index, row) {
+      this.inputDate = row
+      this.langDialog = true
+    },
+    // 查看成绩书
+    seedBook () {
+      this.langDialog = false
+      this.dialog_ = true
+    },
     // 下载
     downLoad () {
       this.http('/heatTreatment/getHeatExcel', {
@@ -347,7 +378,10 @@ export default {
   },
   components: {
     inputCommod,
-    scorBook
+    scorBook,
+    chScorBook,
+    enScorBook,
+    jaScorBook
   }
 }
 </script>

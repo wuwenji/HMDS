@@ -502,7 +502,7 @@ let model = {
     confirmer: '',
     month: '',
     day: '',
-    time: '，',
+    time: '',
     operator: '',
     oneTemperature: '',
     oneH: '',

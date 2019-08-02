@@ -8,7 +8,7 @@
         <el-form-item class="form-item" label="成绩书号" prop="managementNumber">
           <el-input v-model="formData.managementNumber" placeholder="接单号"></el-input>
         </el-form-item>
-        <el-form-item class="form-item" label="接单时间">
+        <el-form-item class="form-item" label="入货时间">
           <el-col>
             <el-form-item prop="acceptTime">
               <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.acceptTime" style="width: 100%;"></el-date-picker>
@@ -37,7 +37,7 @@
         height="calc(100% - 75px)"
         style="width: 100%;">
         <el-table-column
-          label="接单时间"
+          label="入货时间"
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.acceptTime, 2)}}
@@ -215,7 +215,7 @@
         height="calc(100% - 75px)"
         style="width: 100%;display: none;">
         <el-table-column
-          label="接单时间"
+          label="入货时间"
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.acceptTime, 2)}}
@@ -321,7 +321,6 @@
           label="延迟天数">
         </el-table-column>
         <el-table-column
-          prop="totalCount"
           width="100"
           label="使用炉">
           <template slot-scope="scope">

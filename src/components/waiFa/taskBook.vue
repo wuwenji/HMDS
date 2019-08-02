@@ -94,7 +94,7 @@
             <td>件数</td>
             <td>作业名</td>
             <td>指示硬度</td>
-            <td>传票单号</td>
+            <td>成绩书号</td>
             <td>预订纳期</td>
           </tr>
           <tr v-for="(item, index) in value" :key="index">

@@ -24,8 +24,8 @@
       <div class="lists">
         <table border="1" class="table">
           <tr class="center-tr">
-            <td colspan="13">
-              加工依赖
+            <td colspan="11">
+              {{type === 0 ? '加工依赖' : '热处理外发'}}
             </td>
             <td colspan="3">
               实际入库情况
@@ -35,8 +35,8 @@
             <td width="30">序号</td>
             <td width="40">厂商</td>
             <td width="60">钢种</td>
-            <td width="340">尺寸</td>
-            <td>形状</td>
+            <!--<td width="340">尺寸</td>-->
+            <!--<td>形状</td>-->
             <td>
               {{type === 0 ? '加工规格' : '作业名'}}
             </td>
@@ -65,8 +65,8 @@
             </td>
             <td>{{order.companyName}}</td>
             <td>{{item.gradeCd}}</td>
-            <td>{{item.machineTolerance}}</td>
-            <td>{{item.machineShapeCd}}</td>
+            <!--<td>{{item.machineTolerance}}</td>-->
+            <!--<td>{{item.machineShapeCd}}</td>-->
             <td>
               {{type === 0 ? item.machineSpecCd : item.taskName}}
             </td>
@@ -90,8 +90,6 @@
             <td></td>
           </tr>
           <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
-            <td>&nbsp;</td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>

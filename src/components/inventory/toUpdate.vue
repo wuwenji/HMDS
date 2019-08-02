@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row cl">
+    <div class="row cl nowrap-table">
       <div class="left">
         <div class="title">
           smart库
@@ -8,7 +8,7 @@
           <span @click="smartSeach(100, 1)">搜索</span>
           <input class="form-input" type="text" placeholder="溶解编号" v-model="smartForm.chargeNo">
           <input class="form-input" type="text" placeholder="钢种" v-model="smartForm.gradeCd">
-          <select class="form-input" v-model="smartForm.shape" placeholder="形状">
+          <select class="form-input" v-model="smartForm.machineShapeCd" placeholder="形状">
             <option label="全部" value="">全部</option>
             <option label="" value="2MF">2MF</option>
             <option label="" value="4M6F">4M6F</option>
@@ -34,25 +34,6 @@
           border
           height="500px">
           <el-table-column
-            prop="whseCd"
-            label="smart编号"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="stockNo"
-            label="库存号码"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="matCntlNo"
-            label="现品管理号"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="caseNo"
-            label="包装箱号">
-          </el-table-column>
-          <el-table-column
             prop="gradeCdKey"
             label="钢种">
           </el-table-column>
@@ -64,10 +45,6 @@
             prop="machineShapeCd"
             label="形状">
           </el-table-column>
-          <!--<el-table-column-->
-          <!--prop="stockSizeNote"-->
-          <!--label="尺寸">-->
-          <!--</el-table-column>-->
           <el-table-column
             prop="size1"
             align="right"
@@ -90,6 +67,25 @@
             prop="stockQty"
             align="right"
             label="数量">
+          </el-table-column>
+          <el-table-column
+            prop="whseCd"
+            label="smart编号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="stockNo"
+            label="库存号码"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="matCntlNo"
+            label="现品管理号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号">
           </el-table-column>
           <el-table-column
             prop="stockWt"
@@ -134,6 +130,7 @@
         </el-table>
         <el-table
           :data="smartData"
+          tooltip-effect="dark"
           border
           height="500px">
           <el-table-column
@@ -148,26 +145,9 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="whseCd"
-            label="smart编号"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="stockNo"
-            label="库存号码"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="matCntlNo"
-            label="现品管理号"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="caseNo"
-            label="包装箱号">
-          </el-table-column>
-          <el-table-column
             prop="gradeCdKey"
+            show-overflow-tooltip
+            width="120"
             label="钢种">
           </el-table-column>
           <el-table-column
@@ -178,10 +158,6 @@
             prop="machineShapeCd"
             label="形状">
           </el-table-column>
-          <!--<el-table-column-->
-            <!--prop="stockSizeNote"-->
-            <!--label="尺寸">-->
-          <!--</el-table-column>-->
           <el-table-column
             prop="size1"
             align="right"
@@ -206,21 +182,43 @@
             label="数量">
           </el-table-column>
           <el-table-column
+            prop="whseCd"
+            label="smart编号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="stockNo"
+            label="库存号码"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="matCntlNo"
+            label="现品管理号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号">
+          </el-table-column>
+          <el-table-column
             prop="stockWt"
             align="right"
             label="重量">
           </el-table-column>
           <el-table-column
             prop="orgSizeNote"
+            show-overflow-tooltip
             label="母材尺寸"
             width="180px">
           </el-table-column>
           <el-table-column
+            show-overflow-tooltip
             prop="stockRemarks"
             label="放置位置">
           </el-table-column>
           <el-table-column
             prop="stockRemarks"
+            show-overflow-tooltip
             label="备注"
             width="200">
           </el-table-column>
@@ -291,11 +289,6 @@
           border
           height="500px">
           <el-table-column
-            prop="caseNo"
-            label="包装箱号"
-            width="120">
-          </el-table-column>
-          <el-table-column
             prop="materialType"
             label="钢种材质"
             width="120">
@@ -330,6 +323,17 @@
             prop="stockQty"
             align="right"
             label="数量">
+          </el-table-column>
+          <el-table-column
+            label="入库时间">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.lastStorageTime, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="stockWt"
@@ -348,6 +352,7 @@
         </el-table>
         <el-table
           :data="localData"
+          tooltip-effect="dark"
           border
           height="500px">
           <el-table-column
@@ -361,12 +366,8 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="caseNo"
-            label="包装箱号"
-            width="120">
-          </el-table-column>
-          <el-table-column
             prop="materialType"
+            show-overflow-tooltip
             label="钢种材质"
             width="120">
           </el-table-column>
@@ -402,29 +403,38 @@
             label="数量">
           </el-table-column>
           <el-table-column
+            width="120"
+            label="入库时间">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.lastStorageTime, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="caseNo"
+            label="包装箱号"
+            width="120">
+          </el-table-column>
+          <el-table-column
             prop="stockWt"
             align="right"
             label="重量">
           </el-table-column>
           <el-table-column
             prop="orgSizeNote"
+            show-overflow-tooltip
             label="母材尺寸"
             width="180px">
           </el-table-column>
           <el-table-column
             prop="storageName"
+            show-overflow-tooltip
             label="放置位置">
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作">
             <template slot-scope="scope">
-              <el-button
-                @click.native.prevent="deleteRow(scope.$index, localData, scope.row.id)"
-                type="text"
-                size="small">
-                移除
-              </el-button>
+              <span style="color: #409EFF; cursor: pointer;" @click="deleteRow(scope.$index, localData, scope.row.id)">移除</span>
             </template>
           </el-table-column>
         </el-table>
@@ -719,4 +729,5 @@ export default {
 #smart-table,#local-table {
   display: none;
 }
+
 </style>

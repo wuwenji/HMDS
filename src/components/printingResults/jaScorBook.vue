@@ -6,7 +6,7 @@
           <p>管理编号NO</p>
           <p><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></p>
           <div class="name">
-            <p>客户名</p>
+            <p>顧客名</p>
             <p class="yellow">
               <input v-model="formData.customerName" type="text" class="input">
             </p>
@@ -15,7 +15,7 @@
         <div class="top-center">
           <h1>
             <img class="qrimg" :src="$store.state.qrUrl + formData.heatQrCode + '&w=500&h=500'" alt="">
-            热处理兼表面处理成绩书</h1>
+            熱処理成績書</h1>
         </div>
         <div class="top-right">
           <p style="border-bottom: 1px solid #000;display: inline-block;padding: 0 15px;">
@@ -27,18 +27,18 @@
       </div>
       <table width="100%" border="1" cellpadding="0" cellspacing="0">
       <tr>
-        <th width="60">钢种</th>
-        <th width="50">作业名</th>
-        <th width="50">模号</th>
+        <th width="60">鋼種</th>
+        <th width="50">作業名</th>
+        <th width="50">型番号  品名</th>
         <th width="60">数量</th>
         <th width="80">重量(KG)</th>
         <th width="110">
           指定硬度(HRC)</th>
-        <th width="60">品证判定</th>
-        <th width="70">热处理审核</th>
-        <th width="85">入货日/时间</th>
-        <th width="50">制单者</th>
-        <th width="70">制单确认者</th>
+        <th width="60">品証審査</th>
+        <th width="70">熱処理審査</th>
+        <th width="85">入荷日付</th>
+        <th width="50">作成</th>
+        <th width="70">作成確認者</th>
         <th width="70">出货检查者</th>
         <th width="60">出货日</th>
       </tr>
@@ -148,7 +148,7 @@
           炉NO（<input type="text" v-model="formData.qHandle.no" class="input input-40">）
           <span class="red">数量（<input type="text" v-model="formData.qHandle.counts" class="input input-40">） 确认（<input type="text" v-model="formData.qHandle.confirmer" class="input input-40">）</span></td>
         <td class="l td-font" rowspan="2" colspan="2" valign="top" align="left">
-          <span style="float: left;">淬火方法:</span>
+          <span style="float: left;font-size: 12px;">焼入れ方法:</span>
           <div style="float: right;">
             <p>
               <el-checkbox label="1" v-model="formData.qHandle.quenchingMethod"></el-checkbox>
@@ -332,13 +332,13 @@
             </table>
             <table v-else class="table table3">
               <tr>
-                <td>模号</td>
+                <td>型番号</td>
                 <td>品名</td>
-                <td>尺寸mm</td>
+                <td>寸法mm</td>
                 <td>数量pcs</td>
                 <td>变形量0.1%</td>
                 <td>硬度HRC</td>
-                <td>测量件数</td>
+                <td>測定数量</td>
               </tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td><input type="text" v-model="item.modelNumber" class="input"></td>
@@ -502,7 +502,7 @@ let model = {
     confirmer: '',
     month: '',
     day: '',
-    time: '，',
+    time: '',
     operator: '',
     oneTemperature: '',
     oneH: '',

@@ -15,6 +15,7 @@
         <div class="top-center">
           <h1>
             <img class="qrimg" :src="$store.state.qrUrl + formData.heatQrCode + '&w=500&h=500'" alt="">
+            Heat Treatmet Quality Report<br>
             热处理兼表面处理成绩书</h1>
         </div>
         <div class="top-right">
@@ -27,12 +28,25 @@
       </div>
       <table width="100%" border="1" cellpadding="0" cellspacing="0">
       <tr>
-        <th width="60">钢种</th>
+        <th width="60">
+          <span style="font-size: 12px;">Material</span><br/>
+          钢种
+        </th>
         <th width="50">作业名</th>
-        <th width="50">模号</th>
-        <th width="60">数量</th>
-        <th width="80">重量(KG)</th>
+        <th width="50">
+          <span style="font-size: 12px;">Parisname</span><br/>
+          模号
+        </th>
+        <th width="60">
+          <span style="font-size: 12px;">Quantity</span><br/>
+          数量
+        </th>
+        <th width="80">
+          <span style="font-size: 12px;">Weight(KG)</span><br/>
+          重量(KG)
+        </th>
         <th width="110">
+          <span style="font-size: 12px;">Reqired Hardness</span><br/>
           指定硬度(HRC)</th>
         <th width="60">品证判定</th>
         <th width="70">热处理审核</th>
@@ -169,6 +183,7 @@
         </td>
         <td valign="top" style="border-right: 1px solid #000;padding: 0;" colspan="7" rowspan="6">
             <div class="table-div">
+              出货检查结果(ProjectAppearance)<br/>
               <table border="1" class="table table2" style="width: 230px;">
                 <tr>
                   <td width="120">出货检查项目</td>
@@ -314,13 +329,25 @@
           <div class="right-bottom-div">
             <table v-if="formData.modelNumber !== '' && formData.modelNumber.indexOf('NVG') > -1" class="table table3">
               <tr>
-                <td>品名</td>
-                <td>尺寸mm</td>
-                <td>数量pcs</td>
-                <td>氮化深度mm</td>
-                <td>氮化硬度hv</td>
-                <td>重量kg</td>
+                <td width="50" rowspan="2">
+                  <span style="font-size: 12px; line-height: 19px;">Name</span><br/>
+                  品名</td>
+                <td width="80" rowspan="2">
+                  尺寸mm</td>
+                <td width="60" rowspan="2">
+                  <span style="font-size: 12px;">Qty(pcs)</span><br/>
+                  数量pcs</td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">nitrdedcase depth</span><br/>
+                  氮化深度mm</td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">nitride Hardness</span><br/>
+                  氮化硬度hv</td>
+                <td width="60" rowspan="2">
+                  <span style="font-size: 12px;">weight(KG)</span><br/>
+                  重量</td>
               </tr>
+              <tr></tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td><input type="text" v-model="item.itemName" class="input"></td>
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
@@ -332,14 +359,34 @@
             </table>
             <table v-else class="table table3">
               <tr>
-                <td>模号</td>
-                <td>品名</td>
-                <td>尺寸mm</td>
-                <td>数量pcs</td>
-                <td>变形量0.1%</td>
-                <td>硬度HRC</td>
-                <td>测量件数</td>
+                <td width="60" rowspan="2">
+                  <span style="font-size: 12px; line-height: 19px;">Parisname</span><br/>
+                  模号
+                </td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">Name</span><br/>
+                  品名
+                </td>
+                <td rowspan="2">
+                  尺寸mm
+                </td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">Qty(pcs)</span><br/>
+                  数量
+                </td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">Distortion(mm)</span><br/>
+                  变形量
+                </td>
+                <td rowspan="2">
+                  <span style="font-size: 12px;">Hardness</span><br/>
+                  硬度HRC
+                </td>
+                <td width="60" rowspan="2">
+                  测量件数
+                </td>
               </tr>
+              <tr></tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td><input type="text" v-model="item.modelNumber" class="input"></td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
@@ -502,7 +549,7 @@ let model = {
     confirmer: '',
     month: '',
     day: '',
-    time: '，',
+    time: '',
     operator: '',
     oneTemperature: '',
     oneH: '',
@@ -770,14 +817,14 @@ export default {
 #printAll {
 }
 .line-tr {
-  line-height: 30px;
+  line-height: 20px;
   text-align: center;
 }
 .qrimg {
   position: absolute;
   width: 45px;
-  left: 60px;
-  top: -18px;
+  left: 20px;
+  top: 13px;
 }
 .top {
   line-height: 20px;
@@ -792,8 +839,9 @@ export default {
 .top-center h1 {
   font-size: 30px;
   position: relative;
-  top: 40px;
+  top: 15px;
   left: 60px;
+  line-height: 30px;
 }
 .top-right {
   width: 400px;
@@ -861,6 +909,7 @@ table td:last-child {
   position: absolute;
   right: 15px;
   float: right;
+  top: 5px;
   cursor: pointer;
 }
 .table-div {

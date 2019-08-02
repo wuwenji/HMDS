@@ -810,7 +810,7 @@ export default {
         }
       })
     },
-    //获取图片Src
+    // 获取图片Src
     getImg (id) {
       getExcel('/tImages/getImageById', {
         id: id

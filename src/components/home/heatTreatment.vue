@@ -101,7 +101,7 @@
               border
               style="width: 100%">
               <el-table-column
-                label="">
+                label="接单时间">
                 <template slot-scope="scope">
                   {{$store.getters.getDate(scope.row.acceptTime, 2)}}
                 </template>
@@ -109,7 +109,7 @@
               <el-table-column
                 prop="managementNumber"
                 width="120"
-                label="单号">
+                label="成绩书号">
               </el-table-column>
               <el-table-column
                 prop="customerName"
@@ -119,10 +119,6 @@
                 prop="material"
                 label="钢种">
               </el-table-column>
-              <!--<el-table-column-->
-              <!--prop="name"-->
-              <!--label="作业名">-->
-              <!--</el-table-column>-->
               <el-table-column
                 prop="totalCount"
                 align="right"
@@ -151,25 +147,29 @@
               <el-table-column
                 label="使用炉">
                 <template slot-scope="scope">
-                  {{getValue(scope.row.equipmentData, 0)}}
+                  <span v-if="scope.row.mapList.length > 0">
+                    {{scope.row.mapList[scope.row.mapList.length - 1].equipmentName}}
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column
                 label="工艺">
                 <template slot-scope="scope">
-                  {{getValue(scope.row.equipmentData, 1)}}
+                  <span v-if="scope.row.mapList.length > 0">
+                    {{scope.row.mapList[scope.row.mapList.length - 1].heatName}}
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column
                 label="入炉日期">
                 <template slot-scope="scope">
-                  {{$store.getters.getDate(scope.row.tempStartTime, 2)}}
+                  {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
                 </template>
               </el-table-column>
               <el-table-column
                 label="计划货期">
                 <template slot-scope="scope">
-                  {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+                  {{$store.getters.getDate(scope.row.planTime, 2)}}
                 </template>
               </el-table-column>
               <el-table-column
@@ -178,7 +178,7 @@
                 <template slot-scope="scope">
                   <ul class="prog">
                     <li v-for="item in scope.row.mapList" :key="item.equipmentId">
-                      {{item.type}}<br/>
+                      {{item.heatName}}<br/>
                       <span :class="getClass(item)"></span>
                     </li>
                   </ul>
@@ -186,6 +186,7 @@
               </el-table-column>
               <el-table-column
                 prop="specialMatters"
+                show-overflow-tooltip
                 label="备注">
               </el-table-column>
             </el-table>
@@ -242,13 +243,13 @@
             <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
             <tr>
               <td style="position: relative;" rowspan="2">
-                {{item.name}}
+                {{item.code}}
                 <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
                   <img class="line-left" src="../../../static/images/left.png" alt="">
                   <img class="line-right" src="../../../static/images/right.png" alt="">
                 </div>
                 <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
-                  {{item.showStr}}
+                  {{`客户：${item.customers}。 材质：${item.materials}。`}}
                 </div>
               </td>
               <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
@@ -324,7 +325,7 @@ export default {
     this.carouselPage()
   },
   beforeDestroy () {
-    // clearInterval(this.carouseing)
+    clearInterval(this.carouseing)
     clearInterval(this.nextPage)
     clearInterval(this.setInterval)
   },
@@ -448,7 +449,7 @@ export default {
     },
     // 财产管理登记列表
     getPropertyRegistration () {
-      this.http('/show/getPropertyRegistration', {
+      this.http('/heat/findHeatRecordList', {
         pageSize: this.pageSize,
         tempStartTime: this.formData.startTime,
         tempEndTime: this.formData.endTime,
@@ -489,17 +490,19 @@ export default {
       this.http('/show/getHeatTimeData', {}).then(resp => {
         if (resp.success) {
           this.nowPic = resp.data.map(item => {
-            if (item.startTime > 0) {
-              let sh = new Date(item.startTime).getHours()
-              let eh = null
-              if (item.endTime > 0) {
-                eh = new Date(item.endTime).getHours()
+            item.customers = ''
+            item.materials = ''
+            item.CustomerData.map((val, index) => {
+              if (index === 0) {
+                item.customers += val.customerName
+                item.materials += val.material
               } else {
-                eh = new Date().getHours()
+                item.customers += '，' + val.customerName
+                item.materials += '，' + val.material
               }
-              item.startTime = sh
-              item.endTime = eh
-            }
+            })
+            item.startTime = item.startTime || 8
+            item.endTime = new Date().getHours()
             return item
           })
         }
@@ -507,7 +510,7 @@ export default {
     },
     // 当开始时间为null时，不显示
     isShow (start, end) {
-      if (start === null) return false
+      // if (start === null) return false
       return true
     },
     // 换页
@@ -521,14 +524,10 @@ export default {
       this.getPropertyRegistration()
     },
     getClass (item) {
-      if (item.equipmentId > 0) {
-        if (item.status > 0) {
-          return 'red'
-        } else {
-          return 'blue'
-        }
+      if (item.shipmentStatus > 0) {
+        return 'red'
       } else {
-        return ''
+        return 'blue'
       }
       // if (a === 1) return 'red'
       // if (a === 2) return 'blue'
@@ -654,39 +653,41 @@ export default {
     border-radius: 4px;
   }
   .nowPicTable td{
-    height: 40px;
+    height: 75px;
     padding: 5px 0;
+    font-size: 26px;
     /*width: calc(100%/26);*/
     /*width: 20px;*/
   }
   .midLine {
     background: #4a7ebb;
     position: relative;
-    height: 2px;
+    height: 4px;
     position: absolute;
     left: 20px;
-    top: 17px;
+    top: 50px;
   }
   .explan {
     background: #fdeada;
     position: absolute;
     left: 20px;
     padding: 4px 0;
-    top: 39px;
+    top: 80px;
     color: red;
+    font-size: 26px;
     border: 1px solid #4a7ebb;
   }
   .line-left {
     position: absolute;
     left: -6px;
     width: 10px;
-    top: -4px;
+    top: -3px;
     height: 10px;
   }
   .line-right {
     position: absolute;
     right: -6px;
-    top: -4px;
+    top: -3px;
     width: 10px;
     height: 10px;
   }

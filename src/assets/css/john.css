@@ -303,3 +303,10 @@ table {
 .padding0 .cell {
   padding: 0 !important;
 }
+
+.scor-book .el-checkbox__label {
+  display: none;
+}
+.nowrap-table .cell{
+  white-space: nowrap;
+}

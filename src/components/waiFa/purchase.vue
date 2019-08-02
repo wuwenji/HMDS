@@ -3,14 +3,14 @@
     <p style="text-align: center;margin-bottom: 20px;">
       <!--<el-button v-print="'#printContent'" type="primary"> 打印</el-button>-->
       <el-button @click="exportExcel" type="primary"> 导出</el-button>
-      <el-button @click="setUp" type="primary"> 设置</el-button>
+      <!--<el-button @click="setUp" type="primary"> 设置</el-button>-->
     </p>
     <div id="printContent" style="height: 820px; overflow: hidden;position: relative;">
       <div v-for="(value, key) in data.dataList" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
           <p>日期：{{$store.state.date}}</p>
-          <p>使用部门：采购</p>
+          <p>使用部门：{{type === 0 ? '加工部门' : '热处理部门'}}</p>
         </div>
         <div class="top-content">
           <h2>

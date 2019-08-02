@@ -156,13 +156,13 @@
             <tbody class="john-tbody" v-for="(item, index) in nowPic" :key="'tb' + index">
             <tr>
               <td style="position: relative;" rowspan="2">
-                {{item.name}}
+                {{item.code}}
                 <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
                   <img class="line-left" src="../../../static/images/left.png" alt="">
                   <img class="line-right" src="../../../static/images/right.png" alt="">
                 </div>
                 <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
-                  {{item.showStr}}
+                  {{`客户：${item.customers}。 材质：${item.materials}。`}}
                 </div>
               </td>
               <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
@@ -335,33 +335,20 @@ export default {
       this.http('/show/getHeatTimeData', {}).then(resp => {
         if (resp.success) {
           console.log(resp)
-          // this.nowPic = resp.data
-          // let arrt = [
-          //   {
-          //     endTime: 1559275186,
-          //     name: '真空淬火炉',
-          //     showStr: '客户：null。材质：null',
-          //     startTime: 1559275186
-          //   },
-          //   {
-          //     endTime: null,
-          //     name: '真空淬火',
-          //     showStr: '客户：null。材质：null',
-          //     startTime: 1559275186
-          //   }
-          // ]
           this.nowPic = resp.data.map(item => {
-            if (item.startTime > 0) {
-              let sh = new Date(item.startTime).getHours()
-              let eh = null
-              if (item.endTime > 0) {
-                eh = new Date(item.endTime).getHours()
+            item.customers = ''
+            item.materials = ''
+            item.CustomerData.map((val, index) => {
+              if (index === 0) {
+                item.customers += val.customerName
+                item.materials += val.material
               } else {
-                eh = new Date().getHours()
+                item.customers += '，' + val.customerName
+                item.materials += '，' + val.material
               }
-              item.startTime = sh
-              item.endTime = eh
-            }
+            })
+            item.startTime = item.startTime || 8
+            item.endTime = new Date().getHours()
             return item
           })
         }
@@ -369,7 +356,7 @@ export default {
     },
     // 当开始时间为null时，不显示
     isShow (start, end) {
-      if (start === null) return false
+      // if (start === null) return false
       return true
     },
     handleCurrentChange (val) {
@@ -398,7 +385,7 @@ export default {
       }
 
       let left = 'left:' + (a * this.widthTd + 6 + a) + 'px;'
-      let width = 'width:' + (c * this.widthTd + d) + 'px;'
+      let width = 'min-width:' + (c * this.widthTd + d) + 'px;'
       return left + width
     }
   }
@@ -498,43 +485,45 @@ export default {
   display: inline-block;
   border-radius: 4px;
 }
-.nowPicTable td{
-  height: 40px;
-  padding: 5px 0;
-  /*width: calc(100%/26);*/
-  /*width: 20px;*/
-}
-.midLine {
-  background: #4a7ebb;
-  position: relative;
-  height: 2px;
-  position: absolute;
-  left: 20px;
-  top: 17px;
-}
-.explan {
-  background: #fdeada;
-  position: absolute;
-  left: 20px;
-  padding: 4px 0;
-  top: 39px;
-  color: red;
-  border: 1px solid #4a7ebb;
-}
-.line-left {
-  position: absolute;
-  left: -6px;
-  width: 10px;
-  top: -4px;
-  height: 10px;
-}
-.line-right {
-  position: absolute;
-  right: -6px;
-  top: -4px;
-  width: 10px;
-  height: 10px;
-}
+  .nowPicTable td{
+    height: 75px;
+    padding: 5px 0;
+    font-size: 26px;
+    /*width: calc(100%/26);*/
+    /*width: 20px;*/
+  }
+  .midLine {
+    background: #4a7ebb;
+    position: relative;
+    height: 4px;
+    position: absolute;
+    left: 20px;
+    top: 50px;
+  }
+  .explan {
+    background: #fdeada;
+    position: absolute;
+    left: 20px;
+    padding: 4px 0;
+    top: 80px;
+    color: red;
+    font-size: 26px;
+    border: 1px solid #4a7ebb;
+  }
+  .line-left {
+    position: absolute;
+    left: -6px;
+    width: 10px;
+    top: -3px;
+    height: 10px;
+  }
+  .line-right {
+    position: absolute;
+    right: -6px;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+  }
   .carousel {
     height: 1050px;
     position: relative;

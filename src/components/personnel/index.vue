@@ -83,12 +83,20 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          align="right"
-          width="150"
+          class-name="padding0"
+          width="350"
           label="出勤理论时间(min)">
-          <!--prop="theoreticalTime"-->
-          <template>
-            7
+          <template slot-scope="scope">
+            <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+              <tr>
+                <td>设备</td>
+                <td>时间(分)</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.attendanceTime}}</td>
+              </tr>
+            </table>
           </template>
         </el-table-column>
         <el-table-column
@@ -192,12 +200,20 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          align="right"
-          width="150"
+          class-name="padding0"
+          width="350"
           label="出勤理论时间(min)">
-          <!--prop="theoreticalTime"-->
-          <template>
-            7
+          <template slot-scope="scope">
+            <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+              <tr>
+                <td>设备</td>
+                <td>时间(分)</td>
+              </tr>
+              <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                <td>{{item.equipmentName}}</td>
+                <td>{{item.attendanceTime}}</td>
+              </tr>
+            </table>
           </template>
         </el-table-column>
         <el-table-column
@@ -395,7 +411,7 @@ export default {
       this.http('/statistics/workerPerformanceStatistics', this.formData).then(resp => {
         this.type = this.formData.performanceIndex
         this.department = this.formData.department
-        console.log(resp)
+        console.log('人员', resp)
         if (resp.success) {
           this.listData = resp.data.list
           this.total = resp.data.total
