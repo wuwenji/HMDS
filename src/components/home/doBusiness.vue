@@ -49,7 +49,8 @@
         <drawEchart
           title="切断部机器负荷表数量(件)"
           :legend="cutEchart.legend"
-          :stack="'1'"
+          stack="1"
+          position="top"
           :color="cutEchart.color"
           :xAxis="cutEchart.cutCode"
           :oneData="cutEchart.cutCapacity"/>
@@ -58,7 +59,8 @@
         <drawEchart
           title="接单未完成数量(件)"
           :legend="cutNotFinished.legend"
-          :stack="'0'"
+          stack="0"
+          position="inside"
           :color="cutNotFinished.color"
           :xAxis="cutNotFinished.cutCode"
           :oneData="cutNotFinished.cutCapacity"/>

@@ -23,7 +23,7 @@
       <div class="lists">
         <table v-if="type == 0" border="1" class="table">
           <tr class="center-tr">
-            <td colspan="14">
+            <td colspan="11">
               加工依赖
             </td>
           </tr>
@@ -31,18 +31,16 @@
             <td width="30">序号</td>
             <td width="70">外发厂商</td>
             <td width="30">钢种</td>
-            <td>尺寸</td>
-            <td>形状</td>
-            <td>加工规格</td>
+            <td width="300">尺寸</td>
+            <td width="60">加工规格</td>
             <td width="80">传票单号</td>
-            <td>倒角</td>
-            <td width="70">钢印</td>
-            <td>数量</td>
-            <td>重量</td>
-            <td>单位</td>
+            <td width="80">倒角</td>
+            <td width="300">钢印</td>
+            <td width="40">数量</td>
+            <td width="40">重量</td>
             <td width="80">预定纳期</td>
           </tr>
-          <tr v-for="(item, index) in value" :key="index">
+          <tr class="tr-height" v-for="(item, index) in value" :key="index">
             <td>
               <template v-if="key === 0">
                 {{index + 1}}
@@ -54,20 +52,16 @@
             <td>{{order.companyName}}</td>
             <td>{{item.gradeCd}}</td>
             <td>{{item.machineTolerance}}</td>
-            <td>{{item.machineShapeCd}}</td>
             <td>{{item.machineSpecCd}}</td>
             <td>{{item.soNo + '-' + item.soLnNo}}</td>
             <td>{{item.chamferSpec}}</td>
-            <td></td>
+            <td>{{item.instRemarks}}</td>
             <td class="john-right">{{item.soQty}}</td>
             <td class="john-right">{{item.soWt}}</td>
-            <td>件</td>
             <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
           </tr>
-          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+          <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td>&nbsp;</td>
-            <td></td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -97,7 +91,7 @@
             <td>成绩书号</td>
             <td>预订纳期</td>
           </tr>
-          <tr v-for="(item, index) in value" :key="index">
+          <tr class="tr-height" v-for="(item, index) in value" :key="index">
             <td>
               <template v-if="key === 0">
                 {{index + 1}}
@@ -115,7 +109,7 @@
             <td>{{item.managementNumber}}</td>
             <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
           </tr>
-          <tr v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
+          <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td>&nbsp;</td>
             <td></td>
             <td></td>
@@ -192,7 +186,7 @@ export default {
   }
 
   .table td {
-    padding: 15px 10px;
+    padding: 10px 10px;
   }
 
   .table td:first-child {
@@ -203,7 +197,9 @@ export default {
     text-align: center;
     padding: 20px 5px;
   }
-
+  .tr-height {
+    height: 50px;
+  }
   .bottom table {
     table-layout: fixed;
   }

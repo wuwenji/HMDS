@@ -9,7 +9,7 @@ let echarts = require('echarts/lib/echarts')
               require('echarts/lib/component/title')
 export default {
   name: 'lineEchart',
-  props: ['title', 'xAxis', 'oneData', 'stack', 'legend', 'color'],
+  props: ['title', 'xAxis', 'oneData', 'stack', 'legend', 'color', 'position'],
   data () {
     return {
       dataOne: [],
@@ -89,10 +89,10 @@ export default {
               normal: {
                 label: {
                   show: true,
-                  position: 'top',
+                  position: this.position,
                   textStyle: {
-                    color: 'red',
-                    fontSize: 20
+                    color: '#000',
+                    fontSize: 25
                   }
                 }
               }
@@ -108,10 +108,10 @@ export default {
               normal: {
                 label: {
                   show: true,
-                  position: 'top',
+                  position: this.position,
                   textStyle: {
-                    color: 'red',
-                    fontSize: 20
+                    color: '#000',
+                    fontSize: 25
                   }
                 }
               }

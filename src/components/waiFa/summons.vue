@@ -22,10 +22,10 @@
         </div>
       </div>
       <div class="lists">
-        <table border="1" class="table">
+        <table v-if="type === 0" border="1" class="table">
           <tr class="center-tr">
-            <td colspan="11">
-              {{type === 0 ? '加工依赖' : '热处理外发'}}
+            <td colspan="9">
+              加工依赖
             </td>
             <td colspan="3">
               实际入库情况
@@ -35,20 +35,11 @@
             <td width="30">序号</td>
             <td width="40">厂商</td>
             <td width="60">钢种</td>
-            <!--<td width="340">尺寸</td>-->
-            <!--<td>形状</td>-->
-            <td>
-              {{type === 0 ? '加工规格' : '作业名'}}
-            </td>
-            <td width="110">
-              {{type === 0 ? '传票单号' : '成绩书单号'}}
-            </td>
-            <td>倒角</td>
-            <!--<td width="70">钢印</td>-->
+            <td width="340">尺寸</td>
+            <td width="60">加工规格</td>
+            <td width="100">传票单号</td>
+            <td width="200">送货地址</td>
             <td>数量</td>
-            <td>重量</td>
-            <td>单位</td>
-            <td>入库</td>
             <td width="80">预定纳期</td>
             <td>数量</td>
             <td>单位</td>
@@ -65,25 +56,13 @@
             </td>
             <td>{{order.companyName}}</td>
             <td>{{item.gradeCd}}</td>
-            <!--<td>{{item.machineTolerance}}</td>-->
-            <!--<td>{{item.machineShapeCd}}</td>-->
+            <td>{{item.machineTolerance}}</td>
+            <td>{{item.machineSpecCd}}</td>
             <td>
-              {{type === 0 ? item.machineSpecCd : item.taskName}}
+              {{item.soNo + '-' + item.soLnNo}}
             </td>
-            <td>
-              <template v-if="type === 0">
-                {{item.soNo + '-' + item.soLnNo}}
-              </template>
-              <template v-else>
-                {{item.hardnessRequirement}}
-              </template>
-            </td>
-            <td>{{item.chamferSpec}}</td>
-            <!--<td>{{item.instRemarks}}</td>-->
+            <td>{{order.companyAddress}}</td>
             <td class="john-right">{{item.soQty}}</td>
-            <td class="john-right">{{item.soWt}}</td>
-            <td>件</td>
-            <td>{{item.status === 1 ? '是' : '否'}}</td>
             <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
             <td></td>
             <td></td>
@@ -92,6 +71,77 @@
           <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td></td>
             <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+        <table v-else border="1" class="table">
+          <tr class="center-tr">
+            <td colspan="9">
+              热处理外发
+            </td>
+            <td colspan="3">
+              实际入库情况
+            </td>
+          </tr>
+          <tr class="center-tr">
+            <td width="30">序号</td>
+            <td width="40">厂商</td>
+            <td width="60">钢种</td>
+            <td>重量</td>
+            <td width="140">
+              作业名
+            </td>
+            <!--<td width="110">-->
+              <!--成绩书单号-->
+            <!--</td>-->
+            <td>指示硬度</td>
+            <td width="200">送货地址</td>
+            <td>数量</td>
+            <!--<td>入库</td>-->
+            <td width="80">预定纳期</td>
+            <td>数量</td>
+            <td>单位</td>
+            <td>入库日期</td>
+          </tr>
+          <tr class="tr-height" v-for="(item, index) in value" :key="index">
+            <td>
+              <template v-if="key === 0">
+                {{index + 1}}
+              </template>
+              <template v-else>
+                {{key * 10 + index + 1}}
+              </template>
+            </td>
+            <td>{{order.companyName}}</td>
+            <td>{{item.gradeCd}}</td>
+            <td class="john-right">{{item.soWt}}</td>
+            <td>
+              {{item.taskName}}
+            </td>
+            <!--<td>-->
+              <!--{{item.managementNumber}}-->
+            <!--</td>-->
+            <td>{{item.hardnessRequirement}}</td>
+            <td>{{order.companyAddress}}</td>
+            <!--<td>{{item.instRemarks}}</td>-->
+            <td class="john-right">{{item.soQty}}</td>
+
+            <!--<td>{{item.status === 1 ? '是' : '否'}}</td>-->
+            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td></td>
             <td></td>
             <td></td>

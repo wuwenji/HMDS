@@ -40,13 +40,13 @@
           </el-col>
         </el-form-item>
         </template>
-        <el-form-item class="form-item" label="绩效部门" prop="department">
-          <el-select v-model="formData.department" placeholder="绩效部门">
-            <el-option label="切断部门" value="1"></el-option>
-            <el-option label="加工部门" value="2"></el-option>
-            <el-option label="热处理部门" value="3"></el-option>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item class="form-item" label="绩效部门" prop="department">-->
+          <!--<el-select v-model="formData.department" placeholder="绩效部门">-->
+            <!--<el-option label="切断部门" value="1"></el-option>-->
+            <!--<el-option label="加工部门" value="2"></el-option>-->
+            <!--<el-option label="热处理部门" value="3"></el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
@@ -54,36 +54,81 @@
       </el-form>
     </div>
     <div class="data-list">
+      <!--<table border="1" borderColor="#ccc" class="john-table">-->
+        <!--<tr>-->
+          <!--<td>指标</td>-->
+          <!--<td>内部加工(实际计算值)</td>-->
+          <!--<td>理论值(系统计算值)</td>-->
+          <!--<td v-if="department != 3">外发</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>数量(個)</td>-->
+          <!--<td class="john-right" v-for="(item, index) in tableData.counts" :key="'a' + index">{{item}}</td>-->
+          <!--<td class="john-right" v-if="department != 3">-</td>-->
+          <!--<td class="john-right" v-if="tableData.counts.length < 2">-</td>-->
+        <!--</tr>-->
+        <!--<tr v-if="department != 3">-->
+          <!--<td>表面积(mm²)</td>-->
+          <!--<td class="john-right" v-for="(item, index) in tableData.area" :key="'b' + index">{{item}}</td>-->
+          <!--<td class="john-right">-</td>-->
+          <!--<td class="john-right" v-if="tableData.area.length < 2">-</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>重量（kg）</td>-->
+          <!--<td class="john-right" v-for="(item, index) in tableData.weight" :key="'c' + index">{{item}}</td>-->
+          <!--<td class="john-right" v-if="department != 3 && tableData.weight.length < 3">-</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+          <!--<td>工作时长(分)</td>-->
+          <!--<td class="john-right" v-for="(item, index) in tableData.workTime" :key="'c' + index">-->
+            <!--{{item}}-->
+          <!--</td>-->
+          <!--<td class="john-right" v-if="department != 3 && tableData.workTime.length < 3">-</td>-->
+        <!--</tr>-->
+      <!--</table>-->
       <table border="1" borderColor="#ccc" class="john-table">
         <tr>
           <td>指标</td>
-          <td>内部加工(实际计算值)</td>
-          <td>理论值(系统计算值)</td>
-          <td v-if="department != 3">外发</td>
+          <td>切断部门实际效率</td>
+          <td>切断部门理论数据</td>
+          <td>加工部门实际效率</td>
+          <td>加工部门理论数据</td>
         </tr>
         <tr>
           <td>数量(個)</td>
-          <td class="john-right" v-for="(item, index) in tableData.counts" :key="'a' + index">{{item}}</td>
-          <td class="john-right" v-if="department != 3">-</td>
-          <td class="john-right" v-if="tableData.counts.length < 2">-</td>
+          <td class="john-right" v-for="(item, index) in tableData.counts" :key="'a' + index">
+            {{item}}
+          </td>
+          <td class="john-right" v-for="(item, index) in cutMachinData.counts" :key="'aa' + index">
+            {{item}}
+          </td>
         </tr>
-        <tr v-if="department != 3">
+        <tr>
           <td>表面积(mm²)</td>
-          <td class="john-right" v-for="(item, index) in tableData.area" :key="'b' + index">{{item}}</td>
-          <td class="john-right">-</td>
-          <td class="john-right" v-if="tableData.area.length < 2">-</td>
+          <td class="john-right" v-for="(item, index) in tableData.area" :key="'b' + index">
+            {{item}}
+          </td>
+          <td class="john-right" v-for="(item, index) in cutMachinData.area" :key="'bb' + index">
+            {{item}}
+          </td>
         </tr>
         <tr>
           <td>重量（kg）</td>
-          <td class="john-right" v-for="(item, index) in tableData.weight" :key="'c' + index">{{item}}</td>
-          <td class="john-right" v-if="department != 3 && tableData.weight.length < 3">-</td>
+          <td class="john-right" v-for="(item, index) in tableData.weight" :key="'c' + index">
+            {{item}}
+          </td>
+          <td class="john-right" v-for="(item, index) in cutMachinData.weight" :key="'cc' + index">
+            {{item}}
+          </td>
         </tr>
         <tr>
           <td>工作时长(分)</td>
-          <td class="john-right" v-for="(item, index) in tableData.workTime" :key="'c' + index">
+          <td class="john-right" v-for="(item, index) in tableData.workTime" :key="'d' + index">
             {{item}}
           </td>
-          <td class="john-right" v-if="department != 3 && tableData.workTime.length < 3">-</td>
+          <td class="john-right" v-for="(item, index) in cutMachinData.workTime" :key="'dd' + index">
+            {{item}}
+          </td>
         </tr>
       </table>
     </div>
@@ -97,6 +142,7 @@ export default {
     return {
       tableData: {},
       department: '1',
+      cutMachinData: {},
       formData: {
         dateType: '1',
         endTime: '',
@@ -111,10 +157,40 @@ export default {
   methods: {
     // 初始化数据
     searchData () {
-      this.http('/statistics/departmentPerformanceStatistics', this.formData).then(resp => {
+      this.http('/statistics/departmentPerformanceStatistics', {
+        ...this.formData,
+        department: '1'
+      }).then(resp => {
+        // 切断
         console.log(resp)
         if (resp.success) {
           this.tableData = resp.data
+          let data = this.tableData
+          for (let key in data) {
+            if (data[key].length >= 2) {
+              data[key].length = 2
+            } else {
+              data[key].push('-')
+            }
+          }
+        }
+      })
+      this.http('/statistics/departmentPerformanceStatistics', {
+        ...this.formData,
+        department: '2'
+      }).then(resp => {
+        // 加工
+        console.log(resp)
+        if (resp.success) {
+          this.cutMachinData = resp.data
+          let data = this.cutMachinData
+          for (let key in data) {
+            if (data[key].length >= 2) {
+              data[key].length = 2
+            } else {
+              data[key].push('-')
+            }
+          }
         }
       })
     },

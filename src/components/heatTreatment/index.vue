@@ -8,10 +8,20 @@
         <el-form-item class="form-item" label="成绩书号" prop="managementNumber">
           <el-input v-model="formData.managementNumber" placeholder="接单号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="客户" prop="customerName">
+          <el-input v-model="formData.customerName" placeholder="客户"></el-input>
+        </el-form-item>
         <el-form-item class="form-item" label="入货时间">
           <el-col>
             <el-form-item prop="acceptTime">
               <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.acceptTime" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="出货时间">
+          <el-col>
+            <el-form-item prop="shipmentPlanTime">
+              <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.shipmentPlanTime" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -47,6 +57,41 @@
           prop="managementNumber"
           label="成绩书号"
           width="110">
+        </el-table-column>
+        <el-table-column
+          width="160"
+          label="计划货期">
+          <template slot-scope="scope">
+            <el-date-picker
+              type="date"
+              @change="changeData(scope.row.id, {planTime: scope.row.planTime})"
+              value-format="timestamp"
+              placeholder="选择日期"
+              v-model="scope.row.planTime"
+              style="width: 100%;">
+            </el-date-picker>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="完成状态">
+          <template slot-scope="scope">
+            {{scope.row.status === 1 ? '已完成' : '未完成'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="160"
+          label="出货计划日">
+          <template slot-scope="scope">
+            <el-date-picker
+              type="date"
+              @change="changeData(scope.row.id, {shipmentPlanTime: scope.row.shipmentPlanTime})"
+              value-format="timestamp"
+              placeholder="选择日期"
+              v-model="scope.row.shipmentPlanTime"
+              style="width: 100%;">
+            </el-date-picker>
+          </template>
         </el-table-column>
         <el-table-column
           prop="customerName"
@@ -123,22 +168,8 @@
         <el-table-column
           width="100"
           label="入炉日期">
-          <template slot-scope="scope">
+          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
             {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="计划货期">
-          <template slot-scope="scope">
-            <el-date-picker
-              type="date"
-              @change="changeData(scope.row.id, {planTime: scope.row.planTime})"
-              value-format="timestamp"
-              placeholder="选择日期"
-              v-model="scope.row.planTime"
-              style="width: 100%;">
-            </el-date-picker>
           </template>
         </el-table-column>
         <el-table-column
@@ -146,20 +177,6 @@
           label="完成状态">
           <template slot-scope="scope">
             {{scope.row.status === 1 ? '已完成' : '未完成'}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="出货计划日">
-          <template slot-scope="scope">
-            <el-date-picker
-              type="date"
-              @change="changeData(scope.row.id, {shipmentPlanTime: scope.row.shipmentPlanTime})"
-              value-format="timestamp"
-              placeholder="选择日期"
-              v-model="scope.row.shipmentPlanTime"
-              style="width: 100%;">
-            </el-date-picker>
           </template>
         </el-table-column>
         <el-table-column
@@ -227,6 +244,27 @@
           width="110">
         </el-table-column>
         <el-table-column
+          width="160"
+          label="计划货期">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.planTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="完成状态">
+          <template slot-scope="scope">
+            {{scope.row.status === 1 ? '已完成' : '未完成'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="160"
+          label="出货计划日">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.shipmentPlanTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="customerName"
           width="250"
           label="客户">
@@ -285,29 +323,8 @@
         <el-table-column
           width="100"
           label="入炉日期">
-          <template slot-scope="scope">
+          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
             {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="计划货期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.planTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="100"
-          label="完成状态">
-          <template slot-scope="scope">
-            {{scope.row.status === 1 ? '已完成' : '未完成'}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="出货计划日">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.shipmentPlanTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -358,7 +375,8 @@ export default {
       formData: {
         managementNumber: '',
         acceptTime: '',
-        contDueDate: ''
+        contDueDate: '',
+        customerName: ''
       },
       listData: []
     }

@@ -5,7 +5,7 @@
       <el-button @click="exportExcel" type="primary"> 导出</el-button>
       <!--<el-button @click="setUp" type="primary"> 设置</el-button>-->
     </p>
-    <div id="printContent" style="height: 820px; overflow: hidden;position: relative;">
+    <div id="printContent" style="position: relative;">
       <div v-for="(value, key) in data.dataList" :key="'print' + key" class="printing-item printPage" style="height: 820px;">
       <div class="top">
         <div class="top-left">
@@ -75,8 +75,9 @@
               {{$store.getters.getDate(item.contDueDate, 2)}}
             </td>
             <td width="100">
-              <el-select v-model="item.priceType" size="mini">
+              <el-select @change="selectChange(item)" v-model="item.priceType" size="mini">
                 <el-option
+                  v-if="type === 0"
                   label="件数"
                   value="0"></el-option>
                 <el-option
@@ -96,6 +97,7 @@
               </el-select>
             </td>
             <td>
+              <!--{{item.unitPrice}}-->
               <input class="price-input" type="text" v-model="item.unitPrice">
             </td>
             <td class="john-right">
@@ -209,21 +211,40 @@ export default {
     getTotal (row) {
       if (row.priceType === '0') {
         row.totalPrice = row.soQty * row.unitPrice
-        return row.soQty * row.unitPrice
+        return (row.soQty * row.unitPrice).toFixed(2)
       }
       if (row.priceType === '1') {
         row.totalPrice = row.soWt * row.unitPrice
-        return row.soWt * row.unitPrice
+        return (row.soWt * row.unitPrice).toFixed(2)
       }
       if (row.priceType === '2') {
         row.totalPrice = row.area * row.unitPric
-        return row.area * row.unitPric
+        return (row.area * row.unitPric).toFixed(2)
       }
       if (row.priceType === '3' || row.priceType === '4') {
         row.totalPrice = row.unitPrice
-        return row.unitPrice
+        return (row.unitPrice).toFixed(2)
       }
-      return 0
+      return '0.00'
+    },
+    // 改变计算方式
+    selectChange (row) {
+      // row.unitPrice = 100
+      this.http('/general/getHeatPrice', {
+        companyId: this.order.companyId,
+        gradeCd: row.gradeCd,
+        heatType: 'QT',
+        priceType: row.priceType
+      }).then(resp => {
+        // console.log('计算', resp)
+        if (resp.success) {
+          if (resp.data === null) {
+            row.unitPrice = 0
+          } else {
+            row.unitPrice = resp.data
+          }
+        }
+      })
     },
     // 获取数据
     getData (obj) {

@@ -4,21 +4,27 @@
       <thead>
       <tr>
         <th>类型</th>
-        <th>工作人员</th>
-        <th>开始时间</th>
-        <th>结束时间</th>
-        <th>结果</th>
+        <th>作业炉</th>
+        <th>入炉时间</th>
+        <th>入炉人员</th>
+        <th>出炉时间</th>
+        <th>出炉人员</th>
+        <th>检查结果</th>
       </tr>
       </thead>
       <tbody v-for="(item, keys) in orderInfo.mapList" :key="keys">
       <tr>
         <td>{{item.heatName}}</td>
-        <td>{{item.userName1}}</td>
+        <td>{{item.equipmentName}}</td>
         <td>{{$store.getters.getTime(item.startTime)}}</td>
+        <td>{{item.userName1}}</td>
         <td>
           <template v-if="item.endTime">
             {{$store.getters.getTime(item.endTime)}}
           </template>
+        </td>
+        <td>
+          {{item.userName2}}
         </td>
         <td>
           {{returnStatus(item.heatStatus)}}
