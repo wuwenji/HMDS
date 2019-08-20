@@ -218,8 +218,8 @@ export default {
         return (row.soWt * row.unitPrice).toFixed(2)
       }
       if (row.priceType === '2') {
-        row.totalPrice = row.area * row.unitPric
-        return (row.area * row.unitPric).toFixed(2)
+        row.totalPrice = row.area * row.unitPrice
+        return (row.area * row.unitPrice).toFixed(2)
       }
       if (row.priceType === '3' || row.priceType === '4') {
         row.totalPrice = row.unitPrice
@@ -233,7 +233,7 @@ export default {
       this.http('/general/getHeatPrice', {
         companyId: this.order.companyId,
         gradeCd: row.gradeCd,
-        heatType: 'QT',
+        heatType: row.taskName,
         priceType: row.priceType
       }).then(resp => {
         // console.log('计算', resp)

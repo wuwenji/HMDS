@@ -473,6 +473,77 @@
 </template>
 
 <script>
+let obj = {
+  acceptTimeStr: '',
+  actualNitrdedCaseDepth: '',
+  actualNitrideHardness: '',
+  confirmCount: '',
+  contPoNo: '',
+  corpCd: '',
+  createDate: '',
+  createUser: '',
+  custPoNo: '',
+  cutCount: '',
+  deformation: '',
+  deliveryTimeStr: '',
+  endRow: '',
+  endTime: '',
+  entryList: '',
+  fromRow: '',
+  gradeCd: '',
+  hardnessRequirement: '',
+  hardnessResult: '',
+  hardnessType: '',
+  heatCode: '',
+  heatCount: '',
+  heatTreatType: '',
+  heater: '',
+  id: '',
+  idList: '',
+  ids: '',
+  imageNo: '',
+  isDownload: '',
+  itemName: '',
+  lineRemarks: '',
+  loginUserId: '',
+  machineCount: '',
+  materialId: '',
+  measuringCount: '',
+  mobile: '',
+  modelNumber: '',
+  nitrdedCaseDepth: '',
+  nitrideHardness: '',
+  order: '',
+  outStatus: '',
+  outwardCount: '',
+  pageNum: '',
+  pageSize: '',
+  qty: '',
+  recordStatus: '',
+  remark: '',
+  scrapCount: '',
+  serviceCd: '',
+  shape: '',
+  sizeNote: '',
+  soUnitPrice: '',
+  sortType: '',
+  specExternalNote: '',
+  startTime: '',
+  startingCount: '',
+  status: '',
+  tempEndTime: '',
+  tempLongId: '',
+  tempStartTime: '',
+  tempStr: '',
+  tmpCutId: '',
+  totalCount: '',
+  totalWeight: '',
+  treatmentId: '',
+  unitPriceCd: '',
+  updateDate: '',
+  updateUser: '',
+  wt: ''
+}
 let model = {
   managementNumber: '',
   customerName: '',
@@ -627,6 +698,11 @@ export default {
             }
           } else {
             this.formData = JSON.parse(resp.data.heatData)
+          }
+          if (this.formData.treatmentEntryList.length < 10) {
+            while (this.formData.treatmentEntryList.length < 10) {
+              this.formData.treatmentEntryList.push(JSON.parse(JSON.stringify(obj)))
+            }
           }
         }
       })

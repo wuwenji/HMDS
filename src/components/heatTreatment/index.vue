@@ -33,7 +33,7 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="primary" plain @click="exportTabel">导出</el-button>
+          <el-button type="primary" plain @click="exportDialog = true">导出</el-button>
           <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
@@ -76,7 +76,8 @@
           width="100"
           label="完成状态">
           <template slot-scope="scope">
-            {{scope.row.status === 1 ? '已完成' : '未完成'}}
+            {{getStatus(scope.row)}}
+            <!--{{scope.row.status === '1' ? '已完成' : '未完成'}}-->
           </template>
         </el-table-column>
         <el-table-column
@@ -173,13 +174,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="100"
-          label="完成状态">
-          <template slot-scope="scope">
-            {{scope.row.status === 1 ? '已完成' : '未完成'}}
-          </template>
-        </el-table-column>
-        <el-table-column
           width="200"
           label="纳期延迟原因">
           <template slot-scope="scope">
@@ -224,130 +218,40 @@
           :total="total">
         </el-pagination>
       </div>
-      <!--导出-->
-      <el-table
-        id="out-table"
-        :data="listData"
-        border
-        height="calc(100% - 75px)"
-        style="width: 100%;display: none;">
-        <el-table-column
-          label="入货时间"
-          width="130">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.acceptTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="managementNumber"
-          label="成绩书号"
-          width="110">
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="计划货期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.planTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="100"
-          label="完成状态">
-          <template slot-scope="scope">
-            {{scope.row.status === 1 ? '已完成' : '未完成'}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="出货计划日">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.shipmentPlanTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          width="250"
-          label="客户">
-        </el-table-column>
-        <el-table-column
-          prop="material"
-          width="100"
-          label="钢种">
-        </el-table-column>
-        <el-table-column
-          prop="totalCount"
-          align="right"
-          width="60"
-          label="数量">
-        </el-table-column>
-        <el-table-column
-          prop="totalWeight"
-          align="right"
-          width="60"
-          label="重量">
-        </el-table-column>
-        <el-table-column
-          prop="hardnessRequirement"
-          width="100"
-          label="硬度要求">
-        </el-table-column>
-        <el-table-column
-          prop="specialMatters"
-          width="200"
-          label="特别事项">
-        </el-table-column>
-        <el-table-column
-          prop="taskName"
-          width="150"
-          label="作业名">
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="预定入炉时间">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.bookingHeatTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="160"
-          label="预定货期">
-          <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="coolingMethod"
-          width="100"
-          label="冷却方法">
-        </el-table-column>
-        <el-table-column
-          width="100"
-          label="入炉日期">
-          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
-            {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="delayReasons"
-          width="200"
-          label="纳期延迟原因">
-        </el-table-column>
-        <el-table-column
-          prop="delayDays"
-          width="100"
-          label="延迟天数">
-        </el-table-column>
-        <el-table-column
-          width="100"
-          label="使用炉">
-          <template slot-scope="scope">
-            <span v-if="scope.row.mapList.length > 0">
-              {{scope.row.mapList[scope.row.mapList.length - 1].heatName}}
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
     </div>
+    <el-dialog
+      width="500px"
+      title="导出"
+      :visible.sync="exportDialog">
+      <el-form label-width="80px">
+        <el-form-item label="入货时间">
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.tempStartTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+          <el-col :span="2" class="line" style="text-align: center;">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.tempEndTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <div style="margin-top: 20px; text-align: center; margin-right: 78px;">
+            <el-button @click="exportTabel" type="primary">
+              导出
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <el-dialog
       width="700px"
       :title="title"
@@ -359,8 +263,9 @@
 
 <script>
 import machDetail from './machDetail'
-import FileSaver from 'file-saver'
-import XLSX from 'xlsx'
+import { getExcel } from '../../http'
+// import FileSaver from 'file-saver'
+// import XLSX from 'xlsx'
 export default {
   name: 'index',
   data () {
@@ -370,8 +275,14 @@ export default {
       title: '设置',
       pageNum: 1,
       total: 0,
+      exportDialog: false,
       dialog: false,
       sendDate: '',
+      exoprt: {
+        tempStartTime: '',
+        tempEndTime: '',
+        isDownload: 1
+      },
       formData: {
         managementNumber: '',
         acceptTime: '',
@@ -385,6 +296,23 @@ export default {
     this.getData(1, 10)
   },
   methods: {
+    // 返回状态
+    getStatus (row) {
+      // return row.outwardStatus === ''
+      if (row.outwardStatus === null) {
+        if (row.status === 1) {
+          return '已完成'
+        } else {
+          if (row.mapList.length < 1) {
+            return '未开始'
+          } else {
+            return '未完成'
+          }
+        }
+      } else {
+        return '外发中'
+      }
+    },
     // 修改属性
     changeData (id, obj) {
       this.http('/heatTreatment/update', {
@@ -396,15 +324,31 @@ export default {
     },
     // 导出
     exportTabel () {
-      var wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
-      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-      try {
-        FileSaver.saveAs(new Blob([wbout],
-          { type: 'application/octet-stream' }), '热处理进度.xls')
-      } catch (e) {
-        if (typeof console !== 'undefined') console.log(e, wbout)
-      }
-      return wbout
+      getExcel('/heat/findHeatRecordList', this.exoprt).then(res => {
+        const blob = new Blob([res])
+        const fileName = '热处理进度.xls'
+        if ('download' in document.createElement('a')) { // 非IE下载
+          const elink = document.createElement('a')
+          elink.download = fileName
+          elink.style.display = 'none'
+          elink.href = URL.createObjectURL(blob)
+          document.body.appendChild(elink)
+          elink.click()
+          URL.revokeObjectURL(elink.href) // 释放URL 对象
+          document.body.removeChild(elink)
+        } else { // IE10+下载
+          navigator.msSaveBlob(blob, fileName)
+        }
+      })
+      // var wb = XLSX.utils.table_to_book(document.querySelector('#out-table'))
+      // var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      // try {
+      //   FileSaver.saveAs(new Blob([wbout],
+      //     { type: 'application/octet-stream' }), '热处理进度.xls')
+      // } catch (e) {
+      //   if (typeof console !== 'undefined') console.log(e, wbout)
+      // }
+      // return wbout
     },
     getData (pageNum, pageSize) {
       this.http('/heat/findHeatRecordList', {

@@ -61,9 +61,9 @@
             <td>
               {{item.soNo + '-' + item.soLnNo}}
             </td>
-            <td>{{order.companyAddress}}</td>
+            <td>{{item.deliveryAddress}}</td>
             <td class="john-right">{{item.soQty}}</td>
-            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td class="john-right">{{$store.getters.getDate(item.contDueDate, 2)}}</td>
             <td></td>
             <td></td>
             <td></td>
@@ -131,12 +131,12 @@
               <!--{{item.managementNumber}}-->
             <!--</td>-->
             <td>{{item.hardnessRequirement}}</td>
-            <td>{{order.companyAddress}}</td>
+            <td>{{item.deliveryAddress}}</td>
             <!--<td>{{item.instRemarks}}</td>-->
             <td class="john-right">{{item.soQty}}</td>
 
             <!--<td>{{item.status === 1 ? '是' : '否'}}</td>-->
-            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td class="john-right">{{$store.getters.getDate(item.contDueDate, 2)}}</td>
             <td></td>
             <td></td>
             <td></td>

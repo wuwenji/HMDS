@@ -207,7 +207,7 @@
             </template>
           </table>
           <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
-            <p>注意：<br/>无商业价值</p>
+            <p>注意：<br/>{{lists[0].paymentMethodDesc}}</p>
             <div class="bottom-center">
               （热处理种类)<br/>
               <ol>
@@ -280,6 +280,7 @@ export default {
         console.log(resp)
         if (resp.success) {
           this.selectValue = []
+          console.log('lists', resp.data)
           this.lists = resp.data
           resp.data.map(item => {
             if (item.status === 1) {

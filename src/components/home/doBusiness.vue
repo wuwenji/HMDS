@@ -153,12 +153,20 @@ export default {
       this.http('/show/getSalesDepartmentShow', {}).then(resp => {
         if (resp.success) {
           this.tableData = resp.data
-          this.cutNotFinished.cutCapacity = [resp.data.cutList[0],
-            resp.data.machineList[0],
-            resp.data.cutList[3],
-            resp.data.machineList[3],
-            resp.data.cutList[6],
-            resp.data.machineList[6]]
+          // this.cutNotFinished.cutCapacity = [resp.data.cutList[0],
+          //   resp.data.machineList[0],
+          //   resp.data.cutList[3],
+          //   resp.data.machineList[3],
+          //   resp.data.cutList[6],
+          //   resp.data.machineList[6]]
+        }
+      })
+      this.http('/show/getSalesDepartmentShow2', {}).then(resp => {
+        if (resp.success) {
+          for (let i = 0; i < resp.data.cutList.length; i++) {
+            this.cutNotFinished.cutCapacity.push(resp.data.cutList[i])
+            this.cutNotFinished.cutCapacity.push(resp.data.machineList[i])
+          }
         }
       })
     }

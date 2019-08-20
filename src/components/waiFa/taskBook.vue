@@ -58,7 +58,7 @@
             <td>{{item.instRemarks}}</td>
             <td class="john-right">{{item.soQty}}</td>
             <td class="john-right">{{item.soWt}}</td>
-            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td class="john-right">{{$store.getters.getDate(item.contDueDate, 2)}}</td>
           </tr>
           <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td>&nbsp;</td>
@@ -107,7 +107,7 @@
             <td>{{item.taskName}}</td>
             <td>{{item.hardnessRequirement}}</td>
             <td>{{item.managementNumber}}</td>
-            <td class="john-right">{{$store.getters.getDate(order.deliveryDate, 2)}}</td>
+            <td class="john-right">{{$store.getters.getDate(item.contDueDate, 2)}}</td>
           </tr>
           <tr class="tr-height" v-for="(itemVal, itemKey) in (10 - value.length)" :key="'item' + itemKey">
             <td>&nbsp;</td>

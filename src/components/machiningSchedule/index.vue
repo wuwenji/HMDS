@@ -238,10 +238,14 @@ export default {
   methods: {
     // 返回加工状态
     returnType (item) {
-      if (item.totalCount === item.machineCount) {
-        return '已完成'
+      if (item.outwardStatus) {
+        return item.outwardStatus === 0 ? '外发中' : '已完成'
+      } else {
+        if (item.totalCount === item.machineCount) {
+          return '已完成'
+        }
+        return '未完成'
       }
-      return '未完成'
     },
     getList (num, size) {
       if (this.johnTab === 0) {

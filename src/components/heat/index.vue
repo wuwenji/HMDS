@@ -85,14 +85,20 @@
         </el-table-column>
         <el-table-column
           label="入炉时间">
-          <template slot-scope="scope">
+          <template v-if="scope.row.startTime" slot-scope="scope">
             {{$store.getters.getDate(scope.row.startTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
           label="完成日期">
-          <template slot-scope="scope">
+          <template v-if="scope.row.endTime" slot-scope="scope">
             {{$store.getters.getDate(scope.row.endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="状态">
+          <template slot-scope="scope">
+            {{getStutas(scope.row)}}
           </template>
         </el-table-column>
       </el-table>
@@ -160,6 +166,13 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)
       this.onSubmit()
+    },
+    // 返回状态
+    getStutas (row) {
+      if (!row.startTime) return '未处理'
+      if (!row.endTime && row.startTime) return '未完成'
+      if (row.endTime) return '已完成'
+      return ''
     }
   },
   computed: {

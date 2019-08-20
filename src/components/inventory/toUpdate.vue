@@ -69,6 +69,14 @@
             label="数量">
           </el-table-column>
           <el-table-column
+            prop="latestStockInDate"
+            label="入库时间"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="whseCd"
             label="smart编号"
             width="120">
@@ -118,14 +126,6 @@
             prop="soNo"
             label="接单号码"
             width="120">
-          </el-table-column>
-          <el-table-column
-            prop="latestStockInDate"
-            label="入库时间"
-            width="120">
-            <template slot-scope="scope">
-              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
-            </template>
           </el-table-column>
         </el-table>
         <el-table
@@ -182,6 +182,14 @@
             label="数量">
           </el-table-column>
           <el-table-column
+            prop="latestStockInDate"
+            label="入库时间"
+            width="120">
+            <template slot-scope="scope">
+              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="whseCd"
             label="smart编号"
             width="120">
@@ -234,14 +242,6 @@
             prop="soNo"
             label="接单号码"
             width="120">
-          </el-table-column>
-          <el-table-column
-            prop="latestStockInDate"
-            label="入库时间"
-            width="120">
-            <template slot-scope="scope">
-              {{$store.getters.getDate(scope.row.latestStockInDate, 2)}}
-            </template>
           </el-table-column>
         </el-table>
         <div class="pages">
@@ -322,6 +322,7 @@
           <el-table-column
             prop="stockQty"
             align="right"
+            sortable
             label="数量">
           </el-table-column>
           <el-table-column
@@ -333,6 +334,11 @@
           <el-table-column
             prop="caseNo"
             label="包装箱号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="userName"
+            label="入库人"
             width="120">
           </el-table-column>
           <el-table-column
@@ -400,6 +406,7 @@
           <el-table-column
             prop="stockQty"
             align="right"
+            sortable
             label="数量">
           </el-table-column>
           <el-table-column
@@ -412,6 +419,11 @@
           <el-table-column
             prop="caseNo"
             label="包装箱号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="userName"
+            label="入库人"
             width="120">
           </el-table-column>
           <el-table-column
@@ -477,7 +489,7 @@ export default {
       smartForm: {
         chargeNo: '',
         gradeCd: '',
-        shape: ''
+        machineShapeCd: ''
       },
       localForm: {
         changeNo: '',
@@ -506,10 +518,14 @@ export default {
     },
     // smart库搜索
     smartSeach (size, num) {
+      let obj = JSON.parse(JSON.stringify(this.smartForm))
+      if (obj.machineShapeCd === '') {
+        delete obj.machineShapeCd
+      }
       this.http('/stock/findNotBindListBySelective', {
         pageSize: size,
         pageNum: num,
-        ...this.smartForm
+        ...obj
       }).then(resp => {
         console.log(resp)
         if (resp.success) {

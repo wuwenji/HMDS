@@ -85,10 +85,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="totalWeight"
           label="重量"
           align="right"
           width="100">
+          <template slot-scope="scope">
+            {{scope.row.type == 1 ? scope.row.machineWeight : scope.row.heatWeight}}
+          </template>
         </el-table-column>
         <el-table-column
           label="外发日期"
