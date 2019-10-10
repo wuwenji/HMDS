@@ -94,6 +94,9 @@ export default {
         }, {
           id: 74,
           label: '热处理'
+        }, {
+          id: 75,
+          label: '接单数据'
         }]
       }, {
         id: 30,

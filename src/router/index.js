@@ -23,6 +23,7 @@ import materialQR from '../pages/materialQR'
 import equipmentQR from '../pages/equipmentQR'
 import showTV from '../pages/showTV'
 import heatTreat from '../pages/heat'
+import orderData from '../pages/orderData'
 
 Vue.use(Router)
 
@@ -139,6 +140,11 @@ const routes = [
     path: '/heat',
     name: 'heatTreat',
     component: heatTreat
+  },
+  {
+    path: '/orderData',
+    name: 'orderData',
+    component: orderData
   }
 ]
 

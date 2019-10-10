@@ -5,8 +5,8 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="接单号" prop="orderCode">
-          <el-input v-model="formData.orderCode" placeholder="接单号"></el-input>
+        <el-form-item class="form-item" label="成绩书号" prop="orderCode">
+          <el-input v-model="formData.orderCode" placeholder="成绩书号"></el-input>
         </el-form-item>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
@@ -48,12 +48,12 @@
         height="calc(100% - 75px)">
         <el-table-column
           prop="orderCode"
-          label="接单号"
+          label="成绩书号"
           width="100">
         </el-table-column>
         <el-table-column
           prop="deliveryAddress"
-          label="客户地址">
+          label="客户">
         </el-table-column>
         <el-table-column
           label="接单时间"
@@ -102,19 +102,19 @@
             {{scope.row.source == 1? '营业下单': '客户来料'}}
           </template>
         </el-table-column>
-        <el-table-column
-          label="是否关联母材"
-          width="120">
-          <template slot-scope="scope">
-            <!--<el-checkbox v-model="scope.row.relationMoth">是</el-checkbox>-->
-            <el-switch
-              v-model="scope.row.relationMoth"
-              @change="switchChange(scope.row.id, scope.row.relationMoth)"
-              active-text="是"
-              inactive-text="否">
-            </el-switch>
-          </template>
-        </el-table-column>
+        <!--<el-table-column-->
+          <!--label="是否关联母材"-->
+          <!--width="120">-->
+          <!--<template slot-scope="scope">-->
+            <!--&lt;!&ndash;<el-checkbox v-model="scope.row.relationMoth">是</el-checkbox>&ndash;&gt;-->
+            <!--<el-switch-->
+              <!--v-model="scope.row.relationMoth"-->
+              <!--@change="switchChange(scope.row.id, scope.row.relationMoth)"-->
+              <!--active-text="是"-->
+              <!--inactive-text="否">-->
+            <!--</el-switch>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column
           label="显示金额"
           width="100">

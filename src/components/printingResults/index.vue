@@ -5,8 +5,14 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="接单号" prop="orderCode">
-          <el-input v-model="formData.orderCode" placeholder="接单号"></el-input>
+        <el-form-item class="form-item" label="成绩书号" prop="orderCode">
+          <el-input v-model="formData.orderCode" placeholder="成绩书号"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="客户" prop="customerName">
+          <el-input v-model="formData.customerName" placeholder="客户"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="收货人" prop="userName">
+          <el-input v-model="formData.userName" placeholder="收货人"></el-input>
         </el-form-item>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
@@ -15,20 +21,20 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item class="form-item" label="交期">
-          <el-col>
-            <el-form-item prop="contDueDate">
-              <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formData.contDueDate" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item class="form-item" label="类型" prop="source">
-          <el-select v-model="formData.source" placeholder="类型">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="客户来料" :value="0"></el-option>
-            <el-option label="营业下单" :value="1"></el-option>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item class="form-item" label="交期">-->
+          <!--<el-col>-->
+            <!--<el-form-item prop="contDueDate">-->
+              <!--<el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formData.contDueDate" style="width: 100%;"></el-date-picker>-->
+            <!--</el-form-item>-->
+          <!--</el-col>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item class="form-item" label="类型" prop="source">-->
+          <!--<el-select v-model="formData.source" placeholder="类型">-->
+            <!--<el-option label="全部" value=""></el-option>-->
+            <!--<el-option label="客户来料" :value="0"></el-option>-->
+            <!--<el-option label="营业下单" :value="1"></el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
@@ -106,7 +112,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="220"
+          width="240"
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -214,7 +220,9 @@ export default {
         orderCode: '',
         acceptTime: '',
         contDueDate: '',
-        source: ''
+        source: '',
+        customerName: '',
+        userName: ''
       },
       listData: [],
       downOptions: [

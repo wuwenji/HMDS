@@ -118,6 +118,7 @@
           <td><b>加工开始时间</b></td>
           <td><b>加工完成时间</b></td>
           <td><b>检测完成时间</b></td>
+          <td colspan="2"><b>是否外发</b></td>
           <td colspan="2"><b>操作</b></td>
         </tr>
         <tr>
@@ -135,6 +136,11 @@
           </td>
           <td>
             {{item.machining == null? '&nbsp;': $store.getters.getTime(item.machining.endTime)}}
+          </td>
+          <td colspan="2">
+            <span style="color: red">
+              {{item.outwardStatus === 0 ? '外发中' : item.outwardStatus === 1 ? '外发已完成' : ''}}
+            </span>
           </td>
           <td colspan="2">
             <el-button

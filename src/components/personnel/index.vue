@@ -5,17 +5,8 @@
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="查询范围" prop="dateType">
-          <el-select v-model="formData.dateType" placeholder="昨日完成">
-            <!--<el-option label="全部" value=""></el-option>-->
-            <el-option label="昨日完成" value="1"></el-option>
-            <el-option label="本周完成" value="2"></el-option>
-            <el-option label="本月完成" value="3"></el-option>
-            <el-option label="自定义" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <template v-if="formData.dateType == 0">
-          <el-form-item class="form-item" label="起始时间">
+        <el-form-item>
+          <el-form-item class="form-item" label="日期">
             <el-col>
               <el-form-item prop="startTime">
                 <el-date-picker
@@ -27,19 +18,42 @@
               </el-form-item>
             </el-col>
           </el-form-item>
-          <el-form-item class="form-item" label="最后时间">
-            <el-col>
-              <el-form-item prop="endTime">
-                <el-date-picker
-                  type="date"
-                  placeholder="选择日期"
-                  value-format="timestamp"
-                  v-model="formData.endTime"
-                  style="width: 100%;"></el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-form-item>
-        </template>
+        </el-form-item>
+        <!--<el-form-item class="form-item" label="查询范围" prop="dateType">-->
+          <!--<el-select v-model="formData.dateType" placeholder="昨日完成">-->
+            <!--&lt;!&ndash;<el-option label="全部" value=""></el-option>&ndash;&gt;-->
+            <!--<el-option label="昨日完成" value="1"></el-option>-->
+            <!--<el-option label="本周完成" value="2"></el-option>-->
+            <!--<el-option label="本月完成" value="3"></el-option>-->
+            <!--<el-option label="自定义" value="0"></el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
+        <!--<template v-if="formData.dateType == 0">-->
+          <!--<el-form-item class="form-item" label="起始时间">-->
+            <!--<el-col>-->
+              <!--<el-form-item prop="startTime">-->
+                <!--<el-date-picker-->
+                  <!--type="date"-->
+                  <!--placeholder="选择日期"-->
+                  <!--value-format="timestamp"-->
+                  <!--v-model="formData.startTime"-->
+                  <!--style="width: 100%;"></el-date-picker>-->
+              <!--</el-form-item>-->
+            <!--</el-col>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item class="form-item" label="最后时间">-->
+            <!--<el-col>-->
+              <!--<el-form-item prop="endTime">-->
+                <!--<el-date-picker-->
+                  <!--type="date"-->
+                  <!--placeholder="选择日期"-->
+                  <!--value-format="timestamp"-->
+                  <!--v-model="formData.endTime"-->
+                  <!--style="width: 100%;"></el-date-picker>-->
+              <!--</el-form-item>-->
+            <!--</el-col>-->
+          <!--</el-form-item>-->
+        <!--</template>-->
         <el-form-item class="form-item" label="绩效部门" prop="department">
           <el-select v-model="formData.department" placeholder="绩效部门">
             <el-option label="切断部门" :value="1"></el-option>
@@ -47,6 +61,7 @@
           </el-select>
         </el-form-item>
         <el-form-item class="btns">
+          <el-button type="primary" plain @click="exportDialog = true">导出</el-button>
           <el-button type="primary" plain @click="diaryDialog = true">解除日记</el-button>
           <el-button type="success" plain @click="onSubmit">查询</el-button>
           <el-button plain @click="resetForm('formData')">重置</el-button>
@@ -83,74 +98,82 @@
           label="工号">
         </el-table-column>
         <el-table-column
-          class-name="padding0"
-          width="350"
-          label="出勤理论时间(min)">
-          <template slot-scope="scope">
-            <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
-              <tr>
-                <td>设备</td>
-                <td>时间(分)</td>
-              </tr>
-              <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
-                <td>{{item.equipmentName}}</td>
-                <td>{{item.attendanceTime}}</td>
-              </tr>
-            </table>
-          </template>
+          min-width="350"
+          label="总出勤时间(min)">
+          <el-table-column
+            class-name="padding0"
+            label="设备">
+            <template slot-scope="scope">
+              <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                  <td>{{item.equipmentName}}&nbsp;</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
+          <el-table-column
+            class-name="padding0"
+            label="签到时间">
+            <template slot-scope="scope">
+              <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                  <td>{{item.startTime}}&nbsp;</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
+          <el-table-column
+            class-name="padding0"
+            label="签退时间">
+            <template slot-scope="scope">
+              <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                  <td>{{item.endTime}}&nbsp;</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
+          <el-table-column
+            class-name="padding0"
+            label="时间(分)">
+            <template slot-scope="scope">
+              <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
+                  <td>{{item.attendanceTime}}&nbsp;</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column
-          width="350"
-          class-name="padding0"
+          min-width="125"
           label="实际切削时间">
-          <template slot-scope="scope">
-            <table v-if="scope.row.workerTimeList.length > 0" class="table">
-              <tr>
-                <td>设备</td>
-                <td>时间(分)</td>
-              </tr>
-              <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
-                <td>{{item.equipmentName}}</td>
-                <td>{{item.actualTime}}</td>
-              </tr>
-            </table>
-          </template>
+          <el-table-column
+            class-name="padding0"
+            label="时间(分)">
+            <template slot-scope="scope">
+              <table v-if="scope.row.workerTimeList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
+                  <td>{{item.actualTime}}&nbsp;</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column
-          width="350"
-          class-name="padding0"
-          label="理论切削时间">
-          <template slot-scope="scope">
-            <table v-if="scope.row.workerTimeList.length > 0" class="table">
-              <tr>
-                <td>设备</td>
-                <td>时间(分)</td>
-              </tr>
-              <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
-                <td>{{item.equipmentName}}</td>
-                <td>{{item.theoryTime}}</td>
-              </tr>
-            </table>
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="350"
-          class-name="padding0"
-          label="人员稼动详情">
-          <template slot-scope="scope">
-            <table v-if="scope.row.workerProductList.length > 0" class="table">
-              <tr>
-                <td>序号</td>
-                <td>设备</td>
-                <td>稼动率</td>
-              </tr>
-              <tr v-for="(item, index) in scope.row.workerProductList" :key="item + index">
-                <td>{{index + 1}}</td>
-                <td>{{item.equipmentName}}</td>
-                <td>{{item.cropMobility}}%</td>
-              </tr>
-            </table>
-          </template>
+          min-width="125"
+          label="人员稼动">
+          <el-table-column
+            class-name="padding0"
+            label="稼动率">
+            <template slot-scope="scope">
+              <table v-if="scope.row.workerProductList.length > 0" class="table">
+                <tr v-for="(item, index) in scope.row.workerProductList" :key="item + index">
+                  <td>{{item.cropMobility}}%</td>
+                </tr>
+              </table>
+            </template>
+          </el-table-column>
         </el-table-column>
         <el-table-column
           prop="actualCounts"
@@ -201,16 +224,20 @@
         </el-table-column>
         <el-table-column
           class-name="padding0"
-          width="350"
-          label="出勤理论时间(min)">
+          min-width="350"
+          label="总出勤时间(min)">
           <template slot-scope="scope">
             <table v-if="scope.row.attendanceTimeList.length > 0" class="table">
               <tr>
                 <td>设备</td>
+                <td>签到时间</td>
+                <td>签退时间</td>
                 <td>时间(分)</td>
               </tr>
               <tr v-for="(item, index) in scope.row.attendanceTimeList" :key="item + index">
                 <td>{{item.equipmentName}}</td>
+                <td>{{item.startTime}}</td>
+                <td>{{item.endTime}}</td>
                 <td>{{item.attendanceTime}}</td>
               </tr>
             </table>
@@ -223,11 +250,9 @@
           <template slot-scope="scope">
             <table v-if="scope.row.workerTimeList.length > 0" class="table">
               <tr>
-                <td>设备</td>
                 <td>时间(分)</td>
               </tr>
               <tr v-for="(item, index) in scope.row.workerTimeList" :key="item + index">
-                <td>{{item.equipmentName}}</td>
                 <td>{{item.actualTime}}</td>
               </tr>
             </table>
@@ -241,13 +266,9 @@
           <template slot-scope="scope">
             <table v-if="scope.row.workerProductList.length > 0" class="table">
               <tr>
-                <td>序号</td>
-                <td>设备</td>
                 <td>稼动率</td>
               </tr>
               <tr v-for="(item, index) in scope.row.workerProductList" :key="item + index">
-                <td>{{index + 1}}</td>
-                <td>{{item.equipmentName}}</td>
                 <td>{{item.cropMobility}}%</td>
               </tr>
             </table>
@@ -309,11 +330,54 @@
       :visible.sync="diaryDialog">
       <diaryPage/>
     </el-dialog>
+    <el-dialog
+      width="500px"
+      class="export-form"
+      title="导出"
+      :visible.sync="exportDialog">
+      <el-form label-width="80px">
+        <el-form-item label="类型">
+          <el-select v-model="exportType">
+            <el-option label="稼动导出" :value="1"></el-option>
+            <el-option label="切削记录导出" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <div style="height: 10px;"></div>
+        <el-form-item label="日期">
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.startTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+          <el-col :span="2" class="line" style="text-align: center;">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.endTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <div style="margin-top: 20px; text-align: center; margin-right: 78px;">
+            <el-button @click="exportExcel" type="primary">
+              导出
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import diaryPage from './diary'
+import { getExcel } from '../../http'
+
 export default {
   name: 'index',
   data () {
@@ -326,9 +390,13 @@ export default {
       departmentShow: 1,
       department: '1',
       listData: [],
+      exportDialog: false,
+      exportType: 1,
+      exoprt: {
+        startTime: '',
+        endTime: ''
+      },
       formData: {
-        dateType: '1',
-        endTime: '',
         startTime: '',
         department: 1
       }
@@ -338,6 +406,35 @@ export default {
     this.onSubmit()
   },
   methods: {
+    // 导出
+    exportExcel () {
+      let nameStr = this.exportType === 1 ? '人员稼动表' : '切断记录导出表'
+      let url = this.exportType === 1 ? '/statistics/workerPerformanceStatistics' : '/statistics/workerPerformanceDetail'
+      getExcel(url, {
+        ...this.exoprt,
+        download: 1,
+        department: this.formData.department
+      }).then(res => {
+        if (res.byteLength > 0) {
+          const blob = new Blob([res])
+          const fileName = nameStr + '.xls'
+          if ('download' in document.createElement('a')) { // 非IE下载
+            const elink = document.createElement('a')
+            elink.download = fileName
+            elink.style.display = 'none'
+            elink.href = URL.createObjectURL(blob)
+            document.body.appendChild(elink)
+            elink.click()
+            URL.revokeObjectURL(elink.href) // 释放URL 对象
+            document.body.removeChild(elink)
+          } else { // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+          }
+        } else {
+          alert('数据为0，请重新选择日期！')
+        }
+      })
+    },
     // 根据绩效指标返回不同字段值
     actual (row) {
       if (this.type === '1') {
@@ -491,5 +588,8 @@ export default {
   }
   .data-list {
     height: calc(100% - 130px);
+  }
+  .export-form .el-select {
+    width: 100%;
   }
 </style>

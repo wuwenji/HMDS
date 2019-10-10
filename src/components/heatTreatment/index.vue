@@ -8,9 +8,37 @@
         <el-form-item class="form-item" label="成绩书号" prop="managementNumber">
           <el-input v-model="formData.managementNumber" placeholder="接单号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="标准货期">
+          <el-col>
+            <el-form-item prop="planTime">
+              <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.planTime" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="完成状态">
+          <el-col>
+            <el-form-item prop="status">
+              <el-select v-model="formData.status">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="未开始" value="1"></el-option>
+                <el-option label="未完成" value="2"></el-option>
+                <el-option label="外发中" value="3"></el-option>
+                <el-option label="已完成" value="4"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
         <el-form-item class="form-item" label="客户" prop="customerName">
           <el-input v-model="formData.customerName" placeholder="客户"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="入炉日期">
+          <el-col>
+            <el-form-item prop="tempStr">
+              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="formData.tempStr" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <div class="cl" style="margin-top: 5px;"></div>
         <el-form-item class="form-item" label="入货时间">
           <el-col>
             <el-form-item prop="acceptTime">
@@ -60,7 +88,7 @@
         </el-table-column>
         <el-table-column
           width="160"
-          label="计划货期">
+          label="标准货期">
           <template slot-scope="scope">
             <el-date-picker
               type="date"
@@ -160,20 +188,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="100"
-          label="冷却方法">
-          <template slot-scope="scope">
-            <input @blur="changeData(scope.row.id, {coolingMethod: scope.row.coolingMethod})" v-model="scope.row.coolingMethod" type="text" class="table-input">
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="100"
-          label="入炉日期">
-          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
-            {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
-          </template>
-        </el-table-column>
-        <el-table-column
           width="200"
           label="纳期延迟原因">
           <template slot-scope="scope">
@@ -186,12 +200,136 @@
           label="延迟天数">
         </el-table-column>
         <el-table-column
+          width="100"
+          label="类型">
+          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
+            {{scope.row.mapList[0].heatName}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="入炉日期">
+          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[0].startTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="出炉日期">
+          <template v-if="scope.row.mapList.length > 0" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[0].endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="冷却方法">
+          <template slot-scope="scope">
+            <input @blur="changeData(scope.row.id, {coolingMethod: scope.row.coolingMethod})" v-model="scope.row.coolingMethod" type="text" class="table-input">
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="totalCount"
           width="100"
           label="使用炉">
           <template slot-scope="scope">
             <span v-if="scope.row.mapList.length > 0">
-              {{scope.row.mapList[scope.row.mapList.length - 1].heatName}}
+              {{scope.row.mapList[0].equipmentName}}
+            </span>
+          </template>
+        </el-table-column>
+        <!--第二组-->
+        <el-table-column
+          width="100"
+          label="类型">
+          <template v-if="scope.row.mapList.length > 1" slot-scope="scope">
+            {{scope.row.mapList[1].heatName}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="入炉日期">
+          <template v-if="scope.row.mapList.length > 1" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[1].startTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="出炉日期">
+          <template v-if="scope.row.mapList.length > 1" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[1].endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="使用炉">
+          <template slot-scope="scope">
+            <span v-if="scope.row.mapList.length > 1">
+              {{scope.row.mapList[1].equipmentName}}
+            </span>
+          </template>
+        </el-table-column>
+        <!--第三组-->
+        <el-table-column
+          width="100"
+          label="类型">
+          <template v-if="scope.row.mapList.length > 2" slot-scope="scope">
+            {{scope.row.mapList[2].heatName}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="入炉日期">
+          <template v-if="scope.row.mapList.length > 2" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[2].startTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="出炉日期">
+          <template v-if="scope.row.mapList.length > 2" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[2].endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="使用炉">
+          <template slot-scope="scope">
+            <span v-if="scope.row.mapList.length > 2">
+              {{scope.row.mapList[2].equipmentName}}
+            </span>
+          </template>
+        </el-table-column>
+        <!--第四组-->
+        <el-table-column
+          width="100"
+          label="类型">
+          <template v-if="scope.row.mapList.length > 3" slot-scope="scope">
+            {{scope.row.mapList[3].heatName}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="入炉日期">
+          <template v-if="scope.row.mapList.length > 3" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[3].startTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="100"
+          label="出炉日期">
+          <template v-if="scope.row.mapList.length > 3" slot-scope="scope">
+            {{$store.getters.getDate(scope.row.mapList[3].endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="totalCount"
+          width="100"
+          label="使用炉">
+          <template slot-scope="scope">
+            <span v-if="scope.row.mapList.length > 3">
+              {{scope.row.mapList[3].equipmentName}}
             </span>
           </template>
         </el-table-column>
@@ -287,7 +425,9 @@ export default {
         managementNumber: '',
         acceptTime: '',
         contDueDate: '',
-        customerName: ''
+        customerName: '',
+        planTime: '',
+        tempStr: ''
       },
       listData: []
     }
@@ -299,8 +439,9 @@ export default {
     // 返回状态
     getStatus (row) {
       // return row.outwardStatus === ''
+      console.log(row.outwardStatus, row.status)
       if (row.outwardStatus === null) {
-        if (row.status === 1) {
+        if (row.status === '1') {
           return '已完成'
         } else {
           if (row.mapList.length < 1) {
@@ -310,7 +451,11 @@ export default {
           }
         }
       } else {
-        return '外发中'
+        if (row.outwardStatus === 1) {
+          return '已完成'
+        } else {
+          return '外发中'
+        }
       }
     },
     // 修改属性
@@ -458,6 +603,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 130px);
+    height: calc(100% - 175px);
   }
 </style>

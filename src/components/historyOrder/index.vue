@@ -14,6 +14,7 @@
         <el-form-item class="form-item" label="发件人" prop="entryUserName">
           <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
         </el-form-item>
+        <div class="cl" style="height: 10px;"></div>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
             <el-form-item prop="soDateStr">
@@ -108,6 +109,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="最后打印时间"
+          width="150">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.printDateStr)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="操作"
           width="130">
           <template slot-scope="scope">
@@ -170,6 +178,13 @@
               size="small">
               {{scope.row.cutHistoryCount}}
             </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="最后打印时间"
+          width="150">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.printDateStr)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -256,6 +271,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="最后打印时间"
+          width="150">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.printDateStr)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="操作"
           width="260">
           <template slot-scope="scope">
@@ -322,6 +344,13 @@
               size="small">
               {{scope.row.cutHistoryCount}}
             </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="最后打印时间"
+          width="150">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.printDateStr)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -413,6 +442,13 @@
               size="small">
               {{scope.row.heatHistoryCount}}
             </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="最后打印时间"
+          width="150">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.printDateStr)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -659,7 +695,7 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 170px);
+    height: calc(100% - 220px);
   }
   .table {
     width: 100%;

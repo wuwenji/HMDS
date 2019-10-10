@@ -60,7 +60,7 @@ const myStore = new Vuex.Store({
   },
   getters: {
     getDate: (state, getters) => (string, type = 1) => {
-      if (string === null || string === 0) {
+      if (string === null || string === 0 || string === undefined) {
         return ''
       } else {
         let d = new Date(string)
@@ -99,7 +99,7 @@ const myStore = new Vuex.Store({
       }
     },
     getTime: (state, getters) => (string) => {
-      if (string === null || string === 0) {
+      if (string === null || string === 0 || string === undefined) {
         return ''
       } else {
         let d = new Date(string)

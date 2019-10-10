@@ -99,6 +99,9 @@ export default {
           }, {
             id: 74,
             title: '热处理'
+          }, {
+            id: 75,
+            title: '接单数据'
           }]
         }, {
           id: 30,
@@ -208,6 +211,9 @@ export default {
             },
             {
               title: '热处理'
+            },
+            {
+              title: '接单数据'
             }
           ]
         },

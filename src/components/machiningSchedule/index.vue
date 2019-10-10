@@ -8,6 +8,9 @@
         <el-form-item class="form-item" label="接单号" prop="orderCode">
           <el-input v-model="formData.orderCode" placeholder="接单号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="发件人" prop="entryUserName">
+          <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
+        </el-form-item>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
             <el-form-item prop="acceptTimeStr">
@@ -48,7 +51,13 @@
         </el-table-column>
         <el-table-column
           prop="customerName"
+          min-width="210"
           label="客户">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          width="130"
+          label="发件人">
         </el-table-column>
         <el-table-column
           label="接单时间"
@@ -124,6 +133,11 @@
           label="客户">
         </el-table-column>
         <el-table-column
+          prop="entryUserName"
+          width="130"
+          label="发件人">
+        </el-table-column>
+        <el-table-column
           label="接单时间"
           width="130">
           <template slot-scope="scope">
@@ -158,10 +172,12 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="machineCount"
           label="已加工数量"
           align="right"
           width="100">
+          <template slot-scope="scope">
+            {{scope.row.machineCount + scope.row.outwardCount}}
+          </template>
         </el-table-column>
         <el-table-column
           label="状态"
@@ -174,7 +190,7 @@
           label="完成度"
           width="200">
           <template slot-scope="scope">
-            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.machineCount, scope.row.totalCount, 3)"></el-progress>
+            <el-progress :text-inside="true" :stroke-width="18" :percentage="progress(scope.row.machineCount, scope.row.totalCount, 3, scope.row.outwardCount)"></el-progress>
           </template>
         </el-table-column>
         <el-table-column
@@ -227,7 +243,8 @@ export default {
       formData: {
         orderCode: '',
         acceptTimeStr: '',
-        deliveryTimeStr: ''
+        deliveryTimeStr: '',
+        entryUserName: ''
       },
       listData: []
     }
@@ -241,7 +258,7 @@ export default {
       if (item.outwardStatus) {
         return item.outwardStatus === 0 ? '外发中' : '已完成'
       } else {
-        if (item.totalCount === item.machineCount) {
+        if (item.totalCount === item.machineCount + item.outwardCount) {
           return '已完成'
         }
         return '未完成'
@@ -276,12 +293,13 @@ export default {
     onSubmit () {
       console.log(this.formData)
     },
-    progress (a, b, c) {
+    progress (a, b, c, d) {
       let pre = 0
+      let dd = d || 0
       if (b === 0) {
         return 0
       } else {
-        pre = parseInt(a / b * 100)
+        pre = parseInt((a + dd) / b * 100)
       }
       if (pre === 100) {
         if (c === 0) {

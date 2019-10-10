@@ -47,7 +47,7 @@
         </th>
         <th width="110">
           <span style="font-size: 12px;">Reqired Hardness</span><br/>
-          指定硬度(HRC)</th>
+          指定硬度({{formData.taskName.indexOf('NVG') > -1 ? 'HV' : 'HRC'}})</th>
         <th width="60">品证判定</th>
         <th width="70">热处理审核</th>
         <th width="85">入货日/时间</th>
@@ -243,7 +243,7 @@
                     无<el-checkbox label="无" v-model="formData.inspectionItems.accessories"></el-checkbox>
                   </td>
                 </tr>
-                <tbody v-if="formData.modelNumber !== '' && formData.modelNumber.indexOf('NVG') > -1">
+                <tbody v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1">
                 <tr>
                   <td>校正</td>
                   <td>
@@ -327,7 +327,7 @@
         <td class="l" colspan="3">时间 <input v-model="formData.t2Handle.time" type="text" class="input2"></td>
         <td style="padding: 0; position: relative;" rowspan="11" colspan="7">
           <div class="right-bottom-div">
-            <table v-if="formData.modelNumber !== '' && formData.modelNumber.indexOf('NVG') > -1" class="table table3">
+            <table v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1" class="table table3">
               <tr>
                 <td width="50" rowspan="2">
                   <span style="font-size: 12px; line-height: 19px;">Name</span><br/>
@@ -759,6 +759,10 @@ export default {
       let obj = JSON.stringify(this.formData)
       this.http('/heatTreatment/update', {
         id: this.orderInfo.id,
+        taskName: this.formData.taskName,
+        counts: this.formData.counts,
+        totalWeight: this.formData.totalWeight,
+        hardnessRequirement: this.formData.hardnessRequirement,
         heatData: obj
       }).then(resp => {
         if (resp.success) {

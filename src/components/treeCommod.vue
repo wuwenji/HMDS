@@ -103,6 +103,8 @@ export default {
           this.$router.push('/showTV')
         } else if (val === '热处理') {
           this.$router.push('/heat')
+        } else if (val === '接单数据') {
+          this.$router.push('/orderData')
         }
       }
     }

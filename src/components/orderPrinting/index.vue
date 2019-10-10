@@ -14,6 +14,7 @@
         <el-form-item class="form-item" label="发件人" prop="entryUserName">
           <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
         </el-form-item>
+        <div class="cl" style="height: 10px;"></div>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
             <el-form-item prop="soDateStr">
@@ -563,6 +564,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 170px);
+    height: calc(100% - 220px);
   }
 </style>

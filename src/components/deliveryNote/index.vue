@@ -11,12 +11,12 @@
         <el-form-item class="form-item" label="订购商" prop="contName">
           <el-input v-model="formData.contName" placeholder="订购商名称"></el-input>
         </el-form-item>
-        <el-form-item class="form-item" label="接单时间">
-          <el-col>
-            <el-form-item prop="soDateStr">
-              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
+        <el-form-item class="form-item" label="是否完成" prop="status">
+          <el-select v-model="formData.status" placeholder="订单类型">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="否" value="0"></el-option>
+            <el-option label="是" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item class="form-item" label="交期">
           <el-col>
@@ -25,13 +25,20 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <!--<el-form-item class="form-item" label="订单类型" prop="type">-->
-          <!--<el-select v-model="formData.type" placeholder="订单类型">-->
-            <!--<el-option label="全部" value="0"></el-option>-->
-            <!--<el-option label="切断" value="1"></el-option>-->
-            <!--<el-option label="切断&加工" value="2"></el-option>-->
-          <!--</el-select>-->
-        <!--</el-form-item>-->
+        <div class="cl" style="margin-top: 5px;"></div>
+        <el-form-item class="form-item" label="营业员" prop="sUserName">
+          <el-input v-model="formData.sUserName" placeholder="营业员"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="发件人" prop="entryUserName">
+          <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="接单时间">
+          <el-col>
+            <el-form-item prop="soDateStr">
+              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="research(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
@@ -56,7 +63,7 @@
           label="接单号">
         </el-table-column>
         <el-table-column
-          prop="contName"
+          prop="customerName"
           label="订购商名称"
           min-width="130">
         </el-table-column>
@@ -154,7 +161,7 @@
           label="接单号">
         </el-table-column>
         <el-table-column
-          prop="contName"
+          prop="customerName"
           label="订购商名称">
         </el-table-column>
         <el-table-column
@@ -280,7 +287,10 @@ export default {
         contName: '',
         contDueDateStr: '',
         pageSize: 10,
-        pageNum: 1
+        pageNum: 1,
+        entryUserName: '',
+        sUserName: '',
+        status: ''
       },
       listData: []
     }
@@ -421,6 +431,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 170px);
+    height: calc(100% - 215px);
   }
 </style>

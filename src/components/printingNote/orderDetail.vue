@@ -3,8 +3,8 @@
     <div v-show="showContent == 1">
       <table class="info-table">
         <tr>
-          <td>客户：{{lists[0].contName}}</td>
-          <td>最终客户：{{lists[0].custName}}</td>
+          <td>客户：{{lists[0].contKname}}</td>
+          <td>最终客户：{{lists[0].custKname}}</td>
           <td>加工类型：{{getTypeTw(lists[0].workInstCd)}}</td>
           <td>接单时间：{{$store.getters.getDate(lists[0].soDate, 2)}}</td>
         </tr>
@@ -122,7 +122,7 @@
             <tr>
               <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress3}}</td>
               <td>
-                <span>送货单号：</span>{{orderDetail[0].soNo}}
+                <span>送货单号：</span>{{orderDetail[0].orderCode}}
                 <span>日期：</span>{{$store.state.date.replace('年', '/').replace('月', '/').replace('日', '')}}
               </td>
             </tr>
@@ -227,6 +227,7 @@
               <span>日立金属（东莞）特殊钢有限公司</span>
             </p>
           </div>
+          <div class="cl"></div>
         </div>
       </div>
     </div>
@@ -280,7 +281,7 @@ export default {
         console.log(resp)
         if (resp.success) {
           this.selectValue = []
-          console.log('lists', resp.data)
+          console.log('lists....', resp)
           this.lists = resp.data
           resp.data.map(item => {
             if (item.status === 1) {
@@ -323,10 +324,27 @@ export default {
         return '*'
       }
     },
-    // 打印次数
+    keeyHistory (obj) {
+      this.http('/printHistory/saveOrUpdate', {
+        soNo: obj,
+        printType: '4'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      }).then(resp => {
+        if (resp.success) {
+          console.log('执处理送货单打印成功！')
+        } else {
+          this.$message.error({
+            message: '失败：' + resp.message,
+            duration: 1000
+          })
+        }
+      })
+    },
+    // 打印
     printing () {
       let parameters = []
+      let str = ''
       this.orderDetail.map(item => {
+        str = item.custPoNo
         parameters.push({
           soNo: item.soNo,
           soLnNo: item.soLnNo,
@@ -342,6 +360,7 @@ export default {
         console.log(resp)
         if (resp.success) {
           document.getElementById('bunt').click()
+          this.keeyHistory(str)
         } else {
           this.$message.error(resp.message)
         }
@@ -367,6 +386,7 @@ export default {
       this.numTotal = 0
       this.wetTotal = 0
       this.mnyTotal = 0
+      console.log('selectValue', this.selectValue)
       this.orderDetail = this.selectValue.map((item, index) => {
         this.numTotal = this.numTotal + item.soQty
         this.wetTotal = this.wetTotal + item.soWt
@@ -374,6 +394,7 @@ export default {
         item.NO = index + 1
         return item
       })
+      console.log('orderDetail', this.orderDetail)
       this.showContent = 2
       this.dataLists = []
       for (let i = 0; i < this.orderDetail.length; i += 16) {
@@ -427,7 +448,7 @@ export default {
   .bottom p span:nth-child(1) {
     float: left;
     border-top: 1px solid #000;
-    width: 200px;
+    width: 300px;
     padding-top: 10px;
     text-align: center;
   }
@@ -447,7 +468,8 @@ export default {
   .bottom-center li {
     list-style: none;
     float: left;
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 15px;
   }
   .bottom-center li:nth-child(odd) {
     margin-right: 60px;
@@ -455,11 +477,11 @@ export default {
   .bottom-center {
     border: 1px solid #555;
     width: 350px;
-    margin-left: 300px;
+    margin-left: 355px;
     position: absolute;
-    font-size: 13px;
+    font-size: 12px;
     top: 50px;
-    padding: 10px;
+    padding: 5px;
   }
   .table td span {
     width: 110px;

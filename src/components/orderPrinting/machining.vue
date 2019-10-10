@@ -195,7 +195,7 @@
                 <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>订单号：</strong></td>
+                <td colspan="9"><strong>订单号：</strong>{{machiningData.order.contPoNo}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>
@@ -496,7 +496,7 @@
                 <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>订单号：</strong></td>
+                <td colspan="9"><strong>订单号：</strong>{{machiningData.order.contPoNo}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>

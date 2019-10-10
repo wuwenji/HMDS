@@ -5,51 +5,34 @@
     </div>
     <div class="form" id="form-input">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
-        <el-form-item class="form-item" label="场所类型" prop="storageType">
-          <el-select @change="typeChange" v-model="formData.storageType" placeholder="场所类型">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="地面" value="1"></el-option>
-            <el-option label="货架" value="2"></el-option>
-            <el-option label="特殊货架" value="3"></el-option>
-          </el-select>
+        <!--<el-form-item class="form-item" label="场所类型" prop="storageType">-->
+          <!--<el-select @change="typeChange" v-model="formData.storageType" placeholder="场所类型">-->
+            <!--<el-option label="全部" value=""></el-option>-->
+            <!--<el-option label="地面" value="1"></el-option>-->
+            <!--<el-option label="货架" value="2"></el-option>-->
+            <!--<el-option label="特殊货架" value="3"></el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
+        <el-form-item class="form-item" label="接单号" prop="soNo">
+          <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
         </el-form-item>
-        <el-form-item class="form-item" label="货架编号" prop="storageId">
-          <el-select v-model="formData.storageId" placeholder="货架编号">
-            <el-option label="全部" value=""></el-option>
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+        <!--<el-form-item class="form-item" label="货架编号" prop="storageId">-->
+          <!--<el-select v-model="formData.storageId" placeholder="货架编号">-->
+            <!--<el-option label="全部" value=""></el-option>-->
+            <!--<el-option-->
+              <!--v-for="item in options"-->
+              <!--:key="item.value"-->
+              <!--:label="item.label"-->
+              <!--:value="item.value">-->
+            <!--</el-option>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
+        <el-form-item class="form-item" label="溶解编号" prop="changeNo">
+          <el-input v-model="formData.changeNo" placeholder="溶解编号"></el-input>
         </el-form-item>
         <el-form-item class="form-item" label="钢种材质" prop="materialType">
           <el-input v-model="formData.materialType" placeholder="钢种材质"></el-input>
         </el-form-item>
-        <el-form-item class="form-item" label="溶解编号" prop="changeNo">
-          <el-input v-model="formData.changeNo" placeholder="溶解编号"></el-input>
-        </el-form-item>
-        <!--<div class="input-row">-->
-          <!--<label>长</label>-->
-          <!--<div class="input-left">-->
-            <!--<el-form-item prop="size1Start">-->
-              <!--<el-input v-model="formData.size1Start"></el-input>-->
-            <!--</el-form-item>-->
-          <!--</div>-->
-          <!--<div class="input-center"> - </div>-->
-          <!--<div class="input-right">-->
-            <!--<el-form-item prop="size1End">-->
-              <!--<el-input v-model="formData.size1End"></el-input>-->
-            <!--</el-form-item>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<el-form-item style="width: 110px" class="form-item input-two" label="宽" prop="id">-->
-          <!--<el-input style="width: 50px" v-model="formData.id" placeholder="宽"></el-input>-->
-        <!--</el-form-item>-->
-        <!--<el-form-item style="width: 110px" class="form-item input-two" label="厚" prop="id">-->
-          <!--<el-input style="width: 50px" v-model="formData.id" placeholder="厚"></el-input>-->
-        <!--</el-form-item>-->
         <el-form-item class="form-item" label="形状" prop="shape">
           <el-select v-model="formData.shape" placeholder="形状">
             <el-option label="全部" value=""></el-option>
@@ -71,20 +54,6 @@
             <el-option label="S" value="S"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item class="form-item" label="已打印" prop="printCount">
-          <el-select v-model="formData.printCount" placeholder="已打印">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="入出库日期">
-          <el-date-picker
-            type="date"
-            value-format="yyyy-MM-dd"
-            v-model="formData.latestToDateStr"
-            ></el-date-picker>
-        </el-form-item>
         <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="form-item" label="是否标志" prop="isPaste">
           <el-select v-model="formData.isPaste" placeholder="是否已贴">
@@ -94,6 +63,25 @@
             <el-option label="不一致" value="2"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item class="form-item" label="已打印" prop="printCount">
+          <el-select v-model="formData.printCount" placeholder="已打印">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="form-item" label="备注" prop="stockRemarks">
+          <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
+        </el-form-item>
+        <el-form-item label="入出库日">
+          <el-date-picker
+            type="date"
+            style="width: 140px;"
+            value-format="yyyy-MM-dd"
+            v-model="formData.latestToDateStr"
+          ></el-date-picker>
+        </el-form-item>
+        <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="join-input-row" label="厚">
           <el-col :span="11">
             <el-form-item prop="size1Start">
@@ -146,16 +134,11 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item class="form-item" label="接单号" prop="soNo">
-          <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
-        </el-form-item>
-        <el-form-item class="form-item" label="备注" prop="stockRemarks">
-          <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
-        </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit(100, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
+        <div class="cl"></div>
       </el-form>
     </div>
     <div class="john-tab">
@@ -439,7 +422,7 @@
     <el-dialog
       title="数据匹配"
       :visible.sync="updateDialog"
-      width="1270px">
+      width="1670px">
       <toUpdate v-if="updateDialog"/>
     </el-dialog>
   </div>
@@ -681,6 +664,7 @@ export default {
   }
   .btns {
     float: right;
+    margin-top: 10px;
   }
   .block {
     text-align: right;
@@ -690,6 +674,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 220px);
+    height: calc(100% - 270px);
   }
 </style>

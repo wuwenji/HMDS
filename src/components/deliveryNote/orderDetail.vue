@@ -123,7 +123,7 @@
             <tr>
               <td> <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress3}}</td>
               <td>
-                <span>送货单号：</span>{{orderDetail[0].soNo}}
+                <span>送货单号：</span>{{orderDetail[0].orderCode}}
                 <span>日期：</span>{{$store.state.date.replace('年', '/').replace('月', '/').replace('日', '')}}
               </td>
             </tr>
@@ -310,10 +310,27 @@ export default {
         return '*'
       }
     },
-    // 打印次数
+    keeyHistory (obj) {
+      this.http('/printHistory/saveOrUpdate', {
+        soNo: obj,
+        printType: '4'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      }).then(resp => {
+        if (resp.success) {
+          console.log('执处理送货单打印成功！')
+        } else {
+          this.$message.error({
+            message: '失败：' + resp.message,
+            duration: 1000
+          })
+        }
+      })
+    },
+    // 打印
     printing () {
       let parameters = []
+      let str = ''
       this.orderDetail.map(item => {
+        str = item.soNo
         parameters.push({
           soNo: item.soNo,
           soLnNo: item.soLnNo,
@@ -329,6 +346,7 @@ export default {
         // console.log(resp)
         if (resp.success) {
           document.getElementById('bunt').click()
+          this.keeyHistory(str)
         } else {
           this.$message.error(resp.message)
         }
