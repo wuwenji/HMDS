@@ -26,16 +26,23 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" plain @click="research(10, 1)">查询</el-button>
+          <el-button type="success" plain @click="research(100, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
-    <div class="john-tab">
+    <div class="john-tab" style="position: relative;">
       <ul>
         <li @click="tabClick(0)" :class="{active: johnTab == 0}">切断</li>
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">切断&加工</li>
       </ul>
+      <p class="tab-p">
+        总材料数量：<span class="red">{{currentTotalCount}}</span>，
+        已切断数量：<span class="red">{{currentCutCount}}</span>
+        <template v-if="johnTab == 1">，
+          已加工数量：<span class="red">{{currentMachineCount}}</span>
+        </template>。
+      </p>
     </div>
     <div class="data-list">
       <el-table
@@ -209,7 +216,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNumb"
-          :page-sizes="[10, 20, 50, 100]"
+          :page-sizes="[100, 200, 500]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -234,8 +241,11 @@ export default {
   data () {
     return {
       currentPage: 1,
+      currentCutCount: 0,
+      currentMachineCount: 0,
+      currentTotalCount: 0,
       dialog: false,
-      pageSize: 10,
+      pageSize: 100,
       pageNumb: 1,
       johnTab: 0,
       sentData: '',
@@ -250,7 +260,7 @@ export default {
     }
   },
   created () {
-    this.getList(1, 10)
+    this.getList(1, 100)
   },
   methods: {
     // 返回加工状态
@@ -270,8 +280,13 @@ export default {
           pageNum: num,
           pageSize: size
         }).then(resp => {
-          // console.log('切断')
+          // console.log(resp)
           if (resp.success) {
+            if (resp.data.list.length > 0) {
+              this.currentCutCount = resp.data.list[0].currentCutCount
+              this.currentMachineCount = resp.data.list[0].currentMachineCount
+              this.currentTotalCount = resp.data.list[0].currentTotalCount
+            }
             this.total = resp.data.total
             this.listData = resp.data.list
           }
@@ -284,6 +299,11 @@ export default {
         }).then(resp => {
           // console.log('加工')
           if (resp.success) {
+            if (resp.data.list.length > 0) {
+              this.currentCutCount = resp.data.list[0].currentCutCount
+              this.currentMachineCount = resp.data.list[0].currentMachineCount
+              this.currentTotalCount = resp.data.list[0].currentTotalCount
+            }
             this.total = resp.data.total
             this.listData = resp.data.list
           }
@@ -333,7 +353,7 @@ export default {
     },
     tabClick (index) {
       this.johnTab = index
-      this.getList(1, 10)
+      this.getList(1, 100)
     },
     research (pageSize, pageNum) {
       this.formData.pageNum = pageNum
@@ -405,5 +425,13 @@ export default {
   }
   .data-list {
     height: calc(100% - 170px);
+  }
+  .tab-p {
+    position: absolute;
+    right: 20px;
+    top: 3px;
+  }
+  .red {
+    color: #ff0000;
   }
 </style>

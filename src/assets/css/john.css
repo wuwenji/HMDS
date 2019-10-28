@@ -266,6 +266,10 @@ table {
 .gray {
   color: gray;
 }
+.isgray {
+  color: #ccc;
+  background: #eee;
+}
 .aPrint {
   font-weight: bold;
 }

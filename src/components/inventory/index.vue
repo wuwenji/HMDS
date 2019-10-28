@@ -169,11 +169,12 @@
           style="float: left;"
           type="primary"
           @click="updateData">数据同步</el-button>
-        <!--<el-button-->
-          <!--size="mini"-->
-          <!--style="float: left;"-->
-          <!--type="primary"-->
-          <!--@click="initSign">初始化盘点</el-button>-->
+        <el-button
+          size="mini"
+          v-if="initShow"
+          style="float: left;"
+          type="primary"
+          @click="initSign">初始化盘点</el-button>
       </b>
     </div>
     <div class="data-list">
@@ -621,6 +622,14 @@ export default {
     }
   },
   computed: {
+    initShow () {
+      let num = this.$store.state.initShow
+      if (num === 999) {
+        return true
+      } else {
+        return false
+      }
+    }
   },
   components: {
     printQR,

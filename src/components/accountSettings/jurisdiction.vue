@@ -114,6 +114,9 @@ export default {
           id: 33,
           label: '电视播放'
         }]
+      }, {
+        id: 999,
+        label: '初始化盘点(按钮)'
       }],
       defaultProps: {
         children: 'children',

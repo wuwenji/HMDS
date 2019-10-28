@@ -257,6 +257,7 @@ export default {
           })
         }
         this.getL(menus.sort())
+        this.$store.state.initShow = menus[menus.length - 1]
       })
     },
     getL (list) {

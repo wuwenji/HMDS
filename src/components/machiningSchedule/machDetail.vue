@@ -239,7 +239,11 @@
             <td align="right">{{val.totalTime}}</td>
             <td>{{val.equipmentName}}</td>
             <td>{{item.size1}}X<template v-if="item.size2 > 0">{{item.size2}}X</template>{{item.size3}}</td>
-            <td align="right">{{item.actualWeight}}</td>
+            <td align="right">
+              <template v-if="item.materialList">
+                <template v-if="valIndex === item.materialList.length - 1">{{item.actualWeight}}</template>
+              </template>
+            </td>
           </tr>
           </template>
         <!--<tr v-for="(val, num) in lists" :key="num">-->

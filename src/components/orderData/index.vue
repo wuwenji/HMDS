@@ -24,8 +24,11 @@
         </el-form-item>
         <div class="cl" style="height: 10px;"></div>
         <el-form-item class="form-item" label="接单类型" prop="workInstCd">
-          <el-select v-model="formData.workInstCd">
-            <el-option value="" label="全部"></el-option>
+          <el-select
+            multiple
+            collapse-tags
+            v-model="workInstCd">
+            <!--<el-option value="" label="全部"></el-option>-->
             <el-option value="1" label="整条"></el-option>
             <el-option value="2" label="切断"></el-option>
             <el-option value="3" label="切断&加工"></el-option>
@@ -239,12 +242,12 @@ export default {
         tempEndTime: '',
         isDownload: 1
       },
+      workInstCd: [],
       formData: {
         soDate: '',
         contKname: '',
         gradeCd: '',
         soNo: '',
-        workInstCd: '',
         tempMachineSpecCd: '',
         contDueDate: ''
       }
@@ -283,7 +286,11 @@ export default {
     onSubmit () {
       this.formData.pageSize = this.pageSize
       this.formData.pageNum = this.pageNum
-      this.http('/statistics/orderPerformanceStatistics', this.formData).then(resp => {
+      let workInstCd = this.workInstCd.join(',')
+      this.http('/statistics/orderPerformanceStatistics', {
+        ...this.formData,
+        workInstCd
+      }).then(resp => {
         console.log('接单数据', resp)
         if (resp.success) {
           this.listData = resp.data.list

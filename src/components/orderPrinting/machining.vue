@@ -516,11 +516,6 @@
                     {{machiningData.order.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
                   </strong>
                 </td>
-                <!--<td class="r l">30</td>-->
-                <!--<td class="r l">X</td>-->
-                <!--<td class="r l">36</td>-->
-                <!--<td class="r l">X</td>-->
-                <!--<td class="r l" colspan="2">161</td>-->
               </tr>
               <tr>
                 <td><strong>No</strong></td>

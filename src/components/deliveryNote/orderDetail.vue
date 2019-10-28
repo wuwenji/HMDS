@@ -19,10 +19,15 @@
         border
         ref="table"
         @selection-change="selectChange"
-       :data="lists">
+        :row-class-name="tableRowClassName"
+        :data="lists">
         <el-table-column
           type="selection"
+          :selectable='checkboxT'
           width="55">
+          <!--<template slot-scope="scope">-->
+            <!--<el-checkbox :disabled="scope.$index <= 2"></el-checkbox>-->
+          <!--</template>-->
         </el-table-column>
         <el-table-column
           label="接单行号">
@@ -55,6 +60,7 @@
       </el-table>
       <p class="btn">
         <el-button @click="looking" type="primary">预览</el-button>
+        <el-button @click="historyList" type="primary">历史记录</el-button>
       </p>
     </div>
     <div class="table-line-height" v-show="showContent == 2">
@@ -217,6 +223,17 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      width="250px"
+      title="历史记录"
+      append-to-body
+      :visible.sync="historyListShow">
+      <ul class="listHistory">
+        <li @click="toHistory(item.data)" v-for="(item, index) in historyLists" :key="index">
+          {{item.printCode}}
+        </li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 
@@ -226,6 +243,8 @@ export default {
   props: ['orderInfo'],
   data () {
     return {
+      historyListShow: false,
+      historyLists: [],
       orderDetail: [],
       showContent: 1,
       selectValue: [],
@@ -245,6 +264,42 @@ export default {
     }
   },
   methods: {
+    checkboxT (row, rowIndex) {
+      if (row.isDelivery === '1') {
+        return 0
+      } else {
+        return 1
+      }
+    },
+    // 已打印变灰
+    tableRowClassName ({row, rowIndex}) {
+      if (row.isDelivery === '1') {
+        return 'isgray'
+      }
+    },
+    // 历史记录详情
+    toHistory (data) {
+      this.selectValue = JSON.parse(data)
+      console.log('历史详情', this.dataLists)
+      this.historyListShow = false
+      this.looking()
+      // setTimeout(() => {
+      //   this.showContent = 2
+      // }, 1000)
+    },
+    // 查看历史记录
+    historyList () {
+      this.historyListShow = true
+      this.http('/printHistory/list', {
+        soNo: this.orderInfo.soNo,
+        printType: '4'
+      }).then(resp => {
+        console.log('历史记录', resp)
+        if (resp.success) {
+          this.historyLists = resp.data.list
+        }
+      })
+    },
     // 获取订单类型
     getType (numb) {
       if (numb === '1') return '整条'
@@ -311,8 +366,11 @@ export default {
       }
     },
     keeyHistory (obj) {
+      let data = JSON.stringify(this.selectValue)
       this.http('/printHistory/saveOrUpdate', {
         soNo: obj,
+        printCode: this.orderDetail[0].orderCode,
+        data,
         printType: '4'// 1为切断指示书，2为加工指示书，3为热加工指示书
       }).then(resp => {
         if (resp.success) {
@@ -494,5 +552,10 @@ export default {
   }
   .total-tr td {
     padding-top: 10px;
+  }
+  .listHistory li {
+    list-style: none;
+    line-height: 30px;
+    cursor: pointer;
   }
 </style>
