@@ -191,6 +191,8 @@ export default {
         if (resp.success) {
           console.log(resp)
           this.cutDetail = resp.data
+        } else {
+          this.cutDetail = ''
         }
       })
     },
@@ -201,6 +203,8 @@ export default {
         console.log(resp)
         if (resp.success) {
           this.lists = resp.data
+        } else {
+          this.lists = ''
         }
       })
       this.dialog = true

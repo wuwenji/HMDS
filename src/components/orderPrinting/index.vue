@@ -397,7 +397,7 @@ export default {
       selectValue: '',
       title: '',
       info: {},
-      selOptions: ['2F→热处理', '6F→热处理', '素材→热处理→6F2G', '素材→热处理→6F2G→钻孔', '素材→6F→送回客户钻孔→热处理→2G', '素材→热处理'],
+      selOptions: ['2F→热处理', '6F→热处理', '6F→热处理→2G', '素材→热处理→6F2G', '素材→热处理→6F2G→钻孔', '素材→6F→送回客户钻孔→热处理→2G', '素材→热处理'],
       dialogOne: false,
       johnTab: 1,
       formData: {

@@ -54,34 +54,6 @@
             <el-option label="S" value="S"></el-option>
           </el-select>
         </el-form-item>
-        <div class="cl" style="margin-top: 10px;"></div>
-        <el-form-item class="form-item" label="是否标志" prop="isPaste">
-          <el-select v-model="formData.isPaste" placeholder="是否已贴">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="无" value="0"></el-option>
-            <el-option label="一致" value="1"></el-option>
-            <el-option label="不一致" value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item class="form-item" label="已打印" prop="printCount">
-          <el-select v-model="formData.printCount" placeholder="已打印">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item class="form-item" label="备注" prop="stockRemarks">
-          <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
-        </el-form-item>
-        <el-form-item label="入出库日">
-          <el-date-picker
-            type="date"
-            style="width: 140px;"
-            value-format="yyyy-MM-dd"
-            v-model="formData.latestToDateStr"
-          ></el-date-picker>
-        </el-form-item>
-        <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="join-input-row" label="厚">
           <el-col :span="11">
             <el-form-item prop="size1Start">
@@ -121,6 +93,7 @@
             </el-form-item>
           </el-col>
         </el-form-item>
+        <div class="cl" style="margin-top: 10px;"></div>
         <el-form-item class="join-input-row" label="数量">
           <el-col :span="11">
             <el-form-item prop="countStart">
@@ -133,6 +106,32 @@
               <el-input v-model="formData.countEnd"></el-input>
             </el-form-item>
           </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="是否标志" prop="isPaste">
+          <el-select v-model="formData.isPaste" placeholder="是否已贴">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="无" value="0"></el-option>
+            <el-option label="一致" value="1"></el-option>
+            <el-option label="不一致" value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="form-item" label="已打印" prop="printCount">
+          <el-select v-model="formData.printCount" placeholder="已打印">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item class="form-item" label="备注" prop="stockRemarks">
+          <el-input v-model="formData.stockRemarks" placeholder="备注"></el-input>
+        </el-form-item>
+        <el-form-item label="入出库日">
+          <el-date-picker
+            type="date"
+            style="width: 140px;"
+            value-format="yyyy-MM-dd"
+            v-model="formData.latestToDateStr"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="onSubmit(100, 1)">查询</el-button>
@@ -683,6 +682,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 270px);
+    height: calc(100% - 230px);
   }
 </style>

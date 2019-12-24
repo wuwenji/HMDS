@@ -324,6 +324,8 @@ export default {
         // console.log(resp)
         if (resp.success) {
           this.cutDetail = resp.data
+        } else {
+          this.cutDetail = ''
         }
       })
     },
@@ -337,6 +339,8 @@ export default {
           console.log(resp)
           if (resp.success) {
             this.lists = resp.data
+          } else {
+            this.lists = ''
           }
         })
       } else {
@@ -347,6 +351,8 @@ export default {
         // console.log(resp)
         if (resp.success) {
           this.listOne = resp.data
+        } else {
+          this.listOne = ''
         }
       })
       this.dialog = true

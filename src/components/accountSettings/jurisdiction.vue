@@ -34,6 +34,9 @@ export default {
           id: 10,
           label: '订单打印'
         }, {
+          id: 101,
+          label: '自动选料'
+        }, {
           id: 11,
           label: '历史订单'
         }, {

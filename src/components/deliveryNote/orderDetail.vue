@@ -216,7 +216,10 @@
           <div v-if="(deliveKey + 1) == dataLists.length" class="bottom">
             <p>注意：<br/>{{lists[0].paymentMethodDesc}}</p>
             <p>
-              <span>客户公章</span>
+              <span>
+                客户公章<br/><br/>
+                <span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日
+              </span>
               <span>日立金属（东莞）特殊钢有限公司</span>
             </p>
           </div>
@@ -347,17 +350,18 @@ export default {
     getTotal (item) {
       if (this.orderInfo.isShowAmount) {
         if (item.unitPriceCd === '2') {
-          if (item.itemName2) {
-            if (item.itemName2.indexOf('实际') > -1) {
-              let momen = item.actualWeight === null ? 0 : item.actualWeight
-              let out = item.outWeight === null ? 0 : item.outWeight
-              return item.soUnitPrice * (momen + out)
-            } else {
-              return item.soUnitPrice * item.soWt
-            }
-          } else {
-            return item.soUnitPrice * item.soWt
-          }
+          return item.soUnitPrice * item.soWt
+          // if (item.itemName2) {
+          //   if (item.itemName2.indexOf('实际') > -1) {
+          //     let momen = item.actualWeight === null ? 0 : item.actualWeight
+          //     let out = item.outWeight === null ? 0 : item.outWeight
+          //     return item.soUnitPrice * (momen + out)
+          //   } else {
+          //     return item.soUnitPrice * item.soWt
+          //   }
+          // } else {
+          //   return item.soUnitPrice * item.soWt
+          // }
         } else {
           return item.soUnitPrice * item.soQty
         }
@@ -441,6 +445,13 @@ export default {
     font-size: 19px;
     line-height: 21px;
   }
+  .date-line {
+    display: inline-block;
+    width: 40px !important;
+    float: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #000;
+  }
   .logo {
     width: 100px;
     position: absolute;
@@ -481,6 +492,8 @@ export default {
     width: 200px;
     padding-top: 10px;
     text-align: center;
+    position: absolute;
+    bottom: 0;
   }
   .bottom p span:nth-child(2) {
     float: right;
@@ -488,6 +501,8 @@ export default {
     width: 300px;
     padding-top: 10px;
     text-align: center;
+    position: relative;
+    bottom: 42px;
   }
   table {
     width: 1075px;

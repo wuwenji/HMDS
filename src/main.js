@@ -10,13 +10,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/john.css'
 import Print from 'vue-print-nb'
 import echarts from 'echarts'
+// import baseJs from './assets/js/demo'
+// Vue.prototype.$baseJs = baseJs
 Vue.use(Print)
 
 Vue.use(ElementUI)
 Vue.prototype.http = http
 
 Vue.config.productionTip = false
-
 /* eslint-disable no-new */
 new Vue({
   el: '#web',

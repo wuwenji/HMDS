@@ -105,6 +105,8 @@ export default {
           this.$router.push('/heat')
         } else if (val === '接单数据') {
           this.$router.push('/orderData')
+        } else if (val === '自动选料') {
+          this.$router.push('/materialSelection')
         }
       }
     }

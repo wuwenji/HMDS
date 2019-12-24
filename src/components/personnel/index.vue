@@ -340,6 +340,7 @@
           <el-select v-model="exportType">
             <el-option label="稼动导出" :value="1"></el-option>
             <el-option label="切削记录导出" :value="2"></el-option>
+            <el-option label="工程进度导出" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <div style="height: 10px;"></div>
@@ -408,8 +409,18 @@ export default {
   methods: {
     // 导出
     exportExcel () {
-      let nameStr = this.exportType === 1 ? '人员稼动表' : '切断记录导出表'
-      let url = this.exportType === 1 ? '/statistics/workerPerformanceStatistics' : '/statistics/workerPerformanceDetail'
+      let nameStr = ''
+      let url = ''
+      if (this.exportType === 1) {
+        nameStr = '人员稼动表'
+        url = '/statistics/workerPerformanceStatistics'
+      } else if (this.exportType === 2) {
+        nameStr = '切断记录导出表'
+        url = '/statistics/workerPerformanceDetail'
+      } else {
+        nameStr = '工程进度导出'
+        url = '/statistics/projectProgress'
+      }
       getExcel(url, {
         ...this.exoprt,
         download: 1,

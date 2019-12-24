@@ -24,6 +24,7 @@ import equipmentQR from '../pages/equipmentQR'
 import showTV from '../pages/showTV'
 import heatTreat from '../pages/heat'
 import orderData from '../pages/orderData'
+import materialSelection from '../pages/materialSelection'
 
 Vue.use(Router)
 
@@ -145,6 +146,11 @@ const routes = [
     path: '/orderData',
     name: 'orderData',
     component: orderData
+  },
+  {
+    path: '/materialSelection',
+    name: 'materialSelection',
+    component: materialSelection
   }
 ]
 

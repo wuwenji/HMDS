@@ -18,10 +18,12 @@
       <el-table
         border
         ref="table"
+        :row-class-name="tableRowClassName"
         @selection-change="selectChange"
         :data="lists">
         <el-table-column
           type="selection"
+          :selectable='checkboxT'
           width="55">
         </el-table-column>
         <el-table-column
@@ -55,6 +57,7 @@
       </el-table>
       <p class="btn">
         <el-button @click="looking" type="primary">预览</el-button>
+        <el-button @click="historyList" type="primary">历史记录</el-button>
       </p>
     </div>
     <div class="table-line-height" v-show="showContent == 2">
@@ -223,7 +226,9 @@
               </ol>
             </div>
             <p>
-              <span>客户公章</span>
+              <span>客户公章<br/><br/>
+                <span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日
+              </span>
               <span>日立金属（东莞）特殊钢有限公司</span>
             </p>
           </div>
@@ -231,6 +236,17 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      width="250px"
+      title="历史记录"
+      append-to-body
+      :visible.sync="historyListShow">
+      <ul class="listHistory">
+        <li @click="toHistory(item.data)" v-for="(item, index) in historyLists" :key="index">
+          {{item.printCode}}
+        </li>
+      </ul>
+    </el-dialog>
   </div>
 </template>
 
@@ -240,6 +256,8 @@ export default {
   props: ['orderInfo'],
   data () {
     return {
+      historyListShow: false,
+      historyLists: [],
       orderDetail: [],
       showContent: 1,
       selectValue: [],
@@ -260,6 +278,19 @@ export default {
     }
   },
   methods: {
+    checkboxT (row, rowIndex) {
+      if (row.isDelivery === '1') {
+        return 0
+      } else {
+        return 1
+      }
+    },
+    // 已打印变灰
+    tableRowClassName ({row, rowIndex}) {
+      if (row.isDelivery === '1') {
+        return 'isgray'
+      }
+    },
     // 获取订单类型
     getTypeTw (numb) {
       if (numb === '1') return '整条'
@@ -296,6 +327,29 @@ export default {
         }
       })
     },
+    // 历史记录详情
+    toHistory (data) {
+      this.selectValue = JSON.parse(data)
+      console.log('历史详情', this.dataLists)
+      this.historyListShow = false
+      this.looking()
+      // setTimeout(() => {
+      //   this.showContent = 2
+      // }, 1000)
+    },
+    // 查看历史记录
+    historyList () {
+      this.historyListShow = true
+      this.http('/printHistory/list', {
+        soNo: this.lists[0].custPoNo,
+        printType: '4'
+      }).then(resp => {
+        console.log('历史记录', resp)
+        if (resp.success) {
+          this.historyLists = resp.data.list
+        }
+      })
+    },
     // 获取单位
     getPeice (a) {
       if (a === '2') return 'KG'
@@ -310,7 +364,7 @@ export default {
             if (item.itemName2.indexOf('实际') > -1) {
               let momen = item.actualWeight === null ? 0 : item.actualWeight
               let out = item.outWeight === null ? 0 : item.outWeight
-              return item.soUnitPrice * ( momen + out )
+              return item.soUnitPrice * (momen + out)
             } else {
               return item.soUnitPrice * item.soWt
             }
@@ -325,8 +379,11 @@ export default {
       }
     },
     keeyHistory (obj) {
+      let data = JSON.stringify(this.selectValue)
       this.http('/printHistory/saveOrUpdate', {
         soNo: obj,
+        printCode: this.orderDetail[0].orderCode,
+        data,
         printType: '4'// 1为切断指示书，2为加工指示书，3为热加工指示书
       }).then(resp => {
         if (resp.success) {
@@ -412,6 +469,13 @@ export default {
     font-size: 19px;
     line-height: 21px;
   }
+  .date-line {
+    display: inline-block;
+    width: 40px !important;
+    float: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #000;
+  }
   .logo {
     width: 100px;
     position: absolute;
@@ -451,6 +515,8 @@ export default {
     width: 300px;
     padding-top: 10px;
     text-align: center;
+    position: absolute;
+    bottom: 0;
   }
   .bottom p span:nth-child(2) {
     float: right;
@@ -458,6 +524,8 @@ export default {
     width: 300px;
     padding-top: 10px;
     text-align: center;
+    position: relative;
+    bottom: 42px;
   }
   table {
     width: 1075px;
@@ -540,5 +608,10 @@ export default {
   }
   .total-tr td {
     padding-top: 10px;
+  }
+  .listHistory li {
+    list-style: none;
+    line-height: 30px;
+    cursor: pointer;
   }
 </style>

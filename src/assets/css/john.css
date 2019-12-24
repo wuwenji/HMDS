@@ -19,8 +19,30 @@ html {
   height: 100%;
   font-size: 10px;
 }
+
+/*@media (max-width: 1600px) {*/
+  /*html {*/
+    /*transform: scale(0.9);*/
+    /*transform-origin: 0 0;*/
+    /*height: 110%;*/
+    /*width: 110%;*/
+  /*}*/
+/*}*/
+
+/*@media (max-width: 1200px) {*/
+  /*html {*/
+    /*transform: scale(0.8);*/
+    /*transform-origin: 0 0;*/
+    /*height: 125%;*/
+    /*width: 125%;*/
+  /*}*/
+/*}*/
+
 body {
   height: 100%;
+  /*zoom: 3;*/
+  /*transform: scale(0.8);*/
+  /*transform-origin: 0 0;*/
   min-width: 1229px;
   -webkit-print-color-adjust: exact;
   font-size: 1.4rem;
@@ -59,6 +81,7 @@ body {
 .form-item .el-form-item__content {
   width: 150px;
 }
+
 .el-table td, .el-table th.is-leaf {
  border-bottom: 1px solid #ddd;
 }

@@ -31,6 +31,9 @@ export default {
             id: 10,
             title: '打印订单'
           }, {
+            id: 101,
+            title: '自动选料'
+          }, {
             id: 11,
             title: '历史订单'
           }, {
@@ -138,6 +141,9 @@ export default {
           children: [
             {
               title: '打印订单'
+            },
+            {
+              title: '自动选料'
             },
             {
               title: '历史订单'

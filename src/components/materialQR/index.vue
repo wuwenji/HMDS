@@ -32,7 +32,7 @@
       </div>
       <div class="cl"></div>
       <p style="text-align: center;margin-top: 20px;">
-        <el-button v-print="'.printQr'" type="primary">确认打印</el-button>
+        <el-button :disabled="bntDisabled" v-print="'.printQr'" @click="bntDisabled = true" type="primary">确认打印</el-button>
       </p>
     </el-dialog>
   </div>
@@ -44,6 +44,7 @@ export default {
   data () {
     return {
       counts: 1,
+      bntDisabled: false,
       type: 1,
       dialog: false,
       Qrs: []
@@ -55,6 +56,7 @@ export default {
         if (resp.success) {
           this.Qrs = resp.data
           this.dialog = true
+          this.bntDisabled = false
         }
       })
     }

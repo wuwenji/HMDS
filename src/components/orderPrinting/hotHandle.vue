@@ -81,7 +81,7 @@
           <tr class="inputs" v-for="(item, key) in hotData.treatmentEntrys" :key="'1' + key">
             <td><input v-model="item.gradeCd" type="text"></td>
             <td><input v-model="item.heatTreatType" type="text"></td>
-            <td><input v-model="item.itemName" type="text"></td>
+            <td><input style="width: 100%;margin: 0;" v-model="item.itemName" type="text"></td>
             <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
             <td class="numb-td"><input v-model="item.qty" type="text">
               <!--<span>件</span>-->
@@ -133,6 +133,7 @@
             &nbsp;
           </div>
         </div>
+        <!--<P style="text-align: right;">HMDS-QR-71/A2</P>-->
       </div>
       <p class="btn">
         <!--<el-button @click="preservation()" type="primary">保存</el-button>-->
