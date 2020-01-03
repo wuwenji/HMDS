@@ -1,38 +1,51 @@
 <template>
   <div>
     <div id="printContent">
-      <div class="btns" style="margin-bottom: 10px;">
-        <el-button type="success" size="mini">保存</el-button>
-        <el-button type="warning" size="mini">提交</el-button>
+      <div class="btns">
+        <div class="pages">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="showPage"
+            :page-size="1"
+            layout="prev, pager, next, jumper"
+            :total="orderInfo.totalPage">
+          </el-pagination>
+        </div>
+        <div class="keep-sub">
+          <el-button @click="keepData" type="success" size="mini">保存</el-button>
+          <el-button @click="listSubmit" type="warning" size="mini">提交</el-button>
+        </div>
       </div>
-      <div class="printPage" v-for="(item, index) in pinkData" :key="index">
+      <div class="printPage" v-for="(item, index) in orderInfo.list" v-if="showPage === index + 1" :key="index">
         <table class="table-tr-height" border="1" cellspacing="0" >
           <tr class="tr2s">
             <td></td>
-            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b style="font-size: 20px;">钢种</b>
-              <el-button size="mini" type="text">替换钢种</el-button>
-            </p></td>
-            <td colspan="4" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{item.order.gradeCd}}</b></p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b style="font-size: 20px;">钢种</b></p></td>
+            <td colspan="4" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{item[0].gradeCd}}</b></p></td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>接单号码</b> </p></td>
-            <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.order.soNo}}</p></td>
+            <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].soNo}}</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>营业员</b></p></td>
             <td colspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" >
-              <p style="float: left;">{{item.order.sUserName}}</p>
+              <p style="float: left;">{{item[0].suserName}}</p>
               <p style="float: right;padding-left: 20px;">
                 <span class="line-span"></span>
                 <b>发件人</b> </p>
             </td>
-            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.order.entryUserName}}</p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].entryUserName}}</p></td>
             <td rowspan="3">
-              <el-button style="margin: 5px;" type="primary" size="mini">母材优先</el-button>
+              <el-button style="margin: 5px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
               <br/>
-              <el-button style="margin: 0 5px;" type="primary" size="mini">残材优先</el-button>
+              <el-button style="margin: 0 5px;" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
               <br/>
-              <el-button style="margin: 5px;" type="primary" size="mini">合并选料</el-button>
+              <el-button style="margin: 5px;" @click="motherPrior(item, 2)" type="primary" size="mini">合并选料</el-button>
             </td>
           </tr>
           <tr >
-            <td width="30" rowspan="2" valign="center" nowrap="nowrap"><p align="center" >功能 </p></td>
+            <td width="30" class="check-label-none" rowspan="2" valign="center" nowrap="nowrap"><p align="center" >功能
+            <br/>
+              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+            </p></td>
             <td width="30" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >确认 </p></td>
             <td width="25" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >NO </p></td>
             <td colspan="4" valign="center" nowrap="nowrap" class="b"><p ><b>客户要求尺寸</b> </p></td>
@@ -52,17 +65,18 @@
             <td colspan="2" nowrap="nowrap" class="l r t"><p ><b>库存尺寸</b> </p></td>
             <td width="150" valign="center" nowrap="nowrap" class="l t"><p ><b>切断指示尺寸</b> </p></td>
           </tr>
-          <template v-for="list in item.workList">
-            <tr class="tr1">
+          <template v-for="(list, key) in item">
+            <tr class="tr1" :key="'dd' + key">
               <td rowspan="3" style="text-align: center;">
-                <p style="margin-bottom: 5px;">
-                  <el-checkbox></el-checkbox>
+                <p class="check-label-none" style="margin-bottom: 5px;">
+                  <!--@change="elChange(list, key)"-->
+                  <el-checkbox :label="list" v-model="selectData">&nbsp;</el-checkbox>
                 </p>
-                <span style="margin-bottom: 5px;" class="span-btn">+</span>
-                <span class="span-btn">-</span>
+                <span @click="addData = list; addShow = true" style="margin-bottom: 5px;" class="span-btn">+</span>
+                <span @click="removeCol(list)" class="span-btn">-</span>
               </td>
               <td width="30" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}</p></td>
+              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}{{list.lnNo ? '-' + list.lnNo : ''}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p>
                   <span style="width: 25px;display: inline-block;">{{list.machineShapeCd}}</span>
@@ -85,20 +99,23 @@
                   <span class="align-right">{{list.workInstQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
-              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
+              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p class="red">
                 {{list.stockType == 1? '母材' : ''}}
                 {{list.stockType == 2? '余材' : ''}}
                 <br/>{{list.matCntlNo}}
               </p></td>
-              <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                {{list.stockRemarks}}<br/>{{list.chargeNo}}
+              <td class="red" style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
+                <p style="position: absolute;">
+                  {{list.stockRemarks}}<br/>
+                  {{list.chargeNo}}
+                </p>
               </td>
               <td style="border-left: none;" colspan="3" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;
-                <span style="float: right;width: 168px;">
-                  包装箱号
+                <span class="red" style="float: right;width: 168px;">
+                  {{list.caseNo}}
                 </span>
               </p>
-                <p >{{list.stockSizeNote}}
+                <p ><span class="red">{{list.stockSizeNote}}</span>
                   <span style="float: right;width: 165px;">
                     {{list.machineShapeCd}}
                     {{list.instSize1}}X<template v-if="list.instSize2 > 0">{{list.instSize2}}X</template>{{list.instSize3}}
@@ -106,18 +123,30 @@
                   </span>
                 </p>
               </td>
-              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstQty}}</p></td>
+              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soQty}}</p></td>
               <td class="bt bl" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td rowspan="3" align="center">
-                <el-button style="margin: 5px;" type="warning" size="mini">手动选料</el-button>
-                <p>未选料</p>
+                <template>
+                  <el-button @click="handSelect(key)" style="margin: 5px;" type="warning" size="mini">手动选料</el-button>
+                  <el-button @click="replaceGrade(key)" style="margin: 5px;" size="mini">替换钢种</el-button>
+                </template>
+                <p class="red" v-if="list.selectType === null">
+                  未选料
+                </p>
+                <p class="red" v-else>
+                  {{list.selectType === '1' ? '母材' : ''}}
+                  {{list.selectType === '2' ? '残材' : ''}}
+                  {{list.selectType === '3' ? '合并' : ''}}
+                  {{list.selectType === '4' ? '手动' : ''}}
+                  {{list.selectType === '5' ? '跳过' : ''}}选料
+                </p>
               </td>
             </tr>
-            <tr class="tr2">
+            <tr class="tr2" :key="'cc' + key">
               <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
-            <tr class="tr3">
+            <tr class="tr3" :key="key">
               <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
@@ -133,65 +162,349 @@
           </template>
         </table>
       </div>
+      <div v-if="loading" class="loading">
+        <div class="loading-content">
+          <i class="el-icon-loading"></i>
+          <br/>
+          <br/>
+          <br/>
+          <el-button @click="calcelLoading" size="mini">取消</el-button>
+        </div>
+      </div>
+      <div v-if="addShow" class="loading">
+        <div class="addcol-content" style="padding-top: 20px;">
+         <ul class="add-row">
+           <li>数量:</li>
+           <li><el-input v-model="soQty"></el-input></li>
+           <li><el-button @click="addCol(addData)" type="primary">确定</el-button></li>
+         </ul>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <el-button @click="addShow = false">取消</el-button>
+        </div>
+      </div>
+      <div v-if="addColspan" class="loading">
+        <div class="addcol-content">
+          <p>
+            没有找到能满足此材料的1件材料。<br/>
+            以下是最匹配材料。
+          </p>
+          <table border="1" class="table">
+            <tr>
+              <th>溶解编号</th>
+              <th>尺寸</th>
+              <th>备注</th>
+            </tr>
+            <tr>
+              <td>CX809</td>
+              <td>F 30x60x1000</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>CX809</td>
+              <td>F 30x60x1000</td>
+              <td>1</td>
+            </tr>
+          </table>
+          <el-button @click="addColspan = false" type="primary" size="mini">同意</el-button>
+          <el-button @click="addColspan = false" size="mini">取消</el-button>
+        </div>
+      </div>
+      <div v-if="replaceGradShow" class="loading">
+        <div class="addcol-content">
+          <p>
+            增加可替换的钢种:
+            <br/>
+            <br/>
+            指示书中的原钢种不会被更改，但选择的钢种中默认会使用代替钢种，请选择代替钢种类型。
+          </p>
+          <div style="margin-bottom: 10px;">
+            <el-select v-model="replaceForm.replaceGrade" filterable placeholder="请选择钢种">
+              <el-option v-for="(item, key) in gradeCdList" :label="item" :value="item" :key="key"></el-option>
+            </el-select>
+          </div>
+          <div style="margin-bottom: 30px;">
+            <el-select v-model="replaceForm.selectType" placeholder="请选择匹配方式">
+              <el-option label="母材" value="1"></el-option>
+              <el-option label="残材" value="2"></el-option>
+            </el-select>
+          </div>
+          <el-button @click="promiseReplace(replaceForm.replaceGrade, replaceForm.selectType)" type="primary" size="mini">同意</el-button>
+          <el-button @click="replaceGradShow = false" size="mini">取消</el-button>
+        </div>
+      </div>
+      <div v-if="mergeShow" class="loading">
+        <div class="merge-content">
+          <div style="margin-bottom: 10px;">
+            <h2>根据厚度匹配 <el-checkbox class="merge-check"></el-checkbox></h2>
+            <div>
+              所选材料最小 <span class="merge-span">20</span> 范围 <input class="merge-inpue" value="5" type="text"> mm厚度
+            </div>
+          </div>
+          <div style="margin-bottom: 30px;">
+            <h2>根据宽度匹配 <el-checkbox class="merge-check"></el-checkbox></h2>
+            <div>
+              所选材料最小 <span class="merge-span">50</span> 范围 <input class="merge-inpue" value="5" type="text"> mm宽度
+            </div>
+          </div>
+          <el-button @click="mergeShow = false" type="primary" size="mini">确定</el-button>
+          <el-button @click="mergeShow = false" size="mini">取消</el-button>
+        </div>
+      </div>
+      <div v-if="handShow" class="loading">
+        <div class="hand-content" style="width: 1250px;">
+          <handCommd></handCommd>
+          <el-button @click="handShow = false" size="mini">取消</el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import handCommd from './manual'
 export default {
   name: 'printing',
-  props: ['title'],
+  components: {
+    handCommd
+  },
+  props: ['orderInfos'],
   data () {
     return {
       src: '',
       id: 0,
+      orderInfo: '',
+      nowKey: '',
+      soQty: 1,
+      addShow: false,
+      addData: '',
+      checkAll: false,
+      isIndeterminate: true,
+      showPage: 1,
+      handShow: false,
+      selectData: [],
+      loading: false,
+      addColspan: false,
+      replaceGradShow: false,
+      mergeShow: false,
+      currentPage: 1,
+      pageSize: 1,
       nullNumb: 5,
-      orderInfo: {
-        soNo: 100361002
-      },
-      pinkData: []
+      handData: [],
+      pinkData: [],
+      gradeCdList: [],
+      replaceForm: {
+        replaceGrade: '',
+        selectType: ''
+      }
     }
   },
   created () {
-    this.getHtml()
+    this.orderInfo = this.orderInfos
+    this.getGradeList()
+    // console.log('选料弹窗', this.orderInfo)
+    // this.getHtml()
     // console.log(this.orderInfo.id)
   },
   watch: {
-    orderInfo () {
-      this.getHtml()
-    }
+    // orderInfo () {
+    //   this.getHtml()
+    // }
   },
   methods: {
-    getHtml () {
-      this.http('/tSalesOrder/getPrintData', {
-        // id: 362
-        soNo: this.orderInfo.soNo
-      }).then(resp => {
-        if (resp.success) {
-          this.pinkData = []
-          resp.data.map(item => {
-            let workList = item.orderList.map(val => {
-              // let obj = {}
-              let obj = {
-                ...val.soWkInstList,
-                ...val
-              }
-              for (let key in obj) {
-                if (obj[key] === null) {
-                  obj[key] = val.soWkInstList[key]
-                }
-              }
-              return obj
-            })
-            let obj = {
-              order: workList[0],
-              workList
+    // 替换钢种
+    promiseReplace (grade, type) {
+      let oldData = this.orderInfo.list[this.showPage - 1][this.nowKey]
+      oldData.replaceGrade = this.replaceForm.replaceGrade
+      oldData.isSelected = 1
+      // this.addData.replaceGrade = this.replaceForm.replaceGrade
+      // this.selectData = [this.addData]
+      this.motherPrior(null, type)
+      this.replaceGradShow = false
+    },
+    // 全选
+    handleCheckAllChange (val) {
+      this.selectData = val ? this.orderInfo.list[this.showPage - 1] : []
+      this.isIndeterminate = false
+    },
+    // 手动选料
+    handSelect (key) {
+      this.nowKey = key
+      this.handShow = true
+    },
+    // 手动选中材料
+    handSelectData (data) {
+      this.handShow = false
+      let oldData = this.orderInfo.list[this.showPage - 1][this.nowKey]
+      oldData.stockRemarks = data.stockRemarks
+      oldData.chargeNo = data.chargeNo
+      oldData.caseNo = data.caseNo
+      oldData.stockSizeNote = data.stockSizeNote
+      oldData.stockType = data.stockType
+      oldData.matCntlNo = data.matCntlNo
+      oldData.stockNo = data.stockNo
+      oldData.selectType = '4'
+    },
+    // 母材优先
+    motherPrior (item_, type) {
+      let selData = this.selectData
+      let oldData = this.orderInfo.list[this.showPage - 1]
+      let url = '/orderSelect/autoOrderMaterial/' + type
+      oldData.map(item => {
+        if (selData.indexOf(item) > -1) {
+          item.isSelected = 1 // isSelected: 0:取消  1:选中
+        }
+      })
+      setTimeout(() => {
+        this.http(url, oldData).then(resp => {
+          if (resp.success) {
+            this.selectData = []
+            this.orderInfo.list[this.showPage - 1] = resp.data
+            if (resp.message) {
+              this.$message({
+                type: 'success',
+                message: resp.message,
+                duration: 2000
+              })
             }
-            this.pinkData.push(obj)
-            this.pinkData.length = 1
+          } else {
+            this.$message({
+              type: 'warning',
+              message: resp.message,
+              duration: 2000
+            })
+          }
+        })
+      }, 50)
+    },
+    // 保存结果
+    keepData () {
+      this.http('/orderSelect/saveOrderMaterial', this.selectData).then(resp => {
+        if (resp.message) {
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: resp.message,
+            duration: 2000
           })
         }
       })
+    },
+    // 提交数据
+    listSubmit () {
+      let url = '/orderSelect/finalSave/' + this.orderInfo.list[0][0].soNo
+      this.http(url).then(resp => {
+        if (resp.success) {
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: resp.message,
+            duration: 2000
+          })
+        }
+      })
+    },
+    // 残材优先
+    // disabledPrior (item) {
+    //   this.loading = true
+    // },
+    // 合并
+    // mergePrior (item) {
+    //   this.mergeShow = true
+    // },
+    // 取消加载
+    calcelLoading () {
+      this.loading = false
+    },
+    // 拆分行
+    addCol (item) {
+      let params = {
+        soNo: item.soNo,
+        soLnNo: item.soLnNo,
+        soQty: this.soQty,
+        lnNo: item.lnNo
+      }
+      this.changeCol(params, 1)
+    },
+    // 减少行
+    removeCol (item) {
+      let params = {
+        soNo: item.soNo,
+        soLnNo: item.soLnNo,
+        lnNo: item.lnNo,
+        soQty: item.soQty,
+        id: item.id
+      }
+      this.changeCol(params, 0)
+    },
+    // 拆减行
+    changeCol (params, type) {
+      this.http('/orderSelect/splitSoLnNo', {
+        ...params,
+        isSplit: type // 0:减少一行   1:加多一行
+      }).then(resp => {
+        this.addShow = false
+        console.log('拆减行', resp)
+        if (resp.success) {
+          this.updateData()
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: resp.message,
+            duration: 2000
+          })
+        }
+      })
+    },
+    // 数据更新
+    updateData () {
+      let url = '/orderSelect/detail/' + this.orderInfo.list[0][0].soNo
+      this.http(url).then(resp => {
+        if (resp.success) {
+          this.orderInfo = resp.data
+        }
+      })
+    },
+    // 替换钢种
+    replaceGrade (key) {
+      // this.addData = item
+      this.nowKey = key
+      this.replaceGradShow = true
+    },
+    // 获取钢种列表
+    getGradeList () {
+      this.http('/tMaterial/smartGetGradeCd?gradeCd=').then(resp => {
+        console.log('钢种列表', resp)
+        this.gradeCdList = resp
+      })
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.showPage = parseInt(`${val}`)
+    },
+    elChange (item, key) {
+      console.log(key, item)
+      this.selectData.push(item)
     }
   }
 }
@@ -350,5 +663,105 @@ export default {
   }
   .table2 td {
     width: 14%;
+  }
+  .loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.4);
+    /*color: #fff;*/
+    z-index: 999999;
+    text-align: center;
+  }
+  .loading-content {
+    background: rgba(255, 255, 255, 1);
+    margin: 20vh auto;
+    width: 150px;
+    height: 150px;
+    border-radius: 6px;
+  }
+  .loading i {
+    font-size: 40px;
+    margin-top: 30px;
+  }
+  .addcol-content {
+    background: rgba(255, 255, 255, 1);
+    margin: 20vh auto;
+    width: 400px;
+  }
+  .merge-content {
+    background: rgba(255, 255, 255, 1);
+    margin: 20vh auto;
+    width: 400px;
+    padding: 10px;
+  }
+  .hand-content {
+    background: rgba(255, 255, 255, 1);
+    margin: 0vh auto;
+    width: 1200px;
+    padding: 10px;
+  }
+  .merge-content h2 {
+    margin: 30px 0 10px 0;
+  }
+  .table {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .addcol-content {
+    padding: 10px;
+  }
+  .addcol-content p {
+    text-align: left;
+    line-height: 26px;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .table td, .table th {
+    padding: 5px;
+  }
+  .merge-check {
+    position: relative;
+    top: -3px;
+  }
+  .merge-inpue {
+    width: 70px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+  }
+  .merge-span {
+    width: 50px;
+    border: 1px solid #ccc;
+    text-align: center;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+  }
+  .keep-sub {
+    float: right;
+  }
+  .pages {
+    float: left;
+  }
+  .btns {
+    margin-bottom: 10px;
+    height: 30px;
+  }
+  .red {
+    color: red;
+  }
+  .add-row li:nth-child(1) {
+    line-height: 40px;
+    margin: 0 5px;
+  }
+  .add-row {
+    margin-left: 30px;
+  }
+  .add-row li {
+    float: left;
+    list-style: none;
   }
 </style>

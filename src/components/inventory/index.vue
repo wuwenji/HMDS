@@ -252,6 +252,32 @@
           label="重量">
         </el-table-column>
         <el-table-column
+          label="是否已选"
+          width="80px">
+          <template slot-scope="scope">
+            {{scope.row.selectEndTime ? '是' : '否'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="replaceGrade"
+          label="替换钢种">
+          <tempate slot-scope="scope">
+            {{scope.row.replaceGrade ? '是' : '否'}}
+          </tempate>
+        </el-table-column>
+        <el-table-column
+          label="选料时间"
+          width="140">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.selectEndTime, 1)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="selectSoNo"
+          label="已选接单"
+          width="140">
+        </el-table-column>
+        <el-table-column
           prop="orgSizeNote"
           label="母材尺寸"
           width="170px">
@@ -369,6 +395,32 @@
         prop="stockWt"
         align="right"
         label="重量">
+      </el-table-column>
+      <el-table-column
+        label="是否已选"
+        width="80px">
+        <template slot-scope="scope">
+          {{scope.row.selectEndTime ? '是' : '否'}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="replaceGrade"
+        label="替换钢种">
+        <tempate slot-scope="scope">
+          {{scope.row.replaceGrade ? '是' : '否'}}
+        </tempate>
+      </el-table-column>
+      <el-table-column
+        label="选料时间"
+        width="140">
+        <template slot-scope="scope">
+          {{$store.getters.getDate(scope.row.selectEndTime, 1)}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="selectSoNo"
+        label="已选接单"
+        width="130">
       </el-table-column>
       <el-table-column
         prop="orgSizeNote"

@@ -361,3 +361,10 @@ th div.cell {
 /*.mini-item .el-form-item__content {*/
   /*width: 110px !important;*/
 /*}*/
+.error-mesg {
+  font-size: 30px;
+}
+
+.check-label-none .el-checkbox__label {
+  display: none;
+}

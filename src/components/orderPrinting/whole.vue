@@ -250,6 +250,13 @@ export default {
         if (resp.success) {
           this.pinkData = resp.data
           console.log(this.pinkData)
+        } else {
+          // console.log(this.$parent.$parent.dialogOne)
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },

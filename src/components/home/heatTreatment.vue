@@ -244,13 +244,15 @@
             <tr>
               <td style="position: relative;" rowspan="2">
                 {{item.code}}
-                <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
-                  <img class="line-left" src="../../../static/images/left.png" alt="">
-                  <img class="line-right" src="../../../static/images/right.png" alt="">
-                </div>
-                <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
-                  {{`客户：${item.customers}。 材质：${item.materials}。`}}
-                </div>
+                <template v-if="item.customers && item.materials">
+                  <div v-if="isShow(item.startTime, item.endTime)" :style="getStyle(item.startTime, item.endTime)" class="midLine">
+                    <img class="line-left" src="../../../static/images/left.png" alt="">
+                    <img class="line-right" src="../../../static/images/right.png" alt="">
+                  </div>
+                  <div v-if="isShow(item.startTime, item.endTime)"  style="white-space:nowrap;" :style="getStyle(item.startTime, item.endTime)" class="explan">
+                    {{`客户：${item.customers}。 材质：${item.materials}。`}}
+                  </div>
+                </template>
               </td>
               <td style="border-bottom: 1px dashed #000;" v-for="index in 24" :key="index"></td>
               <td rowspan="2">

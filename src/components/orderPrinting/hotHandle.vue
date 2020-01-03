@@ -265,6 +265,12 @@ export default {
           } else {
             this.hotData.treatmentEntrys = []
           }
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
         this.getNewDatas()
       })

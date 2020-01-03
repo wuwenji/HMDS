@@ -479,14 +479,20 @@ export default {
       this.searchList(this.pageSize, this.pageNum)
     },
     printingOne (index, row, title) {
-      this.title = title
-      this.dialogOne = true
-      this.info = row
+      this.title = '123'
+      setTimeout(() => {
+        this.title = title
+        this.dialogOne = true
+        this.info = row
+      }, 30)
     },
     cutFun (index, row, title) {
-      this.title = title
-      this.dialogOne = true
-      this.info = row
+      this.title = '123'
+      setTimeout(() => {
+        this.title = title
+        this.dialogOne = true
+        this.info = row
+      }, 30)
       // console.log(index, row)
     },
     searchList (pageSize, pageNum) {

@@ -672,6 +672,12 @@ export default {
           this.machiningData.workList = lists
           this.machiningData.order = resp.data.order
           console.log(this.machiningData)
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },
@@ -725,10 +731,10 @@ export default {
   .qrImg {
     position: absolute;
     width: 40px;
-    margin-left: -42px;
-    margin-top: -16px;
-    /*left: -55px;*/
-    /*top: -5px;*/
+    /*margin-left: -42px;*/
+    /*margin-top: -16px;*/
+    margin-left: 290px;
+    margin-top: 9px;
   }
   #printContent {
     /*margin: 10px;*/

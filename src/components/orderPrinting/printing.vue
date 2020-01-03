@@ -268,6 +268,12 @@ export default {
           //   })
           //   this.pinkData.push(item)
           // })
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },

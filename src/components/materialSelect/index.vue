@@ -8,6 +8,36 @@
         <el-form-item class="form-item" label="接单号" prop="soNo">
           <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="订购商" prop="contName">
+          <el-input v-model="formData.contName" placeholder="订购商名称"></el-input>
+        </el-form-item>
+        <el-form-item class="form-item" label="发件人" prop="entryUserName">
+          <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
+        </el-form-item>
+        <div class="cl" style="height: 10px;"></div>
+        <el-form-item class="form-item" label="接单时间">
+          <el-col>
+            <el-form-item prop="soDateStr">
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+                v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="交期">
+          <el-col>
+            <el-form-item prop="contDueDateStr">
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+                v-model="formData.contDueDateStr"
+                style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="research(10, 1)">查询</el-button>
         </el-form-item>
@@ -31,12 +61,12 @@
           label="接单号">
         </el-table-column>
         <el-table-column
-          prop="customerName"
+          prop="contName"
           label="订购商名称"
           min-width="130">
         </el-table-column>
         <el-table-column
-          prop="sUserName"
+          prop="suserName"
           label="营业员"
           width="100">
         </el-table-column>
@@ -46,18 +76,23 @@
           width="100">
         </el-table-column>
         <el-table-column
-          label="是否选料"
+          label="是否完成"
           width="100">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.soDate, 2)}}
+            {{scope.row.status === 0 ? '否' : '是'}}
           </template>
         </el-table-column>
         <el-table-column
           label="选料完成时间"
           width="100">
           <template slot-scope="scope">
-            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+            {{$store.getters.getDate(scope.row.endTime, 2)}}
           </template>
+        </el-table-column>
+        <el-table-column
+          label="交期"
+          prop="contDueDate"
+          width="170">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -67,11 +102,11 @@
             <el-button
               size="mini"
               type="text"
-              @click="printOrder(scope.$index, scope.row)">选料</el-button>
+              @click="selectMaterial(scope.$index, scope.row)">选料</el-button>
             <el-button
               size="mini"
               type="text"
-              @click="printOrder(scope.$index, scope.row)">跳过</el-button>
+              @click="skipSelect(scope.$index, scope.row)">跳过</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -80,6 +115,56 @@
         :data="listData"
         border
         height="calc(100% - 75px)">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称"
+          min-width="130">
+        </el-table-column>
+        <el-table-column
+          prop="suserName"
+          label="营业员"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          label="是否完成"
+          width="100">
+          <template slot-scope="scope">
+            {{scope.row.status === 0 ? '否' : '是'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="选料完成时间"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期"
+          prop="contDueDate"
+          width="170">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          width="60"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="dataDetail(scope.$index, scope.row)">详情</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -98,7 +183,7 @@
       title="选料"
       :close-on-click-modal="false"
       :visible.sync="dialog">
-      <orderDetail v-if="dialog" :orderInfo="sentData"/>
+      <orderDetail v-if="dialog" :orderInfos="sentData"/>
     </el-dialog>
   </div>
 </template>
@@ -133,11 +218,47 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    // 详情
+    dataDetail (index, row) {
+      let url = '/orderSelect/detail/' + row.soNo
+      this.http(url).then(resp => {
+        console.log('详情', resp)
+        if (resp.success) {
+          this.sentData = resp.data
+          this.dialog = true
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 1000
+          })
+        }
+      })
+    },
+    // 跳过
+    skipSelect (index, row) {
+      let url = '/orderSelect/skipMaterial/' + row.soNo
+      this.http(url).then(resp => {
+        console.log('跳过', resp)
+        if (resp.success) {
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+          this.listData.splice(index, 1)
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 2000
+          })
+        }
+      })
+    },
     getList (pageSize, pageNum, type) {
-      this.http('/tSalesOrder/list', {
+      this.http('/orderSelect/listByPage', {
         pageSize,
         pageNum,
-        isDelivery: type // 1:已打印  0：未打印
+        isHistory: type // 1:历史列表  0：选料列表
       }).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -146,9 +267,20 @@ export default {
         }
       })
     },
-    printOrder (a, b) {
-      this.sentData = b
-      this.dialog = true
+    selectMaterial (a, b) {
+      let url = '/orderSelect/selectMaterial/' + b.soNo
+      this.http(url).then(resp => {
+        console.log('选料', resp)
+        if (resp.success) {
+          this.sentData = resp.data
+          this.dialog = true
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 1000
+          })
+        }
+      })
     },
     handleSizeChange (val) {
       this.pageSize = parseInt(`${val}`)
@@ -162,13 +294,14 @@ export default {
       this.johnTab = index
       this.pageSize = 10
       this.pageNum = 1
-      this.research(this.pageSize, this.pageNum)
+      this.research(this.pageSize, this.pageNum, this.johnTab)
     },
-    research (pageSize, pageNum) {
+    research (pageSize, pageNum, type) {
       this.formData.isDelivery = this.johnTab
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
-      this.http('/tSalesOrder/list', this.formData).then(resp => {
+      this.formData.isHistory = type
+      this.http('/orderSelect/listByPage', this.formData).then(resp => {
         console.log(resp)
         if (resp.success) {
           this.pageSize = pageSize
@@ -218,6 +351,6 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 170px);
+    height: calc(100% - 220px);
   }
 </style>
