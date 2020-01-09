@@ -179,7 +179,7 @@
       </div>
     </div>
     <el-dialog
-      width="1270px"
+      width="1370px"
       title="选料"
       :close-on-click-modal="false"
       :visible.sync="dialog">

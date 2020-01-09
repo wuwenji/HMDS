@@ -69,8 +69,8 @@
             <td>{{item.machineTolerance}}</td>
             <td>{{item.machineSpecCd}}</td>
             <td class="john-right">{{item.soQty}}</td>
-            <td class="john-right">{{item.soWt.toFixed(2)}}</td>
-            <td class="john-right">{{(item.area * item.soQty).toFixed(2)}}</td>
+            <td class="john-right">{{item.soWt ? item.soWt.toFixed(2) : ''}}</td>
+            <td class="john-right">{{item.area ? (item.area * item.soQty).toFixed(2) : ''}}</td>
             <td class="john-right">
               {{$store.getters.getDate(item.contDueDate, 2)}}
             </td>

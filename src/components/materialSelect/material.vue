@@ -33,12 +33,12 @@
                 <b>发件人</b> </p>
             </td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].entryUserName}}</p></td>
-            <td rowspan="3">
+            <td rowspan="3" style="text-align: center;">
               <el-button style="margin: 5px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
               <br/>
               <el-button style="margin: 0 5px;" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
               <br/>
-              <el-button style="margin: 5px;" @click="motherPrior(item, 2)" type="primary" size="mini">合并选料</el-button>
+              <el-button style="margin: 5px;" @click="mergePrior(item)" type="primary" size="mini">合并选料</el-button>
             </td>
           </tr>
           <tr >
@@ -106,7 +106,10 @@
               </p></td>
               <td class="red" style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p style="position: absolute;">
-                  {{list.stockRemarks}}<br/>
+                  {{list.stockRemarks}}
+                  <template v-if="list.mergeNo !== null && list.mergeLnNo !== null && list.mergeCount !== null">
+                    {{`${list.mergeNo}-${list.mergeLnNo}(${list.mergeCount})`}}
+                  </template><br/>
                   {{list.chargeNo}}
                 </p>
               </td>
@@ -148,7 +151,8 @@
             </tr>
             <tr class="tr3" :key="key">
               <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p>理论切削时间<br>
+                <span class="red">{{list.theoreticalCutTime}}&nbsp;</span></p></td>
               <td class="bt bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
                 作&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
               </p></td>
@@ -238,18 +242,18 @@
       <div v-if="mergeShow" class="loading">
         <div class="merge-content">
           <div style="margin-bottom: 10px;">
-            <h2>根据厚度匹配 <el-checkbox class="merge-check"></el-checkbox></h2>
+            <h2>根据厚度匹配 <el-checkbox @change="changeTick(selectTick)" class="merge-check" v-model="selectTick"></el-checkbox></h2>
             <div>
-              所选材料最小 <span class="merge-span">20</span> 范围 <input class="merge-inpue" value="5" type="text"> mm厚度
+              所选材料最大厚度： <span class="merge-span">{{ maxTickness }}</span> mm
             </div>
           </div>
           <div style="margin-bottom: 30px;">
-            <h2>根据宽度匹配 <el-checkbox class="merge-check"></el-checkbox></h2>
+            <h2>根据宽度匹配 <el-checkbox @change="changeWidth(selectWidth)" class="merge-check" v-model="selectWidth"></el-checkbox></h2>
             <div>
-              所选材料最小 <span class="merge-span">50</span> 范围 <input class="merge-inpue" value="5" type="text"> mm宽度
+              所选材料最大宽度： <span class="merge-span">{{ maxWidth }}</span> mm
             </div>
           </div>
-          <el-button @click="mergeShow = false" type="primary" size="mini">确定</el-button>
+          <el-button @click="primisteMerge" type="primary" size="mini">确定</el-button>
           <el-button @click="mergeShow = false" size="mini">取消</el-button>
         </div>
       </div>
@@ -275,9 +279,13 @@ export default {
     return {
       src: '',
       id: 0,
+      selectTick: true,
+      selectWidth: false,
       orderInfo: '',
       nowKey: '',
       soQty: 1,
+      maxWidth: 0,
+      maxTickness: 0,
       addShow: false,
       addData: '',
       checkAll: false,
@@ -314,6 +322,12 @@ export default {
     // }
   },
   methods: {
+    changeTick (flag) {
+      this.selectWidth = !flag
+    },
+    changeWidth (flag) {
+      this.selectTick = !flag
+    },
     // 替换钢种
     promiseReplace (grade, type) {
       let oldData = this.orderInfo.list[this.showPage - 1][this.nowKey]
@@ -321,7 +335,7 @@ export default {
       oldData.isSelected = 1
       // this.addData.replaceGrade = this.replaceForm.replaceGrade
       // this.selectData = [this.addData]
-      this.motherPrior(null, type)
+      this.motherPrior(null, type, null, 1)
       this.replaceGradShow = false
     },
     // 全选
@@ -347,14 +361,18 @@ export default {
       oldData.stockNo = data.stockNo
       oldData.selectType = '4'
     },
-    // 母材优先
-    motherPrior (item_, type) {
+    // 优先
+    motherPrior (item_, type, src = null, isSelect = null) {
       let selData = this.selectData
       let oldData = this.orderInfo.list[this.showPage - 1]
-      let url = '/orderSelect/autoOrderMaterial/' + type
+      let url = src || '/orderSelect/autoOrderMaterial/' + type
       oldData.map(item => {
         if (selData.indexOf(item) > -1) {
           item.isSelected = 1 // isSelected: 0:取消  1:选中
+        } else {
+          if (isSelect !== 1) {
+            item.isSelected = 0
+          }
         }
       })
       setTimeout(() => {
@@ -383,6 +401,7 @@ export default {
     keepData () {
       this.http('/orderSelect/saveOrderMaterial', this.selectData).then(resp => {
         if (resp.message) {
+          this.updateData()
           this.$message({
             type: 'success',
             message: resp.message,
@@ -421,9 +440,33 @@ export default {
     //   this.loading = true
     // },
     // 合并
-    // mergePrior (item) {
-    //   this.mergeShow = true
-    // },
+    mergePrior (item) {
+      let widths = []
+      let tickness = []
+      console.log(this.selectData)
+      this.selectData.map(item => {
+        widths.push(item.instSize2)
+        tickness.push(item.instSize1)
+      })
+      if (widths.length > 0) {
+        this.maxWidth = widths.sort((a, b) => b - a)[0]
+      }
+      if (tickness.length > 0) {
+        this.maxTickness = tickness.sort((a, b) => b - a)[0]
+      }
+      this.mergeShow = true
+    },
+    // 确定合并
+    primisteMerge () {
+      let url = ''
+      if (this.selectTick) {
+        url = '/orderSelect/autoOrderMaterial/3?targetSize1=' + this.maxTickness
+      } else {
+        url = '/orderSelect/autoOrderMaterial/3?targetSize2=' + this.maxWidth
+      }
+      this.motherPrior(null, 3, url)
+      this.mergeShow = false
+    },
     // 取消加载
     calcelLoading () {
       this.loading = false

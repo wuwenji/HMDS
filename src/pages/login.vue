@@ -3,7 +3,7 @@
     <div class="login">
       <div class="login-title">
         <img src="../../static/images/logo.png" alt="">
-        <h2>HMDS智能管理系统测试版</h2>
+        <h2>HMDS智能管理系统</h2>
       </div>
       <form class="login-form" action="">
         <p class="mesg">{{message}}</p>
