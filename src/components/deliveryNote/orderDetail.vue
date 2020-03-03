@@ -217,8 +217,11 @@
             <p>注意：<br/>{{lists[0].paymentMethodDesc}}</p>
             <p>
               <span>
-                客户公章<br/><br/>
-                <span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日
+                客户公章 (
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日 )
+<!--<span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日-->
               </span>
               <span>日立金属（东莞）特殊钢有限公司</span>
             </p>
@@ -450,7 +453,7 @@ export default {
     width: 40px !important;
     float: none !important;
     border-top: none !important;
-    border-bottom: 1px solid #000;
+    /*border-bottom: 1px solid #000;*/
   }
   .logo {
     width: 100px;
@@ -489,7 +492,7 @@ export default {
   .bottom p span:nth-child(1) {
     float: left;
     border-top: 1px solid #000;
-    width: 200px;
+    width: 300px;
     padding-top: 10px;
     text-align: center;
     position: absolute;
@@ -502,7 +505,7 @@ export default {
     padding-top: 10px;
     text-align: center;
     position: relative;
-    bottom: 42px;
+    bottom: 0px;
   }
   table {
     width: 1075px;

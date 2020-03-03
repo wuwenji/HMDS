@@ -34,11 +34,13 @@
             </td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].entryUserName}}</p></td>
             <td rowspan="3" style="text-align: center;">
-              <el-button style="margin: 5px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
+              <el-button style="margin: 2px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
               <br/>
-              <el-button style="margin: 0 5px;" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
+              <el-button style="" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
               <br/>
-              <el-button style="margin: 5px;" @click="mergePrior(item)" type="primary" size="mini">合并选料</el-button>
+              <el-button style="margin: 2px;" @click="mergePrior(item)" type="primary" size="mini">合并选料</el-button>
+              <br/>
+              <el-button style="margin-bottom: 2px;" @click="clearSelect(item)" type="warning" size="mini">清空选料</el-button>
             </td>
           </tr>
           <tr >
@@ -116,6 +118,9 @@
               <td style="border-left: none;" colspan="3" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;
                 <span class="red" style="float: right;width: 168px;">
                   {{list.caseNo}}
+                  <span style="float: right;">
+                    库{{list.stockQty || 0}}用{{list.usageQuantity}}
+                  </span>
                 </span>
               </p>
                 <p ><span class="red">{{list.stockSizeNote}}</span>
@@ -131,8 +136,8 @@
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td rowspan="3" align="center">
                 <template>
-                  <el-button @click="handSelect(key)" style="margin: 5px;" type="warning" size="mini">手动选料</el-button>
-                  <el-button @click="replaceGrade(key)" style="margin: 5px;" size="mini">替换钢种</el-button>
+                  <el-button @click="handSelect(key)" style="margin: 2px;" type="warning" size="mini">手动选料</el-button>
+                  <el-button @click="replaceGrade(key)" style="margin: 2px;" size="mini">替换钢种</el-button>
                 </template>
                 <p class="red" v-if="list.selectType === null">
                   未选料
@@ -456,6 +461,36 @@ export default {
       }
       this.mergeShow = true
     },
+
+    // 清空选料
+    clearSelect (key) {
+      let stockNos = '/orderSelect/clearOrderMaterial?stockNos='
+      this.selectData.map((item, key) => {
+        if (key === this.selectData.length - 1) {
+          stockNos += item.stockNo
+        } else {
+          stockNos += item.stockNo + ','
+        }
+      })
+      console.log(stockNos)
+      this.http(stockNos).then(resp => {
+        if (resp.success) {
+          this.updateData()
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: resp.message,
+            duration: 2000
+          })
+        }
+      })
+    },
+
     // 确定合并
     primisteMerge () {
       let url = ''
@@ -533,7 +568,7 @@ export default {
     },
     // 获取钢种列表
     getGradeList () {
-      this.http('/tMaterial/smartGetGradeCd?gradeCd=').then(resp => {
+      this.http('/tMaterial/smartGetGradeCd?gradeCd=&type=1').then(resp => {
         console.log('钢种列表', resp)
         this.gradeCdList = resp
       })
@@ -806,5 +841,8 @@ export default {
   .add-row li {
     float: left;
     list-style: none;
+  }
+  .el-button--mini, .el-button--mini.is-round {
+    padding: 4px 15px;
   }
 </style>

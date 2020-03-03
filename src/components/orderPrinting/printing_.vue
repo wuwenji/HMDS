@@ -61,7 +61,7 @@
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.order.soNo}}</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>营业员</b></p></td>
             <td colspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" >
-              <p style="float: left;">{{item.order.sUserName}}</p>
+              <p style="float: left;">{{item.order.suserName}}</p>
               <p style="float: right;border-left: 1px solid #000;padding-left: 20px;height: 25px;"><b>发件人</b> </p>
             </td>
             <!--<td width="30" valign="center" nowrap="nowrap" bordercolor="#000000" >-->
@@ -120,7 +120,7 @@
                     {{list.unitPriceCd == 7? '個': ''}}
                     {{list.unitPriceCd == 8? '套': ''}}
                   </span>
-                  <span class="align-right">{{list.workInstQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
+                  <span class="align-right">{{list.soQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
@@ -140,7 +140,7 @@
                   </span>
                 </p>
               </td>
-              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstQty}}</p></td>
+              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soQty}}</p></td>
               <td class="bt bl" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
@@ -231,14 +231,13 @@ export default {
             let workList = item.orderList.map(val => {
               // let obj = {}
               let obj = {
-                ...val.soWkInstList,
                 ...val
               }
-              for (let key in obj) {
-                if (obj[key] === null) {
-                  obj[key] = val.soWkInstList[key]
-                }
-              }
+              // for (let key in obj) {
+              //   if (obj[key] === null) {
+              //     obj[key] = val.soWkInstList[key]
+              //   }
+              // }
               // val.forEach((val, key) => {
               //   if (val === null) {
               //     obj[key] = val.soWkInstList[key]
@@ -254,6 +253,20 @@ export default {
             }
             this.pinkData.push(obj)
           })
+          // console.log(this.pinkData)
+          // console.log(this.pinkData)
+          // this.pinkData = []
+          // // this.pinkData = resp.data
+          // resp.data.map(item => {
+          //   item.workList = item.workList.map(val => {
+          //     let obj = {
+          //       ...val,
+          //       ...val.soWkInstList
+          //     }
+          //     return obj
+          //   })
+          //   this.pinkData.push(item)
+          // })
         } else {
           this.$message.error({
             message: resp.message,

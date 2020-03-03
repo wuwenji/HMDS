@@ -120,9 +120,9 @@
         <el-table-column
           prop="replaceGrade"
           label="替换钢种">
-          <tempate slot-scope="scope">
+          <template slot-scope="scope">
             {{scope.row.replaceGrade ? '是' : '否'}}
-          </tempate>
+          </template>
         </el-table-column>
         <el-table-column
           label="选料时间"
@@ -135,6 +135,11 @@
           prop="selectSoNo"
           label="已选接单"
           width="130">
+          <template slot-scope="scope">
+            <ul class="sono-list">
+              <li v-for="(item, key) in getSoNos(scope.row.selectSoNo)" :key="item + key" @click="getSoNoDetail(item)">{{item}}</li>
+            </ul>
+          </template>
         </el-table-column>
         <el-table-column
           label="操作"
@@ -157,6 +162,37 @@
         </el-pagination>
       </div>
     </div>
+    <el-dialog
+      title="详情"
+      append-to-body
+      width="900px"
+      :visible.sync="soNodetailShow">
+      <table class="table" border="1">
+        <tr>
+          <td><b>接单号码</b></td>
+          <td>{{soNoDetail.soNo}}</td>
+          <td><b>接单行号</b></td>
+          <td>{{soNoDetail.soLnNo}}{{soNoDetail.lnNo ? '-' + soNoDetail.lnNo : ''}}</td>
+          <td><b>溶解号码</b></td>
+          <td>{{soNoDetail.chargeNo}}</td>
+          <td><b>指示数量</b></td>
+          <td>{{soNoDetail.soQty}}</td>
+        </tr>
+        <tr>
+          <td><b>要求尺寸</b></td>
+          <td>
+            {{soNoDetail.machineShapeCd}}{{soNoDetail.size1}}X {{soNoDetail.size2 > 0? soNoDetail.size2 + 'X' : ''}} {{soNoDetail.size3}}
+          </td>
+          <td><b>已选料尺寸</b></td>
+          <td colspan="2">{{soNoDetail.stockSizeNote}}</td>
+          <td><b>指示尺寸</b></td>
+          <td colspan="2">
+            {{soNoDetail.machineShapeCd}}
+            {{soNoDetail.instSize1}}X<template v-if="soNoDetail.instSize2 > 0">{{soNoDetail.instSize2}}X</template>{{soNoDetail.instSize3}}
+          </td>
+        </tr>
+      </table>
+    </el-dialog>
   </div>
 </template>
 
@@ -167,6 +203,8 @@ export default {
     return {
       pageNum: 1,
       pageSize: 100,
+      soNodetailShow: false,
+      soNoDetail: '',
       total: 0,
       formData: {
         size1Start: '',
@@ -186,6 +224,28 @@ export default {
     this.getList(1, 100)
   },
   methods: {
+    // 字符串转
+    getSoNos (string) {
+      if (string) {
+        return string.split(',')
+      }
+    },
+    // 获取详情
+    getSoNoDetail (soNo) {
+      let url = '/orderSelect/soLnNoDetail/' + soNo
+      this.http(url).then(resp => {
+        console.log(resp)
+        if (resp.success) {
+          this.soNoDetail = resp.data
+          this.soNodetailShow = true
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 1000
+          })
+        }
+      })
+    },
     // 数据选择
     dataSelect (value) {
       this.$parent.handSelectData(value)
@@ -300,5 +360,16 @@ export default {
   }
   .form-item {
     width: 170px;
+  }
+  .sono-list li {
+    list-style: none;
+    cursor: pointer;
+    color: blue;
+  }
+  .table {
+    width: 100%;
+  }
+  .table td {
+    padding: 10px;
   }
 </style>

@@ -181,6 +181,8 @@
     <el-dialog
       width="1370px"
       title="选料"
+      top="1vh"
+      custom-class="min-height"
       :close-on-click-modal="false"
       :visible.sync="dialog">
       <orderDetail v-if="dialog" :orderInfos="sentData"/>
@@ -284,11 +286,11 @@ export default {
     },
     handleSizeChange (val) {
       this.pageSize = parseInt(`${val}`)
-      this.research(this.pageSize, this.pageNum)
+      this.research(this.pageSize, this.pageNum, this.johnTab)
     },
     handleCurrentChange (val) {
       this.pageNum = parseInt(`${val}`)
-      this.research(this.pageSize, this.pageNum)
+      this.research(this.pageSize, this.pageNum, this.johnTab)
     },
     tabClick (index) {
       this.johnTab = index

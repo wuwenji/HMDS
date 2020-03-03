@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!--<div class="box" ref="lineChart"></div>-->
     <div class="login">
       <div class="login-title">
         <img src="../../static/images/logo.png" alt="">
@@ -29,6 +30,11 @@
 </template>
 
 <style scoped>
+  .box {
+    width: 700px;
+    height: 700px;
+    background: #fff;
+  }
   .login {
     width: 320px;
     height: 250px;
@@ -88,6 +94,116 @@
 
 <script>
 let bgSrc = 'background:url(./static/images/bg.jpg) no-repeat center top'
+
+let datas = [
+  {
+    name: '1号单',
+    statTime: 9,
+    endTime: 9.3,
+    userTime: 0.3
+  },
+  {
+    name: '2号单',
+    statTime: 9.3,
+    endTime: 10,
+    userTime: 0.7
+  },
+  {
+    name: '3号单',
+    statTime: 10,
+    endTime: 12,
+    userTime: 2
+  }
+]
+
+let option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    },
+    formatter: (value) => {
+      let html = `${value[0].axisValue}<br/>`
+      value.map(item => {
+        html += `${item.seriesName}用时：${(item.data - 9).toFixed(1)}小时<br/>`
+      })
+      return html
+    }
+  },
+  legend: {
+    show: false,
+    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: [
+    {
+      type: 'category',
+      data: ['1号机', '2号机']
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value',
+      name: '时间',
+      min: 9,
+      max: 33,
+      interval: 1,
+      axisLabel: {
+        formatter: (value) => {
+          let val = value.toString()
+          if (val > 24) {
+            let h = val - 24
+            return '明 ' + '0' + h + ':00'
+          } else {
+            val = val > 9 ? val : '0' + val
+            return '今 ' + val + ':00'
+          }
+          // if (val.indexOf('.') > -1) {
+          //   let array = val.split('.')
+          //   let h = array[0] > 9 ? array[0] : '0' + array[0]
+          //   return h + ':30'
+          // } else {
+          //   val = val > 9 ? val : '0' + val
+          //   return '今 ' + val + ':00'
+          // }
+        }
+      },
+      splitLine: {
+        show: true
+      }
+    }
+  ],
+  series: [
+    {
+      name: '1号单',
+      type: 'bar',
+      stack: 'aa',
+      data: [9 + datas[0].userTime, 9 + datas[0].userTime]
+    },
+    {
+      name: '2号单',
+      type: 'bar',
+      stack: 'aa',
+      data: [9 + datas[1].userTime, 9 + datas[1].userTime]
+    },
+    {
+      name: '3号单',
+      type: 'bar',
+      stack: 'aa',
+      data: [9 + datas[2].userTime, 9 + datas[2].userTime]
+    }
+  ]
+}
+
+let echarts = require('echarts/lib/echarts')
+              require('echarts/lib/chart/bar')
+              require('echarts/lib/component/tooltip')
+              require('echarts/lib/component/title')
 export default {
   data () {
     return {
@@ -98,6 +214,10 @@ export default {
     }
   },
   methods: {
+    drawEchar () {
+      let myChart = echarts.init(this.$refs.lineChart)
+      myChart.setOption(option)
+    },
     submit (user, passw) {
       this.http('/sysUser/login',
         {
@@ -133,6 +253,9 @@ export default {
   },
   created () {
     this.goUser()
+  },
+  mounted () {
+    // this.drawEchar()
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', bgSrc)

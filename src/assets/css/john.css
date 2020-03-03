@@ -368,3 +368,7 @@ th div.cell {
 .check-label-none .el-checkbox__label {
   display: none;
 }
+
+.min-height .el-dialog__body {
+  padding: 0px 20px 10px;
+}

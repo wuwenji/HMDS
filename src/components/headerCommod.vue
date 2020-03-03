@@ -2,7 +2,7 @@
   <header>
     <div class="logo">
       <img class="logo-img" src="../../static/images/logo.png" alt="">
-      <h2><span>日立金属</span> HMDS智能管理系统</h2>
+      <h2><span>日立金属</span> HMDS智能管理系统 <span v-if="$store.state.httpUrl.indexOf(187) > 0" style="color: red;">（请注意！此网页为测试版本）</span></h2>
       <!--{{$baseJs.getAge(100)}}-->
       <!--<progress max="100" value="20"/>-->
     </div>

@@ -46,23 +46,24 @@
                 <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</td>
                 <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{item.soLnNo}}</td>
                 <td><strong>发件人</strong></td>
-                <td colspan="2">{{machiningData.order.entryUserName}}</td>
+                <td colspan="2">{{item.entryUserName}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>订购商名称</strong></td>
-                <td class="l" colspan="5">{{machiningData.order.contKname}}</td>
+                <td class="l" colspan="5">{{item.contName}}</td>
                 <td class="r t b"><strong>交期</strong></td>
                 <td class="l b">
                   {{item.contDueDate}}
+                  <!--{{$store.getters.getDate(machiningData.order.contDueDate, 2)}}-->
                 </td>
                 <td class="b" style="width: 54px;"><strong>指示数量</strong></td>
               </tr>
               <tr>
                 <td class="r"><strong>送货地址名称</strong></td>
-                <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
+                <td class="l" colspan="5"> {{item.shiptoName}} </td>
                 <td class="r t"></td>
                 <td class="t l"></td>
-                <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
+                <td class="t" align="right" style="font-size: 20px;"><strong>{{item.soQty}}</strong></td>
               </tr>
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
@@ -75,7 +76,7 @@
               <tr>
                 <td  class="r"><strong>客户要求尺寸</strong></td>
                 <td align="center" style="font-size: 20px;" colspan="6" class="l">
-                  {{machiningData.order.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                  {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
                   <!--{{item.instSizeNote}}-->
                 </td>
                 <!--<td class="r l">30</td>-->
@@ -97,7 +98,7 @@
                 <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
                 <td class="t">{{item.chamferSpec}}</td>
                 <td align="center" style="font-size: 20px;" colspan="5" class="t">
-                  {{machiningData.order.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
+                  {{item.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
                   <!--{{item.instSizeNote}}-->
                 </td>
                 <!--<td class="t r l">X</td>-->
@@ -189,13 +190,13 @@
               <col width="90">
               <col width="90">
               <tr>
-                <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contKname}}</td>
+                <td colspan="9"><strong>订购商名称：</strong>{{item.contName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
+                <td colspan="9"><strong>送货地址名称：</strong>{{item.shiptoName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>订单号：</strong>{{machiningData.order.contPoNo}}</td>
+                <td colspan="9"><strong>订单号：</strong>{{item.contPoNo}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>
@@ -212,7 +213,7 @@
                 <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
                 <td colspan="7" class="r l tb bb br">
                   <strong>
-                    {{machiningData.order.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                    {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
                     <!--{{item.specExternalNote}}-->
                   </strong>
                 </td>
@@ -347,11 +348,11 @@
                 <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</td>
                 <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{item.soLnNo}}</td>
                 <td><strong>发件人</strong></td>
-                <td colspan="2">{{machiningData.order.entryUserName}}</td>
+                <td colspan="2">{{item.entryUserName}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>订购商名称</strong></td>
-                <td class="l" colspan="5">{{machiningData.order.contKname}}</td>
+                <td class="l" colspan="5">{{item.contName}}</td>
                 <td class="r t b"><strong>交期</strong></td>
                 <td class="l b">
                   {{item.contDueDate}}
@@ -361,10 +362,10 @@
               </tr>
               <tr>
                 <td class="r"><strong>送货地址名称</strong></td>
-                <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
+                <td class="l" colspan="5"> {{item.shiptoName}} </td>
                 <td class="r t"></td>
                 <td class="t l"></td>
-                <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
+                <td class="t" align="right" style="font-size: 20px;"><strong>{{item.soQty}}</strong></td>
               </tr>
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
@@ -378,7 +379,7 @@
                 <td  class="r"><strong>客户要求尺寸</strong></td>
                 <td align="center" style="font-size: 20px;" colspan="6" class="l">
                   <!--{{item.instSizeNote}}-->
-                  {{machiningData.order.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                  {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
                 </td>
                 <!--<td class="r l">30</td>-->
                 <!--<td class="r l">X</td>-->
@@ -399,7 +400,7 @@
                 <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
                 <td class="t">{{item.chamferSpec}}</td>
                 <td align="center" style="font-size: 20px;" colspan="5" class="t">
-                  {{machiningData.order.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
+                  {{item.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
                   <!--{{item.instSizeNote}}-->
                 </td>
                 <!--<td class="t r l">X</td>-->
@@ -491,13 +492,13 @@
               <col width="90">
               <col width="90">
               <tr>
-                <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contKname}}</td>
+                <td colspan="9"><strong>订购商名称：</strong>{{item.contName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
+                <td colspan="9"><strong>送货地址名称：</strong>{{item.shiptoName}}</td>
               </tr>
               <tr>
-                <td colspan="9"><strong>订单号：</strong>{{machiningData.order.contPoNo}}</td>
+                <td colspan="9"><strong>订单号：</strong>{{item.contPoNo}}</td>
               </tr>
               <tr>
                 <td class="r"><strong>钢种</strong></td>
@@ -514,7 +515,7 @@
                 <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
                 <td colspan="7" class="r l tb bb br">
                   <strong>
-                    {{machiningData.order.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                    {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
                   </strong>
                 </td>
               </tr>
@@ -661,7 +662,7 @@ export default {
           let lists = []
           // this.machiningData = resp.data
           // console.log(this.machiningData)
-          resp.data.soList.map(item => {
+          resp.data.map(item => {
             let obj = {
               ...item.workData,
               ...item
@@ -669,7 +670,7 @@ export default {
             lists.push(obj)
           })
           this.machiningData.workList = lists
-          this.machiningData.order = resp.data.order
+          // this.machiningData.order = resp.data.order
           console.log(this.machiningData)
         } else {
           this.$message.error({

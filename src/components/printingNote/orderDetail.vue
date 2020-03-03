@@ -226,8 +226,12 @@
               </ol>
             </div>
             <p>
-              <span>客户公章<br/><br/>
-                <span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日
+              <span>
+                客户公章 (
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日 )
+                <!--<span class="date-line"></span>年<span class="date-line"></span>月<span class="date-line"></span>日-->
               </span>
               <span>日立金属（东莞）特殊钢有限公司</span>
             </p>
@@ -525,7 +529,7 @@ export default {
     padding-top: 10px;
     text-align: center;
     position: relative;
-    bottom: 42px;
+    bottom: 0px;
   }
   table {
     width: 1075px;

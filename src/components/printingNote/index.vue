@@ -52,7 +52,7 @@
           width="100">
         </el-table-column>
         <el-table-column
-          prop="deliveryAddress"
+          prop="customerName"
           label="客户">
         </el-table-column>
         <el-table-column

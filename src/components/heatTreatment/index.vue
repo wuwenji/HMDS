@@ -38,7 +38,7 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <div class="cl" style="margin-top: 5px;"></div>
+        <!--<div class="cl" style="margin-top: 5px;"></div>-->
         <el-form-item class="form-item" label="入货时间">
           <el-col>
             <el-form-item prop="acceptTime">
@@ -46,10 +46,17 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item class="form-item" label="出货时间">
+        <el-form-item class="form-item" label="计划日">
           <el-col>
             <el-form-item prop="shipmentPlanTime">
               <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.shipmentPlanTime" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="出货时间">
+          <el-col>
+            <el-form-item prop="shipmentTime">
+              <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.shipmentTime" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -57,6 +64,27 @@
           <el-col>
             <el-form-item prop="contDueDate">
               <el-date-picker type="date" value-format="timestamp" placeholder="选择日期" v-model="formData.contDueDate" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="延迟天数">
+          <el-col>
+            <el-form-item prop="delayDays">
+              <el-select v-model="formData.delayDays">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="有" value="1"></el-option>
+                <el-option label="没有" value="0"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="使用炉">
+          <el-col>
+            <el-form-item prop="equipmentName">
+              <el-select v-model="formData.equipmentName">
+                <el-option label="全部" value=""></el-option>
+                <el-option v-for="item in equipmentNames" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -334,6 +362,14 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="shipmentTime"
+          width="100"
+          label="出货时间">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.shipmentTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="操作"
           fixed="right"
           width="100">
@@ -415,6 +451,7 @@ export default {
       total: 0,
       exportDialog: false,
       dialog: false,
+      equipmentNames: [],
       sendDate: '',
       exoprt: {
         tempStartTime: '',
@@ -427,15 +464,36 @@ export default {
         contDueDate: '',
         customerName: '',
         planTime: '',
-        tempStr: ''
+        shipmentPlanTime: '',
+        delayDays: '',
+        tempStr: '',
+        equipmentName: ''
       },
       listData: []
     }
   },
   created () {
     this.getData(1, 10)
+    this.getEquipmentName()
   },
   methods: {
+    // 获取使用炉列表
+    getEquipmentName () {
+      this.http('/equipment/list', {
+        pageSize: 9999,
+        pageNum: 1,
+        type: 3
+      }).then(resp => {
+        if (resp.success) {
+          this.equipmentNames = []
+          resp.data.list.map(item => {
+            this.equipmentNames.push(item.code)
+          })
+        } else {
+          console.log(resp)
+        }
+      })
+    },
     // 返回状态
     getStatus (row) {
       // return row.outwardStatus === ''
@@ -583,7 +641,7 @@ export default {
   }
   .form {
     border:1px solid #ccc;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     margin: 10px;
   }
   .data-list {
@@ -603,6 +661,11 @@ export default {
     border-top: none;
   }
   .data-list {
-    height: calc(100% - 175px);
+    height: calc(100% - 180px);
+  }
+  .el-form-item::after {
+    clear: both;
+    margin-bottom: 5px;
+
   }
 </style>
