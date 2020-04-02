@@ -103,7 +103,24 @@ export default {
         }]
       }, {
         id: 30,
-        label: '可视化管理'
+        label: '可视化管理',
+        children: [{
+          id: 301,
+          label: '分单管理'
+        }, {
+          id: 302,
+          label: '标志管理'
+        }]
+      }, {
+        id: 40,
+        label: '分单管理',
+        children: [{
+          id: 41,
+          label: '标志管理'
+        }, {
+          id: 42,
+          label: '关键词管理'
+        }]
       }, {
         id: 8,
         label: '设置管理',

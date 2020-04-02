@@ -17,6 +17,9 @@
                 <span class="STYLE3">切断作业指示书</span>
 
                 <img class="qrimg" :src="$store.state.qrUrl + item.workList[0].cutQrCode + '&w=500&h=500'" alt="">
+                <span class="sign" v-if="item.order.labelName">
+                  {{item.order.labelName}}
+                </span>
               </p></td>
               <td valign="center" nowrap="nowrap" colspan="2" ><p align="right" ><b class="relative1">HMD-QR-50-{{item.order.workInstCd > 3? '4': item.order.workInstCd}}/AO</b> </p></td>
               <td width="134" valign="center" nowrap="nowrap"><p class="relative1" style="text-align: right;">
@@ -183,12 +186,15 @@
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
           </tr>
           <tr class="tr1">
-            <td colspan="7" rowspan="2" nowrap="nowrap" bordercolor="#000000" >
+            <td colspan="3" rowspan="2" nowrap="nowrap" bordercolor="#000000" >
               <div class="remarks-left">备注</div>
               <div class="remarks-right">
                 <p>{{item.order.wioHeadRemarks1}}</p>
                 <p>{{item.order.wioHeadRemarks2}}</p>
               </div>
+            </td>
+            <td colspan="4" rowspan="2" nowrap="nowrap" >
+              <div class="remarks-left" v-if="item.order.labelName" style="font-size: 12px;padding-left: 10px;">送货地址：{{item.order.shiptoAddress1}}</div>
             </td>
           </tr>
           <tr ></tr>
@@ -475,5 +481,19 @@ export default {
   }
   .table2 td {
     width: 14%;
+  }
+  .sign {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 22px;
+    position: absolute;
+    left: 370px;
+    font-weight: bold;
+    top: 26px;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
   }
 </style>

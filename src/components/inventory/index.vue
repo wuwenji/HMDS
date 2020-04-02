@@ -52,6 +52,8 @@
             <el-option label="RD" value="RD"></el-option>
             <el-option label="RG" value="RG"></el-option>
             <el-option label="S" value="S"></el-option>
+            <el-option label="F,2MF" value="F,2MF"></el-option>
+            <el-option label="R,MR,RG,RB,RD" value="R,MR,RG,RB,RD"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="join-input-row" label="厚">
@@ -261,9 +263,9 @@
         <el-table-column
           prop="replaceGrade"
           label="替换钢种">
-          <tempate slot-scope="scope">
+          <template slot-scope="scope">
             {{scope.row.replaceGrade ? '是' : '否'}}
-          </tempate>
+          </template>
         </el-table-column>
         <el-table-column
           label="选料时间"
@@ -276,6 +278,13 @@
           prop="selectSoNo"
           label="已选接单"
           width="140">
+          <template slot-scope="scope">
+            <ul class="select-sono">
+              <li @click="selectSono(item)" v-for="item in getArray(scope.row.selectSoNo)" :key="item">
+                {{item}}
+              </li>
+            </ul>
+          </template>
         </el-table-column>
         <el-table-column
           prop="orgSizeNote"
@@ -477,6 +486,15 @@
       width="1670px">
       <toUpdate v-if="updateDialog"/>
     </el-dialog>
+    <el-dialog
+      width="1370px"
+      title="选料"
+      top="1vh"
+      custom-class="min-height"
+      :close-on-click-modal="false"
+      :visible.sync="dialog">
+      <orderDetail v-if="dialog" :orderInfos="sentData"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -485,6 +503,7 @@ import printQR from './printQR'
 import FileSaver from 'file-saver'
 import toUpdate from './toUpdate'
 import XLSX from 'xlsx'
+import orderDetail from '../materialSelect/material'
 export default {
   name: 'index',
   data () {
@@ -492,6 +511,8 @@ export default {
       pageNum: 1,
       pageSize: 100,
       pringAll: 1,
+      sentData: '',
+      dialog: false,
       updateDialog: false,
       total: 0,
       johnTab: 0,
@@ -527,6 +548,32 @@ export default {
     this.getList(1, 100)
   },
   methods: {
+    // 点击选料单号
+    selectSono (row) {
+      let str = row.substring(0, row.indexOf('-'))
+      let url = '/orderSelect/selectMaterial/' + str
+      this.http(url).then(resp => {
+        if (resp.success) {
+          this.sentData = resp.data
+          this.dialog = true
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 1000
+          })
+        }
+      })
+    },
+
+    // 返回数组
+    getArray (str) {
+      if (str) {
+        return str.split(',')
+      } else {
+        return ''
+      }
+    },
+
     // 初始化盘点
     initSign () {
       const loading = this.$loading({
@@ -684,7 +731,8 @@ export default {
   },
   components: {
     printQR,
-    toUpdate
+    toUpdate,
+    orderDetail
   }
 }
 </script>
@@ -735,5 +783,11 @@ export default {
   }
   .data-list {
     height: calc(100% - 230px);
+  }
+  .select-sono {
+    list-style: none;
+  }
+  .select-sono li {
+    cursor: pointer;
   }
 </style>

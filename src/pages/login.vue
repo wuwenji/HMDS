@@ -1,6 +1,19 @@
 <template>
   <div class="container">
-    <!--<div class="box" ref="lineChart"></div>-->
+    <!--<transition name="fade">-->
+      <!--<keep-alive include="aaa,bbb">-->
+        <!--<component :is="returnComt"></component>-->
+      <!--</keep-alive>-->
+    <!--</transition>-->
+    <!--<ul>-->
+      <!--<li @click="alive = 1">1</li>-->
+      <!--<li @click="alive = 2">2</li>-->
+      <!--<li @click="alive = 3">3</li>-->
+    <!--</ul>-->
+    <!--<div class="box">-->
+      <!--<lineEchart type="2" xAxis="一号机" :optionSeries="datas1"></lineEchart>-->
+      <!--<lineEchart type="1" xAxis="二号机" :optionSeries="data2"></lineEchart>-->
+    <!--</div>-->
     <div class="login">
       <div class="login-title">
         <img src="../../static/images/logo.png" alt="">
@@ -30,6 +43,12 @@
 </template>
 
 <style scoped>
+  .box2 {
+    width: 100px;
+    height: 300px;
+    overflow-y: auto;
+  }
+
   .box {
     width: 700px;
     height: 700px;
@@ -93,130 +112,124 @@
 </style>
 
 <script>
+import lineEchart from '../components/lineEchart'
 let bgSrc = 'background:url(./static/images/bg.jpg) no-repeat center top'
 
-let datas = [
-  {
-    name: '1号单',
-    statTime: 9,
-    endTime: 9.3,
-    userTime: 0.3
-  },
-  {
-    name: '2号单',
-    statTime: 9.3,
-    endTime: 10,
-    userTime: 0.7
-  },
-  {
-    name: '3号单',
-    statTime: 10,
-    endTime: 12,
-    userTime: 2
-  }
-]
-
-let option = {
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'shadow'
-    },
-    formatter: (value) => {
-      let html = `${value[0].axisValue}<br/>`
-      value.map(item => {
-        html += `${item.seriesName}用时：${(item.data - 9).toFixed(1)}小时<br/>`
-      })
-      return html
-    }
-  },
-  legend: {
-    show: false,
-    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: [
-    {
-      type: 'category',
-      data: ['1号机', '2号机']
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value',
-      name: '时间',
-      min: 9,
-      max: 33,
-      interval: 1,
-      axisLabel: {
-        formatter: (value) => {
-          let val = value.toString()
-          if (val > 24) {
-            let h = val - 24
-            return '明 ' + '0' + h + ':00'
-          } else {
-            val = val > 9 ? val : '0' + val
-            return '今 ' + val + ':00'
-          }
-          // if (val.indexOf('.') > -1) {
-          //   let array = val.split('.')
-          //   let h = array[0] > 9 ? array[0] : '0' + array[0]
-          //   return h + ':30'
-          // } else {
-          //   val = val > 9 ? val : '0' + val
-          //   return '今 ' + val + ':00'
-          // }
-        }
-      },
-      splitLine: {
-        show: true
-      }
-    }
-  ],
-  series: [
-    {
-      name: '1号单',
-      type: 'bar',
-      stack: 'aa',
-      data: [9 + datas[0].userTime, 9 + datas[0].userTime]
-    },
-    {
-      name: '2号单',
-      type: 'bar',
-      stack: 'aa',
-      data: [9 + datas[1].userTime, 9 + datas[1].userTime]
-    },
-    {
-      name: '3号单',
-      type: 'bar',
-      stack: 'aa',
-      data: [9 + datas[2].userTime, 9 + datas[2].userTime]
-    }
-  ]
-}
-
-let echarts = require('echarts/lib/echarts')
-              require('echarts/lib/chart/bar')
-              require('echarts/lib/component/tooltip')
-              require('echarts/lib/component/title')
 export default {
   data () {
     return {
+      alive: 1,
       user: '',
       password: '',
       remember: [],
-      message: ''
+      message: '',
+      datas1: [],
+      data2: []
+    }
+  },
+  components: {
+    lineEchart
+  },
+  computed: {
+    returnComt () {
+      if (this.alive === 1) return 'aaa'
+      if (this.alive === 2) return 'bbb'
+      if (this.alive === 3) return 'ccc'
     }
   },
   methods: {
-    drawEchar () {
-      let myChart = echarts.init(this.$refs.lineChart)
-      myChart.setOption(option)
+    getData1 () {
+      let data = [
+        {
+          date: '0306',
+          usedTime: 14
+        },
+        {
+          date: '0307',
+          usedTime: 10
+        },
+        {
+          date: '0308',
+          usedTime: 20
+        },
+        {
+          date: '0309',
+          usedTime: 17
+        },
+        {
+          date: '0306实际',
+          usedTime: 10
+        }
+      ]
+      let array = []
+      data.map((item, index) => {
+        if (index === data.length - 1) {
+          array.push({
+            name: '1',
+            type: 'bar',
+            itemStyle: {
+              barBorderColor: 'rgba(0,0,0,0.3)',
+              color: 'rgba(200, 200, 200)'
+            },
+            stack: 'bb',
+            data: [item.usedTime]
+          })
+        } else {
+          array.push({
+            name: '1',
+            type: 'bar',
+            stack: 'aa',
+            itemStyle: {
+              barBorderColor: 'rgba(0,0,0,0.3)'
+            },
+            data: [item.usedTime]
+          })
+          array.push({
+            name: '闲',
+            type: 'bar',
+            stack: 'aa',
+            itemStyle: {
+              barBorderColor: 'rgba(0,0,0,0)',
+              color: 'rgba(0,0,0,0)'
+            },
+            data: [24 - item.usedTime]
+          })
+        }
+      })
+
+      this.datas1 = array
+    },
+    getData2 () {
+      let data = []
+      let datas = [
+        {
+          name: '1号单',
+          statTime: 9,
+          endTime: 9.3,
+          userTime: 0.3
+        },
+        {
+          name: '2号单',
+          statTime: 9.3,
+          endTime: 10,
+          userTime: 0.7
+        },
+        {
+          name: '3号单',
+          statTime: 10,
+          endTime: 12,
+          userTime: 2
+        }
+      ]
+      datas.map(item => {
+        data.push({
+          name: item.name,
+          type: 'bar',
+          stack: 'aa',
+          data: [9 + item.userTime]
+        })
+      })
+      this.data2 = data
     },
     submit (user, passw) {
       this.http('/sysUser/login',
@@ -253,9 +266,10 @@ export default {
   },
   created () {
     this.goUser()
+    this.getData1()
+    this.getData2()
   },
   mounted () {
-    // this.drawEchar()
   },
   beforeCreate () {
     document.querySelector('body').setAttribute('style', bgSrc)

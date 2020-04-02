@@ -25,6 +25,8 @@ import showTV from '../pages/showTV'
 import heatTreat from '../pages/heat'
 import orderData from '../pages/orderData'
 import materialSelection from '../pages/materialSelection'
+import signManage from '../pages/signManage'
+import keyManage from '../pages/keyManage'
 
 Vue.use(Router)
 
@@ -151,6 +153,16 @@ const routes = [
     path: '/materialSelection',
     name: 'materialSelection',
     component: materialSelection
+  },
+  {
+    path: '/signManage',
+    name: 'signManage',
+    component: signManage
+  },
+  {
+    path: '/keyManage',
+    name: 'keyManage',
+    component: keyManage
   }
 ]
 

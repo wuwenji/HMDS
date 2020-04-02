@@ -19,6 +19,21 @@
       </div>
       <div class="printPage" v-for="(item, index) in orderInfo.list" v-if="showPage === index + 1" :key="index">
         <table class="table-tr-height" border="1" cellspacing="0" >
+          <tr >
+            <td colspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>客户</b> </p></td>
+            <td colspan="7" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].contCd}}</p><p >{{item[0].contName}}</p></td>
+            <td width="80" valign="top" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>最终客户</b></p></td>
+            <td colspan="5" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].custCd}}&nbsp;</p><p >{{item[0].custName}}</p></td>
+            <td rowspan="4" style="text-align: center;">
+              <el-button style="margin: 2px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
+              <br/>
+              <el-button style="" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
+              <br/>
+              <el-button style="margin: 2px;" @click="mergePrior(item)" type="primary" size="mini">合并选料</el-button>
+              <br/>
+              <el-button style="margin-bottom: 2px;" @click="clearSelect(item)" type="warning" size="mini">清空选料</el-button>
+            </td>
+          </tr>
           <tr class="tr2s">
             <td></td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b style="font-size: 20px;">钢种</b></p></td>
@@ -33,15 +48,6 @@
                 <b>发件人</b> </p>
             </td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item[0].entryUserName}}</p></td>
-            <td rowspan="3" style="text-align: center;">
-              <el-button style="margin: 2px;" @click="motherPrior(item, 1)" type="primary" size="mini">母材优先</el-button>
-              <br/>
-              <el-button style="" @click="motherPrior(item, 2)" type="primary" size="mini">残材优先</el-button>
-              <br/>
-              <el-button style="margin: 2px;" @click="mergePrior(item)" type="primary" size="mini">合并选料</el-button>
-              <br/>
-              <el-button style="margin-bottom: 2px;" @click="clearSelect(item)" type="warning" size="mini">清空选料</el-button>
-            </td>
           </tr>
           <tr >
             <td width="30" class="check-label-none" rowspan="2" valign="center" nowrap="nowrap"><p align="center" >功能
@@ -98,12 +104,11 @@
                     {{list.unitPriceCd == 7? '個': ''}}
                     {{list.unitPriceCd == 8? '套': ''}}
                   </span>
-                  <span class="align-right">{{list.workInstQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
+                  <span class="align-right">{{list.soQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p class="red">
-                {{list.stockType == 1? '母材' : ''}}
-                {{list.stockType == 2? '余材' : ''}}
+                {{list.stockType == 1? '母材' : ''}}{{list.stockType == 2? '余材' : ''}}<template v-if="list.replaceGrade"><span style="font-size: 12px;">({{list.replaceGrade}})</span></template>
                 <br/>{{list.matCntlNo}}
               </p></td>
               <td class="red" style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
@@ -136,7 +141,7 @@
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td rowspan="3" align="center">
                 <template>
-                  <el-button @click="handSelect(key)" style="margin: 2px;" type="warning" size="mini">手动选料</el-button>
+                  <el-button @click="handSelect(key, list)" style="margin: 2px;" type="warning" size="mini">手动选料</el-button>
                   <el-button @click="replaceGrade(key)" style="margin: 2px;" size="mini">替换钢种</el-button>
                 </template>
                 <p class="red" v-if="list.selectType === null">
@@ -152,7 +157,9 @@
               </td>
             </tr>
             <tr class="tr2" :key="'cc' + key">
-              <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" >
+                <p><template v-if="list.selectSoNo">{{list.selectSoNo}}</template></p>
+              </td>
             </tr>
             <tr class="tr3" :key="key">
               <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
@@ -264,7 +271,7 @@
       </div>
       <div v-if="handShow" class="loading">
         <div class="hand-content" style="width: 1250px;">
-          <handCommd></handCommd>
+          <handCommd :info="infoData"></handCommd>
           <el-button @click="handShow = false" size="mini">取消</el-button>
         </div>
       </div>
@@ -284,6 +291,7 @@ export default {
     return {
       src: '',
       id: 0,
+      infoData: '',
       selectTick: true,
       selectWidth: false,
       orderInfo: '',
@@ -317,7 +325,7 @@ export default {
   created () {
     this.orderInfo = this.orderInfos
     this.getGradeList()
-    // console.log('选料弹窗', this.orderInfo)
+    console.log('选料弹窗', this.orderInfo)
     // this.getHtml()
     // console.log(this.orderInfo.id)
   },
@@ -349,8 +357,9 @@ export default {
       this.isIndeterminate = false
     },
     // 手动选料
-    handSelect (key) {
+    handSelect (key, data) {
       this.nowKey = key
+      this.infoData = data
       this.handShow = true
     },
     // 手动选中材料
@@ -614,9 +623,9 @@ export default {
     display: block;
     background: #000;
     width: 1px;
-    height: 44px;
+    height: 25px;
     position: absolute;
-    margin-top: -10px;
+    margin-top: -1px;
     margin-left:-10px;
   }
   .r {

@@ -112,6 +112,18 @@ export default {
           title: '可视化管理',
           icon: 'icon7'
         }, {
+          id: 40,
+          title: '分单管理',
+          icon: 'icon9',
+          show: false,
+          children: [{
+            id: 41,
+            title: '标志管理'
+          }, {
+            id: 42,
+            title: '关键词管理'
+          }]
+        }, {
           id: 8,
           title: '设置管理',
           icon: 'icon8',
@@ -227,6 +239,19 @@ export default {
         {
           title: '可视化管理',
           icon: 'icon7'
+        },
+        {
+          title: '分单管理',
+          icon: 'icon9',
+          show: false,
+          children: [
+            {
+              title: '标志管理'
+            },
+            {
+              title: '关键词管理'
+            }
+          ]
         },
         {
           title: '设置管理',

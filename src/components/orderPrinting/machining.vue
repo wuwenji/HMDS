@@ -14,11 +14,13 @@
                   {{item.workInstCd == 3? '切断&加工': ''}}
                 </p>
                   <p>&nbsp;<span class="span span-left">切断</span> </p></td>
-                <td width="590">
+                <td width="590" style="position: relative;">
                   <p style="font-size: 18px;font-weight: bold; position: relative;">
                     <img class="logo" src="../../../static/images/logo.jpg" alt="">
                     日立金属（东莞）特殊钢有限公司 本部</p>
-                  <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p></td>
+                  <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p>
+                  <span class="sign" v-if="item.labelName">{{item.labelName}}</span>
+                </td>
               </tr>
             </table>
             <table class="table table-width" width="100%" height="285" border="1" cellpadding="0" cellspacing="0">
@@ -158,6 +160,7 @@
                 <td class="btb"><p>&nbsp;</p></td>
               </tr>
             </table>
+            <p v-if="item.labelName">收货地址：{{item.shiptoAddress1}}</p>
           </div>
           <div class="pri-right" style="border-bottom: 1px dashed #000;padding-bottom: 5px;">
             <table width="100%"  border="0" cellspacing="0" bordercolor="#000000">
@@ -315,11 +318,13 @@
                   {{item.workInstCd > 3? '切断&加工&热处理': ''}}
                   {{item.workInstCd == 3? '切断&加工': ''}}</p>
                   <p>&nbsp;<span class="span span-left">加工</span> </p></td>
-                <td width="590">
+                <td width="590" style="position: relative;">
                   <p style="font-size: 18px;font-weight: bold; position: relative;">
                     <img class="logo" src="../../../static/images/logo.jpg" alt="">
                     日立金属（东莞）特殊钢有限公司 本部</p>
-                  <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p></td>
+                  <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p>
+                  <span class="sign" v-if="item.labelName">{{item.labelName}}</span>
+                </td>
               </tr>
             </table>
             <table class="table table-width" width="100%" height="285" border="1" cellpadding="0" cellspacing="0">
@@ -460,6 +465,7 @@
                 <td class="btb"><p>&nbsp;</p></td>
               </tr>
             </table>
+            <p v-if="item.labelName">收货地址：{{item.shiptoAddress1}}</p>
           </div>
           <div class="pri-right" style="border-left: 1px dashed #000;padding-top: 10px;">
             <table width="100%"  border="0" cellspacing="0" bordercolor="#000000">
@@ -864,5 +870,19 @@ export default {
     top: 0px;
     position: absolute;
     left: -70px;
+  }
+  .sign {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
   }
 </style>

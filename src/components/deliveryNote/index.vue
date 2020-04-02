@@ -63,7 +63,7 @@
           label="接单号">
         </el-table-column>
         <el-table-column
-          prop="customerName"
+          prop="custName"
           label="订购商名称"
           min-width="130">
         </el-table-column>
@@ -161,7 +161,7 @@
           label="接单号">
         </el-table-column>
         <el-table-column
-          prop="customerName"
+          prop="custName"
           label="订购商名称">
         </el-table-column>
         <el-table-column

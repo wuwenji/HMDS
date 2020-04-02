@@ -4,9 +4,9 @@
 
 <script>
 let echarts = require('echarts/lib/echarts')
-              require('echarts/lib/chart/bar')
-              require('echarts/lib/component/tooltip')
-              require('echarts/lib/component/title')
+require('echarts/lib/chart/bar')
+require('echarts/lib/component/tooltip')
+require('echarts/lib/component/title')
 export default {
   name: 'lineEchart',
   props: ['title', 'xAxis', 'oneData', 'stack', 'legend', 'color', 'position'],

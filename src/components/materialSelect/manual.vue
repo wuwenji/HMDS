@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+    <div class="form" style="text-align: left; color: red;">客户要求尺寸：
+        <span style="display: inline-block;">{{info.machineShapeCd}}</span>
+        <span style="display: inline-block;text-align: right;margin-right:5px;">{{info.size1}}</span>X<span style="margin-right:5px;margin-left:10px;display: inline-block;text-align: right;">{{info.size2 > 0? info.size2 : ''}}</span>X<span style="display: inline-block;text-align: right;margin-left:10px;">{{info.size3}}</span>
+      ，指示尺寸：
+      <span >
+                    {{info.machineShapeCd}}
+                    {{info.instSize1}}X <template v-if="info.instSize2 > 0">{{info.instSize2}}X </template>{{info.instSize3}}
+                  </span>
+    </div>
     <div class="form" id="form-input" style="text-align: left;">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
         <el-form-item class="form-item" label="库存号码" prop="stockNo">
@@ -11,6 +20,30 @@
         <el-form-item class="form-item" label="钢种" prop="materialType">
           <el-input size="mini" v-model="formData.materialType" placeholder="钢种"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="形状" prop="shape">
+          <el-select size="mini" v-model="formData.shape" placeholder="形状">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="2MF" value="2MF"></el-option>
+            <el-option label="4M6F" value="4M6F"></el-option>
+            <el-option label="6F" value="6F"></el-option>
+            <el-option label="CC" value="CC"></el-option>
+            <el-option label="F" value="F"></el-option>
+            <el-option label="FD" value="FD"></el-option>
+            <el-option label="M6F" value="M6F"></el-option>
+            <el-option label="MF" value="MF"></el-option>
+            <el-option label="MR" value="MR"></el-option>
+            <el-option label="NO" value="NO"></el-option>
+            <el-option label="PL" value="PL"></el-option>
+            <el-option label="R" value="R"></el-option>
+            <el-option label="RB" value="RB"></el-option>
+            <el-option label="RD" value="RD"></el-option>
+            <el-option label="RG" value="RG"></el-option>
+            <el-option label="S" value="S"></el-option>
+            <el-option label="F,2MF" value="F,2MF"></el-option>
+            <el-option label="R,MR,RG,RB,RD" value="R,MR,RG,RB,RD"></el-option>
+          </el-select>
+        </el-form-item>
+        <div class="cl"></div>
         <el-form-item class="join-input-row" label="厚">
           <el-col :span="11">
             <el-form-item prop="size1Start">
@@ -50,8 +83,9 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="float: right;">
           <el-button size="mini" type="success" @click="onSubmit(100, 1)">查询</el-button>
+          <el-button size="mini" type="success" @click="recomdList(100, 1)">推荐列表</el-button>
         </el-form-item>
         <div class="cl"></div>
       </el-form>
@@ -111,11 +145,26 @@
           label="重量">
         </el-table-column>
         <el-table-column
+          prop="initialStockNo"
+          width="120px"
+          label="初始库存编号">
+        </el-table-column>
+        <el-table-column
+          prop="initialStockNote"
+          width="120px"
+          label="初始库存尺寸">
+        </el-table-column>
+        <el-table-column
           label="是否已选"
           width="80px">
           <template slot-scope="scope">
             {{scope.row.selectEndTime ? '是' : '否'}}
           </template>
+        </el-table-column>
+        <el-table-column
+          label="备注"
+          prop="stockRemarks"
+          width="120px">
         </el-table-column>
         <el-table-column
           prop="replaceGrade"
@@ -199,6 +248,7 @@
 <script>
 export default {
   name: 'index',
+  props: ['info'],
   data () {
     return {
       pageNum: 1,
@@ -206,8 +256,10 @@ export default {
       soNodetailShow: false,
       soNoDetail: '',
       total: 0,
+      forData2: {},
       formData: {
         size1Start: '',
+        shape: '',
         size2Start: '',
         size3Start: '',
         size1End: '',
@@ -221,6 +273,26 @@ export default {
     }
   },
   created () {
+    console.log('手动选料接收数据', this.info)
+    this.formData = {
+      size1Start: this.info.instSize1,
+      size2Start: this.info.instSize2,
+      size3Start: this.info.instSize3,
+      size1End: '',
+      size2End: '',
+      size3End: '',
+      materialType: this.info.gradeCd,
+      changeNo: '',
+      stockNo: '',
+      shape: this.info.machineShapeCd
+    }
+    this.forData2 = {
+      machineShapeCd: this.info.machineShapeCd,
+      gradeCd: this.info.gradeCd,
+      instSize1: this.info.instSize1,
+      instSize2: this.info.instSize2,
+      instSize3: this.info.instSize3
+    }
     this.getList(1, 100)
   },
   methods: {
@@ -255,7 +327,8 @@ export default {
       this.http('/tMaterial/list', {
         pageNum,
         pageSize,
-        inStock: 1
+        inStock: 1,
+        ...this.formData
       }).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -264,6 +337,20 @@ export default {
         }
       })
     },
+    // 推荐列表
+    recomdList (pageNum, pageSize) {
+      this.formData.pageSize = pageSize
+      this.formData.pageNum = pageNum
+      this.http('/orderSelect/manualSelectMaterial', this.forData2).then(resp => {
+        if (resp.success) {
+          this.pageSize = pageSize
+          this.pageNum = pageNum
+          this.listData = resp.data.list
+          this.total = resp.data.total
+        }
+      })
+    },
+
     // 查询
     onSubmit (pageSize, pageNum) {
       this.formData.pageSize = pageSize

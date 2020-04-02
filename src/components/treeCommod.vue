@@ -107,6 +107,10 @@ export default {
           this.$router.push('/orderData')
         } else if (val === '自动选料') {
           this.$router.push('/materialSelection')
+        } else if (val === '标志管理') {
+          this.$router.push('/signManage')
+        } else if (val === '关键词管理') {
+          this.$router.push('/keyManage')
         }
       }
     }
