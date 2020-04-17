@@ -122,6 +122,9 @@ export default {
           }, {
             id: 42,
             title: '关键词管理'
+          }, {
+            id: 43,
+            title: '分单详情'
           }]
         }, {
           id: 8,
@@ -250,6 +253,9 @@ export default {
             },
             {
               title: '关键词管理'
+            },
+            {
+              title: '分单详情'
             }
           ]
         },

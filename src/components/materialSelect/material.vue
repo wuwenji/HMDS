@@ -68,7 +68,7 @@
             <td width="47" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>单位</b> </p></td>
             <td width="52" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p class="align-right"><b>数量</b> </p></td>
             <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p class="align-right"><b>kg重量</b> </p></td>
-            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>现品管理NO</b> </p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>&nbsp;</b> </p></td>
             <td width="117" valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
             <td colspan="2" nowrap="nowrap" class="l r t"><p ><b>库存尺寸</b> </p></td>
             <td width="150" valign="center" nowrap="nowrap" class="l t"><p ><b>切断指示尺寸</b> </p></td>
@@ -107,10 +107,18 @@
                   <span class="align-right">{{list.soQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
-              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p class="red">
-                {{list.stockType == 1? '母材' : ''}}{{list.stockType == 2? '余材' : ''}}<template v-if="list.replaceGrade"><span style="font-size: 12px;">({{list.replaceGrade}})</span></template>
-                <br/>{{list.matCntlNo}}
-              </p></td>
+              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><div class="red">
+                <p>
+                  {{list.stockType == 1? '母材' : ''}}{{list.stockType == 2? '余材' : ''}}<template v-if="list.replaceGrade"><span style="font-size: 12px;">({{list.replaceGrade}})</span></template>
+                &nbsp;
+                </p>
+                <!--<br/><template v-if="list.selectSoNo">{{list.selectSoNo}}</template>-->
+                <p v-if="list.selectSoNo">
+                  <span @mouseover="tipShow = key" @mouseout="tipShow = ''">{{list.selectSoNo | subs}}<span style="font-family: Arial">…</span></span>
+                  <span v-if="tipShow === key" class="tips">{{list.selectSoNo}}</span>
+                </p>
+                <!--{{list.matCntlNo}}-->
+              </div></td>
               <td class="red" style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p style="position: absolute;">
                   {{list.stockRemarks}}
@@ -158,7 +166,7 @@
             </tr>
             <tr class="tr2" :key="'cc' + key">
               <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" >
-                <p><template v-if="list.selectSoNo">{{list.selectSoNo}}</template></p>
+                <p></p>
               </td>
             </tr>
             <tr class="tr3" :key="key">
@@ -291,6 +299,7 @@ export default {
     return {
       src: '',
       id: 0,
+      tipShow: '',
       infoData: '',
       selectTick: true,
       selectWidth: false,
@@ -320,6 +329,11 @@ export default {
         replaceGrade: '',
         selectType: ''
       }
+    }
+  },
+  filters: {
+    subs (string) {
+      return string.substring(0, 7)
     }
   },
   created () {
@@ -374,6 +388,12 @@ export default {
       oldData.matCntlNo = data.matCntlNo
       oldData.stockNo = data.stockNo
       oldData.selectType = '4'
+      oldData.replaceGrade = data.gradeCdKey
+      // if (data.gradeCdKey !== oldData.gradeCd) {
+      //   oldData.replaceGrade = data.gradeCdKey
+      // } else {
+      //   oldData.replaceGrade = null
+      // }
     },
     // 优先
     motherPrior (item_, type, src = null, isSelect = null) {
@@ -853,5 +873,23 @@ export default {
   }
   .el-button--mini, .el-button--mini.is-round {
     padding: 4px 15px;
+  }
+  .tips:before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-right: 5px solid #000;
+    position: absolute;
+    left: -10px;
+    top: 7px;
+  }
+  .tips {
+    position: absolute;
+    background: #000;
+    padding: 2px 4px;
+    border-radius: 4px;
+    z-index: 999999;
   }
 </style>

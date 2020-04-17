@@ -40,6 +40,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="research(10, 1)">查询</el-button>
+          <el-button type="success" plain @click="exportFlg = true">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -66,14 +67,25 @@
           min-width="130">
         </el-table-column>
         <el-table-column
-          prop="suserName"
-          label="营业员"
+          prop="sysName"
+          label="选料员"
           width="100">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
           label="发件人"
           width="100">
+        </el-table-column>
+        <el-table-column
+          prop="workInstCd"
+          label="类型"
+          width="150">
+          <template slot-scope="scope">
+            {{scope.row.workInstCd === '1' ? '整条' : ''}}
+            {{scope.row.workInstCd === '2' ? '切断' : ''}}
+            {{scope.row.workInstCd === '3' ? '切断&加工' : ''}}
+            {{scope.row.workInstCd === '6' ? '切断&加工&热处理' : ''}}
+          </template>
         </el-table-column>
         <el-table-column
           label="是否完成"
@@ -102,6 +114,7 @@
             <el-button
               size="mini"
               type="text"
+              :class="scope.row.isClick === 1 ? 'gray' : ''"
               @click="selectMaterial(scope.$index, scope.row)">选料</el-button>
             <el-button
               size="mini"
@@ -126,14 +139,25 @@
           min-width="130">
         </el-table-column>
         <el-table-column
-          prop="suserName"
-          label="营业员"
+          prop="sysName"
+          label="选料员"
           width="100">
         </el-table-column>
         <el-table-column
           prop="entryUserName"
           label="发件人"
           width="100">
+        </el-table-column>
+        <el-table-column
+          prop="workInstCd"
+          label="类型"
+          width="150">
+          <template slot-scope="scope">
+            {{scope.row.workInstCd === '1' ? '整条' : ''}}
+            {{scope.row.workInstCd === '2' ? '切断' : ''}}
+            {{scope.row.workInstCd === '3' ? '切断&加工' : ''}}
+            {{scope.row.workInstCd === '6' ? '切断&加工&热处理' : ''}}
+          </template>
         </el-table-column>
         <el-table-column
           label="是否完成"
@@ -179,6 +203,32 @@
       </div>
     </div>
     <el-dialog
+      title="导出"
+      width="400px"
+      :visible.sync="exportFlg">
+      <el-form label-width="80px">
+        <el-form-item label="开始日期">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            v-model="exportExl.tempStartTime" style="width: 100%;"></el-date-picker>
+        </el-form-item>
+        <br/>
+        <el-form-item label="结束日期">
+          <el-date-picker
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            v-model="exportExl.tempEndTime" style="width: 100%;"></el-date-picker>
+        </el-form-item>
+      </el-form>
+      <br/>
+      <p style="text-align: center;">
+        <el-button type="primary" @click="exportExcel">导出</el-button>
+      </p>
+    </el-dialog>
+    <el-dialog
       width="1370px"
       title="选料"
       top="1vh"
@@ -192,12 +242,19 @@
 
 <script>
 import orderDetail from './material'
+import { getExcel } from '../../http'
+
 export default {
   name: 'index',
   data () {
     return {
       pageSize: 10,
       pageNum: 1,
+      exportFlg: false,
+      exportExl: {
+        tempStartTime: '',
+        tempEndTime: ''
+      },
       johnTab: 0,
       sentData: '',
       dialog: false,
@@ -220,6 +277,29 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    // 导出
+    exportExcel () {
+      getExcel('/orderSelect/exportMaterialExcel', this.exportExl).then(res => {
+        if (res.byteLength > 0) {
+          const blob = new Blob([res])
+          const fileName = '选料.xls'
+          if ('download' in document.createElement('a')) { // 非IE下载
+            const elink = document.createElement('a')
+            elink.download = fileName
+            elink.style.display = 'none'
+            elink.href = URL.createObjectURL(blob)
+            document.body.appendChild(elink)
+            elink.click()
+            URL.revokeObjectURL(elink.href) // 释放URL 对象
+            document.body.removeChild(elink)
+          } else { // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+          }
+        } else {
+          alert('数据为0，请重新选择日期！')
+        }
+      })
+    },
     // 详情
     dataDetail (index, row) {
       let url = '/orderSelect/detail/' + row.soNo
@@ -275,7 +355,17 @@ export default {
         console.log('选料', resp)
         if (resp.success) {
           this.sentData = resp.data
-          this.dialog = true
+          // this.dialog = true
+          if (resp.message === '') {
+            this.dialog = true
+          } else {
+            this.$alert(resp.message, '提示', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.dialog = true
+              }
+            })
+          }
         } else {
           this.$message.error({
             message: resp.message,
@@ -341,6 +431,9 @@ export default {
   }
   .form-item {
     width:220px;
+  }
+  .gray {
+    color: gray !important;
   }
   .btns {
     float: right;

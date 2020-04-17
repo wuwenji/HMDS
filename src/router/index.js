@@ -27,6 +27,7 @@ import orderData from '../pages/orderData'
 import materialSelection from '../pages/materialSelection'
 import signManage from '../pages/signManage'
 import keyManage from '../pages/keyManage'
+import separateDetail from '../pages/separateDetail'
 
 Vue.use(Router)
 
@@ -163,6 +164,11 @@ const routes = [
     path: '/keyManage',
     name: 'keyManage',
     component: keyManage
+  },
+  {
+    path: '/separateDetail',
+    name: 'separateDetail',
+    component: separateDetail
   }
 ]
 

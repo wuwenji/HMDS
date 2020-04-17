@@ -383,9 +383,9 @@
 </template>
 
 <script>
-import printPage from './printing'
+import printPage from './printing_'
 import hotHandle from './hotHandle'
-import machining from './machining'
+import machining from './machining_'
 import wholePage from './whole'
 export default {
   name: 'index',

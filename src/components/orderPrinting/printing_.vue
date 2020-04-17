@@ -87,13 +87,13 @@
             <td width="47" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>单位</b> </p></td>
             <td width="52" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p class="align-right"><b>数量</b> </p></td>
             <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p class="align-right"><b>kg重量</b> </p></td>
-            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>现品管理NO</b> </p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>&nbsp;</b> </p></td>
             <td width="117" valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
             <td colspan="2" nowrap="nowrap" class="l r t"><p ><b>库存尺寸</b> </p></td>
             <td width="150" valign="center" nowrap="nowrap" class="l t"><p ><b>切断指示尺寸</b> </p></td>
           </tr>
-          <template v-for="list in item.workList">
-            <tr class="tr1">
+          <template v-for="(list, num) in item.workList">
+            <tr class="tr1" :key="'aa' + num">
               <td width="30" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
@@ -126,13 +126,18 @@
                   <span class="align-right">{{list.soQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
-              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
-                {{list.stockType == 1? '母材' : ''}}
-                {{list.stockType == 2? '余材' : ''}}
-                <br/>{{list.matCntlNo}}
-              </p></td>
+              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><div >
+                <p>
+                  {{list.stockType == 1? '母材' : ''}}{{list.stockType == 2? '余材' : ''}}<template v-if="list.replaceGrade"><span style="font-size: 12px;">({{list.replaceGrade}})</span></template>
+                &nbsp;
+                </p>
+                <p v-if="list.selectSoNo">
+                  <span>{{list.selectSoNo | subs}}</span>
+                </p>
+                <!--{{list.matCntlNo}}-->
+              </div></td>
               <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                {{list.stockRemarks}}
+                <!--{{list.stockRemarks}}-->
                 <br/>{{list.chargeNo}}
               </td>
               <td style="border-left: none;" colspan="3" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;</p>
@@ -148,15 +153,18 @@
               <td class="bt bl" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
-            <tr class="tr2">
+            <tr class="tr2" :key="'acb' + num">
               <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" >
-                <p><template v-if="list.selectSoNo">{{list.selectSoNo}}</template></p>
-                <p><template v-if="list.replaceGrade">({{list.replaceGrade}})</template></p>
+                <p></p>
+                <!--<p><template v-if="list.selectSoNo">{{list.selectSoNo}}</template></p>-->
+                <!--<p><template v-if="list.replaceGrade">({{list.replaceGrade}})</template></p>-->
               </td>
             </tr>
-            <tr class="tr3">
-              <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+            <tr class="tr3" :key="'acbcx' + num">
+              <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.suppInvoNo}}</p></td>
+              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
+                {{list.theoreticalCutTime}}
+              </p></td>
               <td class="bt bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
                 作&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
               </p></td>
@@ -227,6 +235,11 @@ export default {
   watch: {
     orderInfo () {
       this.getHtml()
+    }
+  },
+  filters: {
+    subs (string) {
+      return string.substring(0, 13)
     }
   },
   methods: {

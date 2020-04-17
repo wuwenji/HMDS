@@ -521,9 +521,9 @@
 // import hotHandle from './hotHandle'
 // import machining from './machining'
 // import wholePage from './whole'
-import printPage from '../orderPrinting/printing'
+import printPage from '../orderPrinting/printing_'
 import hotHandle from '../orderPrinting/hotHandle'
-import machining from '../orderPrinting/machining'
+import machining from '../orderPrinting/machining_'
 import wholePage from '../orderPrinting/whole'
 export default {
   name: 'index',

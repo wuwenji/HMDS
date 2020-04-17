@@ -104,8 +104,11 @@
               <td>
                 <span><p>&nbsp;</p></span>{{orderDetail[0].shipToNameAdd}}
               </td>
-              <td>
+              <td style="position: relative;">
                 <span>账号：</span>{{orderDetail[0].sBarnchUserDef1}}
+                <span class="sign" v-if="orderDetail[0].labelName">
+                  {{orderDetail[0].labelName}}
+                </span>
               </td>
             </tr>
             <tr>
@@ -318,8 +321,16 @@ export default {
           this.selectValue = []
           console.log('lists....', resp)
           this.lists = resp.data
+          // resp.data.map(item => {
+          //   if (item.status === 1) {
+          //     this.selectValue.push(item)
+          //     this.$nextTick(() => {
+          //       this.toggleRow(item)
+          //     })
+          //   }
+          // })
           resp.data.map(item => {
-            if (item.status === 1) {
+            if (item.isDelivery !== '1' && item.status === 1) {
               this.selectValue.push(item)
               this.$nextTick(() => {
                 this.toggleRow(item)
@@ -617,5 +628,20 @@ export default {
     list-style: none;
     line-height: 30px;
     cursor: pointer;
+  }
+  .sign {
+    width: 50px !important;
+    height: 50px;
+    line-height: 50px;
+    text-align: center !important;
+    font-size: 22px !important;
+    position: absolute;
+    right: 0px;
+    font-weight: bold;
+    top: 0px;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
+    font-family: 黑体;
   }
 </style>

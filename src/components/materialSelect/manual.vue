@@ -7,7 +7,8 @@
       <span >
                     {{info.machineShapeCd}}
                     {{info.instSize1}}X <template v-if="info.instSize2 > 0">{{info.instSize2}}X </template>{{info.instSize3}}
-                  </span>
+                  </span>，数量：
+      <span style="display: inline-block;">{{info.soQty}}</span>
     </div>
     <div class="form" id="form-input" style="text-align: left;">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
@@ -145,6 +146,21 @@
           label="重量">
         </el-table-column>
         <el-table-column
+          prop="selectSoNo"
+          label="已选接单"
+          width="160">
+          <template slot-scope="scope">
+            <ul class="sono-list">
+              <li v-for="(item, key) in getSoNos(scope.row.selectSoNo)" :key="item + key" @click="getSoNoDetail(item)">{{item}}</li>
+            </ul>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="备注"
+          prop="stockRemarks"
+          width="120px">
+        </el-table-column>
+        <el-table-column
           prop="initialStockNo"
           width="120px"
           label="初始库存编号">
@@ -162,11 +178,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="备注"
-          prop="stockRemarks"
-          width="120px">
-        </el-table-column>
-        <el-table-column
           prop="replaceGrade"
           label="替换钢种">
           <template slot-scope="scope">
@@ -180,16 +191,7 @@
             {{$store.getters.getDate(scope.row.selectEndTime, 1)}}
           </template>
         </el-table-column>
-        <el-table-column
-          prop="selectSoNo"
-          label="已选接单"
-          width="130">
-          <template slot-scope="scope">
-            <ul class="sono-list">
-              <li v-for="(item, key) in getSoNos(scope.row.selectSoNo)" :key="item + key" @click="getSoNoDetail(item)">{{item}}</li>
-            </ul>
-          </template>
-        </el-table-column>
+
         <el-table-column
           label="操作"
           fixed="right"

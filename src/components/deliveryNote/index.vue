@@ -25,6 +25,13 @@
             </el-form-item>
           </el-col>
         </el-form-item>
+        <el-form-item class="form-item" label="接单时间">
+          <el-col>
+            <el-form-item prop="soDateStr">
+              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
         <div class="cl" style="margin-top: 5px;"></div>
         <el-form-item class="form-item" label="营业员" prop="sUserName">
           <el-input v-model="formData.sUserName" placeholder="营业员"></el-input>
@@ -32,11 +39,23 @@
         <el-form-item class="form-item" label="发件人" prop="entryUserName">
           <el-input v-model="formData.entryUserName" placeholder="发件人"></el-input>
         </el-form-item>
-        <el-form-item class="form-item" label="接单时间">
-          <el-col>
-            <el-form-item prop="soDateStr">
-              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="formData.soDateStr" style="width: 100%;"></el-date-picker>
-            </el-form-item>
+        <el-form-item class="print-date" label="打印日期">
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              style="width: 100%;"
+              v-model="formData.tempStartTime"
+              placeholder="开始日期"
+              value-format="yyyy-MM-dd"></el-date-picker>
+          </el-col>
+          <el-col :span="2" style="text-align: center;">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              style="width: 100%;"
+              type="date"
+              v-model="formData.tempEndTime"
+              value-format="yyyy-MM-dd"
+              placeholder="结束日期"></el-date-picker>
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
@@ -47,13 +66,14 @@
     </div>
     <div class="john-tab">
       <ul>
-        <li @click="tabClick(0)" :class="{active: johnTab == 0}">未打印货单</li>
+        <li @click="tabClick(2)" :class="{active: johnTab == 2}">未打印整条</li>
+        <li @click="tabClick(0)" :class="{active: johnTab == 0}">未打印其它</li>
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">已打印货单</li>
       </ul>
     </div>
     <div class="data-list">
       <el-table
-        v-show="johnTab == 0"
+        v-show="johnTab == 0 || johnTab == 2"
         :data="listData"
         border
         height="calc(100% - 75px)">
@@ -140,9 +160,14 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="120"
+          width="150"
           label="操作">
           <template slot-scope="scope">
+            <el-button
+              v-if="johnTab === 2"
+              size="mini"
+              type="text"
+              @click="changeWeight(scope.row)">修改重量</el-button>
             <el-button
               size="mini"
               type="text"
@@ -260,6 +285,30 @@
       </div>
     </div>
     <el-dialog
+      title="修改重量"
+      width="400px"
+      :visible.sync="weightDialog">
+      <div class="weight-table">
+        <table border="1" borderColor="#ddd" class="table">
+          <tr>
+            <th>接单行号</th>
+            <th>重量</th>
+          </tr>
+          <tr v-for="(item, index) in weights" :key="index">
+            <td>
+              {{item.soNo + '-' + item.soLnNo}}
+            </td>
+            <td>
+              <el-input size="mini" v-model="item.outwardWeight"></el-input>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <p style="text-align: center;margin-top: 20px;">
+        <el-button @click="changeWeightSubmit" type="primary">提交</el-button>
+      </p>
+    </el-dialog>
+    <el-dialog
       width="1120px"
       title="送货单"
       :visible.sync="dialog"
@@ -276,14 +325,18 @@ export default {
   data () {
     return {
       pageSize: 10,
+      weights: [],
       pageNum: 1,
-      johnTab: 0,
+      johnTab: 2,
       sentData: '',
       dialog: false,
+      weightDialog: false,
       total: 0,
       formData: {
         soNo: '',
         soDateStr: '',
+        tempStartTime: '',
+        tempEndTime: '',
         contName: '',
         contDueDateStr: '',
         pageSize: 10,
@@ -296,9 +349,49 @@ export default {
     }
   },
   created () {
-    this.getList(10, 1, 0)
+    this.getList(10, 1, 2)
   },
   methods: {
+    // 修改提交
+    changeWeightSubmit () {
+      let parms = []
+      this.weights.map(item => {
+        parms.push({
+          outwardWeight: item.outwardWeight,
+          soLnNo: item.soLnNo,
+          soNo: item.soNo
+        })
+      })
+      this.http('/tSalesOrder/inputWeight', parms).then(resp => {
+        if (resp.success) {
+          this.$message({
+            message: '修改成功',
+            duration: 1000,
+            type: 'success'
+          })
+          this.weightDialog = false
+        } else {
+          this.$message.error(resp.message)
+        }
+      })
+    },
+    // 修改重量
+    changeWeight (row) {
+      this.http('/tSalesOrder/detail', {
+        // soNo: 100341398
+        soNo: row.soNo,
+        workInstCd: row.workInstCd
+      }).then(resp => {
+        if (resp.success) {
+          console.log('送货单', resp)
+          this.weights = resp.data
+          this.weightDialog = true
+        } else {
+          this.$message.error(resp.message)
+        }
+      })
+    },
+
     // 获取订单类型
     getType (numb) {
       if (numb === '1') return '整条'
@@ -401,6 +494,21 @@ export default {
 </script>
 
 <style scoped>
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .weight-table {
+    height: 350px;
+    overflow-y: auto;
+  }
+  .table td {
+    padding: 5px ;
+  }
+  .table th {
+    background: #eee;
+    line-height: 50px;
+  }
   .position {
     line-height: 35px;
     border-bottom: 1px solid #ccc;

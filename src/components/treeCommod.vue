@@ -111,6 +111,8 @@ export default {
           this.$router.push('/signManage')
         } else if (val === '关键词管理') {
           this.$router.push('/keyManage')
+        } else if (val === '分单详情') {
+          this.$router.push('/separateDetail')
         }
       }
     }

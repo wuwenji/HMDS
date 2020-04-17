@@ -120,6 +120,9 @@ export default {
         }, {
           id: 42,
           label: '关键词管理'
+        }, {
+          id: 43,
+          label: '分单详情'
         }]
       }, {
         id: 8,
