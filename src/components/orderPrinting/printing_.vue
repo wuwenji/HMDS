@@ -137,8 +137,8 @@
                 <!--{{list.matCntlNo}}-->
               </div></td>
               <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                <!--{{list.stockRemarks}}-->
-                <br/>{{list.chargeNo}}
+                <span class="remarks">{{list.stockRemarks}}</span>
+                {{list.chargeNo}}
               </td>
               <td style="border-left: none;" colspan="3" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;</p>
                 <p >{{list.stockSizeNote}}
@@ -525,5 +525,10 @@ export default {
     color: #666;
     border: 2px solid #666;
     border-radius: 50%;
+  }
+  .remarks {
+    width: 109px;
+    overflow: hidden;
+    display: block;
   }
 </style>

@@ -286,6 +286,7 @@ export default {
       materialType: this.info.gradeCd,
       changeNo: '',
       stockNo: '',
+      contCd: '00000000',
       shape: this.info.machineShapeCd
     }
     this.forData2 = {

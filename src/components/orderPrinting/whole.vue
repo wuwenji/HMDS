@@ -128,7 +128,7 @@
                       {{item.soWkInstList.soQty}}
                     </template>
                   </span>
-                  <span class="align-right">
+                  <span class="align-right" style="font-size: 16px;">
                     <!--{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soKgWt : ''}}-->
                     <template v-if="listIndex > 0">
                       {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soKgWt}}

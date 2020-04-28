@@ -8,11 +8,14 @@
             </div>
             <div class="john-row">
               <div class="john-item john-col-m3 john-col-x6">
-                <div class="john-content">
+                <div class="john-content" style="position: relative;">
                   <p>今日新接<br/>切断订单（件）</p>
                   <p><span>
                     {{$store.getters.toThousand(todayData[0], 3)}}
                   </span></p>
+                  <span class="two-number">
+                    圆棒：{{$store.getters.toThousand(todayData[8], 3)}} &nbsp;&nbsp; 板材：{{$store.getters.toThousand(todayData[9], 3)}}
+                  </span>
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
@@ -24,11 +27,14 @@
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
-                <div class="john-content">
+                <div class="john-content" style="position: relative;">
                   <p>切断<br/>正在处理（件）</p>
                   <p><span>
                     {{$store.getters.toThousand(todayData[4], 3)}}
                   </span></p>
+                  <span class="two-number">
+                    圆棒：{{$store.getters.toThousand(todayData[10], 3)}} &nbsp;&nbsp; 板材：{{$store.getters.toThousand(todayData[11], 3)}}
+                  </span>
                 </div>
               </div>
               <div class="john-item john-col-m3 john-col-x6">
@@ -125,7 +131,7 @@ export default {
     return {
       showCommd: 0,
       allScreen: 0,
-      todayData: [0, 0, 0, 0, 0, 0, 0, 0]
+      todayData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   },
   created () {
@@ -194,6 +200,16 @@ export default {
 .john-item {
   float: left;
 }
+
+.two-number {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  font-size: 20px !important;
+  bottom: 5px;
+}
+
   .john-col-x12 {
     width: calc(100% - 20px);
     margin: 10px;

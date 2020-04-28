@@ -1,5 +1,10 @@
 <template>
-  <div class="box" ref="lineChart"></div>
+  <div class="echart">
+    <div class="box" ref="lineChart"></div>
+    <div v-if="type === '1'" class="button">
+      <input v-model="cutNumber" type="text"><button @click="changeCutName">确认</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -12,19 +17,25 @@ export default {
   props: ['optionSeries', 'type', 'xAxis'],
   data () {
     return {
+      cutNumber: 1,
+      beforeData: [],
       yAxisOne: [
         {
           type: 'value',
           name: '时间',
-          min: 9,
-          max: 33,
+          min: 8,
+          max: 36,
           interval: 1,
           axisLabel: {
             formatter: (value) => {
               let val = value.toString()
               if (val > 24) {
                 let h = val - 24
-                return '明 ' + '0' + h + ':00'
+                if (h >= 10) {
+                  return '明 ' + h + ':00'
+                } else {
+                  return '明 ' + '0' + h + ':00'
+                }
               } else {
                 val = val > 9 ? val : '0' + val
                 return '今 ' + val + ':00'
@@ -65,17 +76,30 @@ export default {
     }
   },
   created () {
-    console.log(this.optionSeries)
+    this.beforeData = JSON.parse(JSON.stringify(this.optionSeries))
   },
   mounted () {
     this.drawEchart()
   },
   watch: {
     optionSeries () {
+      this.beforeData = JSON.parse(JSON.stringify(this.optionSeries))
       this.drawEchart()
     }
   },
   methods: {
+    changeCutName () {
+      let newData = JSON.parse(JSON.stringify(this.optionSeries))
+      newData.map(item => {
+        if (item.data.length > 0) {
+          item.data[0] = (item.data[0] - 8) * this.cutNumber + 8
+        }
+      })
+      setTimeout(() => {
+        this.beforeData = newData
+        this.drawEchart()
+      }, 0)
+    },
     getDate (day) {
       var today = new Date()
       var lastOrNextDate = today.getTime() + 1000 * 60 * 60 * 24 * day
@@ -115,7 +139,7 @@ export default {
           data: [this.xAxis]
         },
         yAxis: this.type === '1' ? this.yAxisOne : this.yAxisTwo,
-        series: this.optionSeries
+        series: this.beforeData
       })
     }
   }
@@ -123,8 +147,39 @@ export default {
 </script>
 
 <style scoped>
-.box {
-  width: 100%;
-  height: 100%;
-}
+  .echart {
+    width: 100%;
+    height: 100%;
+  }
+
+  .box {
+    width: 100%;
+    height: calc(100% - 30px);
+  }
+
+  .button {
+    height: 30px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .button input {
+    width: 50px;
+    height: 23px;
+    border: 1px solid #3a8ee6;
+    position: relative;
+    top: -1px;
+    border-radius: 4px 0 0 4px;
+    text-align: center;
+  }
+
+  .button button {
+    height: 25px;
+    background: #3a8ee6;
+    color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    padding: 0 10px;
+    cursor: pointer;
+  }
 </style>

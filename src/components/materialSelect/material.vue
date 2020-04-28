@@ -121,7 +121,7 @@
               </div></td>
               <td class="red" style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p style="position: absolute;">
-                  {{list.stockRemarks}}
+                  <span class="remarks">{{list.stockRemarks}}</span>
                   <template v-if="list.mergeNo !== null && list.mergeLnNo !== null && list.mergeCount !== null">
                     {{`${list.mergeNo}-${list.mergeLnNo}(${list.mergeCount})`}}
                   </template><br/>
@@ -891,5 +891,10 @@ export default {
     padding: 2px 4px;
     border-radius: 4px;
     z-index: 999999;
+  }
+  .remarks {
+    width: 109px;
+    overflow: hidden;
+    display: inline-block;
   }
 </style>

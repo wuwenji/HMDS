@@ -59,6 +59,7 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
+          <el-button type="success" plain @click="alertDialog('导出')">导出</el-button>
           <el-button type="success" plain @click="research(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
@@ -167,7 +168,7 @@
               v-if="johnTab === 2"
               size="mini"
               type="text"
-              @click="changeWeight(scope.row)">修改重量</el-button>
+              @click="alertDialog('修改重量', scope.row)">修改重量</el-button>
             <el-button
               size="mini"
               type="text"
@@ -285,28 +286,51 @@
       </div>
     </div>
     <el-dialog
-      title="修改重量"
+      :title="title"
       width="400px"
       :visible.sync="weightDialog">
-      <div class="weight-table">
-        <table border="1" borderColor="#ddd" class="table">
-          <tr>
-            <th>接单行号</th>
-            <th>重量</th>
-          </tr>
-          <tr v-for="(item, index) in weights" :key="index">
-            <td>
-              {{item.soNo + '-' + item.soLnNo}}
-            </td>
-            <td>
-              <el-input size="mini" v-model="item.outwardWeight"></el-input>
-            </td>
-          </tr>
-        </table>
+      <div v-if="title === '修改重量'">
+        <div class="weight-table">
+          <table border="1" borderColor="#ddd" class="table">
+            <tr>
+              <th>接单行号</th>
+              <th>重量</th>
+            </tr>
+            <tr v-for="(item, index) in weights" :key="index">
+              <td>
+                {{item.soNo + '-' + item.soLnNo}}
+              </td>
+              <td>
+                <el-input size="mini" v-model="item.outwardWeight"></el-input>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p style="text-align: center;margin-top: 20px;">
+          <el-button @click="changeWeightSubmit" type="primary">提交</el-button>
+        </p>
       </div>
-      <p style="text-align: center;margin-top: 20px;">
-        <el-button @click="changeWeightSubmit" type="primary">提交</el-button>
-      </p>
+      <div v-if="title === '导出'">
+        <el-form>
+          <el-form-item label="开始日期">
+            <el-date-picker
+              v-model="exportData.tempStartTime"
+              style="width: 100%;"
+              type="date"
+              value-format="timestamp"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="结束日期">
+            <el-date-picker
+              v-model="exportData.tempEndTime"
+              value-format="timestamp"
+              style="width: 100%;"
+              type="date"></el-date-picker>
+          </el-form-item>
+        </el-form>
+        <p style="text-align: center;margin-top: 20px;">
+          <el-button @click="exportExcel" type="primary">导出</el-button>
+        </p>
+      </div>
     </el-dialog>
     <el-dialog
       width="1120px"
@@ -320,11 +344,14 @@
 
 <script>
 import orderDetail from './orderDetail'
+import { getExcel } from '../../http'
+
 export default {
   name: 'index',
   data () {
     return {
       pageSize: 10,
+      title: '',
       weights: [],
       pageNum: 1,
       johnTab: 2,
@@ -332,6 +359,10 @@ export default {
       dialog: false,
       weightDialog: false,
       total: 0,
+      exportData: {
+        tempStartTime: '',
+        tempEndTime: ''
+      },
       formData: {
         soNo: '',
         soDateStr: '',
@@ -352,6 +383,37 @@ export default {
     this.getList(10, 1, 2)
   },
   methods: {
+    // 导出
+    exportExcel () {
+      getExcel('/tSalesOrder/getDeliveryHistory', this.exportData).then(res => {
+        if (res.byteLength > 0) {
+          const blob = new Blob([res])
+          const fileName = '送货单.xls'
+          if ('download' in document.createElement('a')) { // 非IE下载
+            const elink = document.createElement('a')
+            elink.download = fileName
+            elink.style.display = 'none'
+            elink.href = URL.createObjectURL(blob)
+            document.body.appendChild(elink)
+            elink.click()
+            URL.revokeObjectURL(elink.href) // 释放URL 对象
+            document.body.removeChild(elink)
+          } else { // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+          }
+        } else {
+          alert('数据为0，请重新选择日期！')
+        }
+      })
+    },
+    alertDialog (string, row = {}) {
+      this.title = string
+      if (string === '修改重量') {
+        this.changeWeight(row)
+      } else {
+        this.weightDialog = true
+      }
+    },
     // 修改提交
     changeWeightSubmit () {
       let parms = []

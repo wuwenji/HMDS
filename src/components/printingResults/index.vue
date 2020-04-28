@@ -273,6 +273,14 @@ export default {
         {
           value: '12',
           label: '格力'
+        },
+        {
+          value: '13',
+          label: 'WPC作业'
+        },
+        {
+          value: '14',
+          label: 'WPC出货'
         }
       ],
       downOption: '1'

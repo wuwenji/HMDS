@@ -64,7 +64,7 @@
       <p class="btn">
         <el-button id="bunt" v-print="'#printContent'" type="primary">打印</el-button>
         <el-button @click="printing" type="primary">打印</el-button>
-        <el-button @click="showContent = 1" type="primary">返回</el-button>
+        <el-button @click="showContent = 1; clickHost = false; selectValue = []" type="primary">返回</el-button>
       </p>
       <div v-if="orderDetail.length > 0" id="printContent">
         <div style="height:1480px;page-break-after: always;" v-for="(deliveryItem, deliveKey) in dataLists" :key="'cdb' + deliveKey">
@@ -265,6 +265,7 @@ export default {
     return {
       historyListShow: false,
       historyLists: [],
+      clickHost: false,
       orderDetail: [],
       showContent: 1,
       selectValue: [],
@@ -344,6 +345,7 @@ export default {
     },
     // 历史记录详情
     toHistory (data) {
+      this.clickHost = true
       this.selectValue = JSON.parse(data)
       console.log('历史详情', this.dataLists)
       this.historyListShow = false
@@ -396,7 +398,7 @@ export default {
     keeyHistory (obj) {
       let data = JSON.stringify(this.selectValue)
       this.http('/printHistory/saveOrUpdate', {
-        soNo: obj,
+        soNo: this.lists[0].soNo,
         printCode: this.orderDetail[0].orderCode,
         data,
         printType: '4'// 1为切断指示书，2为加工指示书，3为热加工指示书
@@ -424,19 +426,23 @@ export default {
         })
       })
       // console.log(parameters)
-      this.http('/tSalesOrder/isDelivery', parameters).then(resp => {
-        // console.log(resp)
-        // if (resp.success) {
-        //   document.getElementById('bunt').click()
-        // }
-        console.log(resp)
-        if (resp.success) {
-          document.getElementById('bunt').click()
-          this.keeyHistory(str)
-        } else {
-          this.$message.error(resp.message)
-        }
-      })
+      if (!this.clickHost) {
+        this.http('/tSalesOrder/isDelivery', parameters).then(resp => {
+          // console.log(resp)
+          // if (resp.success) {
+          //   document.getElementById('bunt').click()
+          // }
+          console.log(resp)
+          if (resp.success) {
+            document.getElementById('bunt').click()
+            this.keeyHistory(str)
+          } else {
+            this.$message.error(resp.message)
+          }
+        })
+      } else {
+        document.getElementById('bunt').click()
+      }
       // this.http('/tSalesOrder/isDelivery', {
       //   corpCd: this.orderInfo.corpCd,
       //   divisionCd: this.orderInfo.divisionCd,

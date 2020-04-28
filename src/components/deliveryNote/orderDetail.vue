@@ -67,7 +67,7 @@
       <p class="btn">
         <el-button id="bunt" v-print="'#printContent'" type="primary">打印</el-button>
         <el-button @click="printing" type="primary">打印</el-button>
-        <el-button @click="showContent = 1" type="primary">返回</el-button>
+        <el-button @click="showContent = 1; clickHost = false; selectValue = []" type="primary">返回</el-button>
       </p>
       <br/><br/>
       <div v-if="orderDetail.length > 0" id="printContent">
@@ -258,6 +258,7 @@ export default {
       showContent: 1,
       selectValue: [],
       dataLists: [],
+      clickHost: false,
       lists: [],
       numTotal: 0,
       wetTotal: 0,
@@ -270,6 +271,7 @@ export default {
   watch: {
     orderInfo () {
       this.getData()
+      this.clickHost = false
     }
   },
   methods: {
@@ -288,6 +290,7 @@ export default {
     },
     // 历史记录详情
     toHistory (data) {
+      this.clickHost = true
       this.selectValue = JSON.parse(data)
       console.log('历史详情', this.dataLists)
       this.historyListShow = false
@@ -416,19 +419,23 @@ export default {
         })
       })
       // console.log(parameters)
-      this.http('/tSalesOrder/isDelivery', parameters).then(resp => {
-        console.log(resp)
-        // if (resp.success) {
-        //   document.getElementById('bunt').click()
-        // }
-        // console.log(resp)
-        if (resp.success) {
-          document.getElementById('bunt').click()
-          this.keeyHistory(str)
-        } else {
-          this.$message.error(resp.message)
-        }
-      })
+      if (!this.clickHost) {
+        this.http('/tSalesOrder/isDelivery', parameters).then(resp => {
+          console.log(resp)
+          // if (resp.success) {
+          //   document.getElementById('bunt').click()
+          // }
+          // console.log(resp)
+          if (resp.success) {
+            document.getElementById('bunt').click()
+            this.keeyHistory(str)
+          } else {
+            this.$message.error(resp.message)
+          }
+        })
+      } else {
+        document.getElementById('bunt').click()
+      }
     },
     // 预览
     looking () {

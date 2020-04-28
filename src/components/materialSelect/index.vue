@@ -360,10 +360,14 @@ export default {
             this.dialog = true
           } else {
             this.$alert(resp.message, '提示', {
-              confirmButtonText: '确定',
-              callback: action => {
-                this.dialog = true
-              }
+              confirmButtonText: '确定'
+            }).then(() => {
+              this.dialog = true
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消'
+              })
             })
           }
         } else {
