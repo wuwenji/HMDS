@@ -106,6 +106,7 @@
           <li :class="{active: showCommd == 2}" @click="showCommd = 2">加工部</li>
           <li :class="{active: showCommd == 3}" @click="showCommd = 3">热处理</li>
           <li :class="{active: showCommd == 4}" @click="showCommd = 4">生产管理</li>
+          <li :class="{active: showCommd == 5}" @click="showCommd = 5">切断进度图</li>
         </ul>
       </div>
       <!--<a @click="showCreen" class="all-scrn">全屏</a>-->
@@ -113,8 +114,9 @@
         <doBusiness :class="{'send-screen': allScreen == 1}" v-if="showCommd == 0"/>
         <cutCommod :class="{'send-screen': allScreen == 1}" v-if="showCommd == 1"/>
         <manufacture :class="{'send-screen': allScreen == 1}" v-if="showCommd == 2"/>
-        <heatTreatment :class="{'send-screen': allScreen == 1}" v-if="showCommd ==3"/>
-        <prodPage :class="{'send-screen': allScreen == 1}" v-if="showCommd ==4"/>
+        <heatTreatment :class="{'send-screen': allScreen == 1}" v-if="showCommd == 3"/>
+        <prodPage :class="{'send-screen': allScreen == 1}" v-if="showCommd == 4"/>
+        <cutEcharts :class="{'send-screen': allScreen == 1}" v-if="showCommd == 5"/>
       </div>
     </div>
 </template>
@@ -125,6 +127,7 @@ import manufacture from './manufacture'
 import heatTreatment from './heatTreatment'
 import prodPage from './production'
 import cutCommod from './cut'
+import cutEcharts from '../home/cutEchart'
 export default {
   name: 'index',
   data () {
@@ -183,7 +186,8 @@ export default {
     manufacture,
     heatTreatment,
     cutCommod,
-    prodPage
+    prodPage,
+    cutEcharts
   }
 }
 </script>
@@ -281,7 +285,7 @@ export default {
   list-style: none;
   color: #fff;
   cursor: pointer;
-  padding: 10px 45px;
+  padding: 10px 29px;
   background: #7ebce8;
   /*background: -webkit-linear-gradient(#2f94dc, #0070c0);      !* Safari 5.1 - 6.0 *!*/
   /*background: -o-linear-gradient(#2f94dc, #0070c0);              !* Opera 11.1 - 12.0 *!*/

@@ -1,11 +1,15 @@
 <template>
   <div class="box">
-    <!--<div class="echart-item" v-for="(item, index) in this.typeOneData" :key="index">-->
-      <!--<lineEchart type="1" :xAxis="item.name" :optionSeries="item.list"></lineEchart>-->
-    <!--</div>-->
-    <!--<div class="echart-item" v-for="(item, index) in this.typeTwoData" :key="index">-->
-      <!--<lineEchart type="2" :xAxis="item.name" :optionSeries="item.list"></lineEchart>-->
-    <!--</div>-->
+    <template v-if="showType">
+      <div class="echart-item" v-for="(item, index) in this.typeOneData" :key="'a' + index">
+        <lineEchart type="1" :xAxis="item.name" :optionSeries="item.list"></lineEchart>
+      </div>
+    </template>
+    <template v-else>
+      <div class="echart-item" v-for="(item, index) in this.typeTwoData" :key="'b' + index">
+        <lineEchart type="2" :xAxis="item.name" :optionSeries="item.list"></lineEchart>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -17,6 +21,8 @@ export default {
   },
   data () {
     return {
+      showType: true,
+      setInt: '',
       typeOneData: [],
       typeTwoData: []
     }
@@ -25,10 +31,17 @@ export default {
     this.getData1()
     this.getData2()
   },
+  mounted () {
+    this.setSetInterval()
+  },
+  beforeDestroy () {
+    clearInterval(this.setInt)
+  },
   methods: {
     getData2 () {
       this.http('/orderSeparate/timeColumnChart', {}).then(resp => {
         if (resp.success) {
+          this.typeTwoData = []
           resp.data.map(item => {
             let obj = {
               name: item.equipmentCode,
@@ -42,6 +55,10 @@ export default {
                 stack: 'aa',
                 itemStyle: {
                   barBorderColor: 'rgba(0,0,0,0.3)'
+                },
+                label: {
+                  show: true,
+                  position: 'inside'
                 },
                 data: [numb]
               })
@@ -61,7 +78,11 @@ export default {
                   type: 'bar',
                   itemStyle: {
                     barBorderColor: 'rgba(0,0,0,0.3)',
-                    color: 'rgba(200, 200, 200)'
+                    color: 'blue'
+                  },
+                  label: {
+                    show: true,
+                    position: 'inside'
                   },
                   stack: 'bb',
                   data: [item.confirmTime.toFixed(2)]
@@ -72,70 +93,18 @@ export default {
             this.typeTwoData.push(obj)
           })
         }
-        console.log(this.typeTwoData)
       })
-      // let data = [
-      //   {
-      //     date: '0306',
-      //     usedTime: 14
-      //   },
-      //   {
-      //     date: '0307',
-      //     usedTime: 10
-      //   },
-      //   {
-      //     date: '0308',
-      //     usedTime: 20
-      //   },
-      //   {
-      //     date: '0309',
-      //     usedTime: 17
-      //   },
-      //   {
-      //     date: '0306实际',
-      //     usedTime: 10
-      //   }
-      // ]
-      // let array = []
-      // data.map((item, index) => {
-      //   if (index === data.length - 1) {
-      //     array.push({
-      //       name: '1',
-      //       type: 'bar',
-      //       itemStyle: {
-      //         barBorderColor: 'rgba(0,0,0,0.3)',
-      //         color: 'rgba(200, 200, 200)'
-      //       },
-      //       stack: 'bb',
-      //       data: [item.usedTime]
-      //     })
-      //   } else {
-      //     array.push({
-      //       name: '1',
-      //       type: 'bar',
-      //       stack: 'aa',
-      //       itemStyle: {
-      //         barBorderColor: 'rgba(0,0,0,0.3)'
-      //       },
-      //       data: [item.usedTime]
-      //     })
-      //     array.push({
-      //       name: '闲',
-      //       type: 'bar',
-      //       stack: 'aa',
-      //       itemStyle: {
-      //         barBorderColor: 'rgba(0,0,0,0)',
-      //         color: 'rgba(0,0,0,0)'
-      //       },
-      //       data: [24 - item.usedTime]
-      //     })
-      //   }
-      // })
-      //
-      // this.datas1 = array
+    },
+    setSetInterval () {
+      this.setInt = setInterval(() => {
+        this.getData1()
+        this.getData2()
+        this.showType = !this.showType
+        clearInterval(this.setInt)
+        this.setSetInterval()
+      }, 300000)
     },
     getColor (number) {
-      console.log(number)
       if (number === 1) return 'rgba(194, 53, 49, 1)'
       if (number === 2) return 'rgba(53, 131, 184, 1)'
       if (number === 3) return 'rgba(97, 160, 168, 1)'
@@ -144,6 +113,7 @@ export default {
     getData1 () {
       this.http('/orderSeparate/receiptColumnChart', {}).then(resp => {
         if (resp.success) {
+          this.typeOneData = []
           resp.data.map(item => {
             let obj = {
               name: item.equipmentCode,
@@ -175,7 +145,7 @@ export default {
 
 <style scoped>
   .box {
-    height: 1050px;
+    height: 1040px;
   }
 
   .echart-item {

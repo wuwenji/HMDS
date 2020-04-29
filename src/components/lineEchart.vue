@@ -4,6 +4,18 @@
     <div v-if="type === '1'" class="button">
       <input v-model="cutNumber" type="text"><button @click="changeCutName">确认</button>
     </div>
+    <div v-else>
+      <ul class="color-span">
+        <li>
+          <span style="background: #c23531"></span>
+          理论完成用时
+        </li>
+        <li>
+          <span style="background: blue"></span>
+          实际完成用时
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -118,11 +130,10 @@ export default {
         },
         tooltip: {
           formatter: (value) => {
-            let html = `${value[0].axisValue}<br/>`
-            value.map(item => {
-              html += `${item.seriesName}用时：${(item.data - 9).toFixed(1)}小时<br/>`
-            })
-            return html
+            if (this.type === '1') {
+              let html = `${value.seriesName}<br/>需要: ${value.value.toFixed(2)} 小时`
+              return html
+            }
           }
         },
         grid: {
@@ -159,18 +170,18 @@ export default {
 
   .button {
     height: 30px;
-    width: 100%;
-    text-align: center;
+    width: 100px;
+    margin: 0 auto;
+    padding-left: 10%;
   }
 
   .button input {
     width: 50px;
     height: 23px;
     border: 1px solid #3a8ee6;
-    position: relative;
-    top: -1px;
     border-radius: 4px 0 0 4px;
     text-align: center;
+    float: left;
   }
 
   .button button {
@@ -178,8 +189,30 @@ export default {
     background: #3a8ee6;
     color: #fff;
     border: none;
+    float: left;
     border-radius: 0 4px 4px 0;
     padding: 0 10px;
     cursor: pointer;
+  }
+
+  .color-span span {
+    display: block;
+    width: 30px;
+    height: 10px;
+    margin: 0 auto;
+  }
+
+  .color-span {
+    text-align: center;
+    padding-left: 15%;
+  }
+
+  .color-span li {
+    display: inline-block;
+    list-style: none;
+    margin: 0 5px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
   }
 </style>

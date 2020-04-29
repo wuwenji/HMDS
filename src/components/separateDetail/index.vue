@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="search(10, 1)">查询</el-button>
-          <el-button type="success" plain @click="addUser">导出</el-button>
+          <el-button type="success" plain >导出</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -79,13 +79,17 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="100"
+          width="140"
           label="操作">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="text"
               @click="editUser(scope.$index, scope.row)">查看详情</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="cutEchart(scope.$index, scope.row)">切断图表</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -105,9 +109,17 @@
       :title="title"
       :visible.sync="dialog"
       custom-class="john-dialog"
-      width="1500px">
-      <addUser :list="listByEquipment"></addUser>
-      <edit v-if="title == '标签修改'" :editData="editData"></edit>
+      :width="title === '设备分单详情' ? '1500px' : '800px'">
+      <addUser v-if="title === '设备分单详情'" :list="listByEquipment"></addUser>
+      <div class="echart-box" v-if="title === '切断图表'">
+        <div class="echart-item">
+          <lineEchart type="1" :xAxis="name" :optionSeries="echartDataOne.list"></lineEchart>
+        </div>
+        <div class="echart-item">
+          <lineEchart type="2" :xAxis="name" :optionSeries="echartDataTwo.list"></lineEchart>
+        </div>
+      </div>
+      <!--<edit v-if="title == '标签修改'" :editData="editData"></edit>-->
     </el-dialog>
   </div>
 </template>
@@ -115,6 +127,7 @@
 <script>
 import addUser from './addUser'
 import edit from './edit'
+import lineEchart from '../lineEchart'
 
 export default {
   name: 'index',
@@ -124,12 +137,15 @@ export default {
       listByEquipment: [],
       separateRow: 0,
       total: 0,
+      name: '',
       separateTotal: 0,
       dialog: false,
+      echartDataOne: '',
+      echartDataTwo: '',
       equipments: 0,
       logDialog: false,
       submitFlg: true,
-      title: '设备分单列表',
+      title: '设备分单详情',
       qrCodes: [],
       pageNum: 1,
       pageSize: 10,
@@ -184,13 +200,99 @@ export default {
       this.search(this.pageSize, this.pageNum)
     },
     addUser () {
-      this.title = '添加标签'
+      // this.title = '添加标签'
       this.submitFlg = true
       this.dialog = true
     },
+    getDataOne (object) {
+      let obj = {
+        name: object.equipmentCode,
+        list: []
+      }
+      object.map(val => {
+        obj.list.push({
+          name: val.soNo + '-' + val.soLnNo,
+          type: 'bar',
+          stack: 'aa',
+          itemStyle: {
+            barBorderColor: this.getColor(val.isUrgent),
+            color: this.getColor(val.isUrgent)
+          },
+          data: [8 + val.cutTime]
+        })
+      })
+      this.echartDataOne = obj
+    },
+    getColor (number) {
+      if (number === 1) return 'rgba(194, 53, 49, 1)'
+      if (number === 2) return 'rgba(53, 131, 184, 1)'
+      if (number === 3) return 'rgba(97, 160, 168, 1)'
+      if (number === 4) return 'rgba(62, 91, 156, 1)'
+    },
+    getDataTwo (object) {
+      let obj = {
+        name: object.equipmentCode,
+        list: []
+      }
+      object.list.map((val, index) => {
+        let numb = val.totalTime.toFixed(2)
+        obj.list.push({
+          name: '1',
+          type: 'bar',
+          stack: 'aa',
+          itemStyle: {
+            barBorderColor: 'rgba(0,0,0,0.3)'
+          },
+          label: {
+            show: true,
+            position: 'inside'
+          },
+          data: [numb]
+        })
+        obj.list.push({
+          name: '闲',
+          type: 'bar',
+          stack: 'aa',
+          itemStyle: {
+            barBorderColor: 'rgba(0,0,0,0)',
+            color: 'rgba(0,0,0,0)'
+          },
+          data: [24 - numb]
+        })
+        if (index === object.list.length - 1) {
+          obj.list.push({
+            name: '1',
+            type: 'bar',
+            itemStyle: {
+              barBorderColor: 'rgba(0,0,0,0.3)',
+              color: 'blue'
+            },
+            label: {
+              show: true,
+              position: 'inside'
+            },
+            stack: 'bb',
+            data: [object.confirmTime.toFixed(2)]
+          })
+        }
+      })
+      this.echartDataTwo = obj
+    },
+    // 切断图表
+    cutEchart (index, item) {
+      this.title = '切断图表'
+      this.name = item.name
+      this.http('/orderSeparate/singleColumnChart/' + item.id).then(resp => {
+        if (resp.success) {
+          this.getDataOne(resp.data.soNoData.list)
+          this.getDataTwo(resp.data.soNoTimeData)
+          this.dialog = true
+        }
+      })
+    },
     editUser (index, item) {
       // this.editData = item
-      // this.title = '标签修改'
+      this.title = '设备分单详情'
       // this.dialog = true
       this.http('/orderSeparate/getSeparateOrderListByEquipmentId', {
         equipmentId: item.id,
@@ -217,7 +319,8 @@ export default {
   },
   components: {
     addUser,
-    edit
+    edit,
+    lineEchart
   }
 }
 </script>
@@ -227,6 +330,14 @@ export default {
     line-height: 35px;
     border-bottom: 1px solid #ccc;
     padding-left: 10px;
+  }
+  .echart-item {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
+  .echart-box {
+    height: 400px;
   }
   .position span {
     color: #409EFF;
