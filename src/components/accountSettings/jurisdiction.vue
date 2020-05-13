@@ -32,10 +32,10 @@ export default {
         label: '接单管理',
         children: [{
           id: 0,
-          label: '自动选料'
+          label: '订单确认'
         }, {
           id: 10,
-          label: '订单打印'
+          label: '选料及打印订单'
         }, {
           id: 11,
           label: '历史订单'
@@ -123,6 +123,9 @@ export default {
         }, {
           id: 43,
           label: '分单详情'
+        }, {
+          id: 44,
+          label: '送货单金额'
         }]
       }, {
         id: 8,

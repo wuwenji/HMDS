@@ -1,7 +1,11 @@
 <template>
   <div>
+    <p class="btn">
+      <el-button @click="keeyHistory" type="primary">打印</el-button>
+      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
+    </p>
     <div id="printContent">
-      <div class="printPage" v-for="(item, index) in pinkData" :key="index" style="height: 830px;">
+      <div class="printPage" v-for="(item, index) in pinkData" :key="index" style="height: 820px;">
         <div class="table1">
           <table class="table-td-width" width="100%" border="0" cellspacing="0" >
             <tr >
@@ -9,13 +13,15 @@
                 <img class="logo" src="../../../static/images/logo.jpg" alt="">
               </td>
               <td width="371" valign="center" nowrap="nowrap" ><p >&nbsp;</p></td>
-              <td valign="center" nowrap="nowrap" colspan="3" rowspan="2" ><p>
+              <td valign="center" style="position: relative;" nowrap="nowrap" colspan="3" rowspan="2" ><p>
                 <span class="STYLE3">切断作业指示书</span>
-                <img class="qrimg" :src="$store.state.qrUrl + item.workList[0].cutQrCode + '&w=50&h=50'" alt="">
+
+                <img class="qrimg" :src="$store.state.qrUrl + item.workList[0].cutQrCode + '&w=500&h=500'" alt="">
+                <span class="sign" v-if="item.order.labelName">
+                  {{item.order.labelName}}
+                </span>
               </p></td>
-              <td valign="center" nowrap="nowrap" colspan="2" ><p align="right" ><b class="relative1">
-                HMD-QR-50-{{item.order.workInstCd > 3? '4': item.order.workInstCd}}/AO
-              </b> </p></td>
+              <td valign="center" nowrap="nowrap" colspan="2" ><p align="right" ><b class="relative1">HMD-QR-50-{{item.order.workInstCd > 3? '4': item.order.workInstCd}}/AO</b> </p></td>
               <td width="134" valign="center" nowrap="nowrap"><p class="relative1" style="text-align: right;">
                 page: {{index + 1}} / {{pinkData.length}}
               </p></td>
@@ -27,7 +33,8 @@
                 </p>
               </td>
               <td valign="center" nowrap="nowrap" colspan="2" ><p class="type" align="right" >
-                {{item.order.workInstCd == 6? '切断&加工': ''}}
+                <!--{{item.order.workInstCd}}-->
+                {{item.order.workInstCd > 3? '切断&加工&热处理': ''}}
                 {{item.order.workInstCd == 3? '切断&加工': ''}}
                 {{item.order.workInstCd == 1? '切断': ''}}
                 {{item.order.workInstCd == 2? '切断': ''}}
@@ -57,7 +64,7 @@
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.order.soNo}}</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>营业员</b></p></td>
             <td colspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" >
-              <p style="float: left;">{{item.order.sUserName}}</p>
+              <p style="float: left;">{{item.order.suserName}}</p>
               <p style="float: right;border-left: 1px solid #000;padding-left: 20px;height: 25px;"><b>发件人</b> </p>
             </td>
             <!--<td width="30" valign="center" nowrap="nowrap" bordercolor="#000000" >-->
@@ -78,63 +85,94 @@
           <tr >
             <td width="75" valign="center" nowrap="nowrap" class="r t"><p ><b>交期</b> </p></td>
             <td width="47" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>单位</b> </p></td>
-            <td width="52" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>数量</b> </p></td>
-            <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p ><b>kg重量</b> </p></td>
-            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>现品管理NO</b> </p></td>
+            <td width="52" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p class="align-right"><b>数量</b> </p></td>
+            <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p class="align-right"><b>kg重量</b> </p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>&nbsp;</b> </p></td>
             <td width="117" valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
             <td colspan="2" nowrap="nowrap" class="l r t"><p ><b>库存尺寸</b> </p></td>
             <td width="150" valign="center" nowrap="nowrap" class="l t"><p ><b>切断指示尺寸</b> </p></td>
           </tr>
-          <template v-for="list in item.workList">
-            <tr class="tr1">
+          <template v-for="(list, num) in item.workList">
+            <tr class="tr1" :key="'aa' + num">
               <td width="30" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstNo}}</p></td>
+              <td width="25" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soLnNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                <p class="spans">
-                  <span>{{item.order.machineShapeCd}}</span>
-                  <span>{{list.instSize1}}X</span>
-                  <span>{{list.instSize2}}X</span>
-                  <span>{{list.instSize3}}</span>
+                <p>
+                  <span style="width: 25px;display: inline-block;">{{list.machineShapeCd}}</span>
+                  <span style="width: 55px;display: inline-block;text-align: right;margin-right:5px;">{{list.size1}}</span>X<span style="margin-right:5px;margin-left:10px;width: 55px;display: inline-block;text-align: right;">
+                    {{list.size2 > 0? list.size2 : ''}}</span>X<span style="width: 55px;display: inline-block;text-align: right;margin-left:10px;">
+                  {{list.size3}}</span>
+                  <!--<span>100.99X </span>-->
+                  <!--<span>-->
+                  <!--100.99X-->
+                  <!--</span><span>-->
+                  <!--100.99</span>-->
+                  <!--<span>{{list.instSize1}}X</span>-->
+                  <!--<span>{{list.instSize2}}X</span>-->
+                  <!--<span>{{list.instSize3}}</span>-->
                 </p>
                 <p class="spans">
-                  <span style="font-size: 14px;">{{item.order.itemName1}}</span>
+                  <span style="font-size: 14px;">{{list.itemName1}} {{list.itemName2}}</span><br/>
+                  <span style="font-size: 14px;position:relative;top:-4px;">{{list.instRemarks1}}</span><br/>
+                  <span style="font-size: 14px;position:relative;top:-8px;">{{list.instRemarks2}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">
-                  <span style="font-size:14px;">{{$store.getters.getDate(item.order.contDueDate).replace('-', '/').replace('-', '/')}}</span>
-                  <span>{{list.unitWtCd == 1? 'KG': '個'}}</span>
-                  <span>{{list.workInstQty}}</span>
-                  <span>{{list.workInstKgWt}}</span>
+                  <span style="font-size:14px;">{{$store.getters.getDate(list.contDueDate, 2).replace('-', '/').replace('-', '/')}}</span>
+                  <span>
+                    {{list.unitPriceCd == 2? 'KG': ''}}
+                    {{list.unitPriceCd == 7? '個': ''}}
+                    {{list.unitPriceCd == 8? '套': ''}}
+                  </span>
+                  <span class="align-right">{{list.soQty}}</span><span style="margin-right:5px;width: 65px;" class="align-right">{{list.soKgWt}}</span>
                 </p>
               </td>
-              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
-                {{list.stockType}}<br/>{{list.matCntlNo}}
-              </p></td>
+              <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><div >
+                <p>
+                  {{list.stockType == 1? '母材' : ''}}{{list.stockType == 2? '余材' : ''}}<template v-if="list.replaceGrade"><span style="font-size: 12px;">({{list.replaceGrade}})</span></template>
+                  &nbsp;
+                </p>
+                <p v-if="list.selectSoNo">
+                  <span>{{list.selectSoNo | subs}}</span>
+                </p>
+                <!--{{list.matCntlNo}}-->
+              </div></td>
               <td style="border-right: none;" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" >
-                {{list.stockRemarks}}<br/>{{list.chargeNo}}
+                <span class="remarks">{{list.stockRemarks}}</span>
+                {{list.chargeNo}}
               </td>
               <td style="border-left: none;" colspan="3" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;</p>
                 <p >{{list.stockSizeNote}}
-                  <span style="float: right;width: 150px;">{{list.instSizeNote}}</span>
+                  <span style="float: right;width: 170px;">
+                    {{list.machineShapeCd}}
+                    {{list.instSize1}}X<template v-if="list.instSize2 > 0">{{list.instSize2}}X</template>{{list.instSize3}}
+                    <!--{{list.instSizeNote}}-->
+                  </span>
                 </p>
               </td>
-              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.workInstQty}}</p></td>
+              <td width="30" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.soQty}}</p></td>
               <td class="bt bl" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
               <td class="bt br" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
-            <tr class="tr2">
-              <td class="bt bb bl" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+            <tr class="tr2" :key="'acb' + num">
+              <td class="bt bb bl br" colspan="3" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" >
+                <p></p>
+                <!--<p><template v-if="list.selectSoNo">{{list.selectSoNo}}</template></p>-->
+                <!--<p><template v-if="list.replaceGrade">({{list.replaceGrade}})</template></p>-->
+              </td>
             </tr>
-            <tr class="tr3">
-              <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+            <tr class="tr3" :key="'acbcx' + num">
+              <td class="bt bl bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{list.suppInvoNo}}</p></td>
+              <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
+                {{list.theoreticalCutTime}}
+              </p></td>
               <td class="bt bb" colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
-                &nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;
+                作&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;
               </p></td>
               <td class="bt bb" valign="center" nowrap="nowrap" bordercolor="#000000" ><p class="midle-box">
                 <span class="midle-box-content"></span>
                 <span class="midle-box-content"></span>
                 <span class="midle-box-content"></span>
-                &nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;
+                检&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;
               </p></td>
             </tr>
           </template>
@@ -149,7 +187,7 @@
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >确认 </p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >切断作业员 </p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >确认 </p></td>
-            <td colspan="2" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >&nbsp;</p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" >审核确认</p></td>
           </tr>
           <tr class="tr1">
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
@@ -157,18 +195,24 @@
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+            <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
           </tr>
           <tr class="tr1">
-            <td colspan="7" rowspan="2" nowrap="nowrap" bordercolor="#000000" ><p >备注 </p></td>
+            <td colspan="3" rowspan="2" nowrap="nowrap" bordercolor="#000000" >
+              <div class="remarks-left">备注</div>
+              <div class="remarks-right">
+                <p>{{item.order.wioHeadRemarks1}}</p>
+                <p>{{item.order.wioHeadRemarks2}}</p>
+              </div>
+            </td>
+            <td colspan="4" rowspan="2" nowrap="nowrap" >
+              <div class="remarks-left" v-if="item.order.labelName" style="font-size: 12px;padding-left: 10px;">送货地址：{{item.order.shiptoAddress1}}</div>
+            </td>
           </tr>
           <tr ></tr>
         </table>
       </div>
     </div>
-    <p class="btn">
-      <el-button @click="keeyHistory" type="primary">打印</el-button>
-      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
-    </p>
   </div>
 </template>
 
@@ -181,7 +225,7 @@ export default {
       src: '',
       id: 0,
       nullNumb: 5,
-      pinkData: {}
+      pinkData: []
     }
   },
   created () {
@@ -193,33 +237,84 @@ export default {
       this.getHtml()
     }
   },
+  filters: {
+    subs (string) {
+      return string.substring(0, 13)
+    }
+  },
   methods: {
     getHtml () {
-      this.http('/tSalesOrder/getPrintData', {
+      this.http('/tSalesOrder/showCutData', {
         // id: 362
         soNo: this.orderInfo.soNo
       }).then(resp => {
-        console.log(resp)
         if (resp.success) {
-          this.pinkData = resp.data
+          this.pinkData = []
+          resp.data.map(item => {
+            let workList = item.orderList.map(val => {
+              // let obj = {}
+              let obj = {
+                ...val
+              }
+              // for (let key in obj) {
+              //   if (obj[key] === null) {
+              //     obj[key] = val.soWkInstList[key]
+              //   }
+              // }
+              // val.forEach((val, key) => {
+              //   if (val === null) {
+              //     obj[key] = val.soWkInstList[key]
+              //   } else {
+              //     obj[key] = val
+              //   }
+              // })
+              return obj
+            })
+            let obj = {
+              order: workList[0],
+              workList
+            }
+            this.pinkData.push(obj)
+          })
+          // console.log(this.pinkData)
+          // console.log(this.pinkData)
+          // this.pinkData = []
+          // // this.pinkData = resp.data
+          // resp.data.map(item => {
+          //   item.workList = item.workList.map(val => {
+          //     let obj = {
+          //       ...val,
+          //       ...val.soWkInstList
+          //     }
+          //     return obj
+          //   })
+          //   this.pinkData.push(item)
+          // })
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },
     keeyHistory () {
-      this.http('/printHistory/saveOrUpdate', {
-        soNo: this.orderInfo.soNo,
-        dataJson: {...this.pinkData},
-        printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
-      }).then(resp => {
-        if (resp.success) {
-          document.getElementById('printClick').click()
-        } else {
-          this.$message.error({
-            message: '失败：' + resp.message,
-            duration: 1000
-          })
-        }
-      })
+      document.getElementById('printClick').click()
+      // this.http('/printHistory/saveOrUpdate', {
+      //   soNo: this.orderInfo.soNo,
+      //   dataJson: {...this.pinkData},
+      //   printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      // }).then(resp => {
+      //   if (resp.success) {
+      //     document.getElementById('printClick').click()
+      //   } else {
+      //     this.$message.error({
+      //       message: '失败：' + resp.message,
+      //       duration: 1000
+      //     })
+      //   }
+      // })
     }
   }
 }
@@ -229,8 +324,19 @@ export default {
   * {
     font-family: 宋体;
   }
+  .align-right {
+    text-align: right;
+  }
   b {
     font-size: 15px;
+  }
+  .remarks-left {
+    float: left;
+    width: 60px;
+    line-height: 40px;
+  }
+  .remarks-right {
+    float: left;
   }
   #printContent {
     /*margin: 10px;*/
@@ -298,10 +404,10 @@ export default {
     width: 41px;
   }
   .spans span:nth-child(3) {
-    width: 47px;
+    width: 45px;
   }
   .spans span:nth-child(4) {
-    width: 47px;
+    width: 70px;
   }
   .removeClass td{
     height: 100px;
@@ -314,13 +420,11 @@ export default {
   }
   .qrimg {
     position: absolute;
+    /*margin-top: 8px;*/
+    /*margin-left: 5px;*/
     width: 45px;
-    margin-top: 8px;
-    margin-left: 5px;
-  }
-  .printPage {
-    page-break-before: auto;
-    page-break-after: always;
+    left: 255px;
+    top: 32px;
   }
   .logo {
     width: 59px;
@@ -352,13 +456,13 @@ export default {
     top: -12px;
   }
   .midle-box-content:nth-child(1) {
-    left: 10px;
+    left: 25px;
   }
   .midle-box-content:nth-child(2) {
-    left: 60px;
+    left: 75px;
   }
   .midle-box-content:nth-child(3) {
-    left: 120px;
+    left: 135px;
   }
   .type {
     font-size: 24px;
@@ -393,7 +497,7 @@ export default {
     padding: 0 2px;
   }
   .tr1 {
-    height: 40px;
+    height: 35px;
     font-size: 18px;
   }
   .tr2 {
@@ -408,5 +512,24 @@ export default {
   }
   .table2 td {
     width: 14%;
+  }
+  .sign {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 22px;
+    position: absolute;
+    left: 370px;
+    font-weight: bold;
+    top: 26px;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
+  }
+  .remarks {
+    width: 109px;
+    overflow: hidden;
+    display: block;
   }
 </style>

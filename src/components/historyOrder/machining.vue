@@ -1,17 +1,28 @@
 <template>
   <div>
+    <p class="btn">
+      <el-button @click="keeyHistory" type="primary" style="color: #fff;">打印</el-button>
+      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
+    </p>
     <div id="printContent">
       <div class="main cl printPage" v-for="(item, key) in machiningData.workList" :key="'1' + key">
         <div class="pri-left" style="border-right: 1px dashed #000;border-bottom: 1px dashed #000;">
           <table>
             <tr>
-              <td width="487"><p>切断&加工 </p>
+              <td width="487"><p>
+                {{item.workInstCd > 3? '切断&加工&热处理': ''}}
+                {{item.workInstCd == 3? '切断&加工': ''}}
+              </p>
                 <p>&nbsp;<span class="span span-left">切断</span> </p></td>
-              <td width="590">
+              <td width="590" style="position: relative;">
                 <p style="font-size: 18px;font-weight: bold; position: relative;">
                   <img class="logo" src="../../../static/images/logo.jpg" alt="">
                   日立金属（东莞）特殊钢有限公司 本部</p>
-                <p style="font-size: 12px;">广东省东莞市茶山工业园</p></td>
+                <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p>
+                <span class="sign" v-if="item.labelName">
+                  {{item.labelName}}
+                </span>
+              </td>
             </tr>
           </table>
           <table class="table table-width" width="100%" height="285" border="1" cellpadding="0" cellspacing="0">
@@ -36,30 +47,31 @@
               <td style="background: #000; color: #fff;" colspan="2">{{$store.state.time}}</td>
             </tr>
             <tr>
-              <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{machiningData.order.soNo}}</td>
-              <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{machiningData.order.soLnNo}}</td>
+              <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</td>
+              <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{item.soLnNo}}</td>
               <td><strong>发件人</strong></td>
-              <td colspan="2">{{$store.state.users.userName}}</td>
+              <td colspan="2">{{item.entryUserName}}</td>
             </tr>
             <tr>
               <td class="r"><strong>订购商名称</strong></td>
-              <td class="l" colspan="5">{{machiningData.order.contCd}}</td>
+              <td class="l" colspan="5">{{item.contName}}</td>
               <td class="r t b"><strong>交期</strong></td>
               <td class="l b">
-                {{$store.getters.getDate(machiningData.order.contDueDate)}}
+                {{item.contDueDate}}
+                <!--{{$store.getters.getDate(machiningData.order.contDueDate, 2)}}-->
               </td>
-              <td class="b"><strong>指示数量</strong></td>
+              <td class="b" style="width: 54px;"><strong>指示数量</strong></td>
             </tr>
             <tr>
               <td class="r"><strong>送货地址名称</strong></td>
-              <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
+              <td class="l" colspan="5"> {{item.shiptoName}} </td>
               <td class="r t"></td>
               <td class="t l"></td>
-              <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
+              <td class="t" align="right" style="font-size: 20px;"><strong>{{item.soQty}}</strong></td>
             </tr>
             <tr>
               <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
-                <p style="font-size: 25px;">{{machiningData.order.gradeCd}}</p></td>
+                <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
               <td class="b" colspan="7"><strong>加工公差</strong></td>
             </tr>
             <tr>
@@ -68,7 +80,8 @@
             <tr>
               <td  class="r"><strong>客户要求尺寸</strong></td>
               <td align="center" style="font-size: 20px;" colspan="6" class="l">
-                {{item.instSizeNote}}
+                {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                <!--{{item.instSizeNote}}-->
               </td>
               <!--<td class="r l">30</td>-->
               <!--<td class="r l">X</td>-->
@@ -78,18 +91,19 @@
             </tr>
             <tr>
               <td class="b"><strong>直角度</strong></td>
-              <td class="b"><strong>平等度</strong></td>
+              <td class="b"><strong>平行度</strong></td>
               <td class="b"><strong>加工规格</strong></td>
               <td class="b"><strong>倒角规格</strong></td>
               <td class="b" colspan="5"><strong>切断指示尺寸</strong></td>
             </tr>
             <tr>
-              <td class="t">&nbsp;</td>
-              <td class="t">&nbsp;</td>
+              <td class="t">&nbsp;{{item.mRightAngle}}</td>
+              <td class="t">{{item.mParallel}}</td>
               <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
-              <td class="t">&nbsp;</td>
+              <td class="t">{{item.chamferSpec}}</td>
               <td align="center" style="font-size: 20px;" colspan="5" class="t">
-                {{item.instSizeNote}}
+                {{item.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
+                <!--{{item.instSizeNote}}-->
               </td>
               <!--<td class="t r l">X</td>-->
               <!--<td align="center" class="t r l">41</td>-->
@@ -115,22 +129,23 @@
             </tr>
             <tr>
               <td  class="b" colspan="9">
-                <strong>加工指示备注</strong> {{item.millingRemarks1}}
-                {{item.millingRemarks2}}
-                {{item.millingRemarks3}}
-                {{item.millingRemarks4}}
-                {{item.heatMillingRemarks}}
+                <strong style="float: left;margin-right:10px;">加工指示备注</strong>
+                <div style="width:320px;float: left;">
+                  <p>&nbsp;{{item.instRemarks1}}</p>
+                  <p>&nbsp;{{item.instRemarks2}}</p>
+                </div>
+                <div style="width:330px;float: right;">
+                  <p>&nbsp;{{item.millingRemarks1}}</p>
+                  <p>&nbsp;{{item.millingRemarks2}}</p>
+                </div>
               </td>
-            </tr>
-            <tr>
-              <td  class="t" colspan="9">&nbsp;</td>
             </tr>
           </table>
           <table class="table" style="width: 85%;margin: 0 auto;border-top: none;" border="1" cellspacing="0" bordercolor="#000000">
             <tr>
               <td class="t" align="center" width="200"><strong>营业确认</strong></td>
               <td class="t" align="center" width="200"><strong>厚度加工</strong></td>
-              <td class="t" align="center" width="200"><strong>四边加工</strong></td>
+              <td class="t" align="center" width="200"><strong>四辺加工</strong></td>
               <td class="t" align="center" width="200"><strong>研磨加工</strong></td>
               <td class="t" align="center" width="200"><strong>检测</strong></td>
             </tr>
@@ -148,6 +163,7 @@
               <td class="btb"><p>&nbsp;</p></td>
             </tr>
           </table>
+          <p v-if="item.labelName">收货地址：{{item.shiptoAddress1}}</p>
         </div>
         <div class="pri-right" style="border-bottom: 1px dashed #000;padding-bottom: 5px;">
           <table width="100%"  border="0" cellspacing="0" bordercolor="#000000">
@@ -156,7 +172,7 @@
               <td colspan="2" style="position: relative;">
                 <img class="right-logo" src="../../../static/images/logo.jpg" alt="">
                 <b>日立金属（东莞）特殊钢有限公司 本部 </b>
-                <p style="font-size: 10px;">广东省东莞市茶山工业园</p></td>
+                <p style="font-size: 10px;">广东省东莞市茶山镇茶山工业园</p></td>
             </tr>
             <tr>
               <td width="326">&nbsp;</td>
@@ -164,8 +180,8 @@
             </tr>
             <tr>
               <td><strong>现品票</strong></td>
-              <td><div align="center"><strong>接单号码：</strong>{{machiningData.order.soNo}}</div></td>
-              <td><strong>指示号码：</strong>{{machiningData.order.soLnNo}}</td>
+              <td><div align="center"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</div></td>
+              <td><strong>指示号码：</strong>{{item.soLnNo}}</td>
             </tr>
           </table>
           <table class="table" width="100%" height="305" border="1" cellpadding="0" cellspacing="0">
@@ -179,29 +195,32 @@
             <col width="90">
             <col width="90">
             <tr>
-              <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contCd}}</td>
+              <td colspan="9"><strong>订购商名称：</strong>{{item.contName}}</td>
             </tr>
             <tr>
-              <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
+              <td colspan="9"><strong>送货地址名称：</strong>{{item.shiptoName}}</td>
             </tr>
             <tr>
-              <td colspan="9"><strong>订单号：</strong></td>
+              <td colspan="9"><strong>订单号：</strong>{{item.contPoNo}}</td>
             </tr>
             <tr>
               <td class="r"><strong>钢种</strong></td>
-              <td class="l" colspan="2">{{machiningData.order.gradeCd}}</td>
+              <td class="l" colspan="2">{{item.gradeCd}}</td>
               <td class="bl bb tb" colspan="3"><strong>数量</strong></td>
               <td class="br bb tb" colspan="3"><strong>kg重量</strong></td>
             </tr>
             <tr>
               <td class="r"><strong>加工规格</strong></td>
               <td class="l" colspan="5">{{item.machineSpecCd}}</td>
-              <td colspan="3"><strong>倒角规格</strong></td>
+              <td colspan="3"><strong>倒角规格</strong>&nbsp;{{item.chamferSpec}}</td>
             </tr>
             <tr>
               <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
               <td colspan="7" class="r l tb bb br">
-                <strong>{{item.specExternalNote}}</strong>
+                <strong>
+                  {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                  <!--{{item.specExternalNote}}-->
+                </strong>
               </td>
               <!--<td class="r l">30</td>-->
               <!--<td class="r l">X</td>-->
@@ -295,16 +314,22 @@
           </table>
           <p style="text-align: right;">HMDS-QR-43-1/AO</p>
         </div>
-        <div class="pri-left">
+        <div class="pri-left" style="padding-top: 10px;">
           <table>
             <tr>
-              <td width="487"><p>切断&加工 </p>
+              <td width="487"><p>
+                {{item.workInstCd > 3? '切断&加工&热处理': ''}}
+                {{item.workInstCd == 3? '切断&加工': ''}}</p>
                 <p>&nbsp;<span class="span span-left">加工</span> </p></td>
-              <td width="590">
+              <td width="590" style="position: relative;">
                 <p style="font-size: 18px;font-weight: bold; position: relative;">
                   <img class="logo" src="../../../static/images/logo.jpg" alt="">
                   日立金属（东莞）特殊钢有限公司 本部</p>
-                <p style="font-size: 12px;">广东省东莞市茶山工业园</p></td>
+                <p style="font-size: 12px;">广东省东莞市茶山镇茶山工业园</p>
+                <span class="sign" v-if="item.labelName">
+                  {{item.labelName}}
+                </span>
+              </td>
             </tr>
           </table>
           <table class="table table-width" width="100%" height="285" border="1" cellpadding="0" cellspacing="0">
@@ -329,30 +354,31 @@
               <td style="background: #000; color: #fff;" colspan="2">{{$store.state.time}}</td>
             </tr>
             <tr>
-              <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{machiningData.order.soNo}}</td>
-              <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{machiningData.order.soLnNo}}</td>
+              <td style="border-left: 1px solid #fff;" class="r t l b" colspan="3"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</td>
+              <td class="r t l b" colspan="3"><strong>指示号码：</strong>{{item.soLnNo}}</td>
               <td><strong>发件人</strong></td>
-              <td colspan="2">{{$store.state.users.userName}}</td>
+              <td colspan="2">{{item.entryUserName}}</td>
             </tr>
             <tr>
               <td class="r"><strong>订购商名称</strong></td>
-              <td class="l" colspan="5">{{machiningData.order.contCd}}</td>
+              <td class="l" colspan="5">{{item.contName}}</td>
               <td class="r t b"><strong>交期</strong></td>
               <td class="l b">
-                {{$store.getters.getDate(machiningData.order.contDueDate)}}
+                {{item.contDueDate}}
+                <!--{{$store.getters.getDate(machiningData.order.contDueDate, 2)}}-->
               </td>
-              <td class="b"><strong>指示数量</strong></td>
+              <td class="b" style="width: 54px;"><strong>指示数量</strong></td>
             </tr>
             <tr>
               <td class="r"><strong>送货地址名称</strong></td>
-              <td class="l" colspan="5"> {{machiningData.order.shiptoName}} </td>
+              <td class="l" colspan="5"> {{item.shiptoName}} </td>
               <td class="r t"></td>
               <td class="t l"></td>
-              <td class="t" align="right" style="font-size: 20px;"><strong>{{item.workInstQty}}</strong></td>
+              <td class="t" align="right" style="font-size: 20px;"><strong>{{item.soQty}}</strong></td>
             </tr>
             <tr>
               <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
-                <p style="font-size: 25px;">{{machiningData.order.gradeCd}}</p></td>
+                <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
               <td class="b" colspan="7"><strong>加工公差</strong></td>
             </tr>
             <tr>
@@ -361,7 +387,8 @@
             <tr>
               <td  class="r"><strong>客户要求尺寸</strong></td>
               <td align="center" style="font-size: 20px;" colspan="6" class="l">
-                {{item.instSizeNote}}
+                <!--{{item.instSizeNote}}-->
+                {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
               </td>
               <!--<td class="r l">30</td>-->
               <!--<td class="r l">X</td>-->
@@ -371,18 +398,19 @@
             </tr>
             <tr>
               <td class="b"><strong>直角度</strong></td>
-              <td class="b"><strong>平等度</strong></td>
+              <td class="b"><strong>平行度</strong></td>
               <td class="b"><strong>加工规格</strong></td>
               <td class="b"><strong>倒角规格</strong></td>
               <td class="b" colspan="5"><strong>切断指示尺寸</strong></td>
             </tr>
             <tr>
-              <td class="t">&nbsp;</td>
-              <td class="t">&nbsp;</td>
+              <td class="t">&nbsp;{{item.mRightAngle}}</td>
+              <td class="t">{{item.mParallel}}</td>
               <td class="t" style="font-size: 20px;"><strong>{{item.machineSpecCd}}</strong></td>
-              <td class="t">&nbsp;</td>
+              <td class="t">{{item.chamferSpec}}</td>
               <td align="center" style="font-size: 20px;" colspan="5" class="t">
-                {{item.instSizeNote}}
+                {{item.machineShapeCd}} {{item.instSize1}} X {{item.instSize2}} X {{item.instSize3}}
+                <!--{{item.instSizeNote}}-->
               </td>
               <!--<td class="t r l">X</td>-->
               <!--<td align="center" class="t r l">41</td>-->
@@ -408,22 +436,23 @@
             </tr>
             <tr>
               <td  class="b" colspan="9">
-                <strong>加工指示备注</strong> {{item.millingRemarks1}}
-                {{item.millingRemarks2}}
-                {{item.millingRemarks3}}
-                {{item.millingRemarks4}}
-                {{item.heatMillingRemarks}}
+                <strong style="float: left;margin-right:10px;">加工指示备注</strong>
+                <div style="width:320px;float: left;">
+                  <p>&nbsp;{{item.instRemarks1}}</p>
+                  <p>&nbsp;{{item.instRemarks2}}</p>
+                </div>
+                <div style="width:330px;float: right;">
+                  <p>&nbsp;{{item.millingRemarks1}}</p>
+                  <p>&nbsp;{{item.millingRemarks2}}</p>
+                </div>
               </td>
-            </tr>
-            <tr>
-              <td  class="t" colspan="9">&nbsp;</td>
             </tr>
           </table>
           <table class="table" style="width: 85%;margin: 0 auto;border-top: none;" border="1" cellspacing="0" bordercolor="#000000">
             <tr>
               <td class="t" align="center" width="200"><strong>营业确认</strong></td>
               <td class="t" align="center" width="200"><strong>厚度加工</strong></td>
-              <td class="t" align="center" width="200"><strong>四边加工</strong></td>
+              <td class="t" align="center" width="200"><strong>四辺加工</strong></td>
               <td class="t" align="center" width="200"><strong>研磨加工</strong></td>
               <td class="t" align="center" width="200"><strong>检测</strong></td>
             </tr>
@@ -441,15 +470,16 @@
               <td class="btb"><p>&nbsp;</p></td>
             </tr>
           </table>
+          <p v-if="item.labelName">收货地址：{{item.shiptoAddress1}}</p>
         </div>
-        <div class="pri-right" style="border-left: 1px dashed #000;">
+        <div class="pri-right" style="border-left: 1px dashed #000;padding-top: 10px;">
           <table width="100%"  border="0" cellspacing="0" bordercolor="#000000">
             <tr>
               <td width="100" rowspan="2"></td>
               <td colspan="2" style="position: relative;">
                 <img class="right-logo" src="../../../static/images/logo.jpg" alt="">
                 <b>日立金属（东莞）特殊钢有限公司 本部 </b>
-                <p style="font-size: 10px;">广东省东莞市茶山工业园</p></td>
+                <p style="font-size: 10px;">广东省东莞市茶山镇茶山工业园</p></td>
             </tr>
             <tr>
               <td width="326">&nbsp;</td>
@@ -457,8 +487,8 @@
             </tr>
             <tr>
               <td><strong>现品票</strong></td>
-              <td><div align="center"><strong>接单号码：</strong>{{machiningData.order.soNo}}</div></td>
-              <td><strong>指示号码：</strong>{{machiningData.order.soLnNo}}</td>
+              <td><div align="center"><strong>接单号码：</strong>{{item.soNo}}-{{item.soLnNo}}</div></td>
+              <td><strong>指示号码：</strong>{{item.soLnNo}}</td>
             </tr>
           </table>
           <table class="table" width="100%" height="305" border="1" cellpadding="0" cellspacing="0">
@@ -472,35 +502,32 @@
             <col width="90">
             <col width="90">
             <tr>
-              <td colspan="9"><strong>订购商名称：</strong>{{machiningData.order.contCd}}</td>
+              <td colspan="9"><strong>订购商名称：</strong>{{item.contName}}</td>
             </tr>
             <tr>
-              <td colspan="9"><strong>送货地址名称：</strong>{{machiningData.order.shiptoName}}</td>
+              <td colspan="9"><strong>送货地址名称：</strong>{{item.shiptoName}}</td>
             </tr>
             <tr>
-              <td colspan="9"><strong>订单号：</strong></td>
+              <td colspan="9"><strong>订单号：</strong>{{item.contPoNo}}</td>
             </tr>
             <tr>
               <td class="r"><strong>钢种</strong></td>
-              <td class="l" colspan="2">{{machiningData.order.gradeCd}}</td>
+              <td class="l" colspan="2">{{item.gradeCd}}</td>
               <td class="bl bb tb" colspan="3"><strong>数量</strong></td>
               <td class="br bb tb" colspan="3"><strong>kg重量</strong></td>
             </tr>
             <tr>
               <td class="r"><strong>加工规格</strong></td>
               <td class="l" colspan="5">{{item.machineSpecCd}}</td>
-              <td colspan="3"><strong>倒角规格</strong></td>
+              <td colspan="3"><strong>倒角规格</strong>&nbsp;{{item.chamferSpec}}</td>
             </tr>
             <tr>
               <td class="r bl bb tb" colspan="2"><strong>产品规格说明</strong></td>
               <td colspan="7" class="r l tb bb br">
-                <strong>{{item.specExternalNote}}</strong>
+                <strong>
+                  {{item.machineShapeCd}} {{item.size1}} X {{item.size2}} X {{item.size3}}
+                </strong>
               </td>
-              <!--<td class="r l">30</td>-->
-              <!--<td class="r l">X</td>-->
-              <!--<td class="r l">36</td>-->
-              <!--<td class="r l">X</td>-->
-              <!--<td class="r l" colspan="2">161</td>-->
             </tr>
             <tr>
               <td><strong>No</strong></td>
@@ -590,10 +617,7 @@
         </div>
       </div>
     </div>
-    <p class="btn">
-      <el-button @click="keeyHistory" type="primary" style="color: #fff;">打印</el-button>
-      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
-    </p>
+
   </div>
 </template>
 
@@ -605,7 +629,10 @@ export default {
     return {
       src: '',
       value1: '',
-      machiningData: {},
+      machiningData: {
+        workList: [],
+        order: {}
+      },
       tableData: [
         {
           style: 0
@@ -640,29 +667,46 @@ export default {
     getMachining () {
       this.http('/tSalesOrder/getMachiningPrintData', {
         soNo: this.orderInfo.soNo
-        // id: 362
       }).then(resp => {
-        console.log(resp)
         if (resp.success) {
-          this.machiningData = resp.data
+          let lists = []
+          // this.machiningData = resp.data
+          // console.log(this.machiningData)
+          resp.data.map(item => {
+            let obj = {
+              ...item.workData,
+              ...item
+            }
+            lists.push(obj)
+          })
+          this.machiningData.workList = lists
+          // this.machiningData.order = resp.data.order
+          console.log(this.machiningData)
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },
     keeyHistory () {
-      this.http('/printHistory/saveOrUpdate', {
-        soNo: this.orderInfo.soNo,
-        dataJson: {...this.machiningData},
-        printType: '2'// 1为切断指示书，2为加工指示书，3为热加工指示书
-      }).then(resp => {
-        if (resp.success) {
-          document.getElementById('printClick').click()
-        } else {
-          this.$message.error({
-            message: '失败：' + resp.message,
-            duration: 1000
-          })
-        }
-      })
+      document.getElementById('printClick').click()
+      // this.http('/printHistory/saveOrUpdate', {
+      //   soNo: this.orderInfo.soNo,
+      //   dataJson: {...this.machiningData},
+      //   printType: '2'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      // }).then(resp => {
+      //   if (resp.success) {
+      //     document.getElementById('printClick').click()
+      //   } else {
+      //     this.$message.error({
+      //       message: '失败：' + resp.message,
+      //       duration: 1000
+      //     })
+      //   }
+      // })
     }
   }
 }
@@ -679,10 +723,10 @@ export default {
   /*}*/
   * {
     font-family: 宋体;
-    color: #666;
+    /*color: #666;*/
   }
   strong {
-    color: #333;
+    /*color: #333;*/
   }
   .main {
     /*height: 843PX;*/
@@ -698,10 +742,10 @@ export default {
   .qrImg {
     position: absolute;
     width: 40px;
-    margin-left: -50px;
-    margin-top: -17px;
-    /*left: -55px;*/
-    /*top: -5px;*/
+    /*margin-left: -42px;*/
+    /*margin-top: -16px;*/
+    margin-left: 290px;
+    margin-top: 9px;
   }
   #printContent {
     /*margin: 10px;*/
@@ -829,8 +873,22 @@ export default {
   }
   .logo {
     width: 60px;
-    top: 5px;
+    top: 0px;
     position: absolute;
     left: -70px;
+  }
+  .sign {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #666;
+    border: 2px solid #666;
+    border-radius: 50%;
   }
 </style>

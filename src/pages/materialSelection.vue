@@ -2,7 +2,7 @@
   <div class="container">
     <headerCommod />
     <main>
-      <asideCommod selet="自动选料" class="left"></asideCommod>
+      <asideCommod selet="选料及打印订单" class="left"></asideCommod>
       <materialSelect class="right"></materialSelect>
     </main>
   </div>

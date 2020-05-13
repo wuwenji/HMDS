@@ -219,7 +219,7 @@ export default {
       }
       if (row.priceType === '2') {
         row.totalPrice = row.area * row.unitPrice
-        return (row.area * row.unitPrice).toFixed(2)
+        return (row.area * row.unitPrice * row.soQty).toFixed(2)
       }
       if (row.priceType === '3' || row.priceType === '4') {
         row.totalPrice = row.unitPrice

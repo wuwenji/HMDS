@@ -1,12 +1,12 @@
 <template>
   <div>
     <div id="printContent" style="height: 800px;">
-      <div class="title">热处理订单及作业指导书</div>
+      <div class="title">热处理订单及作业指示书</div>
       <div class="top cl">
         <div class="top-left">
           <div class="top-left-left">
             <b>{{$store.state.date}}</b>
-            <table class="table table2" borderColor="#000" border="1px">
+            <table class="table table2 table3" borderColor="#000" border="1px">
               <tr>
                 <td>交货期</td>
                 <td>送货方式</td>
@@ -15,27 +15,26 @@
                 <td class="noneBorder">
                   <el-date-picker
                     v-model="date"
-                    disabled
                     type="date"
                     format="yyyy年MM月dd日"
                     prefix-icon="sdg">
                   </el-date-picker>
                 </td>
-                <td><input disabled v-model="hotData.heatTreatment.shiptoType" type="text"></td>
+                <td><input v-model="hotData.heatTreatment.shiptoType" type="text"></td>
               </tr>
             </table>
           </div>
           <img class="qr-img" :src="$store.state.qrUrl + orderInfo.qrCode + '&w=150&h=150'" alt="">
         </div>
         <div class="top-content">
-          <table class="table table2" style="margin-top: 40px;" borderColor="#000" border="1px">
+          <table class="table table2 table3" style="margin-top: 40px;" borderColor="#000" border="1px">
             <tr>
               <td>客户名称</td>
-              <td><input disabled v-model="hotData.heatTreatment.customerName" type="text"></td>
+              <td><input v-model="hotData.heatTreatment.customerName" type="text"></td>
             </tr>
             <tr>
               <td>送货地址</td>
-              <td><input disabled v-model="hotData.heatTreatment.deliveryAddress" type="text"></td>
+              <td><input v-model="hotData.heatTreatment.deliveryAddress" type="text"></td>
             </tr>
           </table>
         </div>
@@ -49,11 +48,14 @@
             <table class="table table2" borderColor="#000" border="1px">
               <tr>
                 <td>管理编号</td>
-                <td><input disabled v-model="hotData.heatTreatment.managementNumber" type="text"></td>
+                <!--<td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>-->
+                <td colspan="3"><input type="text"></td>
               </tr>
               <tr>
                 <td>确认人</td>
-                <td><input disabled v-model="hotData.heatTreatment.confirmStr" type="text"></td>
+                <td><input v-model="hotData.heatTreatment.confirmStr" type="text"></td>
+                <td>发件人</td>
+                <td><input v-model="hotData.heatTreatment.senderUserName" type="text"></td>
               </tr>
             </table>
           </div>
@@ -77,23 +79,23 @@
         </thead>
         <tbody>
         <tr class="inputs" v-for="(item, key) in hotData.treatmentEntrys" :key="'1' + key">
-          <td><input disabled v-model="item.gradeCd" type="text"></td>
-          <td><input disabled v-model="item.heatTreatType" type="text"></td>
-          <td><input disabled v-model="item.itemName" type="text"></td>
-          <td><input disabled v-model="item.sizeNote" type="text"></td>
-          <td class="numb-td"><input disabled v-model="item.qty" type="text">
+          <td><input v-model="item.gradeCd" type="text"></td>
+          <td><input v-model="item.heatTreatType" type="text"></td>
+          <td><input style="width: 100%;margin: 0;" v-model="item.itemName" type="text"></td>
+          <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
+          <td class="numb-td"><input v-model="item.qty" type="text">
             <!--<span>件</span>-->
           </td>
-          <td><input disabled v-model="item.wt" type="text"></td>
-          <td colspan="2"><input disabled v-model="item.hardnessRequirement" type="text"></td>
-          <td><input disabled v-model="item.remark" type="text"></td>
+          <td><input v-model="item.wt" type="text"></td>
+          <td colspan="2"><input v-model="item.hardnessRequirement" type="text"></td>
+          <td><input v-model="item.remark" type="text"></td>
         </tr>
         <tr class="inputs" v-for="(item, key) in newDatas" :key="'2' + key">
-          <td><input disabled v-model="item.gradeCd" type="text"></td>
-          <td><input disabled v-model="item.heatTreatType" type="text"></td>
-          <td><input disabled v-model="item.itemName" type="text"></td>
-          <td><input disabled v-model="item.sizeNote" type="text"></td>
-          <td class="numb-td"><input disabled v-model="item.qty" type="text">
+          <td><input v-model="item.gradeCd" type="text"></td>
+          <td><input v-model="item.heatTreatType" type="text"></td>
+          <td><input v-model="item.itemName" type="text"></td>
+          <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
+          <td class="numb-td"><input v-model="item.qty" type="text">
             <!--<span>件</span>-->
           </td>
           <td><input v-model="item.wt" type="text"></td>
@@ -102,13 +104,13 @@
         </tr>
         <tr class="inputs">
           <td>合计</td>
-          <td><input disabled type="text"></td>
-          <td><input disabled type="text"></td>
-          <td><input disabled type="text"></td>
-          <td><input disabled type="text"></td>
-          <td><input disabled type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
           <td colspan="2"><input type="text"></td>
-          <td><input disabled type="text"></td>
+          <td><input type="text"></td>
         </tr>
         </tbody>
       </table>
@@ -121,16 +123,17 @@
             <li>除去炉力还火-------RA</li>
             <li>深冷处理-----------SZ</li>
             <li>淬火，回火---------QT</li>
-            <li>特殊气体处理-------NVC</li>
+            <li>特殊气体处理-------NVG</li>
             <li>回火----------------T</li>
             <li>其它----------------E</li>
             <li>圆熔化热处理-------ST</li>
           </ol>
         </div>
         <div class="bottom-right">
-          请勿碰伤。勿碰伤，谢谢！
+          &nbsp;
         </div>
       </div>
+      <!--<P style="text-align: right;">HMDS-QR-71/A2</P>-->
     </div>
     <p class="btn">
       <!--<el-button @click="preservation()" type="primary">保存</el-button>-->
@@ -156,7 +159,8 @@ export default {
           managementNumber: '',
           confirmStr: '',
           customerName: '',
-          deliveryAddress: ''
+          deliveryAddress: '',
+          senderUserName: ''
         },
         treatmentEntrys: [
           {
@@ -235,6 +239,7 @@ export default {
         orderCode: this.orderInfo.soNo
       }).then(resp => {
         if (resp.success) {
+          console.log(resp)
           let obj = resp.data
           if (obj.heatTreatment === null) {
             this.hotData.heatTreatment = {
@@ -243,7 +248,8 @@ export default {
               managementNumber: '',
               confirmStr: '',
               customerName: '',
-              deliveryAddress: ''
+              deliveryAddress: '',
+              senderUserName: ''
             }
             this.getDate()
           } else {
@@ -259,6 +265,12 @@ export default {
           } else {
             this.hotData.treatmentEntrys = []
           }
+        } else {
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
         this.getNewDatas()
       })
@@ -269,11 +281,15 @@ export default {
       obj.heatTreatment.orderCode = this.orderInfo.soNo
       obj.heatTreatment.contDueDate = this.date
       obj.heatTreatment.workInstCd = this.orderInfo.workInstCd
+      obj.heatTreatment.type = this.orderInfo.workInstCd
       // console.log(this.newDatas)
       this.newDatas.map(item => {
         if (item.gradeCd !== '') {
           obj.treatmentEntrys.push(item)
         }
+      })
+      obj.treatmentEntrys.map((item, key) => {
+        item.heatCode = '00' + (key + 1)
       })
       this.http('/heatTreatment/saveHeatTreatment', {
         heatTreatment: obj.heatTreatment,
@@ -289,7 +305,6 @@ export default {
           } else {
             document.getElementById('printClick').click()
           }
-
         } else {
           this.$message({
             message: resp.message,
@@ -300,13 +315,17 @@ export default {
       })
     },
     keeyHistory () {
-      this.preservation(1)
+      document.getElementById('printClick').click()
+      // this.preservation(1)
       // this.http('/printHistory/saveOrUpdate', {
       //   soNo: this.orderInfo.soNo,
-      //   dataJson: {...this.hotData},
+      //   // dataJson: {...this.hotData},
+      //   dataJson: {
+      //     data: '不需要打印数据'
+      //   },
       //   printType: '3'// 1为切断指示书，2为加工指示书，3为热加工指示书
       // }).then(resp => {
-      //   console.log(resp)
+      //   document.getElementById('printClick').click()
       // })
     }
   }
@@ -339,8 +358,7 @@ export default {
     padding: 7px;
   }
   input {
-    outline:none;
-    background: #fff;
+    outline:none
   }
   .inputs input {
     margin: 3px 5px;
@@ -429,7 +447,7 @@ export default {
     border: none;
     width: 100%;
   }
-  .table2 td:nth-child(1) {
+  .table3 td:nth-child(1) {
     width: 30px;
   }
 </style>

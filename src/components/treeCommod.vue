@@ -63,7 +63,7 @@ export default {
         // this.$emit('update:selet', val)
         if (val === '首页') {
           this.$router.push('/')
-        } else if (val === '打印订单') {
+        } else if (val === '订单确认') {
           this.$router.push('/orderPrint')
         } else if (val === '历史订单') {
           this.$router.push('/historyOrder')
@@ -105,7 +105,7 @@ export default {
           this.$router.push('/heat')
         } else if (val === '接单数据') {
           this.$router.push('/orderData')
-        } else if (val === '自动选料') {
+        } else if (val === '选料及打印订单') {
           this.$router.push('/materialSelection')
         } else if (val === '标志管理') {
           this.$router.push('/signManage')
@@ -113,6 +113,8 @@ export default {
           this.$router.push('/keyManage')
         } else if (val === '分单详情') {
           this.$router.push('/separateDetail')
+        } else if (val === '送货单金额') {
+          this.$router.push('/amountDisplay')
         }
       }
     }

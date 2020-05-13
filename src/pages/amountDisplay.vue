@@ -2,8 +2,8 @@
   <div class="container">
     <headerCommod />
     <main>
-      <asideCommod selet="订单确认" class="left"></asideCommod>
-      <orderPrinting class="right"></orderPrinting>
+      <asideCommod selet="送货单金额" class="left"></asideCommod>
+      <amountDisplay class="right"></amountDisplay>
     </main>
   </div>
 </template>
@@ -11,13 +11,13 @@
 <script>
 import headerCommod from '../components/headerCommod'
 import asideCommod from '../components/asideCommod'
-import orderPrinting from '../components/orderPrinting'
+import amountDisplay from '../components/amountDisplay'
 export default {
   name: 'home',
   components: {
     headerCommod,
     asideCommod,
-    orderPrinting
+    amountDisplay
   }
 }
 </script>

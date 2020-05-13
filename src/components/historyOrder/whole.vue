@@ -5,7 +5,7 @@
       <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
     </p>
     <div id="printContent">
-      <div class="printPage cl" v-for="(val, index) in pinkData" :key="index" style="height: 830px;">
+      <div class="printPage cl" v-for="(val, index) in pinkData" :key="index" style="height: 820px;">
         <div class="table1">
           <table class="table-td-width" width="100%" border="0" cellspacing="0" >
             <tr >
@@ -51,7 +51,7 @@
           </tr>
           <tr class="tr2s">
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b style="font-size: 20px;">钢种</b> </p></td>
-            <td colspan="4" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{val.orderList[0].soWkInstList.gradeCd}}</b></p></td>
+            <td colspan="4" style="width: 253px;" valign="center" nowrap="nowrap" bordercolor="#000000" ><p ><b>{{val.orderList[0].soWkInstList.gradeCd}}</b></p></td>
             <td colspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>接单号码</b> </p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{val.orderList[0].soWkInstList.soNo}}</p></td>
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="right" ><b>营业员</b></p></td>
@@ -70,40 +70,73 @@
             <td colspan="2" valign="center" nowrap="nowrap" class="b"><p ><b>库存类别</b> </p></td>
             <td colspan="4" valign="center" nowrap="nowrap" class="b"><p ><b>库存备注</b> </p></td>
             <td rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>指示<br/>数量</b> </p></td>
-            <td rowspan="2" class="bt bl" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>产品单长</b> </p></td>
+            <td rowspan="2" class="bt bl" style="width: 80px;" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>产品单长</b> </p></td>
             <td rowspan="2" class="bt" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>净重</b> </p></td>
             <td rowspan="2" class="bt br" valign="center" nowrap="nowrap" bordercolor="#000000" ><p align="center" ><b>毛重</b> </p></td>
           </tr>
           <tr >
             <td width="75" valign="center" nowrap="nowrap" class="r t"><p ><b>交期</b> </p></td>
             <td width="47" valign="center" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>单位</b> </p></td>
-            <td width="52" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p ><b>数量</b> </p></td>
-            <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p ><b>kg重量</b> </p></td>
+            <td width="52" nowrap="nowrap" class="l r t" bordercolor="#000000" ><p class="align-right"><b>数量</b> </p></td>
+            <td width="62" valign="center" nowrap="nowrap" class="l t" bordercolor="#000000" ><p class="align-right"><b>kg重量</b> </p></td>
             <td colspan="2" valign="center" nowrap="nowrap" class="t"><p ><b>现品管理NO</b> </p></td>
-            <td width="117" valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
-            <td nowrap="nowrap" class="l r t"><p ><b>指示尺寸</b> </p></td>
-            <td width="100" nowrap="nowrap" align="right" class="l r t"><p ><b>数量</b> </p></td>
+            <td valign="center" nowrap="nowrap" class="r t"><p ><b>溶解号码</b> </p></td>
+            <td width="100" nowrap="nowrap" class="l r t"><p ><b>指示尺寸</b> </p></td>
+            <td width="52" nowrap="nowrap" align="right" class="l r t"><p ><b>数量</b> </p></td>
             <td align="right" nowrap="nowrap" class="l t"><p ><b>kg重量</b> </p></td>
           </tr>
-          <template v-for="item in val.orderList">
-            <tr class="tr1">
-              <td width="30" style="border-right:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td width="25" style="border-left:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.workInstNo}}</p></td>
+          <template v-for="(item, listIndex) in val.orderList">
+            <tr class="tr1" :key="listIndex">
+              <td width="30" style="border-right:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >
+                <template v-if="listIndex > 0">
+                  {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soLnNo}}
+                </template>
+                <template v-else>
+                  {{item.soWkInstList.soLnNo}}
+                </template>
+              </p></td>
+              <td width="25" style="border-left:1px dashed #000;" rowspan="3" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.soWkInstList.workInstNo}}</p></td>
               <td colspan="4" style="position: relative;" rowspan="3" valign="top" nowrap="nowrap" bordercolor="#000000" >
                 <p class="spans">
                   <span>{{item.soWkInstList.machineShapeCd}}</span>
-                  <span>{{item.soWkInstList.size1}}X</span>
-                  <span>{{item.soWkInstList.size2}}X</span>
-                  <span>{{item.soWkInstList.size3}}</span>
+                  <span v-if="item.soWkInstList.size1 > 0">{{item.soWkInstList.size1}}X</span>
+                  <span v-if="item.soWkInstList.size2 > 0">{{item.soWkInstList.size2}}X</span>
+                  <span v-if="item.soWkInstList.size3 > 0">{{item.soWkInstList.size3}}</span>
+                  <!--<span>{{item.soWkInstList.machineShapeCd}}</span>-->
+                  <!--<span>{{item.soWkInstList.size1}}X</span>-->
+                  <!--<span>{{item.soWkInstList.size2}}X</span>-->
+                  <!--<span>{{item.soWkInstList.size3}}</span>-->
                 </p>
                 <p class="spans">
                   <span style="font-size: 14px;">{{item.soWkInstList.itemName1}}</span>
+                  <span style="font-size: 14px;">{{item.soWkInstList.instRemarks1}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">
-                  <span style="font-size:14px;">{{$store.getters.getDate(item.soWkInstList.contDueDate).replace('-', '/').replace('-', '/')}}</span>
-                  <span>{{item.soWkInstList.unitWtCd == 1? 'KG': '個'}}</span>
-                  <span>{{item.soWkInstList.soQty}}</span>
-                  <span>{{item.soWkInstList.soKgWt}}</span>
+                  <span style="font-size:14px;">{{$store.getters.getDate(item.soWkInstList.contDueDate, 2).replace('-', '/').replace('-', '/')}}</span>
+                  <span>
+                    <!--{{item.soWkInstList.unitWtCd == 1? 'KG': '個'}}-->
+                    {{item.soWkInstList.unitPriceCd == 2? 'KG': ''}}
+                    {{item.soWkInstList.unitPriceCd == 7? '個': ''}}
+                    {{item.soWkInstList.unitPriceCd == 8? '套': ''}}
+                  </span>
+                  <span class="align-right">
+                    <!--{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soQty : ''}}-->
+                    <template v-if="listIndex > 0">
+                      {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soQty}}
+                    </template>
+                    <template v-else>
+                      {{item.soWkInstList.soQty}}
+                    </template>
+                  </span>
+                  <span class="align-right" style="font-size: 16px;">
+                    <!--{{item.soWkInstList.workInstNo == '001' ? item.soWkInstList.soKgWt : ''}}-->
+                    <template v-if="listIndex > 0">
+                      {{item.soWkInstList.soLnNo == val.orderList[listIndex - 1].soWkInstList.soLnNo ? '': item.soWkInstList.soKgWt}}
+                    </template>
+                    <template v-else>
+                      {{item.soWkInstList.soKgWt}}
+                    </template>
+                  </span>
                 </p>
               </td>
               <td colspan="2" rowspan="2" valign="top" nowrap="nowrap" bordercolor="#000000" ><p >
@@ -116,7 +149,11 @@
                 {{item.soWkInstList.stockRemarks}}<br/>{{item.soWkInstList.chargeNo}}
               </td>
               <td style="border-left: none;" class="r l" rowspan="2" valign="top" nowrap="nowrap" ><p>&nbsp;</p>
-                <p >{{item.soWkInstList.instSizeNote}}
+                <p >
+                  <!--{{item.soWkInstList.instSizeNote}}-->
+                  {{item.soWkInstList.machineShapeCd}} {{item.soWkInstList.instSize1}}<template
+                  v-if="item.soWkInstList.instSize2 > 0">X{{item.soWkInstList.instSize2}}</template><template
+                  v-if="item.soWkInstList.instSize3 > 0">X{{item.soWkInstList.instSize3}}</template><template v-if="item.soWkInstList.machineShapeCd == 'R'">MM</template>
                   <!--<span style="float: right;width: 150px;"></span>-->
                 </p>
               </td>
@@ -124,12 +161,12 @@
                 {{item.soWkInstList.stockQty}}
               </td>
               <td rowspan="2" align="right" class="r l">
-                {{item.soWkInstList.workInstKgWt}}
+                {{item.soWkInstList.stockKgWt}}
               </td>
               <td width="30" class="bb" rowspan="2" align="center" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >{{item.soWkInstList.workInstQty}}</p></td>
-              <td class="bl bb" rowspan="2" width="87" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bb" width="137" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
-              <td class="bb br" rowspan="2" width="137" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bl bb" rowspan="2" width="80" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bb" width="80" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
+              <td class="bb br" rowspan="2" width="80" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
             </tr>
             <tr class="tr2">
               <!--<td class="bt bb bl" rowspan="2" valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>-->
@@ -167,13 +204,18 @@
             <td valign="center" nowrap="nowrap" bordercolor="#000000" ><p >&nbsp;</p></td>
           </tr>
           <tr class="tr1">
-            <td colspan="7" rowspan="2" nowrap="nowrap" bordercolor="#000000" ><p >备注 </p></td>
+            <td colspan="7" rowspan="2" nowrap="nowrap" bordercolor="#000000" >
+              <div class="remarks-left">备注</div>
+              <div class="remarks-right">
+                <p>{{val.orderList[0].soWkInstList.wioHeadRemarks1}}</p>
+                <p>{{val.orderList[0].soWkInstList.wioHeadRemarks2}}</p>
+              </div>
+            </td>
           </tr>
           <tr ></tr>
         </table>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -208,6 +250,13 @@ export default {
         if (resp.success) {
           this.pinkData = resp.data
           console.log(this.pinkData)
+        } else {
+          // console.log(this.$parent.$parent.dialogOne)
+          this.$message.error({
+            message: resp.message,
+            customClass: 'error-mesg',
+            duration: 2000
+          })
         }
       })
     },
@@ -235,8 +284,19 @@ export default {
   * {
     font-family: 宋体;
   }
+  .align-right {
+    text-align: right;
+  }
   b {
     font-size: 15px;
+  }
+  .remarks-left {
+    float: left;
+    width: 60px;
+    line-height: 40px;
+  }
+  .remarks-right {
+    float: left;
   }
   #printContent {
     /*margin: 10px;*/
@@ -286,7 +346,6 @@ export default {
   }
   .STYLE3 {
     font-size: 34px;
-    font-family: '宋体';
     border-bottom: 1px solid #666;
     margin-left: 5px;
     display: inline-block;
@@ -308,7 +367,7 @@ export default {
     width: 47px;
   }
   .spans span:nth-child(4) {
-    width: 47px;
+    width: 56px;
   }
   .removeClass td{
     height: 100px;
@@ -400,7 +459,7 @@ export default {
     padding: 0 2px;
   }
   .tr1 {
-    height: 40px;
+    height: 35px;
     font-size: 18px;
   }
   .tr2 {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="position">
-      所在的位置：接单管理 -> <span>订单打印</span>
+      所在的位置：接单管理 -> <span>订单确认</span>
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
@@ -147,14 +147,44 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
-          width="130">
+          label="营业确认预览"
+          width="150">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="text"
               :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowMaterial">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="显示金额">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowAmount">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label=""
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -203,7 +233,7 @@
           width="130">
         </el-table-column>
         <el-table-column
-          label="操作"
+          label="营业确认预览"
           width="260">
           <template slot-scope="scope">
             <el-button
@@ -216,6 +246,36 @@
               type="text"
               :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '打印加工作业指示票')">打印加工作业指示票</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowMaterial">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="显示金额">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowAmount">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label=""
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -259,14 +319,44 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
-          width="130">
+          label="营业确认预览"
+          width="150">
           <template slot-scope="scope">
             <el-button
               size="mini"
               type="text"
               :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowMaterial">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="显示金额">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowAmount">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label=""
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -311,10 +401,11 @@
         </el-table-column>
         <el-table-column
           label="加工类型"
-          width="271px">
+          width="240px">
           <template slot-scope="scope">
             <div style="position: relative;" v-if="selOptions.indexOf(scope.row.heatMillingRemarks) === -1">
               <el-select
+                size="mini"
                 style="margin-right: 30px;display: inline-block;"
                 v-model="scope.row.johnValue"
                 placeholder="请选择">
@@ -326,7 +417,7 @@
                 </el-option>
               </el-select>
               <el-button
-                style="position: absolute;top: 0;right: 0px;z-index: 99"
+                style="position: absolute;top: -5px;right: 0px;z-index: 99"
                 @click="prese(scope.row.soNo, scope.row.johnValue)"
                 type="text">
                 保存
@@ -336,7 +427,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          label="营业确认预览"
           width="370">
           <template slot-scope="scope">
             <el-button
@@ -354,6 +445,36 @@
               type="text"
               :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="cutFun(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowMaterial">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="显示金额">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowAmount">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label=""
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -383,10 +504,10 @@
 </template>
 
 <script>
-import printPage from './printing_'
-import hotHandle from './hotHandle'
-import machining from './machining_'
-import wholePage from './whole'
+import printPage from '../historyOrder/printing'
+import hotHandle from '../historyOrder/hotHandle'
+import machining from '../historyOrder/machining'
+import wholePage from '../historyOrder/whole'
 export default {
   name: 'index',
   data () {
@@ -424,6 +545,21 @@ export default {
     }
   },
   methods: {
+    // 确认完成
+    confirmComp (row, index, data) {
+      this.http('/tSalesOrder/confirmOrder', {
+        soNo: row.soNo,
+        isShowAmount: row.isShowAmount,
+        isShowMaterial: row.isShowMaterial
+      }).then(resp => {
+        alert(resp.message)
+        // data.splice(index, 1)
+        // console.log(resp)
+        if (resp.success) {
+          data.splice(index, 1)
+        }
+      })
+    },
     // 同步日本数据
     updaData () {
       const loading = this.$loading({
@@ -448,7 +584,8 @@ export default {
       })
     },
     getLists (num, size, type) {
-      this.http('/tSalesOrder/list', {
+      let url = this.johnTab === 1 ? '/tSalesOrder/list' : '/tSalesOrder/orderList'
+      this.http(url, {
         pageNum: num,
         pageSize: size,
         isHistory: 0,
@@ -500,7 +637,8 @@ export default {
       this.formData.isHistory = 0
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
-      this.http('/tSalesOrder/list', this.formData).then(resp => {
+      let url = this.johnTab === 1 ? '/tSalesOrder/list' : '/tSalesOrder/orderList'
+      this.http(url, this.formData).then(resp => {
         if (resp.success) {
           this.pageSize = pageSize
           this.pageNum = pageNum

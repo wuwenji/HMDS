@@ -27,14 +27,13 @@ export default {
           title: '接单管理',
           icon: 'icon2',
           show: false,
-          children: [ {
+          children: [{
             id: 0,
-            title: '自动选料'
+            title: '订单确认'
           }, {
             id: 10,
-            title: '打印订单'
-          },
-          {
+            title: '选料及打印订单'
+          }, {
             id: 11,
             title: '历史订单'
           }, {
@@ -125,6 +124,9 @@ export default {
           }, {
             id: 43,
             title: '分单详情'
+          }, {
+            id: 44,
+            title: '送货单金额'
           }]
         }, {
           id: 8,
@@ -156,10 +158,10 @@ export default {
           show: false,
           children: [
             {
-              title: '自动选料'
+              title: '订单确认'
             },
             {
-              title: '打印订单'
+              title: '选料及打印订单'
             },
             {
               title: '历史订单'
@@ -256,6 +258,9 @@ export default {
             },
             {
               title: '分单详情'
+            },
+            {
+              title: '送货单金额'
             }
           ]
         },
@@ -364,5 +369,6 @@ export default {
     height: 100%;
     width: 200px;
     background: #419ee1;
+    overflow-y: auto;
   }
 </style>

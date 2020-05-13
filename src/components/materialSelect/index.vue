@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="position">
-      所在的位置：接单管理 -> <span>自动选料</span>
+      所在的位置：接单管理 -> <span>选料及打印订单</span>
     </div>
     <div class="form">
       <el-form :inline="true" :model="formData" ref="formData" class="demo-form-inline">
@@ -39,7 +39,7 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" plain @click="research(10, 1)">查询</el-button>
+          <el-button type="success" plain @click="research(10, 1, johnTab)">查询</el-button>
           <el-button type="success" plain @click="exportFlg = true">导出</el-button>
         </el-form-item>
       </el-form>
@@ -47,6 +47,7 @@
     <div class="john-tab">
       <ul>
         <li @click="tabClick(0)" :class="{active: johnTab == 0}">未选料</li>
+        <li @click="tabClick(2)" :class="{active: johnTab == 2}">已选料</li>
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">历史记录</li>
       </ul>
     </div>
@@ -124,7 +125,7 @@
         </el-table-column>
       </el-table>
       <el-table
-        v-show="johnTab == 1"
+        v-show="johnTab == 1 || johnTab == 2"
         :data="listData"
         border
         height="calc(100% - 75px)">
@@ -189,6 +190,30 @@
               @click="dataDetail(scope.$index, scope.row)">详情</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          label="打印"
+          fixed="right"
+          width="370">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+            <el-button
+              v-if="scope.row.workInstCd === '3' || scope.row.workInstCd === '6'"
+              size="mini"
+              type="text"
+              :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '打印加工作业指示票')">打印加工作业指示票</el-button>
+            <el-button
+              v-if="scope.row.workInstCd === '6'"
+              size="mini"
+              type="text"
+              :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -237,19 +262,35 @@
       :visible.sync="dialog">
       <orderDetail v-if="dialog" :orderInfos="sentData"/>
     </el-dialog>
+    <el-dialog
+      :visible.sync="dialogOne"
+      width="1290px"
+      top="5vh"
+      center>
+      <printPage v-if="title == '打印切断作业指示书'" :orderInfo="info" :title="title"/>
+      <hotHandle v-if="title == '生成热处理指示书'" :orderInfo="info" :title="title"/>
+      <machining v-if="title == '打印加工作业指示票'" :orderInfo="info" :title="title"/>
+      <wholePage v-if="title == '整条'" :orderInfo="info" :title="title"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import orderDetail from './material'
 import { getExcel } from '../../http'
+import printPage from '../orderPrinting/printing_'
+import hotHandle from '../orderPrinting/hotHandle'
+import machining from '../orderPrinting/machining_'
 
 export default {
   name: 'index',
   data () {
     return {
+      dialogOne: false,
       pageSize: 10,
+      title: '',
       pageNum: 1,
+      info: '',
       exportFlg: false,
       exportExl: {
         tempStartTime: '',
@@ -277,6 +318,12 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    // 打印
+    alertDialog (index, row, title) {
+      this.title = title
+      this.dialogOne = true
+      this.info = row
+    },
     // 导出
     exportExcel () {
       getExcel('/orderSelect/exportMaterialExcel', this.exportExl).then(res => {
@@ -411,7 +458,10 @@ export default {
   computed: {
   },
   components: {
-    orderDetail
+    orderDetail,
+    printPage,
+    hotHandle,
+    machining
   }
 }
 </script>

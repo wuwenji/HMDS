@@ -35,7 +35,7 @@ export default {
         {
           type: 'value',
           name: '时间',
-          min: 8,
+          min: this.$store.state.nowHour < 8 ? this.$store.state.nowHour + 24 : this.$store.state.nowHour,
           max: 36,
           interval: 1,
           axisLabel: {
@@ -44,13 +44,13 @@ export default {
               if (val > 24) {
                 let h = val - 24
                 if (h >= 10) {
-                  return '明 ' + h + ':00'
+                  return h + ':00'
                 } else {
-                  return '明 ' + '0' + h + ':00'
+                  return '0' + h + ':00'
                 }
               } else {
                 val = val > 9 ? val : '0' + val
-                return '今 ' + val + ':00'
+                return val + ':00'
               }
             }
           },
@@ -104,7 +104,7 @@ export default {
       let newData = JSON.parse(JSON.stringify(this.optionSeries))
       newData.map(item => {
         if (item.data.length > 0) {
-          item.data[0] = (item.data[0] - 8) * this.cutNumber + 8
+          item.data[0] = (item.data[0] - this.$store.state.nowHour) * this.cutNumber + this.$store.state.nowHour
         }
       })
       setTimeout(() => {
@@ -131,7 +131,7 @@ export default {
         tooltip: {
           formatter: (value) => {
             if (this.type === '1') {
-              let html = `${value.seriesName}<br/>需要: ${value.value.toFixed(2)} 小时`
+              let html = `${value.seriesName}<br/>需要: ${(value.value - this.$store.state.nowHour).toFixed(2)} 小时`
               return html
             }
           }

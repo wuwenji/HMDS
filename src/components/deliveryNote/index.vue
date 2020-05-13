@@ -138,12 +138,13 @@
           label="是否关联母材"
           width="120">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.relationMoth"
-              @change="switchChange(scope.row.id, scope.row.relationMoth)"
-              active-text="是"
-              inactive-text="否">
-            </el-switch>
+            {{scope.row.relationMoth === 1 ? '是' : '否'}}
+            <!--<el-switch-->
+            <!--v-model="scope.row.relationMoth"-->
+            <!--@change="switchChange(scope.row.id, scope.row.relationMoth)"-->
+            <!--active-text="是"-->
+            <!--inactive-text="否">-->
+            <!--</el-switch>-->
           </template>
         </el-table-column>
         <el-table-column
@@ -151,12 +152,13 @@
           label="显示金额">
           <template slot-scope="scope">
             <!--<el-button type="text" size="small">{{scope.row.show}}</el-button>-->
-            <el-switch
-              v-model="scope.row.isShowAmount"
-              @change="switchChange(scope.row.id, scope.row.isShowAmount)"
-              active-text="是"
-              inactive-text="否">
-            </el-switch>
+            {{scope.row.isShowAmount === 1 ? '是' : '否'}}
+            <!--<el-switch-->
+            <!--v-model="scope.row.isShowAmount"-->
+            <!--@change="switchChange(scope.row.id, scope.row.isShowAmount)"-->
+            <!--active-text="是"-->
+            <!--inactive-text="否">-->
+            <!--</el-switch>-->
           </template>
         </el-table-column>
         <el-table-column
@@ -240,12 +242,13 @@
           label="是否关联母材"
           width="120">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.relationMoth"
-              @change="switchChange(scope.row.id, scope.row.relationMoth)"
-              active-text="是"
-              inactive-text="否">
-            </el-switch>
+            {{scope.row.relationMoth === 1 ? '是' : '否'}}
+            <!--<el-switch-->
+              <!--v-model="scope.row.relationMoth"-->
+              <!--@change="switchChange(scope.row.id, scope.row.relationMoth)"-->
+              <!--active-text="是"-->
+              <!--inactive-text="否">-->
+            <!--</el-switch>-->
           </template>
         </el-table-column>
         <el-table-column
@@ -253,12 +256,13 @@
           label="显示金额">
           <template slot-scope="scope">
             <!--<el-button type="text" size="small">{{scope.row.show}}</el-button>-->
-            <el-switch
-              v-model="scope.row.isShowAmount"
-              @change="switchChange(scope.row.id, scope.row.isShowAmount)"
-              active-text="是"
-              inactive-text="否">
-            </el-switch>
+            {{scope.row.isShowAmount === 1 ? '是' : '否'}}
+            <!--<el-switch-->
+              <!--v-model="scope.row.isShowAmount"-->
+              <!--@change="switchChange(scope.row.id, scope.row.isShowAmount)"-->
+              <!--active-text="是"-->
+              <!--inactive-text="否">-->
+            <!--</el-switch>-->
           </template>
         </el-table-column>
         <el-table-column
@@ -471,13 +475,13 @@ export default {
         console.log(resp)
         if (resp.success) {
           this.listData = resp.data.list.filter(item => {
-            item.relationMoth = false
-            if (item.isShowAmount === '1') {
-              item.isShowAmount = true
-            } else {
-              // item.isShowAmount = false
-              item.isShowAmount = true
-            }
+            item.relationMoth = item.isShowMaterial
+            // if (item.isShowAmount === '1') {
+            //   item.isShowAmount = true
+            // } else {
+            //   // item.isShowAmount = false
+            //   item.isShowAmount = true
+            // }
             return item
           })
           this.total = resp.data.total
@@ -533,13 +537,14 @@ export default {
           this.pageSize = pageSize
           this.pageNum = pageNum
           this.listData = resp.data.list.filter(item => {
-            item.relationMoth = false
-            if (item.isShowAmount === '1') {
-              item.isShowAmount = true
-            } else {
-              // item.isShowAmount = false
-              item.isShowAmount = true
-            }
+            item.relationMoth = item.isShowMaterial
+            // item.relationMoth = false
+            // if (item.isShowAmount === '1') {
+            //   item.isShowAmount = true
+            // } else {
+            //   // item.isShowAmount = false
+            //   item.isShowAmount = true
+            // }
             return item
           })
           this.total = resp.data.total

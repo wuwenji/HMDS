@@ -1,5 +1,8 @@
 <template>
   <div class="box">
+    <p style="float: right;">
+      <el-button type="primary" size="mini" @click="showType = !showType">切换</el-button>
+    </p>
     <template v-if="showType">
       <div class="echart-item" v-for="(item, index) in this.typeOneData" :key="'a' + index">
         <lineEchart type="1" :xAxis="item.name" :optionSeries="item.list"></lineEchart>
@@ -128,7 +131,7 @@ export default {
                   barBorderColor: this.getColor(val.isUrgent),
                   color: this.getColor(val.isUrgent)
                 },
-                data: [8 + val.cutTime]
+                data: [this.$store.state.nowHour + val.cutTime]
               })
             })
             this.typeOneData.push(obj)

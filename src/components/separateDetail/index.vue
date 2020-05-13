@@ -25,7 +25,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="success" plain @click="search(10, 1)">查询</el-button>
-          <el-button type="success" plain >导出</el-button>
+          <el-button type="success" plain @click="exportDialog = true">导出</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -121,6 +121,41 @@
       </div>
       <!--<edit v-if="title == '标签修改'" :editData="editData"></edit>-->
     </el-dialog>
+    <el-dialog
+      width="500px"
+      class="export-form"
+      title="导出"
+      :visible.sync="exportDialog">
+      <el-form label-width="80px">
+        <div style="height: 10px;"></div>
+        <el-form-item label="日期">
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.startTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+          <el-col :span="2" class="line" style="text-align: center;">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              type="date"
+              v-model="exoprt.endTime"
+              value-format="timestamp"
+              style="width: 100%;">
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item>
+          <div style="margin-top: 20px; text-align: center; margin-right: 78px;">
+            <el-button @click="exportExcel" type="primary">
+              导出
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -128,11 +163,13 @@
 import addUser from './addUser'
 import edit from './edit'
 import lineEchart from '../lineEchart'
+import { getExcel } from '../../http'
 
 export default {
   name: 'index',
   data () {
     return {
+      exportDialog: false,
       separated: 0,
       listByEquipment: [],
       separateRow: 0,
@@ -150,6 +187,10 @@ export default {
       pageNum: 1,
       pageSize: 10,
       editData: '',
+      exoprt: {
+        startTime: '',
+        endTime: ''
+      },
       formData: {
         equipmentId: '',
         separateDate: ''
@@ -163,6 +204,33 @@ export default {
     this.sameDayStatistics()
   },
   methods: {
+    // 导出
+    exportExcel () {
+      getExcel('/statistics/projectProgress', {
+        ...this.exoprt,
+        download: 1,
+        department: 1
+      }).then(res => {
+        if (res.byteLength > 0) {
+          const blob = new Blob([res])
+          const fileName = '分单详情.xls'
+          if ('download' in document.createElement('a')) { // 非IE下载
+            const elink = document.createElement('a')
+            elink.download = fileName
+            elink.style.display = 'none'
+            elink.href = URL.createObjectURL(blob)
+            document.body.appendChild(elink)
+            elink.click()
+            URL.revokeObjectURL(elink.href) // 释放URL 对象
+            document.body.removeChild(elink)
+          } else { // IE10+下载
+            navigator.msSaveBlob(blob, fileName)
+          }
+        } else {
+          alert('数据为0，请重新选择日期！')
+        }
+      })
+    },
     // 获取分单统计
     sameDayStatistics () {
       this.http('/orderSeparate/sameDayStatistics', {}).then(resp => {
@@ -218,7 +286,7 @@ export default {
             barBorderColor: this.getColor(val.isUrgent),
             color: this.getColor(val.isUrgent)
           },
-          data: [8 + val.cutTime]
+          data: [this.$store.state.nowHour + val.cutTime]
         })
       })
       this.echartDataOne = obj

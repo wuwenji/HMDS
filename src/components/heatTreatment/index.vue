@@ -115,6 +115,11 @@
           width="110">
         </el-table-column>
         <el-table-column
+          prop="orderCode"
+          label="接单号"
+          width="110">
+        </el-table-column>
+        <el-table-column
           width="160"
           label="标准货期">
           <template slot-scope="scope">

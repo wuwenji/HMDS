@@ -28,6 +28,7 @@ import materialSelection from '../pages/materialSelection'
 import signManage from '../pages/signManage'
 import keyManage from '../pages/keyManage'
 import separateDetail from '../pages/separateDetail'
+import amountDisplay from '../pages/amountDisplay'
 
 Vue.use(Router)
 
@@ -169,6 +170,11 @@ const routes = [
     path: '/separateDetail',
     name: 'separateDetail',
     component: separateDetail
+  },
+  {
+    path: '/amountDisplay',
+    name: 'amountDisplay',
+    component: amountDisplay
   }
 ]
 
