@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="scor-book" id="printAll" style="height: 840px; overflow: hidden;">
+    <div class="scor-book" id="printAll" style="height: 840px;">
       <div class="top">
         <div class="top-left">
           <p>管理编号NO</p>
@@ -64,7 +64,9 @@
           <input v-model="formData.taskName" type="text" class="input">
         </td>
         <td class="yellow">
-          <input v-model="formData.modelNumber" type="text" class="input">
+          <div style="position: relative; width: 100%; height: 100%;">
+            <textarea v-model="formData.modelNumber" style="width: 100%; flat: left;display: block;resize:none;height: 30px;border: none;line-height: 14px;overflow: visible;font-size: 12px;background: none;"></textarea>
+          </div>
         </td>
         <td class="yellow">
           <input v-model="formData.counts" type="text" class="input">
@@ -327,6 +329,7 @@
         <td class="l" colspan="3">时间 <input v-model="formData.t2Handle.time" type="text" class="input2"></td>
         <td style="padding: 0; position: relative;" rowspan="11" colspan="7">
           <div class="right-bottom-div">
+            <p class="add-remove"><span @click="addTr(formData.treatmentEntryList)">+</span></p>
             <table v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1" class="table table3">
               <tr>
                 <td width="50" rowspan="2">
@@ -354,7 +357,9 @@
                 <td><input type="text" v-model="item.qty" class="input"></td>
                 <td><input type="text" v-model="item.nitrdedCaseDepth" class="input"></td>
                 <td><input type="text" v-model="item.nitrideHardness" class="input"></td>
-                <td><input type="text" v-model="item.weight" class="input"></td>
+                <td style="position: relative;"><input type="text" v-model="item.weight" class="input">
+                  <p class="add-remove"><span @click="removeTr(key, formData.treatmentEntryList)">-</span></p>
+                </td>
               </tr>
             </table>
             <table v-else class="table table3">
@@ -394,7 +399,10 @@
                 <td><input type="text" v-model="item.qty" class="input"></td>
                 <td><input type="text" v-model="item.deformation" class="input"></td>
                 <td><input type="text" v-model="item.hardnessResult" class="input"></td>
-                <td><input type="text" v-model="item.measuringCount" class="input"></td>
+                <td style="position: relative;">
+                  <input type="text" v-model="item.measuringCount" class="input">
+                  <p class="add-remove"><span @click="removeTr(key, formData.treatmentEntryList)">-</span></p>
+                </td>
               </tr>
             </table>
           </div>
@@ -441,12 +449,14 @@
           <img src="../../../static/images/pic5.png" alt="">
         </td>
       </tr>
-      <tr>
-        <td colspan="5">时间 <input type="text" v-model="formData.t3Handle.time" class="input2"></td>
-      </tr>
-      <tr>
-        <td colspan="5">作业者 <input type="text" v-model="formData.t3Handle.operator" class="input2"></td>
-      </tr>
+        <tr>
+          <td colspan="2">时间 <input type="text" v-model="formData.t3Handle.time" class="input2"></td>
+          <td class="l" colspan="3">时间 <input type="text" v-model="formData.t4Handle.time" class="input2"></td>
+        </tr>
+        <tr>
+          <td colspan="2">作业者 <input type="text" v-model="formData.t3Handle.operator" class="input2"></td>
+          <td class="l" colspan="3">作业者 <input type="text" v-model="formData.t4Handle.operator" class="input2"></td>
+        </tr>
       <tr>
         <td class="b" colspan="3"><span class="other">其它处理</span>(
           NVG<el-checkbox label="NVG" v-model="formData.otherHandle.method"></el-checkbox>
@@ -669,7 +679,7 @@ let model = {
     counts: '',
     month: '',
     day: '',
-    time: '，',
+    time: '',
     operator: '',
     temperature: '',
     h: '',
@@ -810,6 +820,13 @@ export default {
         this.formData.checkAbnormal.push(val)
       }
     },
+    // 删除
+    removeTr (index, data) {
+      data.splice(index, 1)
+    },
+    addTr (data) {
+      data.push(JSON.parse(JSON.stringify(obj)))
+    },
     preview (event) {
       let files = document.getElementById(this.id).files[0]
       this.imgDataUrl = this.getObjectURL(files)
@@ -897,7 +914,7 @@ export default {
 #printAll {
 }
 .line-tr {
-  line-height: 20px;
+  line-height: 15px;
   text-align: center;
 }
 .qrimg {
@@ -1030,13 +1047,32 @@ i,em {
   font-style: normal;
   font-weight: bold;
 }
+
 .right-bottom-div {
   width: 100%;
   height: 329px;
   position: absolute;
   right: 0;
   top: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
+}
+.add-remove {
+  position: absolute;
+  right: -18px;
+  top: 3px;
+}
+.add-remove span {
+  width: 12px;
+  height: 12px;
+  display: block;
+  border-radius: 50%;
+  background: orange;
+  text-align: center;
+  line-height: 14px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 .table3 {
   width: 100%;

@@ -261,20 +261,21 @@ export default {
       })
     },
     keeyHistory () {
-      this.http('/printHistory/saveOrUpdate', {
-        soNo: this.orderInfo.soNo,
-        dataJson: {...this.pinkData},
-        printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
-      }).then(resp => {
-        if (resp.success) {
-          document.getElementById('printClick').click()
-        } else {
-          this.$message.error({
-            message: '失败：' + resp.message,
-            duration: 1000
-          })
-        }
-      })
+      document.getElementById('printClick').click()
+      // this.http('/printHistory/saveOrUpdate', {
+      //   soNo: this.orderInfo.soNo,
+      //   dataJson: {...this.pinkData},
+      //   printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      // }).then(resp => {
+      //   if (resp.success) {
+      //     document.getElementById('printClick').click()
+      //   } else {
+      //     this.$message.error({
+      //       message: '失败：' + resp.message,
+      //       duration: 1000
+      //     })
+      //   }
+      // })
     }
   }
 }

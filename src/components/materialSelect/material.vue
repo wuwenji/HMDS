@@ -538,11 +538,15 @@ export default {
     // 拆分行
     addCol (item) {
       let params = {
-        soNo: item.soNo,
-        soLnNo: item.soLnNo,
-        soQty: this.soQty,
-        lnNo: item.lnNo
+        ...item,
+        soQty: this.soQty
       }
+      // let params = {
+      //   soNo: item.soNo,
+      //   soLnNo: item.soLnNo,
+      //   soQty: this.soQty,
+      //   lnNo: item.lnNo
+      // }
       this.changeCol(params, 1)
     },
     // 减少行
@@ -554,7 +558,7 @@ export default {
         soQty: item.soQty,
         id: item.id
       }
-      this.changeCol(params, 0)
+      this.changeCol(item, 0)
     },
     // 拆减行
     changeCol (params, type) {

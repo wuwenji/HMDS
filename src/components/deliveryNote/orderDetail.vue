@@ -369,7 +369,7 @@ export default {
     getTotal (item) {
       if (this.orderInfo.isShowAmount) {
         if (item.unitPriceCd === '2') {
-          return item.soUnitPrice * item.soWt
+          return item.soUnitPrice * 10 * item.soWt / 10
           // if (item.itemName2) {
           //   if (item.itemName2.indexOf('实际') > -1) {
           //     let momen = item.actualWeight === null ? 0 : item.actualWeight
@@ -382,7 +382,7 @@ export default {
           //   return item.soUnitPrice * item.soWt
           // }
         } else {
-          return item.soUnitPrice * item.soQty
+          return item.soUnitPrice * 10 * item.soQty / 10
         }
       } else {
         return '*'

@@ -292,10 +292,10 @@ export default {
       this.echartDataOne = obj
     },
     getColor (number) {
-      if (number === 1) return 'rgba(194, 53, 49, 1)'
-      if (number === 2) return 'rgba(53, 131, 184, 1)'
-      if (number === 3) return 'rgba(97, 160, 168, 1)'
-      if (number === 4) return 'rgba(62, 91, 156, 1)'
+      if (number === 1) return 'red'
+      if (number === 2) return 'green'
+      if (number === 3) return 'blue'
+      if (number === 4) return '#d4bc19'
     },
     getDataTwo (object) {
       let obj = {
@@ -313,7 +313,10 @@ export default {
           },
           label: {
             show: true,
-            position: 'inside'
+            position: 'inside',
+            textStyle: {
+              color: '#333'
+            }
           },
           data: [numb]
         })
@@ -337,7 +340,10 @@ export default {
             },
             label: {
               show: true,
-              position: 'inside'
+              position: 'inside',
+              textStyle: {
+                color: '#333'
+              }
             },
             stack: 'bb',
             data: [object.confirmTime.toFixed(2)]

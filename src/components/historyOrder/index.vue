@@ -126,6 +126,37 @@
               @click="printingOne(scope.$index, scope.row, '整条')">打印整条作业指示书</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          label="是否关联母材"
+          width="120">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowMaterial">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          width="120"
+          label="显示金额">
+          <template slot-scope="scope">
+            <el-select size="mini" v-model="scope.row.isShowAmount">
+              <el-option label="是" :value="1"></el-option>
+              <el-option label="否" :value="0"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label=""
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              :disabled="!(submitShow <= 15)"
+              size="mini"
+              type="primary"
+              @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 2"
@@ -236,6 +267,7 @@
           width="100">
           <template slot-scope="scope">
             <el-button
+              :disabled="!(submitShow <= 15)"
               size="mini"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
@@ -375,6 +407,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              :disabled="!(submitShow <= 15)"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
@@ -489,6 +522,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              :disabled="!(submitShow <= 15)"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
@@ -640,6 +674,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              :disabled="!(submitShow <= 15)"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
@@ -722,6 +757,7 @@ export default {
       pageNum: 1,
       cnfirmDialog: false,
       pageSize: 10,
+      submitShow: this.$store.state.users.position,
       total: 0,
       selectValue: '',
       title: '',
@@ -769,7 +805,7 @@ export default {
       })
     },
     getLists (num, size, type) {
-      let url = this.johnTab === 1 ? '/tSalesOrder/list' : '/tSalesOrder/orderList'
+      let url = '/tSalesOrder/orderList'
       this.http(url, {
         pageNum: num,
         pageSize: size,
@@ -833,7 +869,7 @@ export default {
       this.formData.isHistory = 1
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
-      let url = this.johnTab === 1 ? '/tSalesOrder/list' : '/tSalesOrder/orderList'
+      let url = '/tSalesOrder/orderList'
       this.http(url, this.formData).then(resp => {
         if (resp.success) {
           this.pageSize = pageSize

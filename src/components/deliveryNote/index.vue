@@ -59,9 +59,9 @@
           </el-col>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="success" plain @click="alertDialog('导出')">导出</el-button>
           <el-button type="success" plain @click="research(10, 1)">查询</el-button>
           <el-button type="info" plain @click="resetForm('formData')">重置</el-button>
+          <el-button type="success" plain @click="alertDialog('导出')">导出</el-button>
         </el-form-item>
       </el-form>
     </div>

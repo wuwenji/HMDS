@@ -1,7 +1,13 @@
 <template>
   <div class="box">
-    <p style="float: right;">
-      <el-button type="primary" size="mini" @click="showType = !showType">切换</el-button>
+    <p style="text-align: right;">
+      <template v-if="showType">
+        <span class="color-span" style="background: red;"></span>急单，
+        <span class="color-span" style="background: green;"></span>当天交期，
+        <span class="color-span" style="background: blue;"></span>明天交期，
+        <span class="color-span" style="background: #d4bc19;"></span>后天交期
+      </template>
+      <el-button type="primary" size="mini" style="margin-left: 20px;" @click="showType = !showType">切换</el-button>
     </p>
     <template v-if="showType">
       <div class="echart-item" v-for="(item, index) in this.typeOneData" :key="'a' + index">
@@ -61,7 +67,10 @@ export default {
                 },
                 label: {
                   show: true,
-                  position: 'inside'
+                  position: 'inside',
+                  textStyle: {
+                    color: '#333'
+                  }
                 },
                 data: [numb]
               })
@@ -85,7 +94,10 @@ export default {
                   },
                   label: {
                     show: true,
-                    position: 'inside'
+                    position: 'inside',
+                    textStyle: {
+                      color: '#333'
+                    }
                   },
                   stack: 'bb',
                   data: [item.confirmTime.toFixed(2)]
@@ -108,10 +120,10 @@ export default {
       }, 300000)
     },
     getColor (number) {
-      if (number === 1) return 'rgba(194, 53, 49, 1)'
-      if (number === 2) return 'rgba(53, 131, 184, 1)'
-      if (number === 3) return 'rgba(97, 160, 168, 1)'
-      if (number === 4) return 'rgba(62, 91, 156, 1)'
+      if (number === 1) return 'red'
+      if (number === 2) return 'green'
+      if (number === 3) return 'blue'
+      if (number === 4) return '#d4bc19'
     },
     getData1 () {
       this.http('/orderSeparate/receiptColumnChart', {}).then(resp => {
@@ -156,5 +168,14 @@ export default {
     width: calc(14.2% - 40px);
     margin: 20px;
     float: left;
+  }
+
+  .color-span {
+    width: 30px;
+    height: 15px;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    margin-right: 5px;
   }
 </style>
