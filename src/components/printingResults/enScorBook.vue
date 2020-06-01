@@ -65,7 +65,7 @@
         </td>
         <td class="yellow">
           <div style="position: relative; width: 100%; height: 100%;">
-            <textarea v-model="formData.modelNumber" style="width: 100%; flat: left;display: block;resize:none;height: 30px;border: none;line-height: 14px;overflow: visible;font-size: 12px;background: none;"></textarea>
+            <textarea class="big-text" v-model="formData.modelNumber"></textarea>
           </div>
         </td>
         <td class="yellow">
@@ -363,6 +363,13 @@
               </tr>
             </table>
             <table v-else class="table table3">
+              <col width="160"  />
+              <col width="50" />
+              <col width="60" />
+              <col width="50" />
+              <col width="50" />
+              <col width="50" />
+              <col width="50" />
               <tr>
                 <td width="60" rowspan="2">
                   <span style="font-size: 12px; line-height: 19px;">Parisname</span><br/>
@@ -393,7 +400,12 @@
               </tr>
               <tr></tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
-                <td><input type="text" v-model="item.modelNumber" class="input"></td>
+                <td>
+                  <div style="position: relative; width: 100%; height: 100%;">
+                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                  </div>
+                  <!--<input type="text" v-model="item.modelNumber" class="input">-->
+                </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
                 <td><input type="text" v-model="item.qty" class="input"></td>
@@ -1015,8 +1027,26 @@ table td:last-child {
   padding: 5px;
   position: relative;
 }
+textarea {
+  text-align: center;
+}
 .r {
   border-right: none;
+}
+.big-text {
+  display: table-cell;
+  width: 100%;
+  float: left;
+  resize: none;
+  height: 30px;
+  border: none;
+  line-height: 14px;
+  overflow: visible;
+  font-size: 12px;
+  background: none;
+}
+.min-text {
+  height: 28px;
 }
 .t {
   border-top: none;
@@ -1081,6 +1111,7 @@ i,em {
   border-left: 1px solid #666;
   border-bottom: 1px solid #666;
   text-align: center;
+  padding: 0;
 }
 .table3 td:first-child {
   border-left: none;

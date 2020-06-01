@@ -51,7 +51,7 @@
         </td>
         <td class="yellow">
           <div style="position: relative; width: 100%; height: 100%;">
-            <textarea v-model="formData.modelNumber" style="width: 100%; flat: left;display: block;resize:none;height: 30px;border: none;line-height: 14px;overflow: visible;font-size: 12px;background: none;"></textarea>
+            <textarea class="big-text" v-model="formData.modelNumber"></textarea>
           </div>
         </td>
         <td class="yellow">
@@ -338,15 +338,20 @@
             <table v-else class="table table3">
               <tr>
                 <td>型番号</td>
-                <td>品名</td>
-                <td>寸法mm</td>
-                <td>数量pcs</td>
-                <td>变形量mm</td>
-                <td>硬度HRC</td>
-                <td>測定数量</td>
+                <td style="width: 40px;">品名</td>
+                <td style="width: 60px;">寸法mm</td>
+                <td style="width: 60px;">数量pcs</td>
+                <td style="width: 60px;">变形量mm</td>
+                <td style="width: 60px;">硬度HRC</td>
+                <td style="width: 60px;">測定数量</td>
               </tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
-                <td><input type="text" v-model="item.modelNumber" class="input"></td>
+                <td>
+                  <div style="position: relative; width: 100%; height: 100%;">
+                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                  </div>
+                  <!--<input type="text" v-model="item.modelNumber" class="input">-->
+                </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
                 <td><input type="text" v-model="item.qty" class="input"></td>
@@ -865,6 +870,24 @@ export default {
 }
 #printAll {
 }
+textarea {
+  text-align: center;
+}
+.big-text {
+  display: table-cell;
+  width: 100%;
+  float: left;
+  resize: none;
+  height: 30px;
+  border: none;
+  line-height: 14px;
+  overflow: visible;
+  font-size: 12px;
+  background: none;
+}
+.min-text {
+  height: 28px;
+}
 .line-tr {
   line-height: 15px;
   text-align: center;
@@ -1030,6 +1053,7 @@ i,em {
   border-left: 1px solid #666;
   border-bottom: 1px solid #666;
   text-align: center;
+  padding: 1px 0;
 }
 .table3 td:first-child {
   border-left: none;

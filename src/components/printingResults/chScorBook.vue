@@ -51,7 +51,7 @@
         </td>
         <td class="yellow">
           <div style="position: relative; width: 100%; height: 100%;">
-            <textarea v-model="formData.modelNumber" style="width: 100%; flat: left;display: block;resize:none;height: 30px;border: none;line-height: 14px;overflow: visible;font-size: 12px;background: none;"></textarea>
+            <textarea class="big-text" v-model="formData.modelNumber"></textarea>
           </div>
 
           <!--<input v-model="formData.modelNumber" type="text" class="input">-->
@@ -340,15 +340,20 @@
             <table v-else class="table table3">
               <tr>
                 <td>模号</td>
-                <td>品名</td>
-                <td>尺寸mm</td>
-                <td>数量pcs</td>
-                <td>变形量mm</td>
-                <td>硬度HRC</td>
-                <td>测量件数</td>
+                <td style="width: 40px;">品名</td>
+                <td style="width: 80px;">尺寸mm</td>
+                <td style="width: 60px;">数量pcs</td>
+                <td style="width: 60px;">变形量mm</td>
+                <td style="width: 60px;">硬度HRC</td>
+                <td style="width: 60px;">测量件数</td>
               </tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
-                <td><input type="text" v-model="item.modelNumber" class="input"></td>
+                <td>
+                  <div style="position: relative; width: 100%; height: 100%;">
+                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                  </div>
+                  <!--<input type="text" v-model="item.modelNumber" class="input">-->
+                </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
                 <td><input type="text" v-model="item.qty" class="input"></td>
@@ -679,6 +684,7 @@ export default {
   data () {
     return {
       imageUrlOne: '',
+      ceshi: '这是一个',
       picsDialog: false,
       bigImgSrc: '../../../static/images/add-img.png',
       imgSrcs: [],
@@ -814,11 +820,17 @@ export default {
   /*font-size: 15px;*/
   font-family: 宋体;
 }
+textarea {
+  text-align: center;
+}
 .yellow {
   background: rgba(255, 255, 0, 1);
 }
 .td-font span, .td-font p{
   font-size: 14px;
+}
+.line-height30 {
+  line-height: 30px !important;
 }
 .check-span {
   font-size: 12px;
@@ -973,6 +985,21 @@ table td:last-child {
 .r {
   border-right: none;
 }
+.big-text {
+  display: table-cell;
+  width: 100%;
+  float: left;
+  resize: none;
+  height: 30px;
+  border: none;
+  line-height: 14px;
+  overflow: visible;
+  font-size: 12px;
+  background: none;
+}
+.min-text {
+  height: 28px;
+}
 .t {
   border-top: none;
 }
@@ -1035,6 +1062,7 @@ i,em {
   border-left: 1px solid #666;
   border-bottom: 1px solid #666;
   text-align: center;
+  padding: 1px 0;
 }
 .table3 td:first-child {
   border-left: none;
