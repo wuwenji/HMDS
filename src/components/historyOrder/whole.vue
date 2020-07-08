@@ -108,7 +108,7 @@
                   <!--<span>{{item.soWkInstList.size3}}</span>-->
                 </p>
                 <p class="spans">
-                  <span style="font-size: 14px;">{{item.soWkInstList.itemName1}}</span>
+                  <span style="font-size: 14px;">{{item.soWkInstList.itemName1}}</span><span>{{item.soWkInstList.itemName2}}</span>
                   <span style="font-size: 14px;">{{item.soWkInstList.instRemarks1}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">

@@ -44,6 +44,7 @@
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
+    <Br/><Br/><Br/>
     <div class="echart-all">
       <div class="echart-left">
         <drawEchart

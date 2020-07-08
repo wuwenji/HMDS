@@ -117,7 +117,7 @@
             </tr>
             <tr>
               <td>
-                <span><p>&nbsp;</p></span>{{orderDetail[0].shipToAddress1}}
+                <span><p>&nbsp;</p></span><div style="display:inline-block;position: absolute;border: 2px solid red;">{{orderDetail[0].shipToAddress1}}</div>
               </td>
               <td>
                 <span><p>&nbsp;</p></span>{{orderDetail[0].sBarnchUserDef2}}

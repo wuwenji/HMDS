@@ -1053,7 +1053,6 @@ i,em {
   border-left: 1px solid #666;
   border-bottom: 1px solid #666;
   text-align: center;
-  padding: 1px 0;
 }
 .table3 td:first-child {
   border-left: none;

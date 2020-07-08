@@ -179,6 +179,29 @@
       </b>
     </div>
     <div class="data-list">
+      <!--<pl-table-->
+        <!--v-show="johnTab == 0"-->
+        <!--:data="listData"-->
+        <!--border-->
+        <!--height="300"-->
+        <!--@selection-change="handleSelectionChange">-->
+        <!--<pl-table-column-->
+          <!--type="selection"-->
+          <!--fixed-->
+          <!--width="55">-->
+        <!--</pl-table-column>-->
+        <!--<pl-table-column-->
+          <!--type="index"-->
+          <!--label="序号"-->
+          <!--fixed-->
+          <!--width="55">-->
+        <!--</pl-table-column>-->
+        <!--<pl-table-column-->
+          <!--prop="whseCd"-->
+          <!--label="仓库名代码"-->
+          <!--width="100">-->
+        <!--</pl-table-column>-->
+      <!--</pl-table>-->
       <el-table
         v-show="johnTab == 0"
         :data="listData"
@@ -187,6 +210,12 @@
         @selection-change="handleSelectionChange">
         <el-table-column
           type="selection"
+          fixed
+          width="55">
+        </el-table-column>
+        <el-table-column
+          type="index"
+          label="序号"
           fixed
           width="55">
         </el-table-column>
@@ -504,6 +533,7 @@ import FileSaver from 'file-saver'
 import toUpdate from './toUpdate'
 import XLSX from 'xlsx'
 import orderDetail from '../materialSelect/material'
+import { PlTable, PlTableColumn, PlxTableGrid, PlxTableColumn } from 'pl-table'
 export default {
   name: 'index',
   data () {
@@ -732,7 +762,9 @@ export default {
   components: {
     printQR,
     toUpdate,
-    orderDetail
+    orderDetail,
+    PlTable,
+    PlTableColumn
   }
 }
 </script>

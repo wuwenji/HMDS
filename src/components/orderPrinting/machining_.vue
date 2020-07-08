@@ -72,10 +72,14 @@
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
                   <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
-                <td class="b" colspan="7"><strong>加工公差</strong></td>
+                <td class="b" colspan="6"><strong>加工公差</strong></td>
+                <td class="b" rowspan="2">
+                  <b>理论重量</b>
+                  <p style="text-align: right; font-size: 18px;"><b>{{item.soWtStr}}</b></p>
+                </td>
               </tr>
               <tr>
-                <td class="t" colspan="7" style="font-size: 16px;"><strong>{{item.machineTolerance}}</strong></td>
+                <td class="t" colspan="6" style="font-size: 16px;"><strong>{{item.machineTolerance}}</strong></td>
               </tr>
               <tr>
                 <td  class="r"><strong>客户要求尺寸</strong></td>
@@ -379,10 +383,14 @@
               <tr>
                 <td colspan="2" rowspan="3"><p><strong>钢种</strong></p>
                   <p style="font-size: 25px;">{{item.gradeCd}}</p></td>
-                <td class="b" colspan="7"><strong>加工公差</strong></td>
+                <td class="b" colspan="6"><strong>加工公差</strong></td>
+                <td class="b" rowspan="2">
+                  <b>理论重量</b>
+                  <p style="text-align: right; font-size: 18px;"><b>{{item.soWtStr}}</b></p>
+                </td>
               </tr>
               <tr>
-                <td class="t" colspan="7" style="font-size: 16px;"><strong>{{item.machineTolerance}}</strong></td>
+                <td class="t" colspan="6" style="font-size: 16px;"><strong>{{item.machineTolerance}}</strong></td>
               </tr>
               <tr>
                 <td  class="r"><strong>客户要求尺寸</strong></td>

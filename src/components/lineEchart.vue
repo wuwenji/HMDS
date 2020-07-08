@@ -26,7 +26,16 @@ require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
 export default {
   name: 'lineEchart',
-  props: ['optionSeries', 'type', 'xAxis'],
+  // props: ['optionSeries', 'type', 'xAxis'],
+  props: {
+    coefficient: {
+      type: Number,
+      default: 1
+    },
+    optionSeries: '',
+    type: '',
+    xAxis: ''
+  },
   data () {
     return {
       cutNumber: 1,
@@ -89,6 +98,7 @@ export default {
   },
   created () {
     this.beforeData = JSON.parse(JSON.stringify(this.optionSeries))
+    this.cutNumber = this.coefficient
   },
   mounted () {
     this.drawEchart()

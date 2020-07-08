@@ -105,7 +105,12 @@ export default {
           }, {
             id: 75,
             title: '接单数据'
-          }]
+          }
+          // , {
+          //   id: 76,
+          //   title: '材料统计'
+          // }
+          ]
         }, {
           id: 30,
           title: '可视化管理',
@@ -239,6 +244,9 @@ export default {
             {
               title: '接单数据'
             }
+            // ,{
+            //   title: '材料统计'
+            // }
           ]
         },
         {

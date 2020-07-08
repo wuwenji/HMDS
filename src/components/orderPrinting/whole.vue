@@ -108,7 +108,7 @@
                   <!--<span>{{item.soWkInstList.size3}}</span>-->
                 </p>
                 <p class="spans">
-                  <span style="font-size: 14px;">{{item.soWkInstList.itemName1}}</span>
+                  <span style="font-size: 14px;">{{item.soWkInstList.itemName1}}</span><span>{{item.soWkInstList.itemName2}}</span>
                   <span style="font-size: 14px;">{{item.soWkInstList.instRemarks1}}</span>
                 </p>
                 <p style="position: absolute;bottom:0px;" class="spans">
@@ -261,21 +261,21 @@ export default {
       })
     },
     keeyHistory () {
-      document.getElementById('printClick').click()
-      // this.http('/printHistory/saveOrUpdate', {
-      //   soNo: this.orderInfo.soNo,
-      //   dataJson: {...this.pinkData},
-      //   printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
-      // }).then(resp => {
-      //   if (resp.success) {
-      //     document.getElementById('printClick').click()
-      //   } else {
-      //     this.$message.error({
-      //       message: '失败：' + resp.message,
-      //       duration: 1000
-      //     })
-      //   }
-      // })
+      // document.getElementById('printClick').click()
+      this.http('/printHistory/saveOrUpdate', {
+        soNo: this.orderInfo.soNo,
+        dataJson: {...this.pinkData},
+        printType: '1'// 1为切断指示书，2为加工指示书，3为热加工指示书
+      }).then(resp => {
+        if (resp.success) {
+          document.getElementById('printClick').click()
+        } else {
+          this.$message.error({
+            message: '失败：' + resp.message,
+            duration: 1000
+          })
+        }
+      })
     }
   }
 }

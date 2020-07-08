@@ -245,21 +245,21 @@
                     无<el-checkbox label="无" v-model="formData.inspectionItems.accessories"></el-checkbox>
                   </td>
                 </tr>
-                <tbody v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1">
-                <tr>
-                  <td>校正</td>
-                  <td>
-                    有<el-checkbox label="有" v-model="formData.inspectionItems.correcting"></el-checkbox>
-                  </td>
-                  <td>
-                    无<el-checkbox label="无" v-model="formData.inspectionItems.correcting"></el-checkbox>
-                  </td>
-                </tr>
-                <tr>
-                  <td>校正垫</td>
-                  <td colspan="2"><input v-model="formData.inspectionItems.correctingPad" type="text" class="input"></td>
-                </tr>
-                </tbody>
+                <!--<tbody v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1">-->
+                <!--<tr>-->
+                  <!--<td>校正</td>-->
+                  <!--<td>-->
+                    <!--有<el-checkbox label="有" v-model="formData.inspectionItems.correcting"></el-checkbox>-->
+                  <!--</td>-->
+                  <!--<td>-->
+                    <!--无<el-checkbox label="无" v-model="formData.inspectionItems.correcting"></el-checkbox>-->
+                  <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                  <!--<td>校正垫</td>-->
+                  <!--<td colspan="2"><input v-model="formData.inspectionItems.correctingPad" type="text" class="input"></td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
               </table>
               <img @click="openPics" class="table-div-img" :src="formData.imgSrc" alt="">
             </div>
@@ -269,6 +269,8 @@
         <td style="position: relative;" colspan="3">
           <input v-model="formData.qHandle.day" type="text" style="top: 20px; left: 0px;" class="input input-15 qposition">
           <input v-model="formData.qHandle.month" type="text" style="top: 30px; left: 12px;" class="input input-15 qposition">
+          <input v-model="formData.qHandle.fourTemperature" type="text" style="top: 43px; left: 54px;" class="input input-30 qposition">
+          <input v-model="formData.qHandle.fourH" type="text" style="top: 59px; left: 54px;" class="input input-30 qposition">
           <input v-model="formData.qHandle.oneTemperature" type="text" style="top: 26px; left: 116px;" class="input input-30 qposition">
           <input v-model="formData.qHandle.oneH" type="text" style="top: 56px; left: 116px;" class="input input-30 qposition">
           <input v-model="formData.qHandle.twoTemperature" type="text" style="top: 9px; left: 197px;" class="input input-30 qposition">
@@ -279,14 +281,14 @@
         </td>
       </tr>
       <tr>
-        <td colspan="4">时间 <input v-model="formData.qHandle.time" type="text" class="input2"></td>
+        <td colspan="4">时间 <input v-model="formData.qHandle.time" type="text" class="input2"> \ <input v-model="formData.qHandle.time1" type="text" class="input2"></td>
         <td rowspan="2" align="center">
           OK<el-checkbox label="OK" v-model="formData.qHandle.isOk"></el-checkbox>&nbsp;
           NG<el-checkbox label="NG" v-model="formData.qHandle.isOk"></el-checkbox>
           &nbsp;</td>
       </tr>
       <tr>
-        <td colspan="4">作业者 <input v-model="formData.qHandle.operator" type="text" class="input2"></td>
+        <td colspan="4">作业者 <input v-model="formData.qHandle.operator" type="text" class="input2"> \ <input v-model="formData.qHandle.operator1" type="text" class="input2"></td>
       </tr>
       <tr>
         <td class="b" colspan="2"><em>T1</em>
@@ -306,6 +308,8 @@
           </div>
           <input type="text" v-model="formData.t1Handle.day" style="top: 0px; left: 0px;" class="input input-15 qposition">
           <input type="text" v-model="formData.t1Handle.month" style="top: 10px; left: 12px;" class="input input-15 qposition">
+          <input type="text" v-model="formData.t1Handle.temperature1" style="top: 34px; left: 38px;" class="input input-30 qposition">
+          <input type="text" v-model="formData.t1Handle.h1" style="top: 57px; left: 38px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t1Handle.temperature" style="top: 16px; left: 123px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t1Handle.h" style="top: 52px; left: 123px;" class="input input-30 qposition">
           <img src="../../../static/images/pic2.png" alt="">
@@ -320,13 +324,15 @@
           </div>
           <input type="text" v-model="formData.t2Handle.day" style="top: 0px; left: 0px;" class="input input-15 qposition">
           <input type="text" v-model="formData.t2Handle.month" style="top: 10px; left: 12px;" class="input input-15 qposition">
+          <input type="text" v-model="formData.t2Handle.temperature1" style="top: 34px; left: 38px;" class="input input-30 qposition">
+          <input type="text" v-model="formData.t2Handle.h1" style="top: 57px; left: 38px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t2Handle.temperature" style="top: 16px; left: 123px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t2Handle.h" style="top: 52px; left: 123px;" class="input input-30 qposition">
           <img src="../../../static/images/pic3.png" alt="">        </td>
       </tr>
       <tr>
-        <td colspan="2">时间 <input v-model="formData.t1Handle.time" type="text" class="input2"></td>
-        <td class="l" colspan="3">时间 <input v-model="formData.t2Handle.time" type="text" class="input2"></td>
+        <td colspan="2">时间 <input v-model="formData.t1Handle.time" type="text" class="input2"> \ <input v-model="formData.t1Handle.time1" type="text" class="input2"></td>
+        <td class="l" colspan="3">时间 <input v-model="formData.t2Handle.time" type="text" class="input2"> \ <input v-model="formData.t2Handle.time1" type="text" class="input2"></td>
         <td style="padding: 0; position: relative;" rowspan="11" colspan="7">
           <div class="right-bottom-div">
             <p class="add-remove"><span @click="addTr(formData.treatmentEntryList)">+</span></p>
@@ -421,8 +427,8 @@
         </td>
       </tr>
       <tr>
-        <td colspan="2">作业者 <input v-model="formData.t1Handle.operator" type="text" class="input2"></td>
-        <td class="l" colspan="3">作业者 <input v-model="formData.t2Handle.operator" type="text" class="input2"></td>
+        <td colspan="2">作业者 <input v-model="formData.t1Handle.operator" type="text" class="input2"> \ <input v-model="formData.t1Handle.operator1" type="text" class="input2"></td>
+        <td class="l" colspan="3">作业者 <input v-model="formData.t2Handle.operator" type="text" class="input2"> \ <input v-model="formData.t2Handle.operator1" type="text" class="input2"></td>
       </tr>
       <tr>
         <td class="b" colspan="2"><em>T3</em>
@@ -442,6 +448,8 @@
           </div>
           <input type="text" v-model="formData.t3Handle.day" style="top: 0px; left: 0px;" class="input input-15 qposition">
           <input type="text" v-model="formData.t3Handle.month" style="top: 10px; left: 12px;" class="input input-15 qposition">
+          <input type="text" v-model="formData.t3Handle.temperature1" style="top: 34px; left: 38px;" class="input input-30 qposition">
+          <input type="text" v-model="formData.t3Handle.h1" style="top: 57px; left: 38px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t3Handle.temperature" style="top: 16px; left: 123px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t3Handle.h" style="top: 52px; left: 123px;" class="input input-30 qposition">
           <img src="../../../static/images/pic4.png" alt="">
@@ -456,18 +464,20 @@
           </div>
           <input type="text" v-model="formData.t4Handle.day" style="top: 0px; left: 0px;" class="input input-15 qposition">
           <input type="text" v-model="formData.t4Handle.month" style="top: 10px; left: 12px;" class="input input-15 qposition">
+          <input type="text" v-model="formData.t4Handle.temperature1" style="top: 34px; left: 38px;" class="input input-30 qposition">
+          <input type="text" v-model="formData.t4Handle.h1" style="top: 57px; left: 38px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t4Handle.temperature" style="top: 16px; left: 123px;" class="input input-30 qposition">
           <input type="text" v-model="formData.t4Handle.h" style="top: 52px; left: 123px;" class="input input-30 qposition">
           <img src="../../../static/images/pic5.png" alt="">
         </td>
       </tr>
         <tr>
-          <td colspan="2">时间 <input type="text" v-model="formData.t3Handle.time" class="input2"></td>
-          <td class="l" colspan="3">时间 <input type="text" v-model="formData.t4Handle.time" class="input2"></td>
+          <td colspan="2">时间 <input type="text" v-model="formData.t3Handle.time" class="input2"> \ <input type="text" v-model="formData.t3Handle.time1" class="input2"></td>
+          <td class="l" colspan="3">时间 <input type="text" v-model="formData.t4Handle.time" class="input2"> \ <input type="text" v-model="formData.t4Handle.time1" class="input2"></td>
         </tr>
         <tr>
-          <td colspan="2">作业者 <input type="text" v-model="formData.t3Handle.operator" class="input2"></td>
-          <td class="l" colspan="3">作业者 <input type="text" v-model="formData.t4Handle.operator" class="input2"></td>
+          <td colspan="2">作业者 <input type="text" v-model="formData.t3Handle.operator" class="input2"> \ <input type="text" v-model="formData.t3Handle.operator1" class="input2"></td>
+          <td class="l" colspan="3">作业者 <input type="text" v-model="formData.t4Handle.operator" class="input2"> \ <input type="text" v-model="formData.t4Handle.operator1" class="input2"></td>
         </tr>
       <tr>
         <td class="b" colspan="3"><span class="other">其它处理</span>(
@@ -506,12 +516,12 @@
         </td>
       </tr>
       <tr>
-        <td colspan="3">时间 <input v-model="formData.otherHandle.time" type="text" class="input2"></td>
-        <td class="l" colspan="2">时间 <input v-model="formData.szHandle.time" type="text" class="input2"></td>
+        <td colspan="3">时间 <input v-model="formData.otherHandle.time" type="text" class="input2"> \ <input v-model="formData.otherHandle.time1" type="text" class="input2"></td>
+        <td class="l" colspan="2">时间 <input v-model="formData.szHandle.time" type="text" class="input2" style="width: 70px"> \ <input v-model="formData.szHandle.time1" type="text" class="input2" style="width: 70px"></td>
       </tr>
       <tr>
-        <td colspan="3">作业者 <input v-model="formData.otherHandle.operator" type="text" class="input2"> </td>
-        <td class="l" colspan="2">作业者 <input v-model="formData.szHandle.operator" type="text" class="input2"></td>
+        <td colspan="3">作业者 <input v-model="formData.otherHandle.operator" type="text" class="input2"> \ <input v-model="formData.otherHandle.operator1" type="text" class="input2"> </td>
+        <td class="l" colspan="2">作业者 <input v-model="formData.szHandle.operator" type="text" class="input2" style="width: 60px"> \ <input v-model="formData.szHandle.operator1" type="text" class="input2" style="width: 60px"></td>
       </tr>
     </table>
       <p style="font-size: 12px;margin-top: 4px;">
@@ -909,6 +919,7 @@ export default {
 }
 .input2 {
   border: none;
+  width: 90px;
   background: none;
 }
 .qposition {
@@ -1046,7 +1057,7 @@ textarea {
   background: none;
 }
 .min-text {
-  height: 28px;
+  height: 27px;
 }
 .t {
   border-top: none;

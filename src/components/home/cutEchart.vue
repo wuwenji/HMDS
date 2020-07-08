@@ -11,7 +11,7 @@
     </p>
     <template v-if="showType">
       <div class="echart-item" v-for="(item, index) in this.typeOneData" :key="'a' + index">
-        <lineEchart type="1" :xAxis="item.name" :optionSeries="item.list"></lineEchart>
+        <lineEchart type="1" :xAxis="item.name" :coefficient="item.coefficient" :optionSeries="item.list"></lineEchart>
       </div>
     </template>
     <template v-else>
@@ -69,7 +69,7 @@ export default {
                   show: true,
                   position: 'inside',
                   textStyle: {
-                    color: '#333'
+                    color: '#000000'
                   }
                 },
                 data: [numb]
@@ -96,7 +96,7 @@ export default {
                     show: true,
                     position: 'inside',
                     textStyle: {
-                      color: '#333'
+                      color: '#d27512'
                     }
                   },
                   stack: 'bb',
@@ -132,6 +132,7 @@ export default {
           resp.data.map(item => {
             let obj = {
               name: item.equipmentCode,
+              coefficient: item.coefficient,
               list: []
             }
             item.list.map(val => {

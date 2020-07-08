@@ -46,12 +46,63 @@
     </div>
     <div class="john-tab">
       <ul>
+        <li @click="tabClick(3)" :class="{active: johnTab == 3}">整条</li>
         <li @click="tabClick(0)" :class="{active: johnTab == 0}">未选料</li>
         <li @click="tabClick(2)" :class="{active: johnTab == 2}">已选料</li>
         <li @click="tabClick(1)" :class="{active: johnTab == 1}">历史记录</li>
       </ul>
     </div>
     <div class="data-list">
+      <el-table
+        v-show="johnTab == 3"
+        :data="listData"
+        border
+        height="calc(100% - 75px)">
+        <el-table-column
+          prop="soNo"
+          width="100px"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称">
+        </el-table-column>
+        <el-table-column
+          prop="sUserName"
+          label="营业员"
+          width="130">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人"
+          width="130">
+        </el-table-column>
+        <el-table-column
+          label="接单时间"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.soDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="130">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="printingOne(scope.$index, scope.row, '整条')">打印整条作业指示书</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-table
         v-show="johnTab == 0"
         :data="listData"
@@ -109,7 +160,7 @@
         </el-table-column>
         <el-table-column
           fixed="right"
-          width="120"
+          width="140"
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -121,6 +172,10 @@
               size="mini"
               type="text"
               @click="skipSelect(scope.$index, scope.row)">跳过</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              @click="chongzhi(scope.$index, scope.row)">重置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -281,6 +336,7 @@ import { getExcel } from '../../http'
 import printPage from '../orderPrinting/printing_'
 import hotHandle from '../orderPrinting/hotHandle'
 import machining from '../orderPrinting/machining_'
+import wholePage from '../orderPrinting/whole'
 
 export default {
   name: 'index',
@@ -318,6 +374,23 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    chongzhi (index, row) {
+      let url = '/orderSelect/orderReset/' + row.soNo
+      this.http(url).then(resp => {
+        if (resp.success) {
+          this.$message({
+            type: 'success',
+            message: resp.message,
+            duration: 2000
+          })
+        } else {
+          this.$message.error({
+            message: resp.message,
+            duration: 2000
+          })
+        }
+      })
+    },
     // 打印
     alertDialog (index, row, title) {
       this.title = title
@@ -384,6 +457,7 @@ export default {
       })
     },
     getList (pageSize, pageNum, type) {
+      // let url = type === 3 ? '' : '/orderSelect/listByPage'
       this.http('/orderSelect/listByPage', {
         pageSize,
         pageNum,
@@ -395,6 +469,14 @@ export default {
           this.total = resp.data.total
         }
       })
+    },
+    printingOne (index, row, title) {
+      this.title = '123'
+      setTimeout(() => {
+        this.title = title
+        this.dialogOne = true
+        this.info = row
+      }, 30)
     },
     selectMaterial (a, b) {
       let url = '/orderSelect/selectMaterial/' + b.soNo
@@ -444,6 +526,7 @@ export default {
       this.formData.pageSize = pageSize
       this.formData.pageNum = pageNum
       this.formData.isHistory = type
+      // let url = type === 3 ? '' : '/orderSelect/listByPage'
       this.http('/orderSelect/listByPage', this.formData).then(resp => {
         console.log(resp)
         if (resp.success) {
@@ -461,7 +544,8 @@ export default {
     orderDetail,
     printPage,
     hotHandle,
-    machining
+    machining,
+    wholePage
   }
 }
 </script>

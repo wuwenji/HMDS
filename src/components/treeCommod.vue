@@ -115,6 +115,8 @@ export default {
           this.$router.push('/separateDetail')
         } else if (val === '送货单金额') {
           this.$router.push('/amountDisplay')
+        } else if (val === '材料统计') {
+          this.$router.push('/cailiao')
         }
       }
     }

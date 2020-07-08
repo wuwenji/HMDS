@@ -29,6 +29,7 @@ import signManage from '../pages/signManage'
 import keyManage from '../pages/keyManage'
 import separateDetail from '../pages/separateDetail'
 import amountDisplay from '../pages/amountDisplay'
+import cailiao from '../pages/cailiao'
 
 Vue.use(Router)
 
@@ -175,6 +176,11 @@ const routes = [
     path: '/amountDisplay',
     name: 'amountDisplay',
     component: amountDisplay
+  },
+  {
+    path: '/cailiao',
+    name: 'cailiao',
+    component: cailiao
   }
 ]
 
