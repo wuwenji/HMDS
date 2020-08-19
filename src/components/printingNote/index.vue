@@ -139,6 +139,17 @@
               @click="printScore(scope.$index, scope.row)">打印送货单</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="包装箱标签打印"
+          width="120">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 3)">包装箱标签</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -187,6 +198,9 @@ export default {
     this.getList(10, 1)
   },
   methods: {
+    labelPrint (row, index, type) {
+      // type: 1通用，2指定
+    },
     // 获取数据
     getList (pageSize, pageNum) {
       this.http('/heat/deliveryList', {

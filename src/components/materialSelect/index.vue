@@ -102,6 +102,21 @@
               @click="printingOne(scope.$index, scope.row, '整条')">打印整条作业指示书</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 0"
@@ -176,6 +191,21 @@
               size="mini"
               type="text"
               @click="chongzhi(scope.$index, scope.row)">重置</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -267,6 +297,21 @@
               type="text"
               :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
               @click="alertDialog(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -374,6 +419,9 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    labelPrint (row, index, type) {
+      // type: 1通用，2指定
+    },
     chongzhi (index, row) {
       let url = '/orderSelect/orderReset/' + row.soNo
       this.http(url).then(resp => {

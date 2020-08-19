@@ -411,8 +411,8 @@
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
                 <td><input type="text" v-model="item.qty" class="input"></td>
                 <td><input type="text" v-model="item.deformation" class="input"></td>
-                <td><input type="text" v-model="item.spotCheckStandard" class="input"></td>
                 <td><input type="text" v-model="item.hardnessResult" class="input"></td>
+                <td><input type="text" v-model="item.spotCheckStandard" class="input"></td>
                 <td style="position: relative;"><input type="text" v-model="item.measuringCount" class="input">
                   <p class="add-remove"><span @click="removeTr(key, formData.treatmentEntryList)">-</span></p>
                 </td>
@@ -1044,7 +1044,7 @@ table td:last-child {
   color: red;
 }
 .table-div-img {
-  max-height: 255px;
+  max-height: 180px;
   max-width: 285px;
   position: absolute;
   right: 15px;

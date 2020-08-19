@@ -5,20 +5,33 @@
         <div class="top cl">
           <div class="top-left">
             <div class="top-left-left">
-              <b>{{$store.state.date}}</b>
+              <!--<b>{{$store.state.date}}</b>-->
               <table class="table table2 table3" borderColor="#000" border="1px">
                 <tr>
+                  <td>发注日</td>
+                  <td>
+                    <el-date-picker
+                    v-model="date"
+                    type="date"
+                    format="yyyy年MM月dd日"
+                    prefix-icon="sdg">
+                  </el-date-picker>
+                  </td>
+                </tr>
+                <tr>
                   <td>交货期</td>
-                  <td>送货方式</td>
+                  <td>
+                    <el-date-picker
+                    v-model="date"
+                    type="date"
+                    format="yyyy年MM月dd日"
+                    prefix-icon="sdg">
+                  </el-date-picker>
+                  </td>
                 </tr>
                 <tr>
                   <td class="noneBorder">
-                    <el-date-picker
-                      v-model="date"
-                      type="date"
-                      format="yyyy年MM月dd日"
-                      prefix-icon="sdg">
-                    </el-date-picker>
+                    送货方式
                   </td>
                   <td><input v-model="hotData.heatTreatment.shiptoType" type="text"></td>
                 </tr>

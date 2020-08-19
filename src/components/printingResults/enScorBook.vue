@@ -3,8 +3,18 @@
     <div class="scor-book" id="printAll" style="height: 840px;">
       <div class="top">
         <div class="top-left">
-          <p>管理编号NO</p>
-          <p><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></p>
+          <table border="1">
+            <tr>
+              <td>管理编号NO</td>
+              <td>接单号码NO</td>
+            </tr>
+            <tr>
+              <td><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></td>
+              <td><input type="text" disabled v-model="formData.soNo" class="input" style="text-align: left;"></td>
+            </tr>
+          </table>
+          <!--<p>管理编号NO</p>-->
+          <!--<p><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></p>-->
           <div class="name">
             <p>客户名</p>
             <p class="yellow">
@@ -185,8 +195,16 @@
         </td>
         <td valign="top" style="border-right: 1px solid #000;padding: 0;" colspan="7" rowspan="6">
             <div class="table-div">
-              出货检查结果(ProjectAppearance)<br/>
-              <table border="1" class="table table2" style="width: 230px;">
+              <!--出货检查结果(ProjectAppearance)<br/>-->
+              <div class="new-font">
+                <p>
+                  检查项目{硬度、变形(目标0.1%)、外观、数量、附属品(吊环周转箱等)、探伤(300kg以上)}<br/>
+                  Test items:hardness, deformation(target 0.1%),appearnce, quantity, accessories(Rings\boxes etc.), NDT(300kg above)
+                </p>
+                <p>硬度抽查标准参照 《热处理检查作业标准》 表2 硬度抽查基准<br/>
+                  Hardness spot check refer to < Work instruction of Heat treatment inspection >, Table 2:Benchmark of hardess spot check.</p>
+              </div>
+              <table border="1" class="table table2" style="width: 230px;margin-bottom: 5px;">
                 <tr>
                   <td width="120">出货检查项目</td>
                   <td colspan="2">检查结果</td>
@@ -338,26 +356,46 @@
             <p class="add-remove"><span @click="addTr(formData.treatmentEntryList)">+</span></p>
             <table v-if="formData.taskName !== '' && formData.taskName.indexOf('NVG') > -1" class="table table3">
               <tr>
-                <td width="50" rowspan="2">
-                  <span style="font-size: 12px; line-height: 19px;">Name</span><br/>
-                  品名</td>
-                <td width="80" rowspan="2">
-                  尺寸mm</td>
-                <td width="60" rowspan="2">
-                  <span style="font-size: 12px;">Qty(pcs)</span><br/>
-                  数量pcs</td>
-                <td rowspan="2">
-                  <span style="font-size: 12px;">nitrdedcase depth</span><br/>
-                  氮化深度mm</td>
-                <td rowspan="2">
-                  <span style="font-size: 12px;">nitride Hardness</span><br/>
-                  氮化硬度hv</td>
-                <td width="60" rowspan="2">
-                  <span style="font-size: 12px;">weight(KG)</span><br/>
-                  重量</td>
+                <td><span style="font-size: 12px; line-height: 19px;">Parisname</span><br/>模号</td>
+                <td style="width: 110px;"><span style="font-size: 12px;">Name</span><br/>品名</td>
+                <td style="width: 110px;">尺寸mm</td>
+                <td style="width: 30px;"><span style="font-size: 12px;">Qty(pcs)</span><br/>数量</td>
+                <td style="width: 40px;">氮化深度mm</td>
+                <td style="width: 40px;">氮化硬度hv</td>
+                <td style="width: 30px;">测量件数</td>
               </tr>
-              <tr></tr>
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
+                <td>
+                  <div style="position: relative; width: 100%; height: 100%;">
+                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                  </div>
+                </td>
+                <td><input type="text" v-model="item.itemName" class="input"></td>
+                <td><input type="text" v-model="item.sizeNote" class="input"></td>
+                <td><input type="text" v-model="item.qty" class="input"></td>
+                <td><input type="text" v-model="item.nitrdedCaseDepth" class="input"></td>
+                <td><input type="text" v-model="item.nitrideHardness" class="input"></td>
+                <td style="position: relative;"><input type="text" v-model="item.weight" class="input">
+                  <p class="add-remove"><span @click="removeTr(key, formData.treatmentEntryList)">-</span></p>
+                </td>
+              </tr>
+            </table>
+            <table v-else-if="formData.taskName !== '' && formData.taskName.indexOf('EX') > -1" class="table table3">
+              <tr>
+                <td><span style="font-size: 12px; line-height: 19px;">Parisname</span><br/>模号</td>
+                <td style="width: 110px;"><span style="font-size: 12px;">Name</span><br/>品名</td>
+                <td style="width: 110px;">尺寸mm</td>
+                <td style="width: 30px;"><span style="font-size: 12px;">Qty(pcs)</span><br/>数量</td>
+                <td style="width: 50px;">氧化深度mm</td>
+                <td style="width: 50px;">氧化硬度hv</td>
+                <td style="width: 30px;">测量件数</td>
+              </tr>
+              <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
+                <td>
+                  <div style="position: relative; width: 100%; height: 100%;">
+                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                  </div>
+                </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
                 <td><input type="text" v-model="item.sizeNote" class="input"></td>
                 <td><input type="text" v-model="item.qty" class="input"></td>
@@ -370,12 +408,13 @@
             </table>
             <table v-else class="table table3">
               <col width="160"  />
-              <col width="50" />
-              <col width="60" />
-              <col width="50" />
-              <col width="50" />
+              <col width="160" />
+              <col width="90" />
               <col width="50" />
               <col width="50" />
+              <col width="50" />
+              <col width="40" />
+              <col width="40" />
               <tr>
                 <td width="60" rowspan="2">
                   <span style="font-size: 12px; line-height: 19px;">Parisname</span><br/>
@@ -393,14 +432,17 @@
                   数量
                 </td>
                 <td rowspan="2">
-                  <span style="font-size: 12px;">Distortion(mm)</span><br/>
+                  <span style="font-size: 12px;">Distortion (mm)</span><br/>
                   变形量
                 </td>
                 <td rowspan="2">
                   <span style="font-size: 12px;">Hardness</span><br/>
                   硬度HRC
                 </td>
-                <td width="60" rowspan="2">
+                <td rowspan="2">
+                  抽查标准
+                </td>
+                <td rowspan="2">
                   测量件数
                 </td>
               </tr>
@@ -417,6 +459,7 @@
                 <td><input type="text" v-model="item.qty" class="input"></td>
                 <td><input type="text" v-model="item.deformation" class="input"></td>
                 <td><input type="text" v-model="item.hardnessResult" class="input"></td>
+                <td><input type="text" v-model="item.spotCheckStandard" class="input"></td>
                 <td style="position: relative;">
                   <input type="text" v-model="item.measuringCount" class="input">
                   <p class="add-remove"><span @click="removeTr(key, formData.treatmentEntryList)">-</span></p>
@@ -885,6 +928,17 @@ export default {
 .td-font span, .td-font p{
   font-size: 14px;
 }
+.new-font {
+  margin-bottom: 5px;
+}
+.new-font p {
+  border-bottom: 1px solid #000;
+  padding-left: 5px;
+  position: relative;
+  left: -5px;
+  font-size: 11px;
+  line-height: 12px;
+}
 .check-span {
   font-size: 12px;
   cursor: pointer;
@@ -929,6 +983,7 @@ export default {
 .name {
   border: 1px solid #000;
   border-bottom: none;
+  border-top: none;
   text-align: center;
 }
 .name p:first-child {
@@ -1015,7 +1070,7 @@ table td {
   padding: 1px 5px;
 }
 table th {
-  padding: 2px;
+  padding: 0px;
 }
 table td:last-child {
   /*border-right: 1px solid #000;*/
@@ -1024,12 +1079,11 @@ table td:last-child {
   color: red;
 }
 .table-div-img {
-  max-height: 255px;
+  max-height: 165px;
   max-width: 285px;
   position: absolute;
   right: 15px;
   float: right;
-  top: 5px;
   cursor: pointer;
 }
 .table-div {
@@ -1072,7 +1126,7 @@ textarea {
   float: left;
 }
 .table2 td {
-  padding: 4px;
+  padding: 3px;
 }
 i,em {
   width: 25px;

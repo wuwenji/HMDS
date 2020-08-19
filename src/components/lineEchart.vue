@@ -34,7 +34,11 @@ export default {
     },
     optionSeries: '',
     type: '',
-    xAxis: ''
+    xAxis: '',
+    id: {
+      type: String,
+      default: null
+    }
   },
   data () {
     return {
@@ -111,16 +115,26 @@ export default {
   },
   methods: {
     changeCutName () {
-      let newData = JSON.parse(JSON.stringify(this.optionSeries))
-      newData.map(item => {
-        if (item.data.length > 0) {
-          item.data[0] = (item.data[0] - this.$store.state.nowHour) * this.cutNumber + this.$store.state.nowHour
+      this.http('/equipment/update', {
+        coefficient: this.cutNumber,
+        id: this.id
+      }).then(resp => {
+        if (resp.success) {
+          this.$parent.getData1()
+        } else {
+          alert(resp.message)
         }
       })
-      setTimeout(() => {
-        this.beforeData = newData
-        this.drawEchart()
-      }, 0)
+      // let newData = JSON.parse(JSON.stringify(this.optionSeries))
+      // newData.map(item => {
+      //   if (item.data.length > 0) {
+      //     item.data[0] = (item.data[0] - this.$store.state.nowHour) * this.cutNumber + this.$store.state.nowHour
+      //   }
+      // })
+      // setTimeout(() => {
+      //   this.beforeData = newData
+      //   this.drawEchart()
+      // }, 0)
     },
     getDate (day) {
       var today = new Date()

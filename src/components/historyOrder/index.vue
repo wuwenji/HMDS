@@ -157,6 +157,21 @@
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 2"
@@ -271,6 +286,36 @@
               size="mini"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -412,6 +457,21 @@
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 5"
@@ -525,6 +585,21 @@
               :disabled="!(submitShow <= 15)"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -679,6 +754,32 @@
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="包装箱标签打印"
+          width="120">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 3)">包装箱标签</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -789,6 +890,9 @@ export default {
   computed: {
   },
   methods: {
+    labelPrint (row, index, type) {
+      // type: 1通用，2指定
+    },
     // 确认完成
     confirmComp (row, index, data) {
       this.http('/tSalesOrder/confirmOrder', {

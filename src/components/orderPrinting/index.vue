@@ -137,6 +137,16 @@
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 2"
@@ -217,6 +227,16 @@
               :disabled="!(submitShow <= 15)"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -311,6 +331,16 @@
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
           </template>
         </el-table-column>
+        <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <el-table
         v-show="johnTab == 5"
@@ -391,6 +421,16 @@
               type="primary"
               :disabled="!(submitShow <= 15)"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -510,6 +550,16 @@
               size="mini"
               type="primary"
               @click="confirmComp(scope.row, scope.$index, listData)">确认完成</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -668,6 +718,7 @@ export default {
       }, 30)
       // console.log(index, row)
     },
+    labelPrint (row, index) {},
     searchList (pageSize, pageNum) {
       this.formData.workInstCd = this.johnTab
       this.formData.isHistory = 0

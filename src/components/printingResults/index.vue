@@ -150,6 +150,7 @@
       <ch-scor-book v-if="language === 0" :orderInfo="inputDate"/>
       <en-scor-book v-if="language === 1" :orderInfo="inputDate"/>
       <ja-scor-book v-if="language === 2" :orderInfo="inputDate"/>
+      <wpcCN v-if="language === 3" :orderInfo="inputDate"/>
     </el-dialog>
     <el-dialog
       title="语言"
@@ -159,6 +160,7 @@
         <el-option label="中文" :value="0"></el-option>
         <el-option label="英文" :value="1"></el-option>
         <el-option label="日文" :value="2"></el-option>
+        <!--<el-option label="WPC" :value="3"></el-option>-->
       </el-select>
       <div class="cl"></div>
       <p style="text-align: center; margin-top: 20px;">
@@ -196,6 +198,7 @@ import inputCommod from './inputCommod'
 import scorBook from './scorBook'
 import chScorBook from './chScorBook'
 import enScorBook from './enScorBook'
+import wpcCN from './wpcCN'
 import jaScorBook from './jaScorBook'
 import { getExcel } from '../../http'
 export default {
@@ -397,7 +400,8 @@ export default {
     scorBook,
     chScorBook,
     enScorBook,
-    jaScorBook
+    jaScorBook,
+    wpcCN
   }
 }
 </script>

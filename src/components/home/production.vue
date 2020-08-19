@@ -10,33 +10,57 @@
             <th rowspan="3"></th>
             <th rowspan="3">当日急件数量</th>
             <th rowspan="3">产能</th>
-            <th colspan="4">纳期分布</th>
+            <th colspan="6">纳期分布</th>
             <th rowspan="3">当日累计接单</th>
             <th rowspan="3">当日累累计完成</th>
           </tr>
           <tr>
             <th colspan="2">今天</th>
-            <th>明天</th>
-            <th>后天</th>
+            <th colspan="2">明天</th>
+            <th colspan="2">后天</th>
           </tr>
           <tr>
             <th>纳期数量</th>
             <th>未完成数量</th>
             <th>纳期数量</th>
+            <th>未完成数量</th>
             <th>纳期数量</th>
+            <th>未完成数量</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td>切断组</td>
+            <td>
+              切断组
+            </td>
             <td class="john-right" v-for="(item, key) in productTable[0]" :key="'a' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           <tr>
-            <td>加工组</td>
+            <td>
+              切断(圆)
+            </td>
             <td class="john-right" v-for="(item, key) in productTable[1]" :key="'b' +key">
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              切断(板)
+            </td>
+            <td class="john-right" v-for="(item, key) in productTable[2]" :key="'c' +key">
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              加工组
+            </td>
+            <td class="john-right" v-for="(item, key) in productTable[3]" :key="'d' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
@@ -224,7 +248,7 @@ export default {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    this.carousel()
+    // this.carousel()
   },
   beforeDestroy () {
     clearInterval(this.carouseing)
@@ -411,7 +435,7 @@ export default {
 }
 
 .table td,.table th {
-  padding: 20px 10px;
+  padding: 12px 10px;
   font-size: 25px;
   font-weight: bold;
 }

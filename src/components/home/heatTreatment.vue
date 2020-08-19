@@ -325,7 +325,7 @@ export default {
       this.widthTd = this.$refs.tdWidth.clientWidth
       console.log(this.widthTd)
     })
-    this.carousel()
+    // this.carousel()
     this.carouselPage()
   },
   beforeDestroy () {

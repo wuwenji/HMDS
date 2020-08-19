@@ -11,7 +11,7 @@
     </p>
     <template v-if="showType">
       <div class="echart-item" v-for="(item, index) in this.typeOneData" :key="'a' + index">
-        <lineEchart type="1" :xAxis="item.name" :coefficient="item.coefficient" :optionSeries="item.list"></lineEchart>
+        <lineEchart type="1" :id="item.id" :xAxis="item.name" :coefficient="item.coefficient" :optionSeries="item.list"></lineEchart>
       </div>
     </template>
     <template v-else>
@@ -128,11 +128,13 @@ export default {
     getData1 () {
       this.http('/orderSeparate/receiptColumnChart', {}).then(resp => {
         if (resp.success) {
+          // console.log('id', resp)
           this.typeOneData = []
           resp.data.map(item => {
             let obj = {
               name: item.equipmentCode,
               coefficient: item.coefficient,
+              id: item.equipmentId,
               list: []
             }
             item.list.map(val => {
