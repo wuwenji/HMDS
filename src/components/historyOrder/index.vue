@@ -158,6 +158,20 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="订单标签打印"
           width="200">
@@ -168,6 +182,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -289,18 +304,17 @@
           </template>
         </el-table-column>
         <el-table-column
-          fixed="right"
-          label="订单标签打印"
-          width="200">
+          label="订单标签导入"
+          width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
           </template>
         </el-table-column>
         <el-table-column
@@ -314,6 +328,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -458,6 +473,20 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="订单标签打印"
           width="200">
@@ -468,6 +497,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -588,6 +618,20 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="订单标签打印"
           width="200">
@@ -598,6 +642,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -755,6 +800,20 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="订单标签导入"
+          width="100">
+          <template slot-scope="scope">
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           label="订单标签打印"
           width="200">
@@ -765,6 +824,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -776,6 +836,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 3)">包装箱标签</el-button>
           </template>
@@ -839,6 +900,15 @@
           </tr>
         </table>
     </el-dialog>
+    <el-dialog
+      title="打印标签"
+      width="545px"
+      :visible.sync="labelShow">
+      <labelPrint
+        v-if="labelShow"
+        :type="labelType"
+        :labelData="labelData"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -847,6 +917,8 @@ import printPage from './printing'
 import hotHandle from './hotHandle'
 import machining from './machining'
 import wholePage from './whole'
+import labelPrint from '../labelPrint'
+import { getHttp } from '../../http'
 // import printPage from '../orderPrinting/printing_'
 // import hotHandle from '../orderPrinting/hotHandle'
 // import machining from '../orderPrinting/machining_'
@@ -856,7 +928,10 @@ export default {
   data () {
     return {
       pageNum: 1,
+      labelShow: false,
+      labelType: 1,
       cnfirmDialog: false,
+      labelData: '123',
       pageSize: 10,
       submitShow: this.$store.state.users.position,
       total: 0,
@@ -886,12 +961,56 @@ export default {
   },
   created () {
     this.getLists(1, 10, 1)
+
+  },
+  mounted () {
+    // setTimeout(() => {
+    //   this.createdBarCode('73071A1088897')
+    // }, 2000)
+
   },
   computed: {
+
   },
   methods: {
+    successUpload (resp) {
+      let type = resp.success ? 'success' : 'error'
+      this.$message({
+        type,
+        message: resp.message
+      })
+    },
     labelPrint (row, index, type) {
       // type: 1通用，2指定
+      if (type === 1 || type === 3) {
+        this.labelType = type
+        getHttp('/label/getCommonOrderLabel/' + row.soNo).then(resp => {
+          if (resp.success) {
+            this.labelData = resp.data
+            this.labelShow = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: resp.message
+            })
+          }
+        })
+      } else if (type === 2) {
+        this.labelType = 1
+        this.http('/label/getOrderLabel', {
+          soNo: row.soNo
+        }).then(resp => {
+          if (resp.success) {
+            this.labelData = resp.data
+            this.labelShow = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: resp.message
+            })
+          }
+        })
+      }
     },
     // 确认完成
     confirmComp (row, index, data) {
@@ -1013,7 +1132,8 @@ export default {
     printPage,
     hotHandle,
     machining,
-    wholePage
+    wholePage,
+    labelPrint
   }
 }
 </script>
@@ -1057,5 +1177,8 @@ export default {
   .table td,.table th {
     text-align: center;
     padding: 4px;
+  }
+  .label-table td {
+    padding: 6px 4px
   }
 </style>

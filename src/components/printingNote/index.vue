@@ -146,6 +146,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 3)">包装箱标签</el-button>
           </template>
@@ -169,18 +170,30 @@
       :visible.sync="dialog">
       <orderDetail v-if="dialog" :orderInfo="orderInfo"/>
     </el-dialog>
+    <el-dialog
+      title="打印标签"
+      width="545px"
+      :visible.sync="labelShow">
+      <labelPrint
+        v-if="labelShow"
+        type="3"
+        :labelData="labelData"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import orderDetail from './orderDetail'
+import labelPrint from '../labelPrint'
 export default {
   name: 'index',
   data () {
     return {
       johnTab: 0,
+      labelShow: false,
       pageSize: 10,
       pageNum: 1,
+      labelData: [],
       orderInfo: '',
       dialog: false,
       total: 0,
@@ -200,6 +213,14 @@ export default {
   methods: {
     labelPrint (row, index, type) {
       // type: 1通用，2指定
+      this.labelData = []
+      this.labelData.push({
+        custKName: row.customerName,
+        gradeCd: row.material,
+        taskName: row.taskName,
+        soQty: row.totalCount
+      })
+      this.labelShow = true
     },
     // 获取数据
     getList (pageSize, pageNum) {
@@ -272,7 +293,8 @@ export default {
   computed: {
   },
   components: {
-    orderDetail
+    orderDetail,
+    labelPrint
   }
 }
 </script>

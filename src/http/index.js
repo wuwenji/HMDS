@@ -63,6 +63,21 @@ const http = (url, params) => {
   })
 }
 
+export const getHttp = (url) => {
+  let Url = store.state.httpUrl + url
+  return new Promise((resolve, reject) => {
+    axios.get(Url, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    }).then(response => {
+      resolve(response.data)
+    }).catch(err => {
+      reject(err)
+    })
+  })
+}
+
 export const getExcel = (url, params) => {
   let Url = store.state.httpUrl + url
   return new Promise((resolve, reject) => {

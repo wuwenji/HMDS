@@ -141,10 +141,14 @@
           label="订单标签导入"
           width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
           </template>
         </el-table-column>
       </el-table>
@@ -233,10 +237,14 @@
           label="订单标签导入"
           width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
           </template>
         </el-table-column>
       </el-table>
@@ -335,10 +343,14 @@
           label="订单标签导入"
           width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
           </template>
         </el-table-column>
       </el-table>
@@ -427,10 +439,11 @@
           label="订单标签导入"
           width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+
+            <!--<el-button-->
+              <!--size="mini"-->
+              <!--type="primary"-->
+              <!--@click="labelPrint(scope.row, scope.$index)">标签导入</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -556,10 +569,14 @@
           label="订单标签导入"
           width="100">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              @click="labelPrint(scope.row, scope.$index)">标签导入</el-button>
+            <el-upload
+              class="upload-demo"
+              style="float: left;margin-right:10px;margin-left: 10px;"
+              :action="$store.state.httpUrl + '/label/order/' + scope.row.soNo"
+              :on-success="successUpload"
+              :show-file-list="false">
+              <el-button size="mini" type="primary">导入标签</el-button>
+            </el-upload>
           </template>
         </el-table-column>
       </el-table>
@@ -685,6 +702,13 @@ export default {
             return item
           })
         }
+      })
+    },
+    successUpload (resp) {
+      let type = resp.success ? 'success' : 'error'
+      this.$message({
+        type,
+        message: resp.message
       })
     },
     onSubmit () {

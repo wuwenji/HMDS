@@ -112,6 +112,7 @@
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
+              v-if="scope.row.appointLabel === 1"
               size="mini"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
@@ -204,6 +205,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -310,6 +312,7 @@
               @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
             <el-button
               size="mini"
+              v-if="scope.row.appointLabel === 1"
               type="primary"
               @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
           </template>
@@ -372,6 +375,14 @@
       <machining v-if="title == '打印加工作业指示票'" :orderInfo="info" :title="title"/>
       <wholePage v-if="title == '整条'" :orderInfo="info" :title="title"/>
     </el-dialog>
+    <el-dialog
+      title="打印标签"
+      width="545px"
+      :visible.sync="labelShow">
+      <labelPrint
+        v-if="labelShow"
+        :labelData="labelData"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -382,6 +393,9 @@ import printPage from '../orderPrinting/printing_'
 import hotHandle from '../orderPrinting/hotHandle'
 import machining from '../orderPrinting/machining_'
 import wholePage from '../orderPrinting/whole'
+import labelPrint from '../labelPrint'
+import { getHttp } from '../../http'
+
 
 export default {
   name: 'index',
@@ -389,6 +403,8 @@ export default {
     return {
       dialogOne: false,
       pageSize: 10,
+      labelShow: false,
+      labelData: '',
       title: '',
       pageNum: 1,
       info: '',
@@ -421,6 +437,33 @@ export default {
   methods: {
     labelPrint (row, index, type) {
       // type: 1通用，2指定
+      if (type === 1) {
+        getHttp('/label/getCommonOrderLabel/' + row.soNo).then(resp => {
+          if (resp.success) {
+            this.labelData = resp.data
+            this.labelShow = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: resp.message
+            })
+          }
+        })
+      } else if (type === 2) {
+        this.http('/label/getOrderLabel', {
+          soNo: row.soNo
+        }).then(resp => {
+          if (resp.success) {
+            this.labelData = resp.data
+            this.labelShow = true
+          } else {
+            this.$message({
+              type: 'error',
+              message: resp.message
+            })
+          }
+        })
+      }
     },
     chongzhi (index, row) {
       let url = '/orderSelect/orderReset/' + row.soNo
@@ -593,7 +636,8 @@ export default {
     printPage,
     hotHandle,
     machining,
-    wholePage
+    wholePage,
+    labelPrint
   }
 }
 </script>

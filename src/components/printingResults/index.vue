@@ -160,7 +160,7 @@
         <el-option label="中文" :value="0"></el-option>
         <el-option label="英文" :value="1"></el-option>
         <el-option label="日文" :value="2"></el-option>
-        <!--<el-option label="WPC" :value="3"></el-option>-->
+        <el-option label="WPC" :value="3"></el-option>
       </el-select>
       <div class="cl"></div>
       <p style="text-align: center; margin-top: 20px;">
