@@ -1,13 +1,14 @@
 <template>
   <div>
     <p style="text-align: center;">
-      <el-button v-print="'#printContent'" type="primary">打印</el-button>
+      <el-button v-print="'#printContent1'" type="primary">打印</el-button>
     </p>
     <br/>
-    <div id="printContent" v-for="(item, index) in labelData" :key="index">
+    <div id="printContent1">
+      <div v-for="(item, index) in labelData" :key="index">
       <template v-if="type === 1">
-        <div class="label-box printPage" v-if="item.custCd === '83014701'">
-          <table class="table label-table table-padding2" border="1">
+        <div class="label-box printPage" v-if="item.custCd === '83056101'">
+          <table class="table label-table table-padding5" border="1" borderColor="#000">
             <tr>
               <td style="width: 100px;">供应商：</td>
               <td colspan="2">日立金属（东莞）特殊钢有限公司</td>
@@ -49,7 +50,7 @@
               </td>
               <td style="position: relative;">
                 <div class="txma">
-                  <svg :id="'barcode' + index" style="width: 300px; height: 85px;"></svg>
+                  <svg :id="'barcode' + index" class="barcode"></svg>
                   {{createdBarCode('barcode' + index, item.barCode)}}
                 </div>
               </td>
@@ -57,7 +58,7 @@
           </table>
         </div>
         <div class="label-box printPage" v-if="item.custCd === '84002801'">
-          <table class="table label-table table-padding2" border="1">
+          <table class="table label-table table-padding2" border="1" borderColor="#000">
             <tr>
               <td colspan="4">日立金属（东莞）特殊钢有限公司</td>
             </tr>
@@ -88,7 +89,7 @@
           </table>
         </div>
         <div class="label-box printPage" v-if="item.custCd === '83141201'">
-          <table class="table label-table table-padding2" border="1">
+          <table class="table label-table table-padding2" border="1" borderColor="#000">
             <tr>
               <td colspan="4">日立金属（东莞）特殊钢有限公司</td>
             </tr>
@@ -119,7 +120,7 @@
           </table>
         </div>
         <div class="label-box printPage" v-if="item.custCd === '82188101'">
-          <table class="table label-table table-padding2" border="1">
+          <table class="table label-table table-padding2" border="1" borderColor="#000">
             <tr>
               <td colspan="4">日立金属（东莞）特殊钢有限公司</td>
             </tr>
@@ -151,52 +152,26 @@
 
         </div>
         <div class="label-box printPage" v-if="!item.custCd">
-          <table class="table label-table table-padding2" border="1">
+          <table class="table label-table table-padding3" border="1" borderColor="#000">
             <tr>
-              <td colspan="4">日立金属（东莞）特殊钢有限公司</td>
+              <td>供应商</td>
+              <td>日立金属（东莞）特殊钢有限公司</td>
             </tr>
             <tr>
-              <td>客户</td>
-              <td>{{item.custKName}}</td>
               <td>订单号</td>
-              <td>{{item.soNo}}</td>
+              <td>{{item.soNo}} - {{item.soLnNo}}</td>
+            </tr>
+            <tr>
+              <td>客户名</td>
+              <td>{{item.custKName}}</td>
             </tr>
             <tr>
               <td>钢种</td>
               <td>{{item.gradeCd}}</td>
+            </tr>
+            <tr>
               <td>规格</td>
               <td>{{item.instSizeNote}}</td>
-            </tr>
-            <tr>
-              <td>重量</td>
-              <td>{{item.soWt}}</td>
-              <td>件数</td>
-              <td>{{item.soQty}}</td>
-            </tr>
-            <tr>
-              <td>日期</td>
-              <td colspan="3">
-                {{item.soDate }}
-              </td>
-            </tr>
-          </table>
-        </div>
-      </template>
-
-      <template v-else>
-        <div class="label-box printPage">
-          <table class="table label-table table-padding2" border="1">
-            <tr>
-              <td>客户</td>
-              <td>{{item.custKName}}</td>
-            </tr>
-            <tr>
-              <td>钢种</td>
-              <td>{{item.gradeCd}}</td>
-            </tr>
-            <tr>
-              <td>加工类别</td>
-              <td>{{item.taskName}}</td>
             </tr>
             <tr>
               <td>数量</td>
@@ -205,6 +180,36 @@
           </table>
         </div>
       </template>
+
+      <template v-else>
+        <div class="label-box printPage">
+          <table class="table label-table table-padding2" border="1" borderColor="#000">
+            <tr>
+              <td>供应商</td>
+              <td colspan="3">日立金属（东莞）特殊钢有限公司</td>
+            </tr>
+            <tr>
+              <td>客户名</td>
+              <td colspan="3">{{item.custKName}}</td>
+            </tr>
+            <tr>
+              <td>钢种</td>
+              <td colspan="3">{{item.gradeCd}}</td>
+            </tr>
+            <tr>
+              <td>加工类别</td>
+              <td colspan="3">{{item.taskName}}</td>
+            </tr>
+            <tr>
+              <td style="width: 70px;">数量</td>
+              <td style="width: 100px;">{{item.soQty}}</td>
+              <td style="width: 100px;">发货确认人</td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+      </template>
+    </div>
     </div>
 
   </div>
@@ -229,7 +234,10 @@ export default {
     createdBarCode (id, string) {
       setTimeout(() => {
         console.log(id, string)
-        JsBarcode('#' + id, string)
+        JsBarcode('#' + id, string, {
+          width: 3,
+          fontSize: 32
+        })
       }, 500)
     }
   }
@@ -239,30 +247,52 @@ export default {
 <style scoped>
   .table {
     width: 100%;
+    font-weight: bold;
+    /*font-family: 宋体;*/
   }
   .table td,.table th {
-    text-align: center;
+    text-align: left;
     padding: 4px;
+    /*font-size: 16px;*/
   }
   .label-box {
-    width: 505px;
-    height: 280px;
+    width: 410px;
+    height: 243px;
+    margin: 85px 0px 0 -70px;
+    padding-top: 20px;
+    transform: rotate(90deg);
   }
   .txma {
     position: absolute;
-    width: 357px;
-    height: 60px;
+    width: 281px;
+    height: 64px;
     background: #fff;
     left: 0;
     top: 0;
   }
 
   .label-table td {
-    padding: 6px 4px
+    padding: 4px 4px
   }
 
   .table-padding2 td {
-    padding: 15px 4px
+    padding: 12px 4px;
+    font-size: 16px;
+  }
+
+  .table-padding5 td {
+    padding: 3px 4px;
+    font-size: 16px;
+  }
+
+  .table-padding3 td {
+    padding: 8px 4px;
+    font-size: 16px;
+  }
+
+  .barcode {
+    max-width: 281px !important;
+    max-height: 64px !important;
   }
 
 </style>

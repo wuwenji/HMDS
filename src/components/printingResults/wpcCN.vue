@@ -8,11 +8,11 @@
               <td>管理编号NO</td>
             </tr>
             <tr>
-              <td><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></td>
+              <td><input type="text" disabled v-model="orderInfo.managementNumber" class="input" style="text-align: left;"></td>
             </tr>
           </table>
           <!--<p>管理编号NO</p>-->
-          <!--<p><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></p>-->
+          <!--<p><input type="text" disabled v-model="orderInfo.managementNumber" class="input" style="text-align: left;"></p>-->
           <div class="name">
             <p>客户名</p>
             <p class="yellow">
@@ -508,6 +508,15 @@ export default {
     orderInfo () {
       this.formData = JSON.parse(JSON.stringify(model))
       this.getData()
+    },
+    'formData.customerName' (customerName) {
+      this.http('/attention/list', {
+        customerName
+      }).then(resp => {
+        if (resp.success && resp.data.list.length > 0) {
+          this.formData.specialMatters = resp.data.list[0].attention
+        }
+      })
     }
   }
 }

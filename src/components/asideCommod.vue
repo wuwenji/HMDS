@@ -54,6 +54,9 @@ export default {
           }, {
             id: 24,
             title: '打印送货单'
+          }, {
+            id: 34,
+            title: '特别事项关联表'
           }]
         }, {
           id: 5,
@@ -189,6 +192,9 @@ export default {
             },
             {
               title: '打印送货单'
+            },
+            {
+              title: '特别事项关联表'
             }
           ]
         },

@@ -96,6 +96,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="指示书打印次数"
           align="right"
           width="130">
@@ -174,7 +181,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -226,6 +233,13 @@
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -320,7 +334,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -372,6 +386,13 @@
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -489,7 +510,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -540,6 +561,13 @@
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -634,7 +662,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -686,6 +714,13 @@
           width="130">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -816,7 +851,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -902,7 +937,7 @@
     </el-dialog>
     <el-dialog
       title="打印标签"
-      width="545px"
+      width="490px"
       :visible.sync="labelShow">
       <labelPrint
         v-if="labelShow"

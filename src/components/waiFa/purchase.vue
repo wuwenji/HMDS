@@ -67,7 +67,7 @@
             <td>{{item.gradeCd}}</td>
             <td>{{item.machineShapeCd}}</td>
             <td>{{item.machineTolerance}}</td>
-            <td>{{item.machineSpecCd}}</td>
+            <td>{{type == 0 ? item.machineSpecCd : item.taskName}}</td>
             <td class="john-right">{{item.soQty}}</td>
             <td class="john-right">{{item.soWt ? item.soWt.toFixed(2) : ''}}</td>
             <td class="john-right">{{item.area ? (item.area * item.soQty).toFixed(2) : ''}}</td>
@@ -262,7 +262,7 @@ export default {
     },
     // 导出
     exportExcel () {
-      // console.log('打印数据', this.data)
+      console.log('打印数据', this.data)
       getExcel('/outward/downExcel', this.data).then(res => {
         const blob = new Blob([res])
         const fileName = '采购单.xls'

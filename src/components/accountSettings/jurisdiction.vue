@@ -55,6 +55,9 @@ export default {
         }, {
           id: 24,
           label: '打印送货单'
+        }, {
+          id: 34,
+          label: '特别事项关联表'
         }]
       }, {
         id: 5,

@@ -3,34 +3,60 @@
     <table border="1" class="table-list">
       <thead>
       <tr>
-        <th>类型</th>
-        <th>作业炉</th>
-        <th>入炉时间</th>
-        <th>入炉人员</th>
-        <th>出炉时间</th>
-        <th>出炉人员</th>
-        <th>检查结果</th>
+        <th>使用炉</th>
+        <th>处理工艺</th>
+        <th>处理温度(℃)</th>
+        <th>冷却方法</th>
+        <th>入炉日期</th>
+        <th>出炉日期</th>
+        <th>处理用时(分)</th>
       </tr>
       </thead>
       <tbody v-for="(item, keys) in orderInfo.mapList" :key="keys">
       <tr>
-        <td>{{item.heatName}}</td>
         <td>{{item.equipmentName}}</td>
+        <td>{{item.heatName}}</td>
+        <td>{{item.temperature}}</td>
+        <td>{{item.coolingMethod}}</td>
         <td>{{$store.getters.getTime(item.startTime)}}</td>
-        <td>{{item.userName1}}</td>
         <td>
           <template v-if="item.endTime">
             {{$store.getters.getTime(item.endTime)}}
           </template>
         </td>
-        <td>
-          {{item.userName2}}
-        </td>
-        <td>
-          {{returnStatus(item.heatStatus)}}
-        </td>
+        <td>{{item.processingTime}}</td>
       </tr>
       </tbody>
+      <!--<thead>-->
+      <!--<tr>-->
+        <!--<th>类型</th>-->
+        <!--<th>作业炉</th>-->
+        <!--<th>入炉时间</th>-->
+        <!--<th>入炉人员</th>-->
+        <!--<th>出炉时间</th>-->
+        <!--<th>出炉人员</th>-->
+        <!--<th>检查结果</th>-->
+      <!--</tr>-->
+      <!--</thead>-->
+      <!--<tbody v-for="(item, keys) in orderInfo.mapList" :key="keys">-->
+      <!--<tr>-->
+        <!--<td>{{item.heatName}}</td>-->
+        <!--<td>{{item.equipmentName}}</td>-->
+        <!--<td>{{$store.getters.getTime(item.startTime)}}</td>-->
+        <!--<td>{{item.userName1}}</td>-->
+        <!--<td>-->
+          <!--<template v-if="item.endTime">-->
+            <!--{{$store.getters.getTime(item.endTime)}}-->
+          <!--</template>-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--{{item.userName2}}-->
+        <!--</td>-->
+        <!--<td>-->
+          <!--{{returnStatus(item.heatStatus)}}-->
+        <!--</td>-->
+      <!--</tr>-->
+      <!--</tbody>-->
     </table>
   </div>
 </template>

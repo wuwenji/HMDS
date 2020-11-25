@@ -92,6 +92,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           label="操作"
           width="130">
           <template slot-scope="scope">
@@ -105,7 +112,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -175,6 +182,13 @@
           width="170">
         </el-table-column>
         <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           width="140"
           label="操作">
@@ -197,7 +211,7 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -212,7 +226,7 @@
         </el-table-column>
       </el-table>
       <el-table
-        v-show="johnTab == 1 || johnTab == 2"
+        v-show="johnTab == 1"
         :data="listData"
         border
         height="calc(100% - 75px)">
@@ -267,6 +281,13 @@
           width="170">
         </el-table-column>
         <el-table-column
+          label="内部交期"
+          width="130">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
           fixed="right"
           width="60"
           label="操作">
@@ -304,7 +325,128 @@
         <el-table-column
           fixed="right"
           label="订单标签打印"
-          width="200">
+          width="230">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 1)">通用标签</el-button>
+            <el-button
+              size="mini"
+              v-if="scope.row.appointLabel === 1"
+              type="primary"
+              @click="labelPrint(scope.row, scope.$index, 2)">指定标签</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-show="johnTab == 2"
+        :data="listData"
+        border
+        height="calc(100% - 75px)">
+        <el-table-column
+          prop="soNo"
+          width="100"
+          label="接单号">
+        </el-table-column>
+        <el-table-column
+          prop="contName"
+          label="订购商名称"
+          min-width="110">
+        </el-table-column>
+        <el-table-column
+          prop="sysName"
+          label="选料员"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="entryUserName"
+          label="发件人"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          prop="workInstCd"
+          label="类型"
+          width="150">
+          <template slot-scope="scope">
+            {{scope.row.workInstCd === '1' ? '整条' : ''}}
+            {{scope.row.workInstCd === '2' ? '切断' : ''}}
+            {{scope.row.workInstCd === '3' ? '切断&加工' : ''}}
+            {{scope.row.workInstCd === '6' ? '切断&加工&热处理' : ''}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="是否完成"
+          width="80">
+          <template slot-scope="scope">
+            {{scope.row.status === 0 ? '否' : '是'}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="选料完成时间"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.endTime, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期"
+          prop="contDueDate"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          label="内部交期"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.internalDeliveryDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="交期调整"
+          width="150">
+          <template slot-scope="scope">
+            <el-input-number v-model="scope.row.internalDay" @change="(a, b) => handleChange(a, b, scope.row)" size="mini"></el-input-number>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          width="50"
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              @click="dataDetail(scope.$index, scope.row)">详情</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="打印"
+          fixed="right"
+          width="370">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              :class="scope.row.cutHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '打印切断作业指示书')">打印切断作业指示书</el-button>
+            <el-button
+              v-if="scope.row.workInstCd === '3' || scope.row.workInstCd === '6'"
+              size="mini"
+              type="text"
+              :class="scope.row.machineHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '打印加工作业指示票')">打印加工作业指示票</el-button>
+            <el-button
+              v-if="scope.row.workInstCd === '6'"
+              size="mini"
+              type="text"
+              :class="scope.row.heatHistoryCount > 0 ? 'gray' : 'aPrint'"
+              @click="alertDialog(scope.$index, scope.row, '生成热处理指示书')">生成热处理指示书</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="订单标签打印"
+          width="230">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -377,7 +519,7 @@
     </el-dialog>
     <el-dialog
       title="打印标签"
-      width="545px"
+      width="490px"
       :visible.sync="labelShow">
       <labelPrint
         v-if="labelShow"
@@ -390,7 +532,7 @@
 import orderDetail from './material'
 import { getExcel } from '../../http'
 import printPage from '../orderPrinting/printing_'
-import hotHandle from '../orderPrinting/hotHandle'
+import hotHandle from '../historyOrder/hotHandle'
 import machining from '../orderPrinting/machining_'
 import wholePage from '../orderPrinting/whole'
 import labelPrint from '../labelPrint'
@@ -435,6 +577,17 @@ export default {
     this.getList(10, 1, 0)
   },
   methods: {
+    handleChange (a, b, row) {
+      this.http('/orderSelect/adjustmentDay', {
+        soNo: row.soNo,
+        internalDay: a - b
+      }).then(resp => {
+        if (resp.success) {
+          row.internalDeliveryDate = resp.data.internalDeliveryDate
+        }
+
+      })
+    },
     labelPrint (row, index, type) {
       // type: 1通用，2指定
       if (type === 1) {
@@ -484,9 +637,12 @@ export default {
     },
     // 打印
     alertDialog (index, row, title) {
-      this.title = title
-      this.dialogOne = true
-      this.info = row
+      this.title = ''
+      setTimeout(() => {
+        this.title = title
+        this.dialogOne = true
+        this.info = row
+      }, 0)
     },
     // 导出
     exportExcel () {

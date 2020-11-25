@@ -180,7 +180,7 @@
               <td></td>
               <td colspan="6">
                 {{item.lineRemarks}}
-                {{orderInfo.relationMoth ? item.chargeNo + '' + item.stockSizeNote: ''}}
+                {{orderInfo.relationMoth ? item.chargeNo + '/' + item.stockSizeNote: ''}}
               </td>
               <td>{{item.custPoNo}}&nbsp;</td>
             </tr>
@@ -358,7 +358,7 @@ export default {
     historyList () {
       this.historyListShow = true
       this.http('/printHistory/list', {
-        soNo: this.lists[0].custPoNo,
+        soNo: this.lists[0].soNo,
         printType: '4'
       }).then(resp => {
         console.log('历史记录', resp)

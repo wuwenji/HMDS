@@ -8,6 +8,9 @@
         <el-form-item class="form-item" label="成绩书号" prop="orderCode">
           <el-input v-model="formData.orderCode" placeholder="成绩书号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="接单号码" prop="soNo">
+          <el-input v-model="formData.soNo" placeholder="接单号码"></el-input>
+        </el-form-item>
         <el-form-item class="form-item" label="接单时间">
           <el-col>
             <el-form-item prop="acceptTime">
@@ -15,10 +18,17 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item class="form-item" label="交期">
+        <el-form-item class="form-item" label="预定货期">
           <el-col>
             <el-form-item prop="contDueDate">
               <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formData.contDueDate" style="width: 100%;"></el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item class="form-item" label="计划货期">
+          <el-col>
+            <el-form-item prop="planTime">
+              <el-date-picker value-format="yyyy-MM-dd" type="date" placeholder="选择日期" v-model="formData.planTime" style="width: 100%;"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -52,6 +62,11 @@
           width="100">
         </el-table-column>
         <el-table-column
+          prop="soNo"
+          label="接单号码"
+          width="140">
+        </el-table-column>
+        <el-table-column
           prop="customerName"
           label="客户">
         </el-table-column>
@@ -68,6 +83,14 @@
           width="100">
           <template slot-scope="scope">
             {{$store.getters.getDate(scope.row.contDueDate, 2)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="contDueDate"
+          label="计划货期"
+          width="100">
+          <template slot-scope="scope">
+            {{$store.getters.getDate(scope.row.planTime, 2)}}
           </template>
         </el-table-column>
         <el-table-column
@@ -172,7 +195,7 @@
     </el-dialog>
     <el-dialog
       title="打印标签"
-      width="545px"
+      width="490px"
       :visible.sync="labelShow">
       <labelPrint
         v-if="labelShow"
@@ -202,7 +225,9 @@ export default {
         acceptTime: '',
         contDueDate: '',
         source: '',
-        type: 5
+        type: 5,
+        planTime: '',
+        soNo: ''
       },
       listData: []
     }

@@ -22,6 +22,14 @@
         <el-form-item class="form-item" label="接单号" prop="soNo">
           <el-input v-model="formData.soNo" placeholder="接单号"></el-input>
         </el-form-item>
+        <el-form-item class="form-item" label="内部交期" prop="internalDeliveryDate">
+          <el-date-picker
+            type="date"
+            placeholder="内部交期"
+            value-format="timestamp"
+            v-model="formData.internalDeliveryDate"
+            style="width: 100%;"></el-date-picker>
+        </el-form-item>
         <div class="cl" style="height: 10px;"></div>
         <el-form-item class="form-item" label="接单类型" prop="workInstCd">
           <el-select
@@ -98,6 +106,11 @@
           prop="contDueDateStr"
           min-width="100"
           label="纳期">
+        </el-table-column>
+        <el-table-column
+          prop="internalDeliveryDateStr"
+          min-width="100"
+          label="内部交期">
         </el-table-column>
         <el-table-column
           prop="soQty"
@@ -249,7 +262,8 @@ export default {
         gradeCd: '',
         soNo: '',
         tempMachineSpecCd: '',
-        contDueDate: ''
+        contDueDate: '',
+        internalDeliveryDate: ''
       }
     }
   },

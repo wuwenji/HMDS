@@ -2,13 +2,14 @@
   <div>
     <table class="table" border="1" borderColor="#000">
       <tr>
-        <td rowspan="4" align="center">
+        <td rowspan="6" align="center">
           <b>制造部</b><br/><b>(PCS)</b>
         </td>
         <td><b>时间</b></td>
         <td style="color:red" colspan="2"><b>今天<br/>({{days[0].date + '/' + days[0].week}})</b></td>
         <td colspan="3"><b>明天<br/>({{days[1].date + '/' + days[1].week}})</b></td>
         <td colspan="3"><b>后天<br/>({{days[2].date + '/' + days[2].week}})</b></td>
+        <td colspan="3"><b>第三天<br/>({{days[3].date + '/' + days[3].week}})</b></td>
       </tr>
       <tr>
         <td><b>能力管理</b></td>
@@ -20,14 +21,25 @@
         <td><b>接单能力</b></td>
         <td><b>已接单数量</b></td>
         <td><b>剩余能力</b></td>
+        <td><b>接单能力</b></td>
+        <td><b>已接单数量</b></td>
+        <td><b>剩余能力</b></td>
       </tr>
       <tr>
-        <td><b>切断</b></td>
+        <td><b>切断(PCS)</b></td>
         <td align="right" v-for="(item, index) in tableData.cutList" :key="'cut' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr>
-        <td><b>加工</b></td>
+        <td><b>切断(KG)</b></td>
+        <td align="right" v-for="(item, index) in tableData.cutWeightList" :key="'cut' + index">{{$store.getters.toThousand(item)}}</td>
+      </tr>
+      <tr>
+        <td><b>加工(PCS)</b></td>
         <td align="right" v-for="(item, index) in tableData.machineList" :key="'mac' + index">{{$store.getters.toThousand(item)}}</td>
+      </tr>
+      <tr>
+        <td><b>加工(KG)</b></td>
+        <td align="right" v-for="(item, index) in tableData.machineWeightList" :key="'mac' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
       <tr class="tr-box">
         <td colspan="10"></td>
@@ -44,7 +56,7 @@
         <td align="right" v-for="(item, index) in tableData.nvgList" :key="'nvg' + index">{{$store.getters.toThousand(item)}}</td>
       </tr>
     </table>
-    <Br/><Br/><Br/>
+    <!--<Br/><Br/><Br/>-->
     <div class="echart-all">
       <div class="echart-left">
         <drawEchart
@@ -98,11 +110,11 @@ export default {
     }
   },
   created () {
-    this.days = this.getDays(2)
+    this.days = this.getDays(3)
     this.getTableData()
     this.getCutData()
     this.setInterval = setInterval(() => {
-      this.days = this.getDays(2)
+      this.days = this.getDays(3)
       this.getTableData()
       this.getCutData()
     }, 600000)

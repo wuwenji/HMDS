@@ -184,7 +184,7 @@
               <td></td>
               <td colspan="6">
                 {{item.lineRemarks}}
-                {{orderInfo.relationMoth ? item.chargeNo + '' + item.stockSizeNote: ''}}
+                {{orderInfo.relationMoth ? item.chargeNo + '/' + item.stockSizeNote: ''}}
               </td>
               <td>{{item.custPoNo}}&nbsp;</td>
             </tr>

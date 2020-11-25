@@ -2,24 +2,26 @@
   <div>
     <div class="carousel">
       <div :style="{opacity: opacOne}" class="carousel-item">
-        <br/>
-        <br/>
+
         <table class="table" border="1" borderColor="#000">
           <thead>
           <tr>
             <th rowspan="3"></th>
             <th rowspan="3">当日急件数量</th>
             <th rowspan="3">产能</th>
-            <th colspan="6">纳期分布</th>
+            <th colspan="8">纳期分布</th>
             <th rowspan="3">当日累计接单</th>
-            <th rowspan="3">当日累累计完成</th>
+            <th rowspan="3">当日累计完成</th>
           </tr>
           <tr>
-            <th colspan="2">今天</th>
-            <th colspan="2">明天</th>
-            <th colspan="2">后天</th>
+            <th colspan="2">今天<br/>({{days[0].date}}/{{days[0].week}})</th>
+            <th colspan="2">明天<br/>({{days[1].date}}/{{days[1].week}})</th>
+            <th colspan="2">后天<br/>({{days[2].date}}/{{days[2].week}})</th>
+            <th colspan="2">第三天<br/>({{days[3].date}}/{{days[3].week}})</th>
           </tr>
           <tr>
+            <th>纳期数量</th>
+            <th>未完成数量</th>
             <th>纳期数量</th>
             <th>未完成数量</th>
             <th>纳期数量</th>
@@ -30,45 +32,79 @@
           </thead>
           <tbody>
           <tr>
-            <td>
-              切断组
+            <td  class="border-b">
+              切断
             </td>
-            <td class="john-right" v-for="(item, key) in productTable[0]" :key="'a' +key">
+            <td :class="['john-right', 'border-b', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[0]" :key="'a' +key">
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t border-b">
+              ( 圆 ) :
+            </td>
+            <td :class="['john-right', 'border-t', 'border-b', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[1]" :key="'b' +key">
+              <!--{{item}}-->
+              ( {{$store.getters.toThousand(item, 3)}} )
+            </td>
+          </tr>
+          <tr>
+            <td class="border-t">
+              ( 板 ) :
+            </td>
+            <td :class="['john-right', 'border-t', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[2]" :key="'c' +key">
+              <!--{{item}}-->
+              ( {{$store.getters.toThousand(item, 3)}} )
+            </td>
+          </tr>
+          <tr>
+            <td>
+              切断重量(KG)
+            </td>
+            <td :class="['john-right', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[3]" :key="'d' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           <tr>
             <td>
-              切断(圆)
+              切断平均单重(KG/PCS)
             </td>
-            <td class="john-right" v-for="(item, key) in productTable[1]" :key="'b' +key">
+            <td :class="['john-right', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[4]" :key="'e' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           <tr>
             <td>
-              切断(板)
+              加工(调整后交期)
             </td>
-            <td class="john-right" v-for="(item, key) in productTable[2]" :key="'c' +key">
+            <td :class="['john-right', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[5]" :key="'f' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           <tr>
             <td>
-              加工组
+              加工(正常交期)
             </td>
-            <td class="john-right" v-for="(item, key) in productTable[3]" :key="'d' +key">
+            <td :class="['john-right', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[6]" :key="'g' +key">
+              <!--{{item}}-->
+              {{$store.getters.toThousand(item, 3)}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              加工(热处理品交期)
+            </td>
+            <td :class="['john-right', {'color-red': key === 3 || key === 5 || key === 7 || key === 9 }]" v-for="(item, key) in productTable[7]" :key="'h' +key">
               <!--{{item}}-->
               {{$store.getters.toThousand(item, 3)}}
             </td>
           </tr>
           </tbody>
         </table>
-        <br/>
-        <br/>
         <br/>
         <div class="left-table">
           <table class="table" border="1" borderColor="#000">
@@ -435,7 +471,7 @@ export default {
 }
 
 .table td,.table th {
-  padding: 12px 10px;
+  padding: 6px 10px;
   font-size: 25px;
   font-weight: bold;
 }
@@ -557,5 +593,14 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+  }
+  .border-t {
+    border-top: none;
+  }
+  .border-b {
+    border-bottom: none;
+  }
+  .color-red {
+    color: #ff0000;
   }
 </style>

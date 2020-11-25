@@ -493,16 +493,26 @@ export default {
 
     // 清空选料
     clearSelect (key) {
-      let stockNos = '/orderSelect/clearOrderMaterial?stockNos='
+      // let stockNos = '/orderSelect/clearOrderMaterial?stockNos='
+      let stockNos = '/orderSelect/clearOrderMaterial2'
+      let list = []
+      // this.selectData.map((item, key) => {
+      //   if (key === this.selectData.length - 1) {
+      //     stockNos += item.stockNo
+      //   } else {
+      //     stockNos += item.stockNo + ','
+      //   }
+      // })
+
       this.selectData.map((item, key) => {
-        if (key === this.selectData.length - 1) {
-          stockNos += item.stockNo
-        } else {
-          stockNos += item.stockNo + ','
-        }
+        list.push({
+          soNo: item.soNo,
+          soLnNo: item.soLnNo,
+          lnNo: item.lnNo || ''
+        })
       })
-      console.log(stockNos)
-      this.http(stockNos).then(resp => {
+      // console.log(stockNos)
+      this.http(stockNos, list).then(resp => {
         if (resp.success) {
           this.updateData()
           this.$message({

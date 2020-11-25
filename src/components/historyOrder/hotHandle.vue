@@ -1,5 +1,10 @@
 <template>
   <div>
+    <p class="btn">
+      <!--<el-button @click="preservation()" type="primary">保存</el-button>-->
+      <el-button @click="keeyHistory" type="primary">打印</el-button>
+      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
+    </p>
     <div id="printContent" style="height: 800px;">
       <div class="title">热处理订单及作业指示书</div>
       <div class="top cl">
@@ -10,40 +15,43 @@
               <tr>
                 <td style="width: 100px">发注日</td>
                 <td class="noneBorder" align="center">
-                  年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日
-                  <!--<el-date-picker-->
-                    <!--v-model="date"-->
-                    <!--type="date"-->
-                    <!--format="yyyy年MM月dd日"-->
-                    <!--prefix-icon="sdg">-->
-                  <!--</el-date-picker>-->
+                  <!--年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日-->
+                  <el-date-picker
+                    v-model="hotData.heatTreatment.acceptTime"
+                    type="date"
+                    disabled=""
+                    format="yyyy年MM月dd日"
+                    prefix-icon="sdg">
+                  </el-date-picker>
                 </td>
               </tr>
               <tr>
                 <td>交货期</td>
                 <td class="noneBorder" align="center">
-                  年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日
-                  <!--<el-date-picker-->
-                    <!--v-model="date"-->
-                    <!--type="date"-->
-                    <!--format="yyyy年MM月dd日"-->
-                    <!--prefix-icon="sdg">-->
-                  <!--</el-date-picker>-->
+                  <!--年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日-->
+                  <el-date-picker
+                    v-model="hotData.heatTreatment.contDueDate"
+                    type="date"
+                    format="yyyy年MM月dd日"
+                    placeholder="请选择日期"
+                    prefix-icon="sdg">
+                  </el-date-picker>
                 </td>
               </tr>
               <tr>
                 <td class="noneBorder">
                   送货方式
                 </td>
-                <td align="center">
+                <td class="noneBorder" align="center">
                   送货  ·  自取  ·  快递
                   <!--<input v-model="hotData.heatTreatment.shiptoType" type="text">-->
                 </td>
               </tr>
             </table>
-            <div style="position: absolute;top: 115px; width: 140%;font-size: 12px;">
+            <div style="position: absolute;top: 106px; width: 140%;font-size: 12px;">
               <p>① ※部分是必填项目。（如必填未填写时可能无法及时做热处理。请务必填写）</p>
               <p>② 重量以HMDS称重为准。</p>
+              <p>③ 加工余量与硬度测试位置要求对热处理工艺设定很重要，有相关信息请在对应位置填写</p>
             </div>
           </div>
 
@@ -75,12 +83,12 @@
               <tr>
                 <td style="width: 100px">热处理成绩书编号</td>
                 <!--<td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>-->
-                <td colspan="3"><input type="text"></td>
+                <td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>
               </tr>
               <tr>
-                <td>作业指示书编号</td>
+                <td>接单号码</td>
                 <!--<td colspan="3"><input v-model="hotData.heatTreatment.managementNumber" type="text"></td>-->
-                <td colspan="3"><input type="text"></td>
+                <td colspan="3"><input v-model="hotData.heatTreatment.orderCode" type="text"></td>
               </tr>
             </table>
             <table class="table table2" style="margin-bottom: 10px;margin-top: 5px;" borderColor="#000" border="1px">
@@ -94,70 +102,81 @@
           </div>
         </div>
       </div>
-      <table border="1" class="table" style="margin-top: 20px;">
+      <table border="1" style="margin-top: 20px;">
         <thead>
         <tr>
-          <th class="xing-box" rowspan="2">
+          <th width="90px" class="xing-box" rowspan="2">
             <span>※</span>
             钢钟
           </th>
-          <th class="xing-box" rowspan="2">
+          <th width="120px" class="xing-box" rowspan="2">
             <span>※</span>
-            热处理种类</th>
-          <th class="xing-box" rowspan="2">
+            热处理<br/>
+            种类</th>
+          <th width="170px" class="xing-box" rowspan="2">
             <span>※</span>
-            品名</th>
-          <th class="xing-box" rowspan="2">
+            模号/品名</th>
+          <th width="200px" class="xing-box" rowspan="2">
             <span>※</span>
-            尺寸</th>
-          <th class="xing-box" rowspan="2">
+            大概 尺寸(mm)<br/>
+            厚T*宽W*长L</th>
+          <th width="50px" class="xing-box" rowspan="2">
             <span>※</span>数量</th>
-          <th class="xing-box">
+          <th width="100px" class="xing-box" colspan="2">
+            <span>※</span>
+            要求硬度</th>
+          <th width="50px" class="xing-box">
             <span>※</span>
             重量
           </th>
-          <th class="xing-box" colspan="2">
-            <span>※</span>
-            要求硬度</th>
           <th colspan="2">加工余量</th>
-          <th rowspan="2">备注</th>
+          <th width="70px" class="xing-box" rowspan="2">变形要求<br/>mm</th>
+          <th rowspan="2">备注（1.其它特殊要求<br/>2.氮化处理时请备注模具用途）</th>
         </tr>
-        <tr><th>(kg)</th><th>HRC</th><th>&nbsp;HS&nbsp;</th><th>单边</th><th>双边</th></tr>
+        <tr><th width="40px">HRC</th><th width="40px">HV</th><th>(kg)</th><th width="40px">单边</th><th width="40px">双边</th></tr>
         </thead>
         <tbody>
         <tr class="inputs" v-for="(item, key) in hotData.treatmentEntrys" :key="'1' + key">
           <td><input v-model="item.gradeCd" type="text"></td>
           <td><input v-model="item.heatTreatType" type="text"></td>
-          <td><input style="width: 175px;margin: 0;" v-model="item.itemName" type="text"></td>
-          <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
-          <td class="numb-td" style="width: 70px;"><input v-model="item.qty" type="text">
+          <td><input v-model="item.itemName" type="text"></td>
+          <td><input v-model="item.sizeNote" type="text"></td>
+          <td class="numb-td"><input v-model="item.qty" type="text">
             <!--<span>件</span>-->
           </td>
-          <td style="width: 70px;"><input v-model="item.wt" type="text"></td>
           <td colspan="2"><input v-model="item.hardnessRequirement" type="text"></td>
-          <td colspan="2"></td>
-          <td><input v-model="item.remark" type="text"></td>
+          <td ><input v-model="item.wt" type="text"></td>
+          <td colspan="2"><input v-model="item.hardnessResult" type="text"></td>
+          <td ><input v-model="item.deformation" type="text"></td>
+          <td class="remake-td">
+            <textarea class="remark" v-model="item.remark" v-html="item.remark" rows="2">
+            </textarea>
+          </td>
         </tr>
         <tr class="inputs" v-for="(item, key) in newDatas" :key="'2' + key">
           <td><input v-model="item.gradeCd" type="text"></td>
           <td><input v-model="item.heatTreatType" type="text"></td>
           <td><input v-model="item.itemName" type="text"></td>
-          <td><input style="width: 240px;" v-model="item.sizeNote" type="text"></td>
+          <td><input v-model="item.sizeNote" type="text"></td>
           <td class="numb-td"><input v-model="item.qty" type="text">
             <!--<span>件</span>-->
           </td>
+          <td colspan="2"><input v-model="item.hardnessRequirement" type="text"></td>
           <td><input v-model="item.wt" type="text"></td>
-          <td colspan="2"><input v-model="item.hardnessRequirement" type="text"></td>
-          <td colspan="2"><input v-model="item.hardnessRequirement" type="text"></td>
-          <td><input v-model="item.remark" type="text"></td>
+          <td colspan="2"><input v-model="item.hardnessResult" type="text"></td>
+          <td ><input v-model="item.deformation" type="text"></td>
+          <td class="remake-td">
+            <textarea class="remark" v-model="item.remark" v-html="item.remark" rows="2">
+            </textarea>
+            <!--<input v-model="item.remark" type="text">-->
+          </td>
         </tr>
         <tr class="inputs">
           <td colspan="4">合计</td>
           <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td colspan="2"><input type="text"></td>
           <td colspan="2"></td>
           <td><input type="text"></td>
+          <td colspan="4"></td>
         </tr>
         </tbody>
       </table>
@@ -183,18 +202,14 @@
       </div>
       <p style="float:left;font-size: 12px;">备注：不能使用修改液，万一须涂改时须签名
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        该文件保存期限
+        该文件保存期限5年
       </p>
       <P style="text-align: right; float:right;font-size: 12px;">
-        20191220改订
+        20201022改訂
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        HMDS-QR-48/A2</P>
+        HMDS-QR-48-1/A4</P>
     </div>
-    <p class="btn">
-      <!--<el-button @click="preservation()" type="primary">保存</el-button>-->
-      <el-button @click="keeyHistory" type="primary">打印</el-button>
-      <el-button id="printClick" v-print="'#printContent'" type="primary"></el-button>
-    </p>
+
   </div>
 </template>
 
@@ -334,7 +349,8 @@ export default {
       let obj = JSON.parse(JSON.stringify(this.hotData))
       obj.heatTreatment.orderId = this.orderInfo.id
       obj.heatTreatment.orderCode = this.orderInfo.soNo
-      obj.heatTreatment.contDueDate = this.date
+      obj.heatTreatment.managementNumber = this.orderInfo.soNo
+      obj.heatTreatment.contDueDate = this.hotData.heatTreatment.contDueDate
       obj.heatTreatment.workInstCd = this.orderInfo.workInstCd
       obj.heatTreatment.type = this.orderInfo.workInstCd
       // console.log(this.newDatas)
@@ -346,6 +362,8 @@ export default {
       obj.treatmentEntrys.map((item, key) => {
         item.heatCode = '00' + (key + 1)
       })
+      console.log(this.date)
+      console.log(obj)
       this.http('/heatTreatment/saveHeatTreatment', {
         heatTreatment: obj.heatTreatment,
         treatmentEntrys: obj.treatmentEntrys
@@ -358,7 +376,7 @@ export default {
               type: 'success'
             })
           } else {
-            document.getElementById('printClick').click()
+            // document.getElementById('printClick').click()
           }
         } else {
           this.$message({
@@ -371,7 +389,7 @@ export default {
     },
     keeyHistory () {
       document.getElementById('printClick').click()
-      // this.preservation(1)
+      this.preservation(1)
       // this.http('/printHistory/saveOrUpdate', {
       //   soNo: this.orderInfo.soNo,
       //   // dataJson: {...this.hotData},
@@ -430,7 +448,7 @@ export default {
     line-height: 20px;
     border: none;
     text-align: center;
-    width: 100px;
+    width: calc(100% - 10px);
   }
   .inputs td {
     padding: 5px 0px;
@@ -514,5 +532,27 @@ export default {
   }
   .table3 td:nth-child(1) {
     width: 30px;
+  }
+
+  .remake-td {
+    position: relative;
+    padding: 0 !important;
+    height: 30px;
+    width: 300px;
+    text-align: center;
+  }
+  .remake-td textarea {
+    height: 100%;
+    width: 100%;
+    border: none;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    text-align: center;
+    overflow: hidden;
+    outline: none;
+    resize: none;
+    line-height: 15px;
+    background: none;
   }
 </style>

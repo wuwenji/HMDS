@@ -9,8 +9,8 @@
               <td>接单号码NO</td>
             </tr>
             <tr>
-              <td><input type="text" disabled v-model="formData.managementNumber" class="input" style="text-align: left;"></td>
-              <td><input type="text" disabled v-model="formData.soNo" class="input" style="text-align: left;"></td>
+              <td><input type="text" disabled v-model="orderInfo.managementNumber" class="input" style="text-align: left;"></td>
+              <td><input type="text" disabled v-model="orderInfo.soNo" class="input" style="text-align: left;"></td>
             </tr>
           </table>
           <!--<p>管理编号NO</p>-->
@@ -75,7 +75,9 @@
         </td>
         <td class="yellow">
           <div style="position: relative; width: 100%; height: 100%;">
-            <textarea class="big-text" v-model="formData.modelNumber"></textarea>
+            <textarea class="big-text" v-model="formData.modelNumber">
+              {{formData.modelNumber}}
+            </textarea>
           </div>
         </td>
         <td class="yellow">
@@ -90,8 +92,16 @@
         <td rowspan="2">&nbsp;</td>
         <td rowspan="2">&nbsp;</td>
         <td rowspan="2" style="padding: 0;">
-          <p style="border-bottom: 1px solid #000">{{$store.getters.getDate(formData.acceptTime, 2)}}</p>
-          <p>{{$store.getters.getDate(formData.acceptTime).substring(11)}}</p>
+          <p style="border-bottom: 1px solid #000">
+            <template v-if="formData.acceptTime">
+              {{$store.getters.getDate(formData.acceptTime, 2)}}
+            </template>
+          </p>
+          <p>
+            <template v-if="formData.acceptTime">
+              {{$store.getters.getDate(formData.acceptTime).substring(11)}}
+            </template>
+          </p>
         </td>
         <td rowspan="2">
           <input v-model="formData.orderMaker" type="text" class="input">
@@ -125,7 +135,7 @@
           <td><input type="text" v-model="formData.userName" class="input"></td>
           <td valign="top" class="yellow" colspan="7" rowspan="3">
             特别事项：
-            <textarea class="textarea" v-model="formData.specialMatters" type="text">
+            <textarea class="textarea" v-model="formData.specialMatters" v-html="formData.specialMatters" type="text">
             </textarea>
           </td>
         </tr>
@@ -173,7 +183,12 @@
         <td class="b" colspan="3"><i>Q</i>
           炉NO（<input type="text" v-model="formData.qHandle.no" class="input input-40">）
           <span class="red">数量（<input type="text" v-model="formData.qHandle.counts" class="input input-40">） 确认（<input type="text" v-model="formData.qHandle.confirmer" class="input input-40">）</span></td>
-        <td class="l td-font" rowspan="2" colspan="2" valign="top" align="left">
+        <td class="l td-font" rowspan="2" colspan="2" valign="top" align="left" style="position: relative;">
+          <div class="zhezhao" v-if="formData.taskName.indexOf('EX') > -1 || formData.taskName.indexOf('NVG') > -1">
+            <img @click="updateImg" class="zhezhaoImg" :src="zhezhaoImg" alt="">
+            <input style="display: none;" @change="fileChange" id="imgfile" type="file">
+            <div style="position: absolute;bottom: 0; right: 0;"><span style="float: left; margin-top: 5px;">试样编号:</span> <p style="float: left;"><el-input size="mini"></el-input></p></div>
+          </div>
           <span style="float: left;">淬火方法:</span>
           <div style="float: right;">
             <p>
@@ -279,7 +294,7 @@
                 <!--</tr>-->
                 <!--</tbody>-->
               </table>
-              <img @click="openPics" class="table-div-img" :src="formData.imgSrc" alt="">
+              <img id="preview" @click="openPics" class="table-div-img" :src="formData.imgSrc" alt="">
             </div>
         </td>
       </tr>
@@ -299,14 +314,14 @@
         </td>
       </tr>
       <tr>
-        <td colspan="4">时间 <input v-model="formData.qHandle.time" type="text" class="input2"> \ <input v-model="formData.qHandle.time1" type="text" class="input2"></td>
+        <td colspan="4">时间 <input v-model="formData.qHandle.time" type="text" class="input2" style="width: 180px;"> \ <input v-model="formData.qHandle.time1" type="text" class="input2"></td>
         <td rowspan="2" align="center">
           OK<el-checkbox label="OK" v-model="formData.qHandle.isOk"></el-checkbox>&nbsp;
           NG<el-checkbox label="NG" v-model="formData.qHandle.isOk"></el-checkbox>
           &nbsp;</td>
       </tr>
       <tr>
-        <td colspan="4">作业者 <input v-model="formData.qHandle.operator" type="text" class="input2"> \ <input v-model="formData.qHandle.operator1" type="text" class="input2"></td>
+        <td colspan="4">作业者 <input v-model="formData.qHandle.operator" type="text" class="input2" style="width: 170px;"> \ <input v-model="formData.qHandle.operator1" type="text" class="input2"></td>
       </tr>
       <tr>
         <td class="b" colspan="2"><em>T1</em>
@@ -367,7 +382,8 @@
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td>
                   <div style="position: relative; width: 100%; height: 100%;">
-                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                    <textarea class="big-text min-text" v-html="item.modelNumber" v-model="item.modelNumber">
+                    </textarea>
                   </div>
                 </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
@@ -393,7 +409,8 @@
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td>
                   <div style="position: relative; width: 100%; height: 100%;">
-                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                    <textarea class="big-text min-text" v-html="item.modelNumber" v-model="item.modelNumber">
+                    </textarea>
                   </div>
                 </td>
                 <td><input type="text" v-model="item.itemName" class="input"></td>
@@ -450,7 +467,8 @@
               <tr v-for="(item, key) in formData.treatmentEntryList" :key="key">
                 <td>
                   <div style="position: relative; width: 100%; height: 100%;">
-                    <textarea class="big-text min-text" v-model="item.modelNumber"></textarea>
+                    <textarea class="big-text min-text" v-html="item.modelNumber" v-model="item.modelNumber">
+                    </textarea>
                   </div>
                   <!--<input type="text" v-model="item.modelNumber" class="input">-->
                 </td>
@@ -585,12 +603,16 @@
       width="600px">
       <div class="picsContent">
         <ul class="imgs">
+          <li class="local" @click="localImg">
+            <img src="../../../static/images/local.jpg" alt="">
+          </li>
           <li @click="selectImg(item)" v-for="(item, index) in imgSrcs" :key="index">
             <img :src="item.src" alt="">
           </li>
         </ul>
       </div>
     </el-dialog>
+    <input id="f" style="display: none;" type="file" name="f" @change="imgChange" />
   </div>
 </template>
 
@@ -790,6 +812,8 @@ export default {
   data () {
     return {
       imageUrlOne: '',
+      zhezhaoImg: '',
+      spareSpecialMatters: null,
       picsDialog: false,
       bigImgSrc: '../../../static/images/add-img.png',
       imgSrcs: [],
@@ -806,11 +830,64 @@ export default {
     this.getData()
   },
   methods: {
+    fileChange (e) {
+      let self = this
+      let file = e.target.files[0]
+      /* eslint-disable no-undef */
+      let param = new FormData()  // 创建form对象
+      param.append('files', file)  // 通过append向form对象添加数据
+      param.append('chunk', '0') // 添加form表单中其他数据
+      // console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      // 添加请求头
+      this.http('/tImages/uploadImgGetRequestPath', param, config)
+        .then(res => {
+          if (res.success) {
+            // this.$set(this.formData, 'zhezhaoImg', res.data[0])
+            self.formData.zhezhaoImg = res.data[0]
+            self.zhezhaoImg = res.data[0]
+          }
+        })
+    },
+    updateImg () {
+      document.getElementById('imgfile').click()
+    },
+    localImg () {
+      document.getElementById('f').click()
+    },
+    imgChange () {
+      // let self = this
+      let file = e.target.files[0]
+      /* eslint-disable no-undef */
+      let param = new FormData()  // 创建form对象
+      param.append('files', file)  // 通过append向form对象添加数据
+      param.append('orderCode', this.orderInfo.managementNumber) // 添加form表单中其他数据
+      param.append('imageType', 2) // 添加form表单中其他数据
+      // console.log(param.get('file')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+      let config = {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }
+      // 添加请求头
+      this.http('/tImages/image/uplode', param, config)
+        .then(res => {
+          console.log(res)
+          if (res.success) {
+            this.http('/tImages/getImageSrcById?id=' + res.data).then(resp => {
+              this.formData.imgSrc = 'http://' + resp
+              this.picsDialog = false
+            })
+          }
+        })
+    },
     // 获取数据
     getData () {
       this.http('/heatTreatment/get', this.orderInfo.id).then(resp => {
         console.log('成绩书', resp)
         if (resp.success) {
+          this.spareSpecialMatters = resp.data.specialMatters || null
+          this.formData.specialMatters = resp.data.specialMatters || ''
           if (resp.data.heatData === null) {
             for (let key in resp.data) {
               // 当返回值为null时取model中的值
@@ -818,6 +895,22 @@ export default {
                 this.formData[key] = resp.data[key]
               }
             }
+            this.formData.qHandle.threeTemperature = resp.data.qTemperature1 || ''
+            this.formData.qHandle.threeH = resp.data.qTime || 'H'
+            this.formData.qHandle.no = resp.data.qFurnaceNo || ''
+            this.formData.qHandle.counts = resp.data.qCount || ''
+            this.formData.qHandle.time = resp.data.qStartTime || ''
+            this.formData.qHandle.time1 = resp.data.qEndTime || ''
+            this.formData.qHandle.operator = resp.data.qOperator || ''
+            this.formData.qHandle.operator1 = resp.data.qOperator2 || ''
+
+            for (let i = 1; i < 5; i++) {
+              var name = 't' + i
+              this.changeData(name, resp.data)
+            }
+            this.changeData('sz', resp.data)
+            this.changeData('other', resp.data)
+            this.formData.otherHandle.method = resp.data.otherType ? [resp.data.otherType] : []
           } else {
             this.formData = JSON.parse(resp.data.heatData)
           }
@@ -826,8 +919,23 @@ export default {
               this.formData.treatmentEntryList.push(JSON.parse(JSON.stringify(obj)))
             }
           }
+          if (!this.formData.zhezhaoImg) {
+            this.zhezhaoImg = '../../../static/images/add-img.png'
+          } else {
+            this.zhezhaoImg = this.formData.zhezhaoImg
+          }
         }
       })
+    },
+    changeData (name, data) {
+      this.formData[name + 'Handle'].temperature = data[name + 'Temperature1'] || ''
+      this.formData[name + 'Handle'].h = data[name + 'Time'] || 'H'
+      this.formData[name + 'Handle'].no = data[name + 'FurnaceNo'] || ''
+      this.formData[name + 'Handle'].counts = data[name + 'Count'] || ''
+      this.formData[name + 'Handle'].time = data[name + 'StartTime'] || ''
+      this.formData[name + 'Handle'].time1 = data[name + 'EndTime'] || ''
+      this.formData[name + 'Handle'].operator = data[name + 'Operator'] || ''
+      this.formData[name + 'Handle'].operator1 = data[name + 'Operator2'] || ''
     },
     // 保存
     submit () {
@@ -912,6 +1020,18 @@ export default {
     orderInfo () {
       this.formData = JSON.parse(JSON.stringify(model))
       this.getData()
+    },
+    'formData.customerName' (customerName) {
+      customerName = customerName || 'attention'
+      this.http('/attention/list', {
+        customerName
+      }).then(resp => {
+        if (resp.success && resp.data.list.length > 0) {
+          this.formData.specialMatters = this.spareSpecialMatters ? this.spareSpecialMatters + ':' + resp.data.list[0].attention : resp.data.list[0].attention
+        } else {
+          this.formData.specialMatters = this.spareSpecialMatters ? this.spareSpecialMatters : ''
+        }
+      })
     }
   }
 }
@@ -1205,5 +1325,24 @@ span.other {
 }
 .imgs li img {
   width: 70px;
+}
+.zhezhao {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fff;
+  width: 584px;
+  height: 448px;
+  z-index: 99999;
+}
+.zhezhaoImg {
+  max-width: 584px;
+  max-height: 405px;
+  margin: 0 auto;
+  display: block;
+}
+
+.local {
+  border: 1px dashed #ccc;
 }
 </style>

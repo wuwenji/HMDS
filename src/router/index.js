@@ -30,6 +30,7 @@ import keyManage from '../pages/keyManage'
 import separateDetail from '../pages/separateDetail'
 import amountDisplay from '../pages/amountDisplay'
 import cailiao from '../pages/cailiao'
+import specialMatters from '../pages/specialMatters'
 
 Vue.use(Router)
 
@@ -181,6 +182,11 @@ const routes = [
     path: '/cailiao',
     name: 'cailiao',
     component: cailiao
+  },
+  {
+    path: '/specialMatters',
+    name: 'specialMatters',
+    component: specialMatters
   }
 ]
 

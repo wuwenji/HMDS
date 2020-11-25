@@ -117,6 +117,8 @@ export default {
           this.$router.push('/amountDisplay')
         } else if (val === '材料统计') {
           this.$router.push('/cailiao')
+        } else if (val === '特别事项关联表') {
+          this.$router.push('/specialMatters')
         }
       }
     }
